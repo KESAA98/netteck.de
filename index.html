@@ -51,16 +51,17 @@
         .pdf-download {
             margin: 0.75rem 0 1.5rem;
         }
-        .pdf-download a {
+        .pdf-download button {
             display: inline-block;
             padding: 0.5rem 1rem;
             border-radius: 999px;
             border: 1px solid #0077ff;
-            text-decoration: none;
+            background: #fff;
             font-size: 0.95rem;
             color: #0077ff;
+            cursor: pointer;
         }
-        .pdf-download a:hover {
+        .pdf-download button:hover {
             background: #0077ff;
             color: #fff;
         }
@@ -85,14 +86,28 @@
         a:hover {
             text-decoration: underline;
         }
+
+        /* Druckansicht: Rahmen schön, Buttons ausblenden */
+        @media print {
+            body {
+                background: #fff;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            .pdf-download {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
 
-    <!-- Nur dein Banner-Logo oben -->
-    <!-- Passe den Dateinamen im src-Attribut an deine echte Logodatei an -->
     <div class="logo-wrapper">
         <img src="Logo KS.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
     </div>
@@ -100,13 +115,14 @@
     <hr style="border: none; border-bottom: 1px solid #ddd; margin: 0 0 1.5rem;">
 
     <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
-    <p class="meta">Stand: 02/2025 &ndash; Version AGB_KS_2025_02</p>
+    <p class="meta">
+        Stand: 12/2025 – Version AGB_KS_2025_12
+    </p>
 
     <div class="pdf-download">
-        <!-- PDF-Datei in denselben Ordner legen: AGB_KS_2025_02.pdf -->
-        <a href="AGB_KS_2025_02.pdf" download>AGB als PDF herunterladen</a>
-        <div class="pdf-note">
-            Datei: <code>AGB_KS_2025_02.pdf</code>
+        <button id="pdfButton">AGB als PDF herunterladen</button>
+        <div class="pdf-note" id="pdfNote">
+            Beim Klick öffnet sich der Druckdialog – dort bitte „Als PDF speichern“ wählen.
         </div>
     </div>
 
@@ -232,6 +248,22 @@
     </footer>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('pdfButton');
+    const note = document.getElementById('pdfNote');
+
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+        const now = new Date();
+        const ts = now.toLocaleString('de-DE');
+        note.textContent = 'PDF-Erstellung am: ' + ts + ' – im Druckdialog bitte „Als PDF speichern“ wählen.';
+        window.print();
+    });
+});
+</script>
 
 </body>
 </html>
