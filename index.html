@@ -1,267 +1,524 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
     <title>AGB – Kevin Strakerjahn Networks &amp; Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Basis-Styles -->
     <style>
+        :root {
+            --primary: #0b74ff;
+            --primary-soft: rgba(11, 116, 255, 0.08);
+            --bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --border: #e1e4ec;
+            --text-main: #1f2933;
+            --text-muted: #6b7280;
+            --radius-lg: 14px;
+        }
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            background: #f7f7f7;
+            background: var(--bg);
+            color: var(--text-main);
             line-height: 1.6;
         }
-        .container {
-            max-width: 950px;
-            margin: 2rem auto;
-            background: #fff;
-            padding: 2rem 2.5rem 2.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        .page {
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
         }
-        .logo-wrapper {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        .logo-wrapper img {
-            max-width: 100%;
-            height: auto;
-        }
-        h1 {
-            font-size: 1.6rem;
-            margin: 0 0 0.3rem;
-        }
-        h2 {
-            margin-top: 1.8rem;
-            margin-bottom: 0.4rem;
-            font-size: 1.25rem;
-        }
-        p {
-            margin: 0.25rem 0;
-        }
-        ul {
-            margin: 0.25rem 0 0.75rem 1.3rem;
-        }
-        .meta {
-            font-size: 0.95rem;
-            color: #555;
-            margin-bottom: 0.75rem;
-        }
-        .pdf-download {
-            margin: 0.75rem 0 1.5rem;
-        }
-        .pdf-download button {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 999px;
-            border: 1px solid #0077ff;
-            background: #fff;
-            font-size: 0.95rem;
-            color: #0077ff;
-            cursor: pointer;
-        }
-        .pdf-download button:hover {
-            background: #0077ff;
-            color: #fff;
-        }
-        .pdf-note {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.25rem;
-        }
-        footer {
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #ddd;
-            font-size: 0.95rem;
-        }
-        .imp-title {
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-        }
-        a {
-            color: #0077ff;
-        }
-        a:hover {
-            text-decoration: underline;
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            padding: 1.75rem 1.9rem 2.1rem;
+            border: 1px solid var(--border);
         }
 
-        /* Druckansicht: Rahmen schön, Buttons ausblenden */
-        @media print {
-            body {
-                background: #fff;
+        .header {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+        .logo-wrapper img {
+            max-height: 60px;
+            width: auto;
+        }
+        .title-block h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.25rem;
+        }
+        .title-block .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        .search-box {
+            flex: 1 1 220px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 0.55rem 2.1rem 0.55rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            outline: none;
+            background: #f9fafb;
+        }
+        .search-box input:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+        .search-box span {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            background: #fff;
+            color: var(--primary);
+            padding: 0.45rem 0.9rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn.secondary {
+            border-color: var(--border);
+            color: var(--text-muted);
+        }
+        .btn.secondary:hover {
+            background: #f3f4f6;
+        }
+
+        .agb-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+        @media (max-width: 800px) {
+            .agb-layout {
+                grid-template-columns: minmax(0, 1fr);
             }
-            .container {
-                box-shadow: none;
-                margin: 0;
-                max-width: 100%;
-                border-radius: 0;
-            }
-            .pdf-download {
-                display: none;
-            }
+        }
+
+        .toc {
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .toc-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+        .toc-item {
+            padding: 0.3rem 0.45rem;
+            border-radius: 999px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .toc-item.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .toc-item:hover {
+            background: #f3f4f6;
+        }
+
+        .agb-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 0.4rem;
+        }
+        .para {
+            padding: 0.7rem 0 0.9rem;
+            border-bottom: 1px solid #edf0f4;
+        }
+        .para:last-child {
+            border-bottom: none;
+        }
+        .para-title {
+            font-weight: 600;
+            margin: 0 0 0.25rem;
+        }
+        .para-text p {
+            margin: 0.2rem 0;
+        }
+        .para-text ul {
+            margin: 0.25rem 0 0.5rem 1.2rem;
+        }
+
+        .search-info {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        mark {
+            background: #fef08a;
+            padding: 0 2px;
+        }
+
+        footer {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+        }
+
+        /* Container, der für den PDF-Export benutzt wird (nicht sichtbar) */
+        #pdf-container {
+            display: none;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="page">
+    <div class="card">
 
-    <div class="logo-wrapper">
-        <img src="Logo KS.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
-    </div>
+        <header class="header">
+            <div class="logo-wrapper">
+                <img src="Logo KS.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+            </div>
+            <div class="title-block">
+                <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
+                <div class="meta" id="metaVersion">
+                    Stand wird geladen…
+                </div>
+            </div>
+        </header>
 
-    <hr style="border: none; border-bottom: 1px solid #ddd; margin: 0 0 1.5rem;">
-
-    <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
-    <p class="meta">
-        Stand: 12/2025 – Version AGB_KS_2025_12
-    </p>
-
-    <div class="pdf-download">
-        <button id="pdfButton">AGB als PDF herunterladen</button>
-        <div class="pdf-note" id="pdfNote">
-            Beim Klick öffnet sich der Druckdialog – dort bitte „Als PDF speichern“ wählen.
+        <div class="toolbar">
+            <div class="search-box">
+                <input id="searchInput" type="search" placeholder="In AGB suchen …">
+                <span>Strg+F</span>
+                <div class="search-info" id="searchInfo"></div>
+            </div>
+            <div style="display:flex;gap:0.5rem;">
+                <button class="btn secondary" id="btnResetSearch">Suche zurücksetzen</button>
+                <button class="btn" id="btnPdf">
+                    PDF exportieren
+                </button>
+            </div>
         </div>
+
+        <div class="agb-layout">
+            <nav class="toc" id="toc">
+                <div class="toc-title">Inhalt</div>
+                <!-- Wird per JS gefüllt -->
+            </nav>
+
+            <main class="agb-content" id="agbContent">
+                <!-- Paragraphen via JS -->
+            </main>
+        </div>
+
+        <footer>
+            <div>Kevin Strakerjahn Networks &amp; Automation</div>
+            <div>Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de</div>
+        </footer>
     </div>
-
-    <!-- AGB-Text -->
-    <h2>§ 1 Geltungsbereich</h2>
-    <p>(1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle gegenwärtigen und zukünftigen Verträge zwischen Kevin Strakerjahn Networks &amp; Automation (im Folgenden „Auftragnehmer“) und dem Kunden.</p>
-    <p>(2) Kunden können Verbraucher oder Unternehmer gemäß § 13 und § 14 BGB sein.</p>
-    <p>(3) Abweichende AGB des Kunden werden nur wirksam, wenn deren Geltung ausdrücklich und schriftlich bestätigt wurde. Ohne eine solche Bestätigung gelten ausschließlich die vorliegenden Bedingungen.</p>
-
-    <h2>§ 2 Vertragsschluss</h2>
-    <p>(1) Alle Angebote des Auftragnehmers sind freibleibend und unverbindlich.</p>
-    <p>(2) Ein Vertrag kommt erst durch schriftliche Auftragsbestätigung oder durch Beginn der Ausführung zustande.</p>
-    <p>(3) Änderungen, Ergänzungen oder Nebenabreden bedürfen der Schriftform.</p>
-
-    <h2>§ 3 Mitwirkungspflichten des Kunden</h2>
-    <p>(1) Der Kunde hat die notwendigen Voraussetzungen für die Durchführung der Arbeiten zu schaffen. Hierzu zählen insbesondere:</p>
-    <ul>
-        <li>Zugang zu Anlagen, Serverräumen oder Windenergieanlagen,</li>
-        <li>Bereitstellung technischer Informationen, Zugangsdaten und Netzpläne,</li>
-        <li>Sicherstellung geeigneter Arbeitsbedingungen vor Ort.</li>
-    </ul>
-    <p>(2) Der Kunde erteilt dem Auftragnehmer die Erlaubnis, mit Dritten zu kommunizieren, soweit dies zur Leistungserbringung erforderlich ist. Dies umfasst insbesondere die Kontaktaufnahme und den Austausch technischer Informationen mit:</p>
-    <ul>
-        <li>Herstellern wie Enercon,</li>
-        <li>Betriebsführungen und Anlagenbetreibern,</li>
-        <li>Netzbetreibern,</li>
-        <li>Internetanbietern (ISP),</li>
-        <li>technischen Dienstleistern und Supportstellen.</li>
-    </ul>
-    <p>Der Auftragnehmer ist berechtigt, in diesem Zusammenhang Störungen zu melden, technische Anfragen zu stellen, notwendige Daten zur Fehleranalyse zu übermitteln sowie Auskünfte einzuholen, die für Diagnose, Inbetriebnahme oder Entstörung notwendig sind.</p>
-    <p>(3) Der Kunde verpflichtet sich, dem Auftragnehmer auf Anfrage entsprechende Vollmachten oder Zugriffsberechtigungen zu erteilen, sofern diese für die Kommunikation, Ticket-Erstellung oder Störungsbearbeitung bei Dritten erforderlich sind.</p>
-    <p>(4) Kommt der Kunde seinen Mitwirkungspflichten nicht nach und entstehen dadurch Wartezeiten, Fehlzeiten oder zusätzliche Anfahrten, können diese zu den vereinbarten Stundensätzen bzw. Pauschalen berechnet werden.</p>
-
-    <h2>§ 4 Rücktritt</h2>
-    <p><strong>(1) Rücktritt durch den Kunden</strong></p>
-    <p>Bei Rücktritt vor Übergabe der Leistung gilt:</p>
-    <ul>
-        <li>Bereits entstandene Aufwendungen (z. B. Materialbeschaffung) werden durch die Anzahlung gedeckt.</li>
-        <li>Übersteigt die Anzahlung die tatsächlich entstandenen Kosten, wird der Differenzbetrag erstattet.</li>
-        <li>Eine Herausgabe nicht verbauter Materialien erfolgt erst nach vollständiger Bezahlung der entsprechenden Kosten.</li>
-    </ul>
-
-    <p><strong>(2) Rücktritt durch den Auftragnehmer</strong></p>
-    <p>Der Auftragnehmer ist zum Rücktritt berechtigt, wenn:</p>
-    <ul>
-        <li>wesentliche Mitwirkungspflichten trotz Fristsetzung nicht erfüllt werden,</li>
-        <li>Vollmachten oder Zugänge fehlen,</li>
-        <li>unzutreffende oder unvollständige technische Angaben bereitgestellt wurden,</li>
-        <li>Zahlungspflichten nicht erfüllt wurden,</li>
-        <li>technische Vorgaben objektiv nicht erfüllbar sind.</li>
-    </ul>
-    <p>Bereits geleistete Zahlungen werden abzüglich der bis dahin entstandenen Aufwendungen erstattet.</p>
-
-    <h2>§ 5 Leistungsnachweise</h2>
-    <p>Der Auftragnehmer erstellt Dokumentationen, Aufmaße oder Bildnachweise nach eigenen internen Standards. Die Abrechnung erfolgt auf Basis der erbrachten Leistungen. Der Kunde kann nachweisen, dass der tatsächliche Leistungsumfang geringer war.</p>
-
-    <h2>§ 6 Liefer-, Ausführungs- und Einsatzzeiten</h2>
-    <p>(1) Termine gelten nur dann als verbindlich, wenn sie schriftlich bestätigt wurden.</p>
-    <p>(2) Bei Arbeiten an Windenergieanlagen sind Witterungseinflüsse und behördliche Vorgaben zu berücksichtigen.</p>
-    <p>(3) Verzögerungen durch Dritte (z. B. Hersteller, Lieferanten, Enercon, Internetanbieter) führen nicht zu Schadensersatzansprüchen des Kunden.</p>
-
-    <h2>§ 7 Gewährleistung</h2>
-    <p>(1) Für Unternehmer beträgt die Gewährleistungsfrist 12 Monate ab Übergabe.</p>
-    <p>(2) Für vom Kunden bereitgestellte Komponenten (Beistellungen) wird keine Gewährleistung übernommen.</p>
-    <p>(3) Eigenmächtige Eingriffe, Umbauten, Änderungen an Netzwerktopologie oder Konfiguration durch den Kunden oder Dritte führen zum Erlöschen der Gewährleistung.</p>
-    <p>(4) Für verbaute Fremdprodukte (z. B. Router, Switches, USV, Sensoren, Zubehör) gelten ausschließlich die Herstellergarantiebedingungen.</p>
-
-    <h2>§ 8 Haftung</h2>
-    <p>(1) Der Auftragnehmer haftet für Schäden nur bei Vorsatz oder grober Fahrlässigkeit.</p>
-    <p>(2) Für Schäden aus Verletzung von Leben, Körper oder Gesundheit besteht zwingende Haftung.</p>
-    <p>(3) Im Übrigen ist die Haftung auf den typischerweise vorhersehbaren Schaden begrenzt.</p>
-
-    <p><strong>(4) Keine Haftung für Ausfälle, Stillstandszeiten oder Produktionsverluste</strong></p>
-    <p>Der Auftragnehmer übernimmt keine Haftung für:</p>
-    <ul>
-        <li>Ausfälle von Windenergieanlagen,</li>
-        <li>Stillstandszeiten, Produktionsausfall oder Ertragsverluste,</li>
-        <li>wirtschaftliche Folgeschäden durch Netzwerk-, Router-, LTE- oder Hardwarefehler,</li>
-        <li>Unterbrechungen durch Software- oder Firmwareupdates,</li>
-        <li>Fehlfunktionen von durch den Kunden bereitgestellten Komponenten.</li>
-    </ul>
-    <p>Dies gilt auch dann, wenn der Ausfall mittelbar oder unmittelbar auf die vom Auftragnehmer installierten Systeme (z. B. Router, Firewalls, USV, Sensoren, Monitoring-Hardware) zurückzuführen wäre.</p>
-
-    <h2>§ 9 Preise und Zahlungen</h2>
-    <p>(1) Vor Beginn der Arbeiten ist eine Materialanzahlung durch den Kunden zu leisten.</p>
-    <p>(2) Der Restbetrag ist nach Abnahme der Leistung sofort nach Erhalt der Rechnung, spätestens jedoch innerhalb von 14 Tagen netto ohne Abzug zu bezahlen.</p>
-    <p>(3) Bei Zahlungsverzug gelten die gesetzlichen Verzugszinsen gemäß § 288 BGB.</p>
-    <p>(4) Kosten, die durch Wartezeiten, zusätzliche Anfahrten oder fehlende Mitwirkung des Kunden entstehen, werden gemäß den vereinbarten Stundensätzen bzw. Pauschalen berechnet.</p>
-
-    <h2>§ 10 Eigentumsvorbehalt</h2>
-    <p>(1) Alle gelieferten Waren bleiben bis zur vollständigen Bezahlung Eigentum des Auftragnehmers.</p>
-    <p>(2) Bei Unternehmern besteht der Eigentumsvorbehalt bis zur Begleichung sämtlicher Forderungen aus der laufenden Geschäftsbeziehung.</p>
-    <p>(3) Der Kunde muss den Auftragnehmer unverzüglich über Zugriffe Dritter, Beschädigungen, Verlust oder Standortwechsel der Vorbehaltsware informieren.</p>
-    <p>(4) Bei vertragswidrigem Verhalten des Kunden, insbesondere Zahlungsverzug, ist der Auftragnehmer berechtigt, den Rückbau und die Herausgabe der gelieferten Waren zu verlangen.</p>
-
-    <h2>§ 11 Gerichtsstand und anwendbares Recht</h2>
-    <p>(1) Es gilt ausschließlich deutsches Recht.</p>
-    <p>(2) Für Verträge mit Unternehmern ist Gerichtsstand der Sitz des Auftragnehmers.</p>
-    <p>(3) Für Verbraucher gelten die gesetzlichen Gerichtsstandsregelungen.</p>
-
-    <h2>§ 12 Schlussbestimmungen</h2>
-    <p>Sollte eine Bestimmung dieser AGB unwirksam oder undurchführbar sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. Anstelle der unwirksamen Bestimmung gilt eine Regelung, die dem wirtschaftlichen Zweck der ursprünglichen Bestimmung am nächsten kommt.</p>
-
-    <h2>§ 13 Datenschutz &amp; Speicherung von Auftragsdaten</h2>
-    <p>(1) Der Auftragnehmer verarbeitet personenbezogene Daten des Kunden ausschließlich zur Vertragsdurchführung, zur technischen Kommunikation sowie zur Abrechnung gemäß Art. 6 Abs. 1 lit. b DSGVO. Hierzu zählen insbesondere Kontaktdaten, technische Anlagedaten, Projekt- und Auftragsinformationen.</p>
-    <p>(2) Die Daten werden für die Dauer der Vertragsbeziehung sowie entsprechend den gesetzlichen Aufbewahrungsfristen (regelmäßig 6 bis 10 Jahre) gespeichert. Eine darüber hinausgehende Speicherung erfolgt nur, wenn der Kunde hierin eingewilligt hat oder der Auftragnehmer ein berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO nachweist.</p>
-    <p>(3) Mit Einwilligung des Kunden dürfen technische Dokumentationen, Protokolle, Konfigurationsstände und projektbezogene Informationen über die gesetzliche Aufbewahrungsfrist hinaus gespeichert werden, um zukünftige Wartungen, Erweiterungen oder Störungsbehebungen zu erleichtern. Diese Einwilligung kann jederzeit mit Wirkung für die Zukunft widerrufen werden.</p>
-    <p>(4) Eine Weitergabe personenbezogener Daten an Dritte erfolgt ausschließlich, soweit dies zur Vertragserfüllung, Störungsbearbeitung oder technischen Klärung erforderlich ist (z. B. Hersteller, Enercon, Betriebsführung, Netzbetreiber, Internetanbieter) oder wenn eine gesetzliche Verpflichtung besteht.</p>
-    <p>(5) Weitere Informationen zum Datenschutz ergeben sich aus der gesonderten Datenschutzerklärung des Auftragnehmers.</p>
-
-    <!-- Impressum -->
-    <footer>
-        <div class="imp-title">Impressum</div>
-        <p>
-            Anbieter dieser Seite:<br>
-            <strong>Kevin Strakerjahn Networks &amp; Automation</strong><br>
-            Bundesstraße 5 6<br>
-            25795 Stelle-Wittenwurth<br><br>
-            Steuernummer: 16/187/04546<br>
-            E-Mail: <a href="mailto:info@netteck.de">info@netteck.de</a><br>
-            Telefon: <a href="tel:+4915129047232">+49 151 29047232</a>
-        </p>
-    </footer>
-
 </div>
 
+<!-- Unsichtbarer Container für den „sauberen“ PDF-Export -->
+<div id="pdf-container"></div>
+
+<!-- html2pdf.js von CDN für den PDF-Export ohne Druck-Dialog -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"
+        integrity="sha512-YcsIPZqvQXkGLumfMP0G4QoA9PSQotQIjBIW8xAq1RDWfH8uUJMTvNnU4vN8T0kqQTx7iVt1xqLQkB9+3eH9hw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const btn = document.getElementById('pdfButton');
-    const note = document.getElementById('pdfNote');
+const AGB_FILES = [
+    "01_geltungsbereich.txt",
+    "02_vertragsschluss.txt",
+    "03_mitwirkungspflichten.txt",
+    "04_ruecktritt.txt",
+    "05_leistungsnachweise.txt",
+    "06_liefer_ausfuehrungs_einsatzzeiten.txt",
+    "07_gewaehrleistung.txt",
+    "08_haftung.txt",
+    "09_preise_und_zahlungen.txt",
+    "10_eigentumsvorbehalt.txt",
+    "11_gerichtsstand_recht.txt",
+    "12_schlussbestimmungen.txt",
+    "13_datenschutz_speicherung.txt"
+];
 
-    if (!btn) return;
+let agbData = [];
+let metaData = null;
 
-    btn.addEventListener('click', function () {
-        const now = new Date();
-        const ts = now.toLocaleString('de-DE');
-        note.textContent = 'PDF-Erstellung am: ' + ts + ' – im Druckdialog bitte „Als PDF speichern“ wählen.';
-        window.print();
+// Hilfsfunktion: Text mit Zeilenumbrüchen in <p> & einfache Listen verwandeln:
+function renderTextToHtml(text) {
+    const paragraphs = text.split(/\n+/);
+    const frag = document.createDocumentFragment();
+    let currentUl = null;
+
+    paragraphs.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+
+        // Bullet-Punkte mit • oder – in eine Liste umwandeln
+        if (/^[•\-–]/.test(trimmed)) {
+            if (!currentUl) {
+                currentUl = document.createElement("ul");
+                frag.appendChild(currentUl);
+            }
+            const li = document.createElement("li");
+            li.textContent = trimmed.replace(/^[•\-–]\s*/, "");
+            currentUl.appendChild(li);
+        } else {
+            currentUl = null;
+            const p = document.createElement("p");
+            p.textContent = trimmed;
+            frag.appendChild(p);
+        }
     });
+
+    return frag;
+}
+
+// Search-Highlight
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// nach dem Laden alles aufbauen
+async function init() {
+    // meta.json laden
+    try {
+        const metaResp = await fetch("AGBs/meta.json");
+        if (metaResp.ok) {
+            metaData = await metaResp.json();
+            const metaEl = document.getElementById("metaVersion");
+            if (metaData.anzeige) {
+                metaEl.textContent = metaData.anzeige;
+            } else if (metaData.stand_datum) {
+                metaEl.textContent = "Stand: " + metaData.stand_datum;
+            }
+        }
+    } catch (e) {
+        console.warn("meta.json konnte nicht geladen werden:", e);
+    }
+
+    // alle AGB JSON-Dateien laden
+    const promises = AGB_FILES.map(async (file) => {
+        const resp = await fetch("AGBs/" + file);
+        if (!resp.ok) throw new Error("Fehler beim Laden von " + file);
+        return resp.json();
+    });
+
+    agbData = await Promise.all(promises);
+    renderAgb(agbData);
+    buildToc(agbData);
+    setupSearch();
+    setupPdfExport();
+}
+
+function renderAgb(data) {
+    const container = document.getElementById("agbContent");
+    container.innerHTML = "";
+
+    data.forEach((para, idx) => {
+        const section = document.createElement("section");
+        section.className = "para";
+        section.id = "para-" + (idx + 1);
+
+        const h = document.createElement("div");
+        h.className = "para-title";
+        h.textContent = para.Titel || ("§ " + (idx + 1));
+        section.appendChild(h);
+
+        const body = document.createElement("div");
+        body.className = "para-text";
+        body.appendChild(renderTextToHtml(para.Text || ""));
+        section.appendChild(body);
+
+        container.appendChild(section);
+    });
+}
+
+function buildToc(data) {
+    const toc = document.getElementById("toc");
+    const oldItems = toc.querySelectorAll(".toc-item");
+    oldItems.forEach(n => n.remove());
+
+    data.forEach((para, idx) => {
+        const item = document.createElement("div");
+        item.className = "toc-item";
+        item.textContent = para.Titel || ("§ " + (idx + 1));
+        item.dataset.target = "para-" + (idx + 1);
+        item.addEventListener("click", () => {
+            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+            item.classList.add("active");
+            const target = document.getElementById(item.dataset.target);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+        toc.appendChild(item);
+    });
+}
+
+function setupSearch() {
+    const input = document.getElementById("searchInput");
+    const info = document.getElementById("searchInfo");
+    const resetBtn = document.getElementById("btnResetSearch");
+
+    function applySearch(query) {
+        const q = query.trim();
+        const sections = document.querySelectorAll(".para");
+        let hits = 0;
+
+        sections.forEach(sec => {
+            // ursprünglichen Text zurücksetzen
+            const paraIndex = parseInt(sec.id.replace("para-", ""), 10) - 1;
+            const paraData = agbData[paraIndex];
+            const body = sec.querySelector(".para-text");
+            body.innerHTML = "";
+            body.appendChild(renderTextToHtml(paraData.Text || ""));
+
+            if (!q) {
+                sec.style.display = "";
+                return;
+            }
+
+            const text = (paraData.Text || "").toLowerCase();
+            if (text.includes(q.toLowerCase())) {
+                sec.style.display = "";
+                hits++;
+
+                // Highlight
+                const reg = new RegExp(escapeRegExp(q), "gi");
+                body.querySelectorAll("p, li").forEach(el => {
+                    if (!el.textContent.toLowerCase().includes(q.toLowerCase())) return;
+                    el.innerHTML = el.textContent.replace(reg, match => `<mark>${match}</mark>`);
+                });
+
+            } else {
+                sec.style.display = "none";
+            }
+        });
+
+        if (q) {
+            info.textContent = hits + " Treffer für „" + q + "“";
+        } else {
+            info.textContent = "";
+        }
+    }
+
+    input.addEventListener("input", () => applySearch(input.value));
+    resetBtn.addEventListener("click", () => {
+        input.value = "";
+        applySearch("");
+    });
+}
+
+function setupPdfExport() {
+    const btn = document.getElementById("btnPdf");
+    const pdfContainer = document.getElementById("pdf-container");
+
+    btn.addEventListener("click", () => {
+        // „saubere“ Version in den PDF-Container kopieren
+        pdfContainer.innerHTML = "";
+
+        const wrapper = document.createElement("div");
+        wrapper.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        wrapper.style.fontSize = "11pt";
+        wrapper.style.color = "#111827";
+
+        const title = document.createElement("h1");
+        title.textContent = "Allgemeine Geschäftsbedingungen (AGB)";
+        title.style.fontSize = "18pt";
+        title.style.marginBottom = "0.2cm";
+        wrapper.appendChild(title);
+
+        const meta = document.createElement("p");
+        const now = new Date();
+        const ts = now.toLocaleString("de-DE");
+        let metaText = "";
+        if (metaData && metaData.anzeige) {
+            metaText = metaData.anzeige + " – PDF erstellt am: " + ts;
+        } else if (metaData && metaData.stand_datum) {
+            metaText = "Stand: " + metaData.stand_datum + " – PDF erstellt am: " + ts;
+        } else {
+            metaText = "PDF erstellt am: " + ts;
+        }
+        meta.textContent = metaText;
+        meta.style.fontSize = "9pt";
+        meta.style.color = "#4b5563";
+        meta.style.marginBottom = "0.6cm";
+        wrapper.appendChild(meta);
+
+        agbData.forEach((para, idx) => {
+            const h = document.createElement("h2");
+            h.textContent = para.Titel || ("§ " + (idx + 1));
+            h.style.fontSize = "12pt";
+            h.style.margin = "0.4cm 0 0.1cm";
+            wrapper.appendChild(h);
+
+            const body = document.createElement("div");
+            body.appendChild(renderTextToHtml(para.Text || ""));
+            wrapper.appendChild(body);
+        });
+
+        pdfContainer.appendChild(wrapper);
+
+        const filenameBase = metaData && metaData.version_string
+            ? metaData.version_string
+            : "AGB";
+        const filename = filenameBase + "_" + now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
+
+        const opt = {
+            margin:       10,
+            filename:     filename,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(pdfContainer).save();
+    });
+}
+
+init().catch(err => {
+    console.error("Fehler bei Initialisierung:", err);
 });
 </script>
 
