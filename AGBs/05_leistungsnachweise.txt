@@ -1,0 +1,4 @@
+{
+  "Titel": "§ 5 Leistungsnachweise",
+  "Text": "Der Auftragnehmer erstellt Dokumentationen, Aufmaße oder Bildnachweise nach eigenen internen Standards. Die Abrechnung erfolgt auf Basis der erbrachten Leistungen. Der Kunde kann nachweisen, dass der tatsächliche Leistungsumfang geringer war."
+}

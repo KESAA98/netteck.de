@@ -1,0 +1,4 @@
+{
+  "Titel": "§ 4 Rücktritt",
+  "Text": "(1) Rücktritt durch den Kunden\nBei Rücktritt vor Übergabe der Leistung gilt:\n• Bereits entstandene Aufwendungen (z. B. Materialbeschaffung) werden durch die Anzahlung gedeckt.\n• Übersteigt die Anzahlung die tatsächlich entstandenen Kosten, wird der Differenzbetrag erstattet.\n• Eine Herausgabe nicht verbauter Materialien erfolgt erst nach vollständiger Bezahlung der entsprechenden Kosten.\n(2) Rücktritt durch den Auftragnehmer\nDer Auftragnehmer ist zum Rücktritt berechtigt, wenn:\n• wesentliche Mitwirkungspflichten trotz Fristsetzung nicht erfüllt werden,\n• Vollmachten oder Zugänge fehlen,\n• unzutreffende oder unvollständige technische Angaben bereitgestellt wurden,\n• Zahlungspflichten nicht erfüllt wurden,\n• technische Vorgaben objektiv nicht erfüllbar sind.\nBereits geleistete Zahlungen werden abzüglich der bis dahin entstandenen Aufwendungen erstattet."
+}

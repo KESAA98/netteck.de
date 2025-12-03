@@ -1,0 +1,4 @@
+{
+  "Titel": "§ 1 Geltungsbereich",
+  "Text": "(1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle gegenwärtigen und zukünftigen Verträge zwischen Kevin Strakerjahn Networks & Automation (im Folgenden „Auftragnehmer“) und dem Kunden.\n(2) Kunden können Verbraucher oder Unternehmer gemäß § 13 und § 14 BGB sein.\n(3) Abweichende AGB des Kunden werden nur wirksam, wenn deren Geltung ausdrücklich und schriftlich bestätigt wurde. Ohne eine solche Bestätigung gelten ausschließlich die vorliegenden Bedingungen."
+}

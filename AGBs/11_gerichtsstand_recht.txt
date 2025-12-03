@@ -1,0 +1,4 @@
+{
+  "Titel": "§ 11 Gerichtsstand und anwendbares Recht",
+  "Text": "(1) Es gilt ausschließlich deutsches Recht.\n(2) Für Verträge mit Unternehmern ist Gerichtsstand der Sitz des Auftragnehmers.\n(3) Für Verbraucher gelten die gesetzlichen Gerichtsstandsregelungen."
+}
