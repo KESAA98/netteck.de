@@ -5,7 +5,7 @@
     <title>AGB – Kevin Strakerjahn Networks &amp; Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Favicon (Tab-Icon) -->
+    <!-- Favicon (Tab-Icon) – neues Logo -->
     <link rel="icon" type="image/png" href="KS_Logo_PNG.png">
 
     <style>
@@ -174,9 +174,7 @@
             background: #f3f4f6;
         }
 
-        .agb-content {
-            /* Inhalt scrollt mit der Seite */
-        }
+        .agb-content { }
 
         .para {
             padding: 0.7rem 0 0.9rem;
@@ -285,7 +283,6 @@ const AGB_FILES = [
 let agbData = [];
 let metaData = null;
 
-// Web-Ansicht: Text mit \n in Absätze/Listen umwandeln
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
     const frag = document.createDocumentFragment();
@@ -319,7 +316,6 @@ function escapeRegExp(str) {
 }
 
 async function init() {
-    // meta.json laden (nicht kritisch)
     try {
         const metaResp = await fetch("AGBs/meta.json");
         if (metaResp.ok) {
@@ -332,19 +328,16 @@ async function init() {
             } else {
                 metaEl.textContent = "Stand: unbekannt";
             }
-        } else {
-            console.warn("meta.json HTTP-Status:", metaResp.status);
         }
     } catch (e) {
-        console.warn("meta.json konnte nicht geladen/ geparst werden:", e);
+        console.warn("meta.json Problem:", e);
     }
 
-    // AGB-Dateien laden – Fehler pro Datei abfangen
     const promises = AGB_FILES.map(async (file) => {
         try {
             const resp = await fetch("AGBs/" + file);
             if (!resp.ok) {
-                console.error("Fehler beim Laden von", file, "Status:", resp.status);
+                console.error("Fehler beim Laden von", file, resp.status);
                 return {
                     Titel: file,
                     Text: "Fehler beim Laden dieser AGB-Datei (" + file + ")."
@@ -353,7 +346,7 @@ async function init() {
             const json = await resp.json();
             return json;
         } catch (e) {
-            console.error("Exception beim Laden/Parsen von", file, e);
+            console.error("Exception bei", file, e);
             return {
                 Titel: file,
                 Text: "Fehler beim Verarbeiten dieser AGB-Datei (" + file + ")."
@@ -393,23 +386,22 @@ function renderAgb(data) {
 
 function buildToc(data) {
     const toc = document.getElementById("toc");
-    const oldItems = toc.querySelectorAll(".toc-item");
-    oldItems.forEach(n => n.remove());
+    toc.querySelectorAll(".toc-item").forEach(n => n.remove());
 
     data.forEach((para, idx) => {
         const item = document.createElement("div");
-            item.className = "toc-item";
-            item.textContent = para.Titel || ("§ " + (idx + 1));
-            item.dataset.target = "para-" + (idx + 1);
-            item.addEventListener("click", () => {
-                document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
-                item.classList.add("active");
-                const target = document.getElementById(item.dataset.target);
-                if (target) {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            });
-            toc.appendChild(item);
+        item.className = "toc-item";
+        item.textContent = para.Titel || ("§ " + (idx + 1));
+        item.dataset.target = "para-" + (idx + 1);
+        item.addEventListener("click", () => {
+            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+            item.classList.add("active");
+            const target = document.getElementById(item.dataset.target);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+        toc.appendChild(item);
     });
 }
 
@@ -451,11 +443,7 @@ function setupSearch() {
             }
         });
 
-        if (q) {
-            info.textContent = hits + " Treffer für „" + q + "“";
-        } else {
-            info.textContent = "";
-        }
+        info.textContent = q ? hits + " Treffer für „" + q + "“" : "";
     }
 
     input.addEventListener("input", () => applySearch(input.value));
@@ -465,7 +453,6 @@ function setupSearch() {
     });
 }
 
-// Bild (Logo) als DataURL für pdfMake laden
 function loadLogoDataUrl(url) {
     return new Promise((resolve, reject) => {
         const img = new Image();
@@ -488,7 +475,6 @@ function loadLogoDataUrl(url) {
     });
 }
 
-// Text in pdfMake-Blöcke (Absätze + Listen) umwandeln
 function buildPdfBlocksFromText(text) {
     const lines = text.split(/\n+/);
     const blocks = [];
@@ -534,14 +520,14 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
     const content = [];
 
-    // Kopfbereich: nur Logo
+    // Logo größer & zentriert
     content.push({
         image: logoDataUrl,
-        width: 100,
+        width: 130,
+        alignment: "center",
         margin: [0, 0, 0, 15]
     });
 
-    // Titel + Meta-Zeile
     content.push({
         text: "Allgemeine Geschäftsbedingungen (AGB)",
         style: "h1",
@@ -553,13 +539,19 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 16]
     });
 
-    // Paragraphen
     agbData.forEach((para, idx) => {
-        content.push({
+        const heading = {
             text: para.Titel || ("§ " + (idx + 1)),
             style: "h2",
             margin: [0, 10, 0, 4]
-        });
+        };
+
+        // § 4 Rücktritt komplett auf neuer Seite
+        if (idx === 3) {
+            heading.pageBreak = "before";
+        }
+
+        content.push(heading);
 
         const blocks = buildPdfBlocksFromText(para.Text || "");
         blocks.forEach(b => content.push(b));
@@ -581,30 +573,33 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
-        // Wasserzeichen mit Stand/Version/Timestamp auf jeder Seite
-        watermark: {
-            text: metaText,
-            color: "#cccccc",
-            opacity: 0.2,
-            bold: false,
-            italics: false
-        },
-        // Fußzeile: Firma & Kontakt links, Seitenzahlen rechts
+        // kein diagonales Wasserzeichen mehr
         footer: function(currentPage, pageCount) {
             return {
-                columns: [
+                margin: [40, 0, 40, 20],
+                stack: [
                     {
-                        text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
-                        alignment: "left",
-                        fontSize: 8
+                        columns: [
+                            {
+                                text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
+                                alignment: "left",
+                                fontSize: 8
+                            },
+                            {
+                                text: "Seite " + currentPage + " von " + pageCount,
+                                alignment: "right",
+                                fontSize: 8
+                            }
+                        ]
                     },
                     {
-                        text: "Seite " + currentPage + " von " + pageCount,
-                        alignment: "right",
-                        fontSize: 8
+                        text: metaText,        // Export-Stempel
+                        alignment: "right",   // unten rechts (Bereich 1)
+                        fontSize: 7,
+                        color: "#666666",
+                        margin: [0, 2, 0, 0]
                     }
-                ],
-            margin: [40, 0, 40, 20]
+                ]
             };
         },
         content: content
@@ -613,16 +608,11 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
 function setupPdfExport() {
     const btn = document.getElementById("btnPdf");
-
-    if (!btn) {
-        console.error("PDF-Button (#btnPdf) nicht gefunden.");
-        return;
-    }
+    if (!btn) return;
 
     btn.addEventListener("click", async () => {
         if (typeof pdfMake === "undefined") {
-            alert("PDF-Funktion nicht geladen (pdfMake fehlt).");
-            console.error("pdfMake ist undefined – Script wurde nicht geladen.");
+            alert("PDF-Funktion nicht geladen (pdfMake).");
             return;
         }
 
