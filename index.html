@@ -543,18 +543,18 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         },
         // Export-Stempel vertikal rechts
         background: function(currentPage, pageSize) {
-            return {
-                text: exportStamp,
-                fontSize: 8,
-                color: "#999999",
-                opacity: 0.8,
-                rotation: -90, // vertikal an rechter Seite
-                absolutePosition: {
-                    x: pageSize.width - 18,
-                    y: pageSize.height / 2
-                }
-            };
-        },
+    return {
+        text: exportStamp,
+        fontSize: 9,
+        color: "#777777",
+        opacity: 0.9,
+        rotation: 90, // ← jetzt korrekt vertikal
+        absolutePosition: {
+            x: pageSize.width - 25,       // rechter Rand
+            y: pageSize.height / 2        // zentriert vertikal
+        }
+    };
+},
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
