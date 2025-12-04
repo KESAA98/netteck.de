@@ -171,9 +171,8 @@
             background: #f3f4f6;
         }
 
-        /* Inhalt läuft mit der Seite – keine eigene Scrollbar mehr */
         .agb-content {
-            /* bewusst leer gelassen, damit nur die Seite scrollt */
+            /* nur die Seite scrollt, kein eigener Scroll hier */
         }
 
         .para {
@@ -256,8 +255,9 @@
     </div>
 </div>
 
-<!-- html2pdf: ohne Integrity, damit es sicher lädt -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<!-- pdfMake: echte PDF-Engine -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script>
 const AGB_FILES = [
@@ -279,6 +279,7 @@ const AGB_FILES = [
 let agbData = [];
 let metaData = null;
 
+// Für Web-Ansicht: Text mit \n in Absätze/Listen umwandeln
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
     const frag = document.createDocumentFragment();
@@ -434,113 +435,4 @@ function setupSearch() {
         }
     }
 
-    input.addEventListener("input", () => applySearch(input.value));
-    resetBtn.addEventListener("click", () => {
-        input.value = "";
-        applySearch("");
-    });
-}
-
-function setupPdfExport() {
-    const btn = document.getElementById("btnPdf");
-
-    if (!btn) {
-        console.error("PDF-Button (#btnPdf) nicht gefunden.");
-        return;
-    }
-
-    btn.addEventListener("click", () => {
-        if (typeof html2pdf === "undefined") {
-            alert("PDF-Funktion nicht geladen (html2pdf.js fehlt).");
-            console.error("html2pdf ist undefined – Script wurde nicht geladen.");
-            return;
-        }
-
-        const wrapper = document.createElement("div");
-        wrapper.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-        wrapper.style.fontSize = "11pt";
-        wrapper.style.color = "#111827";
-
-        // Kopfbereich mit Logo + Firmendaten
-        const header = document.createElement("div");
-        header.style.display = "flex";
-        header.style.alignItems = "center";
-        header.style.justifyContent = "space-between";
-        header.style.marginBottom = "0.5cm";
-
-        const logoDiv = document.createElement("div");
-        const logoImg = document.createElement("img");
-        logoImg.src = "Logo KS.jpeg";
-        logoImg.alt = "Kevin Strakerjahn Networks & Automation";
-        logoImg.style.maxHeight = "32px";
-        logoImg.style.width = "auto";
-        logoDiv.appendChild(logoImg);
-
-        const firmDiv = document.createElement("div");
-        firmDiv.style.textAlign = "right";
-        firmDiv.style.fontSize = "9pt";
-        firmDiv.innerHTML = "Kevin Strakerjahn Networks &amp; Automation<br>Bundesstraße 5 6<br>25795 Stelle-Wittenwurth<br>info@netteck.de · +49 151 29047232";
-
-        header.appendChild(logoDiv);
-        header.appendChild(firmDiv);
-        wrapper.appendChild(header);
-
-        const title = document.createElement("h1");
-        title.textContent = "Allgemeine Geschäftsbedingungen (AGB)";
-        title.style.fontSize = "18pt";
-        title.style.margin = "0 0 0.2cm";
-        wrapper.appendChild(title);
-
-        const meta = document.createElement("p");
-        const now = new Date();
-        const ts = now.toLocaleString("de-DE");
-        let metaText = "";
-        if (metaData && metaData.anzeige) {
-            metaText = metaData.anzeige + " – PDF erstellt am: " + ts;
-        } else if (metaData && metaData.stand_datum) {
-            metaText = "Stand: " + metaData.stand_datum + " – PDF erstellt am: " + ts;
-        } else {
-            metaText = "PDF erstellt am: " + ts;
-        }
-        meta.textContent = metaText;
-        meta.style.fontSize = "9pt";
-        meta.style.color = "#4b5563";
-        meta.style.marginBottom = "0.6cm";
-        wrapper.appendChild(meta);
-
-        agbData.forEach((para, idx) => {
-            const h = document.createElement("h2");
-            h.textContent = para.Titel || ("§ " + (idx + 1));
-            h.style.fontSize = "12pt";
-            h.style.margin = "0.4cm 0 0.1cm";
-            wrapper.appendChild(h);
-
-            const body = document.createElement("div");
-            body.appendChild(renderTextToHtml(para.Text || ""));
-            wrapper.appendChild(body);
-        });
-
-        const filenameBase = metaData && metaData.version_string
-            ? metaData.version_string
-            : "AGB";
-        const filename = filenameBase + "_" + now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
-
-        const opt = {
-            margin:       10,
-            filename:     filename,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opt).from(wrapper).save();
-    });
-}
-
-init().catch(err => {
-    console.error("Fehler bei Initialisierung:", err);
-});
-</script>
-
-</body>
-</html>
+    input.addEventListener
