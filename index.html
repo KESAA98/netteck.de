@@ -172,7 +172,7 @@
         }
 
         .agb-content {
-            /* nur die Seite scrollt, kein eigener Scroll hier */
+            /* Inhalt scrollt mit der Seite */
         }
 
         .para {
@@ -214,7 +214,8 @@
 
         <header class="header">
             <div class="logo-wrapper">
-                <img src="Logo KS.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+                <!-- Neues Logo -->
+                <img src="KS_Logo_PNG.png" alt="Kevin Strakerjahn Networks &amp; Automation">
             </div>
             <div class="title-block">
                 <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
@@ -260,6 +261,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script>
+const LOGO_PATH = "KS_Logo_PNG.png";
+
 const AGB_FILES = [
     "01_geltungsbereich.txt",
     "02_vertragsschluss.txt",
@@ -279,7 +282,7 @@ const AGB_FILES = [
 let agbData = [];
 let metaData = null;
 
-// Für Web-Ansicht: Text mit \n in Absätze/Listen umwandeln
+// Web-Ansicht: Text mit \n in Absätze/Listen umwandeln
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
     const frag = document.createDocumentFragment();
@@ -313,7 +316,7 @@ function escapeRegExp(str) {
 }
 
 async function init() {
-    // meta.json laden
+    // meta.json laden (nicht kritisch)
     try {
         const metaResp = await fetch("AGBs/meta.json");
         if (metaResp.ok) {
@@ -326,16 +329,33 @@ async function init() {
             } else {
                 metaEl.textContent = "Stand: unbekannt";
             }
+        } else {
+            console.warn("meta.json HTTP-Status:", metaResp.status);
         }
     } catch (e) {
-        console.warn("meta.json konnte nicht geladen werden:", e);
+        console.warn("meta.json konnte nicht geladen/ geparst werden:", e);
     }
 
-    // alle AGB-Dateien laden
+    // AGB-Dateien laden – Fehler pro Datei abfangen, damit die Seite nicht komplett leer bleibt
     const promises = AGB_FILES.map(async (file) => {
-        const resp = await fetch("AGBs/" + file);
-        if (!resp.ok) throw new Error("Fehler beim Laden von " + file);
-        return resp.json();
+        try {
+            const resp = await fetch("AGBs/" + file);
+            if (!resp.ok) {
+                console.error("Fehler beim Laden von", file, "Status:", resp.status);
+                return {
+                    Titel: file,
+                    Text: "Fehler beim Laden dieser AGB-Datei (" + file + ")."
+                };
+            }
+            const json = await resp.json();
+            return json;
+        } catch (e) {
+            console.error("Exception beim Laden/Parsen von", file, e);
+            return {
+                Titel: file,
+                Text: "Fehler beim Verarbeiten dieser AGB-Datei (" + file + ")."
+            };
+        }
     });
 
     agbData = await Promise.all(promises);
@@ -435,4 +455,192 @@ function setupSearch() {
         }
     }
 
-    input.addEventListener
+    input.addEventListener("input", () => applySearch(input.value));
+    resetBtn.addEventListener("click", () => {
+        input.value = "";
+        applySearch("");
+    });
+}
+
+// Bild (Logo) als DataURL für pdfMake laden
+function loadLogoDataUrl(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = function () {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            try {
+                const dataUrl = canvas.toDataURL("image/png");
+                resolve(dataUrl);
+            } catch (e) {
+                reject(e);
+            }
+        };
+        img.onerror = reject;
+        img.src = url;
+    });
+}
+
+// Text in pdfMake-Blöcke (Absätze + Listen) umwandeln
+function buildPdfBlocksFromText(text) {
+    const lines = text.split(/\n+/);
+    const blocks = [];
+    let currentList = null;
+
+    lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+
+        const isBullet = /^[•\-–]/.test(trimmed);
+
+        if (isBullet) {
+            const itemText = trimmed.replace(/^[•\-–]\s*/, "");
+            if (!currentList) {
+                currentList = { ul: [], margin: [0, 2, 0, 2] };
+                blocks.push(currentList);
+            }
+            currentList.ul.push(itemText);
+        } else {
+            currentList = null;
+            blocks.push({
+                text: trimmed,
+                margin: [0, 2, 0, 2]
+            });
+        }
+    });
+
+    return blocks;
+}
+
+function buildPdfDocumentDefinition(logoDataUrl) {
+    const now = new Date();
+    const ts = now.toLocaleString("de-DE");
+
+    let metaText;
+    if (metaData && metaData.anzeige) {
+        metaText = metaData.anzeige + " – PDF erstellt am: " + ts;
+    } else if (metaData && metaData.stand_datum) {
+        metaText = "Stand: " + metaData.stand_datum + " – PDF erstellt am: " + ts;
+    } else {
+        metaText = "PDF erstellt am: " + ts;
+    }
+
+    const content = [];
+
+    // Kopfbereich mit Logo + Firma
+    content.push({
+        columns: [
+            {
+                image: logoDataUrl,
+                width: 100
+            },
+            {
+                alignment: "right",
+                fontSize: 9,
+                text: [
+                    "Kevin Strakerjahn Networks & Automation\n",
+                    "Bundesstraße 5 6\n",
+                    "25795 Stelle-Wittenwurth\n",
+                    "info@netteck.de · +49 151 29047232"
+                ]
+            }
+        ],
+        margin: [0, 0, 0, 15]
+    });
+
+    // Titel + Meta
+    content.push({
+        text: "Allgemeine Geschäftsbedingungen (AGB)",
+        style: "h1",
+        margin: [0, 0, 0, 6]
+    });
+    content.push({
+        text: metaText,
+        style: "meta",
+        margin: [0, 0, 0, 16]
+    });
+
+    // Paragraphen
+    agbData.forEach((para, idx) => {
+        content.push({
+            text: para.Titel || ("§ " + (idx + 1)),
+            style: "h2",
+            margin: [0, 10, 0, 4]
+        });
+
+        const blocks = buildPdfBlocksFromText(para.Text || "");
+        blocks.forEach(b => content.push(b));
+    });
+
+    return {
+        info: {
+            title: "AGB Kevin Strakerjahn Networks & Automation",
+            subject: "Allgemeine Geschäftsbedingungen",
+            author: "Kevin Strakerjahn Networks & Automation"
+        },
+        pageSize: "A4",
+        pageMargins: [40, 60, 40, 60],
+        defaultStyle: {
+            fontSize: 11
+        },
+        styles: {
+            h1: { fontSize: 18, bold: true },
+            h2: { fontSize: 12, bold: true },
+            meta: { fontSize: 9, color: "#555555" }
+        },
+        footer: function(currentPage, pageCount) {
+            return {
+                text: "Seite " + currentPage + " von " + pageCount,
+                alignment: "right",
+                fontSize: 8,
+                margin: [0, 0, 40, 20]
+            };
+        },
+        content: content
+    };
+}
+
+function setupPdfExport() {
+    const btn = document.getElementById("btnPdf");
+
+    if (!btn) {
+        console.error("PDF-Button (#btnPdf) nicht gefunden.");
+        return;
+    }
+
+    btn.addEventListener("click", async () => {
+        if (typeof pdfMake === "undefined") {
+            alert("PDF-Funktion nicht geladen (pdfMake fehlt).");
+            console.error("pdfMake ist undefined – Script wurde nicht geladen.");
+            return;
+        }
+
+        try {
+            const logoDataUrl = await loadLogoDataUrl(LOGO_PATH);
+            const docDef = buildPdfDocumentDefinition(logoDataUrl);
+
+            const now = new Date();
+            const filenameBase = metaData && metaData.version_string
+                ? metaData.version_string
+                : "AGB";
+            const filename = filenameBase + "_" + now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
+
+            pdfMake.createPdf(docDef).download(filename);
+        } catch (e) {
+            console.error("Fehler beim Erzeugen des PDFs:", e);
+            alert("Beim Erzeugen des PDFs ist ein Fehler aufgetreten (Details in der Konsole).");
+        }
+    });
+}
+
+init().catch(err => {
+    console.error("Fehler bei Initialisierung:", err);
+});
+</script>
+
+</body>
+</html>
