@@ -5,6 +5,9 @@
     <title>AGB – Kevin Strakerjahn Networks &amp; Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Favicon (Tab-Icon) -->
+    <link rel="icon" type="image/png" href="KS_Logo_PNG.png">
+
     <style>
         :root {
             --primary: #0b74ff;
@@ -214,8 +217,8 @@
 
         <header class="header">
             <div class="logo-wrapper">
-                <!-- Neues Logo -->
-                <img src="KS_Logo_PNG.png" alt="Kevin Strakerjahn Networks &amp; Automation">
+                <!-- altes Logo für Seite & PDF -->
+                <img src="Logo KS.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
             </div>
             <div class="title-block">
                 <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
@@ -261,7 +264,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script>
-const LOGO_PATH = "KS_Logo_PNG.png";
+const LOGO_PATH = "Logo KS.jpeg";
 
 const AGB_FILES = [
     "01_geltungsbereich.txt",
@@ -336,7 +339,7 @@ async function init() {
         console.warn("meta.json konnte nicht geladen/ geparst werden:", e);
     }
 
-    // AGB-Dateien laden – Fehler pro Datei abfangen, damit die Seite nicht komplett leer bleibt
+    // AGB-Dateien laden – Fehler pro Datei abfangen
     const promises = AGB_FILES.map(async (file) => {
         try {
             const resp = await fetch("AGBs/" + file);
@@ -395,18 +398,18 @@ function buildToc(data) {
 
     data.forEach((para, idx) => {
         const item = document.createElement("div");
-        item.className = "toc-item";
-        item.textContent = para.Titel || ("§ " + (idx + 1));
-        item.dataset.target = "para-" + (idx + 1);
-        item.addEventListener("click", () => {
-            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
-            item.classList.add("active");
-            const target = document.getElementById(item.dataset.target);
-            if (target) {
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        });
-        toc.appendChild(item);
+            item.className = "toc-item";
+            item.textContent = para.Titel || ("§ " + (idx + 1));
+            item.dataset.target = "para-" + (idx + 1);
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+                item.classList.add("active");
+                const target = document.getElementById(item.dataset.target);
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
+            toc.appendChild(item);
     });
 }
 
@@ -531,28 +534,14 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
     const content = [];
 
-    // Kopfbereich mit Logo + Firma
+    // Kopfbereich: nur Logo
     content.push({
-        columns: [
-            {
-                image: logoDataUrl,
-                width: 100
-            },
-            {
-                alignment: "right",
-                fontSize: 9,
-                text: [
-                    "Kevin Strakerjahn Networks & Automation\n",
-                    "Bundesstraße 5 6\n",
-                    "25795 Stelle-Wittenwurth\n",
-                    "info@netteck.de · +49 151 29047232"
-                ]
-            }
-        ],
+        image: logoDataUrl,
+        width: 100,
         margin: [0, 0, 0, 15]
     });
 
-    // Titel + Meta
+    // Titel + Meta-Zeile
     content.push({
         text: "Allgemeine Geschäftsbedingungen (AGB)",
         style: "h1",
@@ -592,12 +581,30 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
+        // Wasserzeichen mit Stand/Version/Timestamp auf jeder Seite
+        watermark: {
+            text: metaText,
+            color: "#cccccc",
+            opacity: 0.2,
+            bold: false,
+            italics: false
+        },
+        // Fußzeile: Firma & Kontakt links, Seitenzahlen rechts
         footer: function(currentPage, pageCount) {
             return {
-                text: "Seite " + currentPage + " von " + pageCount,
-                alignment: "right",
-                fontSize: 8,
-                margin: [0, 0, 40, 20]
+                columns: [
+                    {
+                        text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
+                        alignment: "left",
+                        fontSize: 8
+                    },
+                    {
+                        text: "Seite " + currentPage + " von " + pageCount,
+                        alignment: "right",
+                        fontSize: 8
+                    }
+                ],
+            margin: [40, 0, 40, 20]
             };
         },
         content: content
