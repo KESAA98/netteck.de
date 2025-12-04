@@ -5,7 +5,7 @@
     <title>AGB – Kevin Strakerjahn Networks &amp; Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Favicon (Tab-Icon) – neues Logo -->
+    <!-- Favicon (Tab-Icon) -->
     <link rel="icon" type="image/png" href="KS_Logo_PNG.png">
 
     <style>
@@ -243,6 +243,7 @@
     </div>
 </div>
 
+<!-- pdfMake für PDF-Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
@@ -487,12 +488,12 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
     const content = [];
 
-    // Logo deutlich größer & zentriert
+    // großes Logo im PDF
     content.push({
         image: logoDataUrl,
-        width: 520,
+        width: 520,          // deine aktuelle Größe
         alignment: "center",
-        margin: [0, 0, 0, 15]
+        margin: [0, 10, 0, 15] // Abstand zum oberen Rand
     });
 
     content.push({
@@ -501,7 +502,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 6]
     });
 
-    // Untertitel im PDF: nur Version
     content.push({
         text: "Version " + versionStr,
         style: "meta",
@@ -541,23 +541,23 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
-        // Export-Stempel vertikal rechts
-background: function(currentPage, pageSize) {
-    return {
-        canvas: [
-            {
-                type: 'text',
-                text: exportStamp,
-                x: pageSize.width - 15,   // 15px Abstand vom rechten Rand
-                y: pageSize.height / 2,   // vertikal mittig
-                rotate: 90,               // ← endlich korrekt gedreht
-                fontSize: 7,              // gleiche Größe wie vorher
-                color: "#999999",         // gleiche Farbe wie vorher
-                opacity: 0.9              // gleiche Transparenz wie vorher
-            }
-        ]
-    };
-},
+        // Export-Stempel rechts, 90° gedreht, 15px vom Rand
+        background: function(currentPage, pageSize) {
+            return {
+                canvas: [
+                    {
+                        type: 'text',
+                        text: exportStamp,
+                        x: pageSize.width - 15,          // 15px vom rechten Rand
+                        y: pageSize.height / 2,          // vertikal mittig
+                        rotate: 90,                      // 90° gedreht
+                        fontSize: 7,
+                        color: "#999999",
+                        opacity: 0.9
+                    }
+                ]
+            };
+        },
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
