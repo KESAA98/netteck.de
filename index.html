@@ -487,10 +487,10 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
     const content = [];
 
-    // Logo größer & zentriert
+    // Logo deutlich größer & zentriert
     content.push({
         image: logoDataUrl,
-        width: 230,
+        width: 320,
         alignment: "center",
         margin: [0, 0, 0, 15]
     });
@@ -508,7 +508,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 16]
     });
 
-    const breakBeforeIdx = [3, 7, 10]; // §§ 4, 8, 11 jeweils neue Seite
+    const breakBeforeIdx = [3, 7, 10]; // §§ 4, 8, 11 auf neuer Seite
 
     agbData.forEach((para, idx) => {
         const heading = {
@@ -541,15 +541,18 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
-        // Export-Stempel vertikal links
+        // Export-Stempel vertikal rechts
         background: function(currentPage, pageSize) {
             return {
                 text: exportStamp,
                 fontSize: 8,
                 color: "#999999",
                 opacity: 0.8,
-                rotation: 90, // vertikal
-                absolutePosition: { x: 18, y: pageSize.height / 2 }
+                rotation: -90, // vertikal an rechter Seite
+                absolutePosition: {
+                    x: pageSize.width - 18,
+                    y: pageSize.height / 2
+                }
             };
         },
         footer: function(currentPage, pageCount) {
