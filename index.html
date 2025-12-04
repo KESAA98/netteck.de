@@ -19,13 +19,8 @@
             --text-muted: #6b7280;
             --radius-lg: 14px;
         }
-        * {
-            box-sizing: border-box;
-        }
-        html, body {
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: var(--bg);
@@ -174,22 +169,16 @@
             background: #f3f4f6;
         }
 
-        .agb-content { }
-
         .para {
             padding: 0.7rem 0 0.9rem;
             border-bottom: 1px solid #edf0f4;
         }
-        .para:last-child {
-            border-bottom: none;
-        }
+        .para:last-child { border-bottom: none; }
         .para-title {
             font-weight: 600;
             margin: 0 0 0.25rem;
         }
-        .para-text p {
-            margin: 0.2rem 0;
-        }
+        .para-text p { margin: 0.2rem 0; }
         .para-text ul {
             margin: 0.25rem 0 0.5rem 1.2rem;
         }
@@ -242,7 +231,8 @@
                 <div class="toc-title">Inhalt</div>
             </nav>
 
-            <main class="agb-content" id="agbContent"></main>
+            <main class="agb-content" id="agbContent">
+            </main>
         </div>
 
         <footer>
@@ -333,18 +323,12 @@ async function init() {
             const resp = await fetch("AGBs/" + file);
             if (!resp.ok) {
                 console.error("Fehler beim Laden von", file, resp.status);
-                return {
-                    Titel: file,
-                    Text: "Fehler beim Laden dieser AGB-Datei (" + file + ")."
-                };
+                return { Titel: file, Text: "Fehler beim Laden dieser AGB-Datei (" + file + ")." };
             }
             return await resp.json();
         } catch (e) {
             console.error("Exception bei", file, e);
-            return {
-                Titel: file,
-                Text: "Fehler beim Verarbeiten dieser AGB-Datei (" + file + ")."
-            };
+            return { Titel: file, Text: "Fehler beim Verarbeiten dieser AGB-Datei (" + file + ")." };
         }
     });
 
@@ -358,6 +342,7 @@ async function init() {
 function renderAgb(data) {
     const container = document.getElementById("agbContent");
     container.innerHTML = "";
+
     data.forEach((para, idx) => {
         const section = document.createElement("section");
         section.className = "para";
@@ -424,10 +409,11 @@ function setupSearch() {
             if (text.includes(q.toLowerCase())) {
                 sec.style.display = "";
                 hits++;
+
                 const reg = new RegExp(escapeRegExp(q), "gi");
                 body.querySelectorAll("p, li").forEach(el => {
                     if (!el.textContent.toLowerCase().includes(q.toLowerCase())) return;
-                    el.innerHTML = el.textContent.replace(reg, m => `<mark>${m}</mark>`);
+                    el.innerHTML = el.textContent.replace(reg, match => `<mark>${match}</mark>`);
                 });
             } else {
                 sec.style.display = "none";
@@ -454,11 +440,8 @@ function loadLogoDataUrl(url) {
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-            try {
-                resolve(canvas.toDataURL("image/png"));
-            } catch (e) {
-                reject(e);
-            }
+            try { resolve(canvas.toDataURL("image/png")); }
+            catch (e) { reject(e); }
         };
         img.onerror = reject;
         img.src = url;
@@ -475,6 +458,7 @@ function buildPdfBlocksFromText(text) {
         if (!trimmed) return;
 
         const isBullet = /^[•\-–]/.test(trimmed);
+
         if (isBullet) {
             const itemText = trimmed.replace(/^[•\-–]\s*/, "");
             if (!currentList) {
@@ -506,9 +490,9 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     // Logo größer & zentriert
     content.push({
         image: logoDataUrl,
-        width: 220,
+        width: 230,
         alignment: "center",
-        margin: [0, 0, 0, 18]
+        margin: [0, 0, 0, 15]
     });
 
     content.push({
@@ -517,24 +501,33 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 6]
     });
 
-    // Untertitel: nur Version
+    // Untertitel im PDF: nur Version
     content.push({
         text: "Version " + versionStr,
         style: "meta",
         margin: [0, 0, 0, 16]
     });
 
+    const breakBeforeIdx = [3, 7, 10]; // §§ 4, 8, 11 jeweils neue Seite
+
     agbData.forEach((para, idx) => {
-        content.push({
+        const heading = {
             text: para.Titel || ("§ " + (idx + 1)),
             style: "h2",
             margin: [0, 10, 0, 4]
-        });
+        };
+
+        if (breakBeforeIdx.includes(idx)) {
+            heading.pageBreak = "before";
+        }
+
+        content.push(heading);
+
         const blocks = buildPdfBlocksFromText(para.Text || "");
         blocks.forEach(b => content.push(b));
     });
 
-    const docDef = {
+    return {
         info: {
             title: "AGB Kevin Strakerjahn Networks & Automation",
             subject: "Allgemeine Geschäftsbedingungen",
@@ -548,21 +541,15 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
-        // vertikaler Export-Stempel links
+        // Export-Stempel vertikal links
         background: function(currentPage, pageSize) {
             return {
-                canvas: [
-                    {
-                        type: "text",
-                        text: exportStamp,
-                        x: 18,                         // Abstand vom linken Rand
-                        y: pageSize.height / 2,        // mittig der Seite
-                        fontSize: 8,
-                        color: "#999999",
-                        opacity: 0.9,
-                        rotate: 90                     // senkrecht
-                    }
-                ]
+                text: exportStamp,
+                fontSize: 8,
+                color: "#999999",
+                opacity: 0.8,
+                rotation: 90, // vertikal
+                absolutePosition: { x: 18, y: pageSize.height / 2 }
             };
         },
         footer: function(currentPage, pageCount) {
@@ -582,22 +569,8 @@ function buildPdfDocumentDefinition(logoDataUrl) {
                 ]
             };
         },
-        content: content,
-        // versucht unschöne Überschriften am Seitenende zu vermeiden
-        pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
-            if (currentNode.style === "h2" && currentNode.startPosition) {
-                // wenn Überschrift sehr weit unten starten würde -> neue Seite
-                const y = currentNode.startPosition.top || 0;
-                // nutzbare Höhe ~ 842 - (60+60) = 722; 650 ist vorsichtiger Schwellenwert
-                if (y > 650) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        content: content
     };
-
-    return docDef;
 }
 
 function setupPdfExport() {
@@ -615,11 +588,8 @@ function setupPdfExport() {
             const docDef = buildPdfDocumentDefinition(logoDataUrl);
 
             const now = new Date();
-            const filenameBase = metaData && metaData.version_string
-                ? metaData.version_string
-                : "AGB";
-            const filename = filenameBase + "_" +
-                now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
+            const filenameBase = metaData && metaData.version_string ? metaData.version_string : "AGB";
+            const filename = filenameBase + "_" + now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
 
             pdfMake.createPdf(docDef).download(filename);
         } catch (e) {
@@ -629,7 +599,9 @@ function setupPdfExport() {
     });
 }
 
-init().catch(err => console.error("Fehler bei Initialisierung:", err));
+init().catch(err => {
+    console.error("Fehler bei Initialisierung:", err);
+});
 </script>
 
 </body>
