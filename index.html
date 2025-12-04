@@ -147,6 +147,9 @@
             font-size: 0.9rem;
             max-height: calc(100vh - 220px);
             overflow-y: auto;
+            position: sticky;
+            top: 1rem;
+            background: #ffffff;
         }
         .toc-title {
             font-weight: 600;
@@ -168,9 +171,9 @@
             background: #f3f4f6;
         }
 
-        /* Nur die ganze Seite scrollt – kein extra Scroll im Inhalt */
+        /* Inhalt läuft mit der Seite – keine eigene Scrollbar mehr */
         .agb-content {
-            /* keine eigene Scrollbar mehr, Inhalt läuft mit der Seite */
+            /* bewusst leer gelassen, damit nur die Seite scrollt */
         }
 
         .para {
@@ -202,11 +205,6 @@
             color: var(--text-muted);
             border-top: 1px solid var(--border);
             padding-top: 0.75rem;
-        }
-
-        /* Unsichtbarer Container für die reine PDF-Vorlage */
-        #pdf-container {
-            display: none;
         }
     </style>
 </head>
@@ -257,9 +255,6 @@
 
     </div>
 </div>
-
-<!-- Unsichtbarer Container für den „sauberen“ PDF-Export -->
-<div id="pdf-container"></div>
 
 <!-- html2pdf: ohne Integrity, damit es sicher lädt -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -448,7 +443,6 @@ function setupSearch() {
 
 function setupPdfExport() {
     const btn = document.getElementById("btnPdf");
-    const pdfContainer = document.getElementById("pdf-container");
 
     if (!btn) {
         console.error("PDF-Button (#btnPdf) nicht gefunden.");
@@ -461,8 +455,6 @@ function setupPdfExport() {
             console.error("html2pdf ist undefined – Script wurde nicht geladen.");
             return;
         }
-
-        pdfContainer.innerHTML = "";
 
         const wrapper = document.createElement("div");
         wrapper.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -528,8 +520,6 @@ function setupPdfExport() {
             wrapper.appendChild(body);
         });
 
-        pdfContainer.appendChild(wrapper);
-
         const filenameBase = metaData && metaData.version_string
             ? metaData.version_string
             : "AGB";
@@ -543,7 +533,7 @@ function setupPdfExport() {
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf().set(opt).from(pdfContainer).save();
+        html2pdf().set(opt).from(wrapper).save();
     });
 }
 
