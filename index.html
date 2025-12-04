@@ -542,17 +542,20 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             meta: { fontSize: 9, color: "#555555" }
         },
         // Export-Stempel vertikal rechts
-        background: function(currentPage, pageSize) {
+background: function(currentPage, pageSize) {
     return {
-        text: exportStamp,
-        fontSize: 9,
-        color: "#777777",
-        opacity: 0.9,
-        rotation: 90, // ← jetzt korrekt vertikal
-        absolutePosition: {
-            x: pageSize.width - 25,       // rechter Rand
-            y: pageSize.height / 2        // zentriert vertikal
-        }
+        canvas: [
+            {
+                type: 'text',
+                text: exportStamp,
+                x: pageSize.width - 15,   // 15px Abstand vom rechten Rand
+                y: pageSize.height / 2,   // vertikal mittig
+                rotate: 90,               // ← endlich korrekt gedreht
+                fontSize: 7,              // gleiche Größe wie vorher
+                color: "#999999",         // gleiche Farbe wie vorher
+                opacity: 0.9              // gleiche Transparenz wie vorher
+            }
+        ]
     };
 },
         footer: function(currentPage, pageCount) {
