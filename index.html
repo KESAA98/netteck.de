@@ -1,11 +1,10 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
     <title>AGB – Kevin Strakerjahn Networks &amp; Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Basis-Styles -->
     <style>
         :root {
             --primary: #0b74ff;
@@ -20,13 +19,17 @@
         * {
             box-sizing: border-box;
         }
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
             background: var(--bg);
             color: var(--text-main);
             line-height: 1.6;
         }
+
         .page {
             max-width: 1100px;
             margin: 2rem auto 3rem;
@@ -95,6 +98,11 @@
             font-size: 0.8rem;
             color: var(--text-muted);
         }
+        .search-info {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
 
         .btn {
             display: inline-flex;
@@ -123,7 +131,7 @@
 
         .agb-layout {
             display: grid;
-            grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
             gap: 1.5rem;
         }
         @media (max-width: 800px) {
@@ -137,7 +145,7 @@
             border: 1px solid var(--border);
             padding: 0.8rem;
             font-size: 0.9rem;
-            max-height: 70vh;
+            max-height: calc(100vh - 220px);
             overflow-y: auto;
         }
         .toc-title {
@@ -160,11 +168,11 @@
             background: #f3f4f6;
         }
 
+        /* Nur die ganze Seite scrollt – kein extra Scroll im Inhalt */
         .agb-content {
-            max-height: 70vh;
-            overflow-y: auto;
-            padding-right: 0.4rem;
+            /* keine eigene Scrollbar mehr, Inhalt läuft mit der Seite */
         }
+
         .para {
             padding: 0.7rem 0 0.9rem;
             border-bottom: 1px solid #edf0f4;
@@ -183,11 +191,6 @@
             margin: 0.25rem 0 0.5rem 1.2rem;
         }
 
-        .search-info {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
         mark {
             background: #fef08a;
             padding: 0 2px;
@@ -201,7 +204,7 @@
             padding-top: 0.75rem;
         }
 
-        /* Container, der für den PDF-Export benutzt wird (nicht sichtbar) */
+        /* Unsichtbarer Container für die reine PDF-Vorlage */
         #pdf-container {
             display: none;
         }
@@ -232,16 +235,14 @@
             </div>
             <div style="display:flex;gap:0.5rem;">
                 <button class="btn secondary" id="btnResetSearch">Suche zurücksetzen</button>
-                <button class="btn" id="btnPdf">
-                    PDF exportieren
-                </button>
+                <button class="btn" id="btnPdf">PDF exportieren</button>
             </div>
         </div>
 
         <div class="agb-layout">
             <nav class="toc" id="toc">
                 <div class="toc-title">Inhalt</div>
-                <!-- Wird per JS gefüllt -->
+                <!-- wird per JS gefüllt -->
             </nav>
 
             <main class="agb-content" id="agbContent">
@@ -251,18 +252,17 @@
 
         <footer>
             <div>Kevin Strakerjahn Networks &amp; Automation</div>
-            <div>Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de</div>
+            <div>Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232</div>
         </footer>
+
     </div>
 </div>
 
 <!-- Unsichtbarer Container für den „sauberen“ PDF-Export -->
 <div id="pdf-container"></div>
 
-<!-- html2pdf.js von CDN für den PDF-Export ohne Druck-Dialog -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"
-        integrity="sha512-YcsIPZqvQXkGLumfMP0G4QoA9PSQotQIjBIW8xAq1RDWfH8uUJMTvNnU4vN8T0kqQTx7iVt1xqLQkB9+3eH9hw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- html2pdf: ohne Integrity, damit es sicher lädt -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
 <script>
 const AGB_FILES = [
@@ -284,7 +284,6 @@ const AGB_FILES = [
 let agbData = [];
 let metaData = null;
 
-// Hilfsfunktion: Text mit Zeilenumbrüchen in <p> & einfache Listen verwandeln:
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
     const frag = document.createDocumentFragment();
@@ -294,7 +293,6 @@ function renderTextToHtml(text) {
         const trimmed = line.trim();
         if (!trimmed) return;
 
-        // Bullet-Punkte mit • oder – in eine Liste umwandeln
         if (/^[•\-–]/.test(trimmed)) {
             if (!currentUl) {
                 currentUl = document.createElement("ul");
@@ -314,12 +312,10 @@ function renderTextToHtml(text) {
     return frag;
 }
 
-// Search-Highlight
 function escapeRegExp(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// nach dem Laden alles aufbauen
 async function init() {
     // meta.json laden
     try {
@@ -331,13 +327,15 @@ async function init() {
                 metaEl.textContent = metaData.anzeige;
             } else if (metaData.stand_datum) {
                 metaEl.textContent = "Stand: " + metaData.stand_datum;
+            } else {
+                metaEl.textContent = "Stand: unbekannt";
             }
         }
     } catch (e) {
         console.warn("meta.json konnte nicht geladen werden:", e);
     }
 
-    // alle AGB JSON-Dateien laden
+    // alle AGB-Dateien laden
     const promises = AGB_FILES.map(async (file) => {
         const resp = await fetch("AGBs/" + file);
         if (!resp.ok) throw new Error("Fehler beim Laden von " + file);
@@ -407,7 +405,6 @@ function setupSearch() {
         let hits = 0;
 
         sections.forEach(sec => {
-            // ursprünglichen Text zurücksetzen
             const paraIndex = parseInt(sec.id.replace("para-", ""), 10) - 1;
             const paraData = agbData[paraIndex];
             const body = sec.querySelector(".para-text");
@@ -424,7 +421,6 @@ function setupSearch() {
                 sec.style.display = "";
                 hits++;
 
-                // Highlight
                 const reg = new RegExp(escapeRegExp(q), "gi");
                 body.querySelectorAll("p, li").forEach(el => {
                     if (!el.textContent.toLowerCase().includes(q.toLowerCase())) return;
@@ -454,8 +450,18 @@ function setupPdfExport() {
     const btn = document.getElementById("btnPdf");
     const pdfContainer = document.getElementById("pdf-container");
 
+    if (!btn) {
+        console.error("PDF-Button (#btnPdf) nicht gefunden.");
+        return;
+    }
+
     btn.addEventListener("click", () => {
-        // „saubere“ Version in den PDF-Container kopieren
+        if (typeof html2pdf === "undefined") {
+            alert("PDF-Funktion nicht geladen (html2pdf.js fehlt).");
+            console.error("html2pdf ist undefined – Script wurde nicht geladen.");
+            return;
+        }
+
         pdfContainer.innerHTML = "";
 
         const wrapper = document.createElement("div");
@@ -463,10 +469,34 @@ function setupPdfExport() {
         wrapper.style.fontSize = "11pt";
         wrapper.style.color = "#111827";
 
+        // Kopfbereich mit Logo + Firmendaten
+        const header = document.createElement("div");
+        header.style.display = "flex";
+        header.style.alignItems = "center";
+        header.style.justifyContent = "space-between";
+        header.style.marginBottom = "0.5cm";
+
+        const logoDiv = document.createElement("div");
+        const logoImg = document.createElement("img");
+        logoImg.src = "Logo KS.jpeg";
+        logoImg.alt = "Kevin Strakerjahn Networks & Automation";
+        logoImg.style.maxHeight = "32px";
+        logoImg.style.width = "auto";
+        logoDiv.appendChild(logoImg);
+
+        const firmDiv = document.createElement("div");
+        firmDiv.style.textAlign = "right";
+        firmDiv.style.fontSize = "9pt";
+        firmDiv.innerHTML = "Kevin Strakerjahn Networks &amp; Automation<br>Bundesstraße 5 6<br>25795 Stelle-Wittenwurth<br>info@netteck.de · +49 151 29047232";
+
+        header.appendChild(logoDiv);
+        header.appendChild(firmDiv);
+        wrapper.appendChild(header);
+
         const title = document.createElement("h1");
         title.textContent = "Allgemeine Geschäftsbedingungen (AGB)";
         title.style.fontSize = "18pt";
-        title.style.marginBottom = "0.2cm";
+        title.style.margin = "0 0 0.2cm";
         wrapper.appendChild(title);
 
         const meta = document.createElement("p");
