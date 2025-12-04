@@ -244,9 +244,9 @@
                 <!-- wird per JS gefüllt -->
             </nav>
 
-            <main class="agb-content" id="agbContent">
-                <!-- Paragraphen via JS -->
-            </main>
+        <main class="agb-content" id="agbContent">
+            <!-- Paragraphen via JS -->
+        </main>
         </div>
 
         <footer>
@@ -257,7 +257,7 @@
     </div>
 </div>
 
-<!-- pdfMake: echte PDF-Engine -->
+<!-- pdfMake -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
@@ -316,6 +316,7 @@ function escapeRegExp(str) {
 }
 
 async function init() {
+    // meta.json laden (nur Anzeige & Version)
     try {
         const metaResp = await fetch("AGBs/meta.json");
         if (metaResp.ok) {
@@ -333,6 +334,7 @@ async function init() {
         console.warn("meta.json Problem:", e);
     }
 
+    // AGB-Dateien laden
     const promises = AGB_FILES.map(async (file) => {
         try {
             const resp = await fetch("AGBs/" + file);
@@ -509,21 +511,18 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     const now = new Date();
     const ts = now.toLocaleString("de-DE");
 
-    let metaText;
-    if (metaData && metaData.anzeige) {
-        metaText = metaData.anzeige + " – PDF erstellt am: " + ts;
-    } else if (metaData && metaData.stand_datum) {
-        metaText = "Stand: " + metaData.stand_datum + " – PDF erstellt am: " + ts;
-    } else {
-        metaText = "PDF erstellt am: " + ts;
-    }
+    const versionStr = (metaData && metaData.version_string) ? metaData.version_string : "AGB_KS_2025_12_03";
+    const standStr   = (metaData && metaData.stand_datum) ? metaData.stand_datum : null;
+
+    const exportStamp = (standStr ? "Stand: " + standStr + " – " : "") +
+                        "Version " + versionStr + " – PDF erstellt am: " + ts;
 
     const content = [];
 
-    // Logo größer & zentriert
+    // Logo deutlich größer & zentriert
     content.push({
         image: logoDataUrl,
-        width: 130,
+        width: 180,
         alignment: "center",
         margin: [0, 0, 0, 15]
     });
@@ -533,25 +532,20 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         style: "h1",
         margin: [0, 0, 0, 6]
     });
+
+    // Untertitel im PDF: nur Version
     content.push({
-        text: metaText,
+        text: "Version " + versionStr,
         style: "meta",
         margin: [0, 0, 0, 16]
     });
 
     agbData.forEach((para, idx) => {
-        const heading = {
+        content.push({
             text: para.Titel || ("§ " + (idx + 1)),
             style: "h2",
             margin: [0, 10, 0, 4]
-        };
-
-        // § 4 Rücktritt komplett auf neuer Seite
-        if (idx === 3) {
-            heading.pageBreak = "before";
-        }
-
-        content.push(heading);
+        });
 
         const blocks = buildPdfBlocksFromText(para.Text || "");
         blocks.forEach(b => content.push(b));
@@ -573,31 +567,30 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
-        // kein diagonales Wasserzeichen mehr
+        // Export-Stempel vertikal links
+        background: function(currentPage, pageSize) {
+            return {
+                text: exportStamp,
+                fontSize: 8,
+                color: "#cccccc",
+                opacity: 0.4,
+                rotation: 90,                           // vertikal
+                absolutePosition: { x: 15, y: pageSize.height / 2 }
+            };
+        },
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
-                stack: [
+                columns: [
                     {
-                        columns: [
-                            {
-                                text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
-                                alignment: "left",
-                                fontSize: 8
-                            },
-                            {
-                                text: "Seite " + currentPage + " von " + pageCount,
-                                alignment: "right",
-                                fontSize: 8
-                            }
-                        ]
+                        text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
+                        alignment: "left",
+                        fontSize: 8
                     },
                     {
-                        text: metaText,        // Export-Stempel
-                        alignment: "right",   // unten rechts (Bereich 1)
-                        fontSize: 7,
-                        color: "#666666",
-                        margin: [0, 2, 0, 0]
+                        text: "Seite " + currentPage + " von " + pageCount,
+                        alignment: "right",
+                        fontSize: 8
                     }
                 ]
             };
