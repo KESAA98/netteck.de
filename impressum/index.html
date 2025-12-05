@@ -5,7 +5,7 @@
     <title>Impressum – Kevin Strakerjahn Networks &amp; Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Favicon (Tab-Icon) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="../Logos/logo.png">
 
     <style>
@@ -19,6 +19,7 @@
             --text-muted: #6b7280;
             --radius-lg: 14px;
         }
+
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; }
         body {
@@ -33,14 +34,16 @@
             margin: 2rem auto 3rem;
             padding: 0 1rem;
         }
+
         .card {
             background: var(--card-bg);
             border-radius: var(--radius-lg);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
             padding: 1.75rem 1.9rem 2.1rem;
             border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
         }
 
+        /* HEADER wie AGB */
         .header {
             display: flex;
             gap: 1.5rem;
@@ -62,9 +65,9 @@
             color: var(--text-muted);
         }
 
-        /* Impressums-Inhalt */
+        /* Impressum Inhalt */
         .imp-block {
-            padding: 0.5rem 0 0.5rem;
+            padding: 0.5rem 0;
             font-size: 1rem;
         }
         .imp-section {
@@ -77,34 +80,31 @@
 
         footer {
             margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border);
             padding-top: 0.9rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
         }
+
+        /* SCHLICHTE BUTTON-LINKS */
         .footer-buttons {
             display: flex;
             justify-content: center;
-            gap: 0.8rem;
+            gap: 2rem;
+            margin-top: 1rem;
         }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.45rem 1.1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: #f9fafb;
+        .footer-link {
+            font-size: 0.95rem;
+            font-weight: 500;
             color: var(--text-main);
-            font-size: 0.9rem;
             text-decoration: none;
-            cursor: pointer;
+            padding: 0.2rem 0.4rem;
         }
-        .btn:hover {
-            background: #eceff3;
+        .footer-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
 
 <div class="page">
@@ -112,25 +112,22 @@
 
         <header class="header">
             <div class="logo-wrapper">
-                <!-- gleiches Logo wie auf AGB-Seite -->
-                <img src="../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+                <img src="../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks & Automation">
             </div>
             <div class="title-block">
                 <h1>Impressum</h1>
-                <div class="meta" id="metaStand">
-                    Stand wird geladen…
-                </div>
+                <div class="meta" id="metaStand">Stand wird geladen…</div>
             </div>
         </header>
 
         <main class="imp-block" id="impContent">
-            <!-- wird per JS aus impressum.txt gefüllt -->
+            <!-- wird per JS aus impressum.txt geladen -->
         </main>
 
         <footer>
             <div class="footer-buttons">
-                <a class="btn" href="/">Start</a>
-                <a class="btn" href="/kontakt/">Kontakt</a>
+                <a class="footer-link" href="/">Start</a>
+                <a class="footer-link" href="/kontakt/">Kontakt</a>
             </div>
         </footer>
 
@@ -141,15 +138,14 @@
 async function loadImpressum() {
     try {
         const res = await fetch("impressum.txt");
-        if (!res.ok) {
-            throw new Error("HTTP " + res.status);
-        }
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
         const data = await res.json();
         const imp = data.impressum;
 
-        // Stand
-        const metaEl = document.getElementById("metaStand");
-        metaEl.textContent = imp.stand ? ("Stand: " + imp.stand) : "";
+        // Stand anzeigen
+        document.getElementById("metaStand").textContent =
+            imp.stand ? ("Stand: " + imp.stand) : "";
 
         const box = document.getElementById("impContent");
 
@@ -202,11 +198,12 @@ async function loadImpressum() {
                 ${imp.hinweise.urheberrecht}
             </div>
         `;
+
     } catch (e) {
-        console.error("Impressum laden fehlgeschlagen:", e);
         document.getElementById("impContent").innerHTML =
             "<p>Impressum konnte nicht geladen werden.</p>";
         document.getElementById("metaStand").textContent = "";
+        console.error(e);
     }
 }
 
