@@ -1,0 +1,23 @@
+{
+  "impressum": {
+    "unternehmen": "Kevin Strakerjahn Networks & Automation",
+    "rechtsform": "Einzelunternehmer",
+    "inhaber": "Kevin Strakerjahn",
+    "adresse": {
+      "strasse": "Bundesstraße 5 6",
+      "plz": "25795",
+      "ort": "Stelle-Wittenwurth"
+    },
+    "kontakt": {
+      "telefon": "+49 151 29047232",
+      "email": "info@netteck.de",
+      "website": "https://netteck.de"
+    },
+    "steuernummer": "16/187/04546",
+    "zuständige_aufsichtsbehörde": "Finanzamt Dithmarschen",
+    "hinweise": {
+      "inhaltliche_verantwortung": "Kevin Strakerjahn",
+      "urheberrecht": "Alle Inhalte sind urheberrechtlich geschützt."
+    }
+  }
+}
