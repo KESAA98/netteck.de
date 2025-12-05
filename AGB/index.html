@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon (Tab-Icon) -->
-    <link rel="icon" type="image/png" href="Logos/logo.png">
+    <!-- Von /AGB/index.html aus geht es eine Ebene hoch in /Logos -->
+    <link rel="icon" type="image/png" href="../Logos/logo.png">
 
     <style>
         :root {
@@ -204,7 +205,8 @@
 
         <header class="header">
             <div class="logo-wrapper">
-                <img src="Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+                <!-- großes Logo aus /Logos -->
+                <img src="../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
             </div>
             <div class="title-block">
                 <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
@@ -248,9 +250,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script>
-const LOGO_PATH = "Logos/logo_name.jpeg";
+// Logo-Pfad relativ zu /AGB/index.html
+const LOGO_PATH = "../Logos/logo_name.jpeg";
 
-const AGB_FILES = [
+// Fallback-Liste, falls meta.json kein agb_files liefert
+const AGB_FILES_FALLBACK = [
     "01_geltungsbereich.txt",
     "02_vertragsschluss.txt",
     "03_mitwirkungspflichten.txt",
@@ -266,6 +270,7 @@ const AGB_FILES = [
     "13_datenschutz_speicherung.txt"
 ];
 
+let agbFiles = AGB_FILES_FALLBACK.slice();
 let agbData = [];
 let metaData = null;
 
@@ -302,24 +307,38 @@ function escapeRegExp(str) {
 }
 
 async function init() {
+    // 1) meta.json holen
     try {
         const metaResp = await fetch("AGBs/meta.json");
         if (metaResp.ok) {
             metaData = await metaResp.json();
             const metaEl = document.getElementById("metaVersion");
+
+            // Stand + Version schön zusammenbauen
             if (metaData.anzeige) {
                 metaEl.textContent = metaData.anzeige;
-            } else if (metaData.stand_datum) {
-                metaEl.textContent = "Stand: " + metaData.stand_datum;
             } else {
-                metaEl.textContent = "Stand: unbekannt";
+                const parts = [];
+                if (metaData.stand_datum) {
+                    parts.push("Stand: " + metaData.stand_datum);
+                }
+                if (metaData.version_string) {
+                    parts.push("Version " + metaData.version_string);
+                }
+                metaEl.textContent = parts.length ? parts.join(" – ") : "Stand: unbekannt";
+            }
+
+            // falls vorhanden: Liste der AGB-Dateien aus meta.json
+            if (Array.isArray(metaData.agb_files) && metaData.agb_files.length > 0) {
+                agbFiles = metaData.agb_files;
             }
         }
     } catch (e) {
         console.warn("meta.json Problem:", e);
     }
 
-    const promises = AGB_FILES.map(async (file) => {
+    // 2) AGB-Dateien laden
+    const promises = agbFiles.map(async (file) => {
         try {
             const resp = await fetch("AGBs/" + file);
             if (!resp.ok) {
@@ -369,18 +388,18 @@ function buildToc(data) {
 
     data.forEach((para, idx) => {
         const item = document.createElement("div");
-            item.className = "toc-item";
-            item.textContent = para.Titel || ("§ " + (idx + 1));
-            item.dataset.target = "para-" + (idx + 1);
-            item.addEventListener("click", () => {
-                document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
-                item.classList.add("active");
-                const target = document.getElementById(item.dataset.target);
-                if (target) {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            });
-            toc.appendChild(item);
+        item.className = "toc-item";
+        item.textContent = para.Titel || ("§ " + (idx + 1));
+        item.dataset.target = "para-" + (idx + 1);
+        item.addEventListener("click", () => {
+            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+            item.classList.add("active");
+            const target = document.getElementById(item.dataset.target);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+        toc.appendChild(item);
     });
 }
 
@@ -542,7 +561,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
-        // kein background mehr – Stempel kommt in den Footer
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
@@ -607,5 +625,4 @@ init().catch(err => {
 </script>
 
 </body>
-
 </html>
