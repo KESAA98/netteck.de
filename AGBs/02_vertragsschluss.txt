@@ -1,4 +1,0 @@
-{
-  "Titel": "§ 2 Vertragsschluss",
-  "Text": "(1) Alle Angebote des Auftragnehmers sind freibleibend und unverbindlich.\n(2) Ein Vertrag kommt erst durch schriftliche Auftragsbestätigung oder durch Beginn der Ausführung zustande.\n(3) Änderungen, Ergänzungen oder Nebenabreden bedürfen der Schriftform."
-}

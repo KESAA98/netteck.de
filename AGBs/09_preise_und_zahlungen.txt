@@ -1,4 +1,0 @@
-{
-  "Titel": "§ 9 Preise und Zahlungen",
-  "Text": "(1) Vor Beginn der Arbeiten ist eine Materialanzahlung durch den Kunden zu leisten.\n(2) Der Restbetrag ist nach Abnahme der Leistung sofort nach Erhalt der Rechnung, spätestens jedoch innerhalb von 14 Tagen netto ohne Abzug zu bezahlen.\n(3) Bei Zahlungsverzug gelten die gesetzlichen Verzugszinsen gemäß § 288 BGB.\n(4) Kosten, die durch Wartezeiten, zusätzliche Anfahrten oder fehlende Mitwirkung des Kunden entstehen, werden gemäß den vereinbarten Stundensätzen bzw. Pauschalen berechnet."
-}

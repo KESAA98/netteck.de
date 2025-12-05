@@ -1,4 +1,0 @@
-{
-  "Titel": "§ 7 Gewährleistung",
-  "Text": "(1) Für Unternehmer beträgt die Gewährleistungsfrist 12 Monate ab Übergabe.\n(2) Für vom Kunden bereitgestellte Komponenten (Beistellungen) wird keine Gewährleistung übernommen.\n(3) Eigenmächtige Eingriffe, Umbauten, Änderungen an Netzwerktopologie oder Konfiguration durch den Kunden oder Dritte führen zum Erlöschen der Gewährleistung.\n(4) Für verbaute Fremdprodukte (z. B. Router, Switches, USV, Sensoren, Zubehör) gelten ausschließlich die Herstellergarantiebedingungen."
-}

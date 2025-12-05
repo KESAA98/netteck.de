@@ -1,4 +1,0 @@
-{
-  "Titel": "§ 10 Eigentumsvorbehalt",
-  "Text": "(1) Alle gelieferten Waren bleiben bis zur vollständigen Bezahlung Eigentum des Auftragnehmers.\n(2) Bei Unternehmern besteht der Eigentumsvorbehalt bis zur Begleichung sämtlicher Forderungen aus der laufenden Geschäftsbeziehung.\n(3) Der Kunde muss den Auftragnehmer unverzüglich über Zugriffe Dritter, Beschädigungen, Verlust oder Standortwechsel der Vorbehaltsware informieren.\n(4) Bei vertragswidrigem Verhalten des Kunden, insbesondere Zahlungsverzug, ist der Auftragnehmer berechtigt, den Rückbau und die Herausgabe der gelieferten Waren zu verlangen."
-}

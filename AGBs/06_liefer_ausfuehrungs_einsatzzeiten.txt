@@ -1,4 +1,0 @@
-{
-  "Titel": "§ 6 Liefer-, Ausführungs- und Einsatzzeiten",
-  "Text": "(1) Termine gelten nur dann als verbindlich, wenn sie schriftlich bestätigt wurden.\n(2) Bei Arbeiten an Windenergieanlagen sind Witterungseinflüsse und behördliche Vorgaben zu berücksichtigen.\n(3) Verzögerungen durch Dritte (z. B. Hersteller, Lieferanten, Enercon, Internetanbieter) führen nicht zu Schadensersatzansprüchen des Kunden."
-}

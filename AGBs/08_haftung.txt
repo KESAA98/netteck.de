@@ -1,4 +1,0 @@
-{
-  "Titel": "§ 8 Haftung",
-  "Text": "(1) Der Auftragnehmer haftet für Schäden nur bei Vorsatz oder grober Fahrlässigkeit.\n(2) Für Schäden aus Verletzung von Leben, Körper oder Gesundheit besteht zwingende Haftung.\n(3) Im Übrigen ist die Haftung auf den typischerweise vorhersehbaren Schaden begrenzt.\n(4) Keine Haftung für Ausfälle, Stillstandszeiten oder Produktionsverluste\nDer Auftragnehmer übernimmt keine Haftung für:\n• Ausfälle von Windenergieanlagen,\n• Stillstandszeiten, Produktionsausfall oder Ertragsverluste,\n• wirtschaftliche Folgeschäden durch Netzwerk-, Router-, LTE- oder Hardwarefehler,\n• Unterbrechungen durch Software- oder Firmwareupdates,\n• Fehlfunktionen von durch den Kunden bereitgestellten Komponenten.\nDies gilt auch dann, wenn der Ausfall mittelbar oder unmittelbar auf die vom Auftragnehmer installierten Systeme (z. B. Router, Firewalls, USV, Sensoren, Monitoring-Hardware) zurückzuführen wäre."
-}
