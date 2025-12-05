@@ -2,578 +2,215 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Impressum – Kevin Strakerjahn Networks &amp; Automation</title>
+    <title>Impressum – Kevin Strakerjahn Networks & Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Logo & Styles identisch wie AGB -->
+    <link rel="icon" type="image/png" href="../Logos/logo.png">
 
     <style>
         :root {
-            --bg: #f3f4f6;
+            --primary: #0b74ff;
+            --primary-soft: rgba(11,116,255,0.08);
+            --bg: #f5f7fb;
             --card-bg: #ffffff;
-            --accent: #1f2937;
-            --accent-soft: #e5e7eb;
-            --text-main: #111827;
+            --border: #e1e4ec;
+            --text-main: #1f2933;
             --text-muted: #6b7280;
-            --border-soft: #e5e7eb;
-            --shadow-soft: 0 18px 35px rgba(15, 23, 42, 0.12);
-            --radius-lg: 18px;
+            --radius-lg: 14px;
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
             margin: 0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(circle at top left, #e5f0ff 0, #f3f4f6 40%, #f9fafb 100%);
+            background: var(--bg);
             color: var(--text-main);
         }
 
         .page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            padding: 1.25rem 1.5rem 0.5rem;
-        }
-
-        .header-inner {
-            max-width: 980px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 0.9rem;
-        }
-
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0f172a, #1f2937);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #f9fafb;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            font-size: 0.95rem;
-            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
-        }
-
-        .brand-text-main {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .brand-text-sub {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.85rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            padding: 0.35rem 0.7rem;
-            border-radius: 999px;
-            border: 1px solid transparent;
-            transition: all 0.18s ease;
-        }
-
-        .nav-links a:hover {
-            border-color: var(--accent-soft);
-            background: #ffffffaa;
-            color: var(--text-main);
-        }
-
-        .nav-links a.primary {
-            border-color: #111827;
-            background: #111827;
-            color: #f9fafb;
-        }
-
-        .nav-links a.primary:hover {
-            background: #020617;
-            border-color: #020617;
-        }
-
-        main {
-            flex: 1;
-            padding: 0.75rem 1.5rem 2.5rem;
-        }
-
-        .main-inner {
-            max-width: 980px;
-            margin: 0 auto;
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
         }
 
         .card {
-            background: linear-gradient(145deg, #ffffff, #f9fafb);
+            background: var(--card-bg);
             border-radius: var(--radius-lg);
-            padding: 1.75rem 1.75rem 1.8rem;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            position: relative;
-            overflow: hidden;
+            padding: 2rem 2.3rem 2.4rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(15,23,42,0.06);
         }
 
-        .card::before {
-            /* leichte optische Verbindung zur AGB-Seite */
-            content: "";
-            position: absolute;
-            inset: -40px auto auto -40px;
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%);
-            opacity: 0.85;
-            pointer-events: none;
-        }
-
-        .card-header {
+        .header {
             display: flex;
+            gap: 1.5rem;
+            align-items: center;
             justify-content: space-between;
-            gap: 1rem;
+            flex-wrap: wrap;
             margin-bottom: 1.5rem;
-            align-items: flex-start;
         }
 
-        .card-title-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
+        .logo-wrapper img {
+            max-height: 60px;
+            width: auto;
         }
 
         h1 {
-            font-size: clamp(1.35rem, 2.2vw, 1.6rem);
-            margin: 0;
-            letter-spacing: 0.02em;
+            margin: 0 0 .3rem;
+            font-size: 1.55rem;
         }
 
-        .card-subtitle {
+        .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Impressum-Block */
+        .imp-block {
+            padding: 1rem 0;
+            font-size: 1rem;
+            line-height: 1.55;
+        }
+        .imp-section {
+            margin-bottom: 1.2rem;
+        }
+        .imp-label {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
             font-size: 0.85rem;
             color: var(--text-muted);
         }
 
-        .status-pill {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.65rem;
-            border-radius: 999px;
-            border: 1px solid var(--accent-soft);
-            background: rgba(17,24,39,0.02);
-            color: var(--text-muted);
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: #16a34a;
-        }
-
-        .meta-row {
+        .footer-buttons {
+            margin-top: 1.2rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem 1.5rem;
-            margin-bottom: 1.25rem;
+            gap: .7rem;
         }
-
-        .meta-item {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .meta-label {
-            text-transform: uppercase;
-            font-size: 0.72rem;
-            letter-spacing: 0.09em;
-        }
-
-        .meta-value {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 2fr) minmax(0, 1.7fr);
-            gap: 1.75rem;
-        }
-
-        @media (max-width: 780px) {
-            .content-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-
-            .card {
-                padding: 1.35rem 1.35rem 1.6rem;
-            }
-        }
-
-        .section-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-            margin: 0 0 0.8rem;
-        }
-
-        .company-name {
-            font-weight: 600;
-            margin-bottom: 0.15rem;
-        }
-
-        address {
-            font-style: normal;
-            font-size: 0.9rem;
-            color: var(--text-main);
-            line-height: 1.5;
-        }
-
-        .contact-list {
-            list-style: none;
-            padding: 0;
-            margin: 0.3rem 0 0;
-            font-size: 0.9rem;
-        }
-
-        .contact-list li {
-            margin: 0.15rem 0;
-        }
-
-        .contact-list a {
-            color: #1d4ed8;
+        .btn {
+            padding: .55rem 1.1rem;
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            background: #fff;
+            color: var(--primary);
+            font-size: .9rem;
+            cursor: pointer;
             text-decoration: none;
         }
-
-        .contact-list a:hover {
-            text-decoration: underline;
-        }
-
-        .legal-list {
-            list-style: none;
-            padding: 0;
-            margin: 0.35rem 0 0;
-            font-size: 0.9rem;
-        }
-
-        .legal-list li {
-            margin: 0.25rem 0;
-        }
-
-        .badge-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 0.6rem;
-        }
-
-        .badge {
-            font-size: 0.75rem;
-            border-radius: 999px;
-            border: 1px solid var(--accent-soft);
-            padding: 0.2rem 0.55rem;
-            background: #f9fafb;
-        }
-
-        .panel {
-            background: #f9fafb;
-            border-radius: 14px;
-            border: 1px solid var(--accent-soft);
-            padding: 0.9rem 1rem;
-            font-size: 0.83rem;
-            color: var(--text-muted);
-        }
-
-        .panel strong {
-            color: var(--text-main);
-        }
-
-        .panel + .panel {
-            margin-top: 0.65rem;
-        }
-
-        .pill-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 0.6rem;
-        }
-
-        .pill {
-            font-size: 0.75rem;
-            padding: 0.22rem 0.6rem;
-            border-radius: 999px;
-            background: #eef2ff;
-            color: #3730a3;
-        }
-
-        .pill.neutral {
-            background: #ecfeff;
-            color: #0e7490;
-        }
-
-        .pill.muted {
-            background: #f3f4f6;
-            color: #4b5563;
-        }
-
-        .loading,
-        .error-message {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .error-message {
-            color: #b91c1c;
-        }
-
-        footer {
-            padding: 1rem 1.5rem 1.8rem;
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-
-        .footer-inner {
-            max-width: 980px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .footer-inner a {
-            color: var(--text-muted);
-            text-decoration: none;
-        }
-
-        .footer-inner a:hover {
-            text-decoration: underline;
+        .btn:hover {
+            background: var(--primary);
+            color: #fff;
         }
     </style>
 </head>
+
 <body>
+
 <div class="page">
-    <header>
-        <div class="header-inner">
-            <div class="brand">
-                <div class="brand-logo">KS</div>
-                <div>
-                    <div class="brand-text-main">Kevin Strakerjahn Networks &amp; Automation</div>
-                    <div class="brand-text-sub">IT- &amp; Automationslösungen für Windenergie &amp; Industrie</div>
-                </div>
+    <div class="card">
+
+        <header class="header">
+            <div class="logo-wrapper">
+                <img src="../Logos/logo_name.jpeg" alt="Logo">
             </div>
-            <nav class="nav-links">
-                <a href="/agb/">AGB</a>
-                <a href="/" class="primary">Zur Startseite</a>
-            </nav>
-        </div>
-    </header>
+            <div>
+                <h1>Impressum</h1>
+                <div class="meta" id="metaStand">Stand wird geladen…</div>
+            </div>
+        </header>
 
-    <main>
-        <div class="main-inner">
-            <article class="card" id="impressum-card">
-                <div class="card-header">
-                    <div class="card-title-group">
-                        <h1>Impressum</h1>
-                        <p class="card-subtitle">
-                            Angaben gemäß § 5 TMG &amp; § 55 RStV
-                        </p>
-                        <div class="meta-row">
-                            <div class="meta-item">
-                                <span class="meta-label">VERANTWORTLICH</span>
-                                <span class="meta-value" id="meta-inhaber">–</span>
-                            </div>
-                            <div class="meta-item">
-                                <span class="meta-label">UNTERNEHMEN</span>
-                                <span class="meta-value" id="meta-unternehmen">–</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="status-pill">
-                        <span class="dot"></span>
-                        <span>Stand wird geladen…</span>
-                    </div>
-                </div>
-
-                <div id="impressum-content">
-                    <p class="loading">Impressumsdaten werden geladen…</p>
-                </div>
-            </article>
+        <div id="impContent" class="imp-block">
+            <!-- Inhalt wird aus JSON geladen -->
         </div>
-    </main>
 
-    <footer>
-        <div class="footer-inner">
-            <div>© <span id="year"></span> Kevin Strakerjahn Networks &amp; Automation</div>
-            <div>Letzte Aktualisierung: <span id="updated-hint">wird beim Laden ermittelt</span></div>
-        </div>
-    </footer>
+        <footer>
+            <div class="footer-buttons">
+                <a href="/" class="btn">Start</a>
+                <a href="/impressum/" class="btn">Kontakt</a>
+            </div>
+        </footer>
+
+    </div>
 </div>
 
 <script>
-    (function() {
-        const yearEl = document.getElementById('year');
-        yearEl.textContent = new Date().getFullYear().toString();
+// Impressum laden
+async function loadImpressum() {
+    try {
+        const response = await fetch("impressum.txt");
+        const data = await response.json();
+        const imp = data.impressum;
 
-        const contentEl = document.getElementById('impressum-content');
-        const cardEl = document.getElementById('impressum-card');
-        const metaInhaberEl = document.getElementById('meta-inhaber');
-        const metaUnternehmenEl = document.getElementById('meta-unternehmen');
-        const updatedHintEl = document.getElementById('updated-hint');
-        const statusPill = cardEl.querySelector('.status-pill span:last-child');
+        document.getElementById("metaStand").textContent =
+            imp.stand ? ("Stand: " + imp.stand) : "";
 
-        function escapeHTML(str) {
-            return String(str)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
+        const box = document.getElementById("impContent");
 
-        function renderImpressum(data) {
-            if (!data || typeof data !== 'object') {
-                contentEl.innerHTML = '<p class="error-message">Die Impressumsdaten konnten nicht gelesen werden.</p>';
-                statusPill.textContent = 'Fehler beim Laden';
-                return;
-            }
+        box.innerHTML = `
+            <div class="imp-section">
+                <div class="imp-label">Unternehmen:</div>
+                ${imp.unternehmen}
+            </div>
 
-            const imp = data.impressum || data;
+            <div class="imp-section">
+                <div class="imp-label">Rechtsform:</div>
+                ${imp.rechtsform}
+            </div>
 
-            const unternehmen = imp.unternehmen || '–';
-            const inhaber = imp.inhaber || '–';
-            const rechtsform = imp.rechtsform || '';
-            const adresse = imp.adresse || {};
-            const kontakt = imp.kontakt || {};
-            const steuernummer = imp.steuernummer || '';
-            const behoerde = imp.zuständige_aufsichtsbehörde || imp.aufsichtsbehoerde || '';
-            const hinweise = imp.hinweise || {};
+            <div class="imp-section">
+                <div class="imp-label">Inhaber:</div>
+                ${imp.inhaber}
+            </div>
 
-            metaInhaberEl.textContent = inhaber;
-            metaUnternehmenEl.textContent = unternehmen;
+            <div class="imp-section">
+                <div class="imp-label">Adresse:</div>
+                ${imp.adresse.strasse}<br>
+                ${imp.adresse.plz} ${imp.adresse.ort}
+            </div>
 
-            const addressHtml = `
-                <section>
-                    <h2 class="section-title">Anbieter</h2>
-                    <div class="company-name">${escapeHTML(unternehmen)}</div>
-                    ${rechtsform ? `<div style="font-size:0.88rem;color:#4b5563;margin-bottom:0.15rem;">${escapeHTML(rechtsform)}</div>` : ''}
-                    <address>
-                        ${escapeHTML(adresse.strasse || '')}<br>
-                        ${escapeHTML(adresse.plz || '')} ${escapeHTML(adresse.ort || '')}
-                    </address>
-                    <ul class="contact-list">
-                        ${kontakt.telefon ? `<li>Telefon: <a href="tel:${escapeHTML(kontakt.telefon)}">${escapeHTML(kontakt.telefon)}</a></li>` : ''}
-                        ${kontakt.email ? `<li>E-Mail: <a href="mailto:${escapeHTML(kontakt.email)}">${escapeHTML(kontakt.email)}</a></li>` : ''}
-                        ${kontakt.website ? `<li>Website: <a href="${escapeHTML(kontakt.website)}" target="_blank" rel="noopener noreferrer">${escapeHTML(kontakt.website)}</a></li>` : ''}
-                    </ul>
+            <div class="imp-section">
+                <div class="imp-label">Kontakt:</div>
+                Telefon: ${imp.kontakt.telefon}<br>
+                E-Mail: <a href="mailto:${imp.kontakt.email}">${imp.kontakt.email}</a><br>
+                Website: <a href="${imp.kontakt.website}">${imp.kontakt.website}</a>
+            </div>
 
-                    <div class="badge-row">
-                        ${steuernummer ? `<span class="badge">Steuernummer: ${escapeHTML(steuernummer)}</span>` : ''}
-                        ${behoerde ? `<span class="badge">Finanzamt: ${escapeHTML(behoerde)}</span>` : ''}
-                    </div>
-                </section>
-            `;
+            <div class="imp-section">
+                <div class="imp-label">Steuernummer:</div>
+                ${imp.steuernummer}
+            </div>
 
-            const legalHtml = `
-                <section>
-                    <h2 class="section-title">Rechtliche Hinweise</h2>
-                    <ul class="legal-list">
-                        ${hinweise.inhaltliche_verantwortung ? `
-                            <li><strong>Inhaltlich verantwortlich:</strong> ${escapeHTML(hinweise.inhaltliche_verantwortung)}</li>
-                        ` : ''}
-                        ${hinweise.urheberrecht ? `
-                            <li><strong>Urheberrecht:</strong> ${escapeHTML(hinweise.urheberrecht)}</li>
-                        ` : ''}
-                    </ul>
+            <div class="imp-section">
+                <div class="imp-label">Zuständige Aufsichtsbehörde:</div>
+                ${imp.zuständige_aufsichtsbehörde}
+            </div>
 
-                    <div class="pill-row">
-                        <span class="pill">§ 5 TMG</span>
-                        <span class="pill neutral">§ 55 RStV</span>
-                        <span class="pill muted">Datenschutz separat geregelt</span>
-                    </div>
-                </section>
-            `;
+            <div class="imp-section">
+                <div class="imp-label">Inhaltliche Verantwortung:</div>
+                ${imp.hinweise.inhaltliche_verantwortung}
+            </div>
 
-            const miscHtml = `
-                <section>
-                    <div class="panel">
-                        <strong>Hinweis zu Anfragen:</strong><br>
-                        Für technische Rückfragen und Supportanfragen nutzen Sie bitte bevorzugt die angegebene E-Mail-Adresse.
-                    </div>
-                    <div class="panel">
-                        <strong>Außergerichtliche Streitbeilegung:</strong><br>
-                        Es besteht keine Verpflichtung und keine Bereitschaft zur Teilnahme an Streitbeilegungsverfahren vor einer
-                        Verbraucherschlichtungsstelle.
-                    </div>
-                </section>
-            `;
+            <div class="imp-section">
+                <div class="imp-label">Urheberrecht:</div>
+                ${imp.hinweise.urheberrecht}
+            </div>
+        `;
 
-            contentEl.innerHTML = `
-                <div class="content-grid">
-                    <div>
-                        ${addressHtml}
-                    </div>
-                    <div>
-                        ${legalHtml}
-                        ${miscHtml}
-                    </div>
-                </div>
-            `;
+    } catch (err) {
+        console.error(err);
+        document.getElementById("impContent").innerHTML =
+            "<p>Impressum konnte nicht geladen werden.</p>";
+    }
+}
 
-            statusPill.textContent = 'Stand: aktuell geladen';
-            updatedHintEl.textContent = 'Daten werden aus impressum/impressum.txt geladen';
-        }
-
-        fetch('impressum/impressum.txt', {
-            cache: 'no-cache'
-        })
-            .then(function(response) {
-                if (!response.ok) {
-                    throw new Error('HTTP ' + response.status);
-                }
-                return response.text();
-            })
-            .then(function(text) {
-                // Falls die Datei exakt JSON enthält:
-                let data;
-                try {
-                    data = JSON.parse(text);
-                } catch (e) {
-                    console.error('JSON-Parsing-Fehler bei impressum.txt:', e);
-                    throw e;
-                }
-                renderImpressum(data);
-            })
-            .catch(function(error) {
-                console.error('Fehler beim Laden des Impressums:', error);
-                contentEl.innerHTML = '<p class="error-message">Das Impressum konnte nicht geladen werden. Bitte versuchen Sie es später erneut.</p>';
-                statusPill.textContent = 'Fehler beim Laden';
-                updatedHintEl.textContent = 'Fehler beim Laden von impressum/impressum.txt';
-            });
-    })();
+loadImpressum();
 </script>
+
 </body>
 </html>
