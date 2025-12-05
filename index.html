@@ -369,18 +369,18 @@ function buildToc(data) {
 
     data.forEach((para, idx) => {
         const item = document.createElement("div");
-        item.className = "toc-item";
-        item.textContent = para.Titel || ("§ " + (idx + 1));
-        item.dataset.target = "para-" + (idx + 1);
-        item.addEventListener("click", () => {
-            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
-            item.classList.add("active");
-            const target = document.getElementById(item.dataset.target);
-            if (target) {
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        });
-        toc.appendChild(item);
+            item.className = "toc-item";
+            item.textContent = para.Titel || ("§ " + (idx + 1));
+            item.dataset.target = "para-" + (idx + 1);
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+                item.classList.add("active");
+                const target = document.getElementById(item.dataset.target);
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
+            toc.appendChild(item);
     });
 }
 
@@ -493,7 +493,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         image: logoDataUrl,
         width: 520,
         alignment: "center",
-        margin: [0, 0, 0, 15] // näher an oberen Rand
+        margin: [0, 0, 0, 15]
     });
 
     content.push({
@@ -508,7 +508,8 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 16]
     });
 
-    const breakBeforeIdx = [3, 7, 10]; // §§ 4, 8, 11 neue Seite
+    // Seitenumbrüche: §4, §8, §11 auf neuer Seite
+    const breakBeforeIdx = [3, 7, 10];
 
     agbData.forEach((para, idx) => {
         const heading = {
@@ -534,40 +535,38 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             author: "Kevin Strakerjahn Networks & Automation"
         },
         pageSize: "A4",
-        pageMargins: [40, 45, 40, 60], // oben etwas kleiner für bessere Einteilung
+        pageMargins: [40, 60, 40, 60],
         defaultStyle: { fontSize: 11 },
         styles: {
             h1: { fontSize: 18, bold: true },
             h2: { fontSize: 12, bold: true },
             meta: { fontSize: 9, color: "#555555" }
         },
-        // Export-Stempel rechts, 90° gedreht, 15px vom Rand
-        background: function(currentPage, pageSize) {
-            return {
-                text: exportStamp,
-                fontSize: 7,
-                color: "#999999",
-                opacity: 0.9,
-                rotation: 90,
-                absolutePosition: {
-                    x: pageSize.width - 15,
-                    y: pageSize.height / 2
-                }
-            };
-        },
+        // kein background mehr – Stempel kommt in den Footer
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
-                columns: [
+                stack: [
                     {
-                        text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
-                        alignment: "left",
-                        fontSize: 8
+                        columns: [
+                            {
+                                text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
+                                alignment: "left",
+                                fontSize: 8
+                            },
+                            {
+                                text: "Seite " + currentPage + " von " + pageCount,
+                                alignment: "right",
+                                fontSize: 8
+                            }
+                        ]
                     },
                     {
-                        text: "Seite " + currentPage + " von " + pageCount,
-                        alignment: "right",
-                        fontSize: 8
+                        text: exportStamp,
+                        alignment: "center",
+                        fontSize: 8,
+                        color: "#999999",
+                        margin: [0, 4, 0, 0]
                     }
                 ]
             };
