@@ -491,9 +491,9 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     // großes Logo im PDF
     content.push({
         image: logoDataUrl,
-        width: 520,          // deine aktuelle Größe
+        width: 520,
         alignment: "center",
-        margin: [0, 10, 0, 15] // Abstand zum oberen Rand
+        margin: [0, 0, 0, 15] // näher an oberen Rand
     });
 
     content.push({
@@ -508,7 +508,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 16]
     });
 
-    const breakBeforeIdx = [3, 7, 10]; // §§ 4, 8, 11 auf neuer Seite
+    const breakBeforeIdx = [3, 7, 10]; // §§ 4, 8, 11 neue Seite
 
     agbData.forEach((para, idx) => {
         const heading = {
@@ -534,7 +534,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             author: "Kevin Strakerjahn Networks & Automation"
         },
         pageSize: "A4",
-        pageMargins: [40, 60, 40, 60],
+        pageMargins: [40, 45, 40, 60], // oben etwas kleiner für bessere Einteilung
         defaultStyle: { fontSize: 11 },
         styles: {
             h1: { fontSize: 18, bold: true },
@@ -544,18 +544,15 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         // Export-Stempel rechts, 90° gedreht, 15px vom Rand
         background: function(currentPage, pageSize) {
             return {
-                canvas: [
-                    {
-                        type: 'text',
-                        text: exportStamp,
-                        x: pageSize.width - 15,          // 15px vom rechten Rand
-                        y: pageSize.height / 2,          // vertikal mittig
-                        rotate: 90,                      // 90° gedreht
-                        fontSize: 7,
-                        color: "#999999",
-                        opacity: 0.9
-                    }
-                ]
+                text: exportStamp,
+                fontSize: 7,
+                color: "#999999",
+                opacity: 0.9,
+                rotation: 90,
+                absolutePosition: {
+                    x: pageSize.width - 15,
+                    y: pageSize.height / 2
+                }
             };
         },
         footer: function(currentPage, pageCount) {
