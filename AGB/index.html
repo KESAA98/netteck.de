@@ -196,6 +196,27 @@
             border-top: 1px solid var(--border);
             padding-top: 0.75rem;
         }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .footer-link {
+            font-size: 1.05rem;         /* minimal größer */
+            font-weight: 700;           /* fett */
+            color: var(--text-muted);   /* dezentes Grau wie AGB */
+            text-decoration: underline; /* dauerhaft unterstrichen */
+            text-underline-offset: 3px; /* moderner Look */
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);    /* leicht dunkler beim Hover */
+        }
     </style>
 </head>
 <body>
@@ -238,8 +259,11 @@
         </div>
 
         <footer>
-            <div>Kevin Strakerjahn Networks &amp; Automation</div>
-            <div>Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232</div>
+            <div class="footer-buttons">
+                <a class="footer-link" href="/">Start</a>
+                <a class="footer-link" href="/kontakt/">Kontakt</a>
+                <a class="footer-link" href="/impressum/">Impressum</a>
+            </div>
         </footer>
 
     </div>
@@ -405,7 +429,8 @@ function buildToc(data) {
 
 function setupSearch() {
     const input = document.getElementById("searchInput");
-    const info = document.getElementById("searchInfo");
+    the_info = document.getElementById("searchInfo");
+    const info = the_info;
     const resetBtn = document.getElementById("btnResetSearch");
 
     function applySearch(query) {
