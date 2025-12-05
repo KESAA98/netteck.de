@@ -18,6 +18,7 @@
     "hinweise": {
       "inhaltliche_verantwortung": "Kevin Strakerjahn",
       "urheberrecht": "Alle Inhalte sind urheberrechtlich geschützt."
-    }
+    },
+    "stand": "12/2025"
   }
 }
