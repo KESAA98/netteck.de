@@ -1,4 +1,5 @@
 {
+  "note": "AGB-A enthält die allgemeinen Geschäftsbedingungen für alle Verträge.",
   "agb_a": [
     {
       "title": "§ 1 Geltungsbereich",
@@ -10,47 +11,47 @@
     },
     {
       "title": "§ 3 Mitwirkungspflichten des Kunden",
-      "text": "(1) Der Kunde hat die notwendigen Voraussetzungen für die Durchführung der Arbeiten zu schaffen. Hierzu zählen insbesondere:\n- Zugang zu Anlagen, Serverräumen oder Windenergieanlagen,\n- Bereitstellung technischer Informationen, Zugangsdaten und Netzpläne,\n- Sicherstellung geeigneter Arbeitsbedingungen vor Ort.\n(2) Der Kunde erteilt dem Auftragnehmer die Erlaubnis, mit Dritten zu kommunizieren, soweit dies zur Leistungserbringung erforderlich ist. Dies umfasst insbesondere die Kontaktaufnahme und den Austausch technischer Informationen mit:\n- Herstellern wie Enercon,\n- Betriebsführungen und Anlagenbetreibern,\n- Netzbetreibern,\n- Internetanbietern (ISP),\n- technischen Dienstleistern und Supportstellen.\nDer Auftragnehmer ist berechtigt, Störungen zu melden, technische Anfragen zu stellen, notwendige Daten zur Fehleranalyse zu übermitteln und Auskünfte einzuholen, die für Diagnose, Inbetriebnahme oder Entstörung notwendig sind.\n(3) Der Kunde verpflichtet sich, auf Anfrage entsprechende Vollmachten oder Zugriffsberechtigungen zu erteilen.\n(4) Kommt der Kunde seinen Mitwirkungspflichten nicht nach und entstehen dadurch Wartezeiten, Fehlzeiten oder zusätzliche Anfahrten, können diese zu den vereinbarten Stundensätzen bzw. Pauschalen berechnet werden."
+      "text": "(1) Der Kunde hat die notwendigen Voraussetzungen für die Durchführung der Arbeiten zu schaffen. Hierzu zählen insbesondere:\n- Zugang zu Anlagen, Serverräumen oder Windenergieanlagen,\n- Bereitstellung technischer Informationen, Zugangsdaten und Netzpläne,\n- Sicherstellung geeigneter Arbeitsbedingungen vor Ort.\n(2) Der Kunde erteilt dem Auftragnehmer die Erlaubnis, mit Dritten zu kommunizieren, soweit dies zur Leistungserbringung erforderlich ist. Dies umfasst insbesondere die Kontaktaufnahme und den Austausch technischer Informationen mit:\n- Herstellern wie Enercon,\n- Betriebsführungen und Anlagenbetreibern,\n- Netzbetreibern,\n- Internetanbietern (ISP),\n- technischen Dienstleistern und Supportstellen.\nDer Auftragnehmer ist berechtigt, Störungen zu melden, technische Anfragen zu stellen, notwendige Daten zur Fehleranalyse zu übermitteln und Auskünfte einzuholen.\n(3) Der Kunde verpflichtet sich, auf Anfrage entsprechende Vollmachten oder Zugriffsberechtigungen zu erteilen.\n(4) Kommt der Kunde seinen Mitwirkungspflichten nicht nach und entstehen dadurch Wartezeiten, Fehlzeiten oder zusätzliche Anfahrten, können diese berechnet werden."
     },
     {
       "title": "§ 4 Rücktritt",
-      "text": "(1) Rücktritt durch den Kunden:\nBei Rücktritt vor Übergabe der Leistung gilt:\n- Bereits entstandene Aufwendungen werden durch die Anzahlung gedeckt.\n- Übersteigt die Anzahlung die tatsächlich entstandenen Kosten, wird der Differenzbetrag erstattet.\n- Eine Herausgabe nicht verbauter Materialien erfolgt erst nach vollständiger Bezahlung.\n(2) Rücktritt durch den Auftragnehmer:\nDer Auftragnehmer ist zum Rücktritt berechtigt, wenn:\n- wesentliche Mitwirkungspflichten trotz Fristsetzung nicht erfüllt werden,\n- Vollmachten oder Zugänge fehlen,\n- unzutreffende oder unvollständige technische Angaben bereitgestellt wurden,\n- Zahlungspflichten nicht erfüllt wurden,\n- technische Vorgaben objektiv nicht erfüllbar sind.\nBereits geleistete Zahlungen werden abzüglich der bis dahin entstandenen Aufwendungen erstattet."
+      "text": "(1) Rücktritt durch den Kunden:\n- Bereits entstandene Aufwendungen werden durch die Anzahlung gedeckt.\n- Übersteigt die Anzahlung die tatsächlichen Kosten, wird die Differenz erstattet.\n- Herausgabe nicht verbauter Materialien erfolgt erst nach vollständiger Bezahlung.\n(2) Rücktritt durch den Auftragnehmer:\nDer Auftragnehmer ist zum Rücktritt berechtigt, wenn wesentliche Pflichten nicht erfüllt werden, technische Angaben fehlen oder falsch sind, Zahlungen nicht geleistet wurden oder Vorgaben nicht realisierbar sind. Bereits geleistete Zahlungen werden abzüglich entstandener Kosten erstattet."
     },
     {
       "title": "§ 5 Leistungsnachweise",
-      "text": "Der Auftragnehmer erstellt Dokumentationen, Aufmaße oder Bildnachweise nach eigenen internen Standards. Die Abrechnung erfolgt auf Basis der erbrachten Leistungen. Der Kunde kann nachweisen, dass der tatsächliche Leistungsumfang geringer war."
+      "text": "Der Auftragnehmer erstellt Dokumentationen, Aufmaße oder Bildnachweise nach eigenen Standards. Abrechnung erfolgt nach erbrachter Leistung. Der Kunde kann einen geringeren Aufwand nachweisen."
     },
     {
       "title": "§ 6 Liefer-, Ausführungs- und Einsatzzeiten",
-      "text": "(1) Termine gelten nur dann als verbindlich, wenn sie schriftlich bestätigt wurden.\n(2) Bei Arbeiten an Windenergieanlagen sind Witterungseinflüsse und behördliche Vorgaben zu berücksichtigen.\n(3) Verzögerungen durch Dritte führen nicht zu Schadensersatzansprüchen des Kunden."
+      "text": "(1) Termine sind nur verbindlich, wenn schriftlich bestätigt.\n(2) Bei Arbeiten an Windenergieanlagen sind Witterung und Vorgaben zu berücksichtigen.\n(3) Verzögerungen durch Dritte begründen keine Schadensersatzansprüche."
     },
     {
       "title": "§ 7 Gewährleistung",
-      "text": "(1) Für Unternehmer beträgt die Gewährleistungsfrist 12 Monate ab Übergabe.\n(2) Für vom Kunden bereitgestellte Komponenten wird keine Gewährleistung übernommen.\n(3) Eigenmächtige Eingriffe oder Änderungen führen zum Erlöschen der Gewährleistung.\n(4) Für verbaute Fremdprodukte gelten ausschließlich die Herstellergarantiebedingungen."
+      "text": "(1) Für Unternehmer beträgt die Gewährleistungsfrist 12 Monate.\n(2) Für beigestellte Komponenten wird keine Gewährleistung übernommen.\n(3) Eigenmächtige Änderungen führen zum Erlöschen der Gewährleistung.\n(4) Für Fremdprodukte gelten ausschließlich Herstellergarantien."
     },
     {
       "title": "§ 8 Haftung",
-      "text": "(1) Der Auftragnehmer haftet für Schäden nur bei Vorsatz oder grober Fahrlässigkeit.\n(2) Für Schäden aus Verletzung von Leben, Körper oder Gesundheit besteht zwingende Haftung.\n(3) Im Übrigen ist die Haftung auf den typischerweise vorhersehbaren Schaden begrenzt.\n(4) Der Auftragnehmer übernimmt keine Haftung für Ausfälle oder wirtschaftliche Folgeschäden, insbesondere:\n- Ausfälle von Windenergieanlagen,\n- Stillstandszeiten oder Produktionsausfälle,\n- wirtschaftliche Schäden durch Netzwerk- oder Hardwarefehler,\n- Unterbrechungen durch Updates,\n- Fehlfunktionen von Kundenkomponenten.\nDies gilt auch dann, wenn der Ausfall mittelbar oder unmittelbar auf installierte Systeme zurückzuführen wäre."
+      "text": "(1) Haftung besteht nur bei Vorsatz oder grober Fahrlässigkeit.\n(2) Für Verletzung von Leben, Körper oder Gesundheit besteht zwingende Haftung.\n(3) Haftung ist ansonsten auf vorhersehbare Schäden begrenzt.\n(4) Keine Haftung für Ausfälle, Stillstandszeiten, Produktionsausfälle, wirtschaftliche Schäden, Update-Unterbrechungen oder Fehlfunktionen von Kundenkomponenten – auch dann nicht, wenn der Fehler mittelbar mit installierten Systemen zusammenhängt."
     },
     {
       "title": "§ 9 Preise und Zahlungen",
-      "text": "(1) Vor Beginn der Arbeiten ist eine Materialanzahlung zu leisten.\n(2) Der Restbetrag ist nach Abnahme sofort bzw. innerhalb von 14 Tagen netto zu zahlen.\n(3) Bei Zahlungsverzug gelten die gesetzlichen Verzugszinsen.\n(4) Kosten durch Wartezeiten, zusätzliche Anfahrten oder fehlende Mitwirkung werden nach den vereinbarten Sätzen berechnet."
+      "text": "(1) Eine Materialanzahlung ist vor Arbeitsbeginn zu leisten.\n(2) Restbetrag ist nach Abnahme sofort bzw. innerhalb 14 Tagen fällig.\n(3) Es gelten gesetzliche Verzugszinsen.\n(4) Zusatzkosten durch Wartezeiten, Anfahrten oder fehlende Mitwirkung werden berechnet."
     },
     {
       "title": "§ 10 Eigentumsvorbehalt",
-      "text": "(1) Alle gelieferten Waren bleiben bis zur vollständigen Bezahlung Eigentum des Auftragnehmers.\n(2) Bei Unternehmern gilt der Eigentumsvorbehalt bis zur Begleichung sämtlicher Forderungen.\n(3) Der Kunde muss Zugriffe Dritter oder Schäden unverzüglich melden.\n(4) Bei vertragswidrigem Verhalten (z. B. Zahlungsverzug) ist der Auftragnehmer zum Rückbau berechtigt."
+      "text": "(1) Waren bleiben bis zur vollständigen Bezahlung Eigentum des Auftragnehmers.\n(2) Bei Unternehmern gilt dies bis zur Begleichung aller Forderungen.\n(3) Zugriffe Dritter oder Schäden sind unverzüglich zu melden.\n(4) Bei vertragswidrigem Verhalten kann Rückbau verlangt werden."
     },
     {
       "title": "§ 11 Gerichtsstand und anwendbares Recht",
-      "text": "(1) Es gilt ausschließlich deutsches Recht.\n(2) Für Unternehmer ist Gerichtsstand der Sitz des Auftragnehmers.\n(3) Für Verbraucher gelten die gesetzlichen Gerichtsstandsregeln."
+      "text": "(1) Es gilt deutsches Recht.\n(2) Gerichtsstand für Unternehmer ist der Sitz des Auftragnehmers.\n(3) Für Verbraucher gelten gesetzliche Regelungen."
     },
     {
       "title": "§ 12 Schlussbestimmungen",
-      "text": "Sollte eine Bestimmung unwirksam oder undurchführbar sein, bleibt die Wirksamkeit der übrigen Regelungen unberührt. Eine Ersatzregelung tritt an die Stelle der unwirksamen Bestimmung, die dem wirtschaftlichen Zweck am nächsten kommt."
+      "text": "Unwirksame Bestimmungen werden durch wirtschaftlich entsprechende Regelungen ersetzt. Die übrigen AGB bleiben gültig."
     },
     {
       "title": "§ 13 Datenschutz & Speicherung von Auftragsdaten",
-      "text": "(1) Personenbezogene Daten werden ausschließlich zur Vertragsdurchführung, technischen Kommunikation und Abrechnung verarbeitet.\n(2) Die Daten werden entsprechend gesetzlicher Fristen gespeichert.\n(3) Mit Einwilligung des Kunden dürfen technische Dokumentationen und Konfigurationen länger gespeichert werden.\n(4) Eine Weitergabe an Dritte erfolgt nur, wenn sie zur Vertragserfüllung nötig ist oder eine gesetzliche Pflicht besteht.\n(5) Weitere Informationen ergeben sich aus der gesonderten Datenschutzerklärung."
+      "text": "(1) Daten werden nur zur Vertragserfüllung verarbeitet.\n(2) Speicherung erfolgt gemäß gesetzlichen Fristen.\n(3) Längere Speicherung technischer Unterlagen ist mit Einwilligung möglich.\n(4) Weitergabe an Dritte erfolgt nur zur Erfüllung oder aufgrund gesetzlicher Pflichten.\n(5) Weitere Informationen stehen in der Datenschutzerklärung."
     }
   ]
 }
