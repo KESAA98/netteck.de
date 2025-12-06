@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon (Tab-Icon) -->
-    <!-- Von /AGB/index.html aus geht es eine Ebene hoch in /Logos -->
     <link rel="icon" type="image/png" href="../Logos/logo.png">
 
     <style>
@@ -206,16 +205,16 @@
         }
 
         .footer-link {
-            font-size: 1.05rem;         /* minimal größer */
-            font-weight: 600;           /* fett */
-            color: var(--text-muted);   /* dezentes Grau wie AGB */
-            text-decoration: underline; /* dauerhaft unterstrichen */
-            text-underline-offset: 3px; /* moderner Look */
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 3px;
             cursor: pointer;
         }
 
         .footer-link:hover {
-            color: var(--text-main);    /* leicht dunkler beim Hover */
+            color: var(--text-main);
         }
     </style>
 </head>
@@ -226,7 +225,6 @@
 
         <header class="header">
             <div class="logo-wrapper">
-                <!-- großes Logo aus /Logos -->
                 <img src="../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
             </div>
             <div class="title-block">
@@ -277,26 +275,17 @@
 // Logo-Pfad relativ zu /AGB/index.html
 const LOGO_PATH = "../Logos/logo_name.jpeg";
 
-// Fallback-Liste, falls meta.json kein agb_files liefert
-const AGB_FILES_FALLBACK = [
-    "01_geltungsbereich.txt",
-    "02_vertragsschluss.txt",
-    "03_mitwirkungspflichten.txt",
-    "04_ruecktritt.txt",
-    "05_leistungsnachweise.txt",
-    "06_liefer_ausfuehrungs_einsatzzeiten.txt",
-    "07_gewaehrleistung.txt",
-    "08_haftung.txt",
-    "09_preise_und_zahlungen.txt",
-    "10_eigentumsvorbehalt.txt",
-    "11_gerichtsstand_recht.txt",
-    "12_schlussbestimmungen.txt",
-    "13_datenschutz_speicherung.txt"
+// AGB-Dateien im Ordner /AGB/AGBs (JSON in .txt)
+const AGB_FILES = [
+    "agb_a.txt",
+    "agb_b.txt"
 ];
 
-let agbFiles = AGB_FILES_FALLBACK.slice();
+// Version für PDF-Kopf
+const AGB_VERSION = "AGB_KS_2025_12_03";
+
 let agbData = [];
-let metaData = null;
+let standDateStr = null; // "dd.mm.yyyy"
 
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
@@ -330,53 +319,79 @@ function escapeRegExp(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-async function init() {
-    // 1) meta.json holen
-    try {
-        const metaResp = await fetch("AGBs/meta.json");
-        if (metaResp.ok) {
-            metaData = await metaResp.json();
-            const metaEl = document.getElementById("metaVersion");
-
-            // Stand + Version schön zusammenbauen
-            if (metaData.anzeige) {
-                metaEl.textContent = metaData.anzeige;
-            } else {
-                const parts = [];
-                if (metaData.stand_datum) {
-                    parts.push("Stand: " + metaData.stand_datum);
-                }
-                if (metaData.version_string) {
-                    parts.push("Version " + metaData.version_string);
-                }
-                metaEl.textContent = parts.length ? parts.join(" – ") : "Stand: unbekannt";
-            }
-
-            // falls vorhanden: Liste der AGB-Dateien aus meta.json
-            if (Array.isArray(metaData.agb_files) && metaData.agb_files.length > 0) {
-                agbFiles = metaData.agb_files;
-            }
-        }
-    } catch (e) {
-        console.warn("meta.json Problem:", e);
+async function updateStandFromLastModified(files) {
+    const metaEl = document.getElementById("metaVersion");
+    if (!files || !files.length) {
+        metaEl.textContent = "Stand: unbekannt";
+        return;
     }
 
-    // 2) AGB-Dateien laden
-    const promises = agbFiles.map(async (file) => {
+    let newest = null;
+
+    for (const file of files) {
+        try {
+            const resp = await fetch("AGBs/" + file, { method: "HEAD" });
+            if (!resp.ok) continue;
+            const lm = resp.headers.get("Last-Modified");
+            if (!lm) continue;
+            const d = new Date(lm);
+            if (!isNaN(d.getTime())) {
+                if (!newest || d > newest) newest = d;
+            }
+        } catch (e) {
+            console.warn("Last-Modified Fehler bei", file, e);
+        }
+    }
+
+    if (newest) {
+        const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+        standDateStr = newest.toLocaleDateString("de-DE", options);
+        metaEl.textContent = "Stand: " + standDateStr;
+    } else {
+        metaEl.textContent = "Stand: unbekannt";
+    }
+}
+
+async function init() {
+    // 1) Stand anhand Last-Modified der Dateien bestimmen
+    await updateStandFromLastModified(AGB_FILES);
+
+    // 2) AGB-Dateien laden (JSON aus .txt)
+    const filePromises = AGB_FILES.map(async (file) => {
         try {
             const resp = await fetch("AGBs/" + file);
             if (!resp.ok) {
                 console.error("Fehler beim Laden von", file, resp.status);
-                return { Titel: file, Text: "Fehler beim Laden dieser AGB-Datei (" + file + ")." };
+                return null;
             }
             return await resp.json();
         } catch (e) {
             console.error("Exception bei", file, e);
-            return { Titel: file, Text: "Fehler beim Verarbeiten dieser AGB-Datei (" + file + ")." };
+            return null;
         }
     });
 
-    agbData = await Promise.all(promises);
+    const rawFiles = await Promise.all(filePromises);
+
+    // 3) Daten aus agb_a / agb_b Arrays zu einer Liste zusammenführen
+    agbData = [];
+
+    rawFiles.forEach(fileObj => {
+        if (!fileObj) return;
+
+        if (Array.isArray(fileObj.agb_a)) {
+            agbData.push(...fileObj.agb_a);
+        }
+        if (Array.isArray(fileObj.agb_b)) {
+            agbData.push(...fileObj.agb_b);
+        }
+
+        // Fallback: falls einzelne Paragraph-Struktur ohne Array
+        if (!fileObj.agb_a && !fileObj.agb_b && (fileObj.title || fileObj.Titel)) {
+            agbData.push(fileObj);
+        }
+    });
+
     renderAgb(agbData);
     buildToc(agbData);
     setupSearch();
@@ -392,14 +407,17 @@ function renderAgb(data) {
         section.className = "para";
         section.id = "para-" + (idx + 1);
 
+        const title = para.title || para.Titel || ("§ " + (idx + 1));
+        const text = para.text || para.Text || "";
+
         const h = document.createElement("div");
         h.className = "para-title";
-        h.textContent = para.Titel || ("§ " + (idx + 1));
+        h.textContent = title;
         section.appendChild(h);
 
         const body = document.createElement("div");
         body.className = "para-text";
-        body.appendChild(renderTextToHtml(para.Text || ""));
+        body.appendChild(renderTextToHtml(text));
         section.appendChild(body);
 
         container.appendChild(section);
@@ -411,9 +429,11 @@ function buildToc(data) {
     toc.querySelectorAll(".toc-item").forEach(n => n.remove());
 
     data.forEach((para, idx) => {
+        const title = para.title || para.Titel || ("§ " + (idx + 1));
+
         const item = document.createElement("div");
         item.className = "toc-item";
-        item.textContent = para.Titel || ("§ " + (idx + 1));
+        item.textContent = title;
         item.dataset.target = "para-" + (idx + 1);
         item.addEventListener("click", () => {
             document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
@@ -429,8 +449,7 @@ function buildToc(data) {
 
 function setupSearch() {
     const input = document.getElementById("searchInput");
-    the_info = document.getElementById("searchInfo");
-    const info = the_info;
+    const info = document.getElementById("searchInfo");
     const resetBtn = document.getElementById("btnResetSearch");
 
     function applySearch(query) {
@@ -442,22 +461,26 @@ function setupSearch() {
             const paraIndex = parseInt(sec.id.replace("para-", ""), 10) - 1;
             const paraData = agbData[paraIndex];
             const body = sec.querySelector(".para-text");
+
+            const fullText = (paraData.text || paraData.Text || "");
             body.innerHTML = "";
-            body.appendChild(renderTextToHtml(paraData.Text || ""));
+            body.appendChild(renderTextToHtml(fullText));
 
             if (!q) {
                 sec.style.display = "";
                 return;
             }
 
-            const text = (paraData.Text || "").toLowerCase();
-            if (text.includes(q.toLowerCase())) {
+            const lower = fullText.toLowerCase();
+            const qLower = q.toLowerCase();
+
+            if (lower.includes(qLower)) {
                 sec.style.display = "";
                 hits++;
 
                 const reg = new RegExp(escapeRegExp(q), "gi");
                 body.querySelectorAll("p, li").forEach(el => {
-                    if (!el.textContent.toLowerCase().includes(q.toLowerCase())) return;
+                    if (!el.textContent.toLowerCase().includes(qLower)) return;
                     el.innerHTML = el.textContent.replace(reg, match => `<mark>${match}</mark>`);
                 });
             } else {
@@ -524,11 +547,12 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     const now = new Date();
     const ts = now.toLocaleString("de-DE");
 
-    const versionStr = (metaData && metaData.version_string) ? metaData.version_string : "AGB_KS_2025_12_03";
-    const standStr   = (metaData && metaData.stand_datum) ? metaData.stand_datum : null;
+    const versionStr = AGB_VERSION;
+    const standStr = standDateStr;
 
-    const exportStamp = (standStr ? "Stand: " + standStr + " – " : "") +
-                        "Version " + versionStr + " – PDF erstellt am: " + ts;
+    const exportStamp =
+        (standStr ? "Stand: " + standStr + " – " : "") +
+        "Version " + versionStr + " – PDF erstellt am: " + ts;
 
     const content = [];
 
@@ -552,12 +576,15 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 16]
     });
 
-    // Seitenumbrüche: §4, §8, §11 auf neuer Seite
+    // Seitenumbrüche: § 4, § 8, § 11 auf neuer Seite
     const breakBeforeIdx = [3, 7, 10];
 
     agbData.forEach((para, idx) => {
+        const title = para.title || para.Titel || ("§ " + (idx + 1));
+        const text = para.text || para.Text || "";
+
         const heading = {
-            text: para.Titel || ("§ " + (idx + 1)),
+            text: title,
             style: "h2",
             margin: [0, 10, 0, 4]
         };
@@ -568,7 +595,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
         content.push(heading);
 
-        const blocks = buildPdfBlocksFromText(para.Text || "");
+        const blocks = buildPdfBlocksFromText(text);
         blocks.forEach(b => content.push(b));
     });
 
@@ -633,8 +660,9 @@ function setupPdfExport() {
             const docDef = buildPdfDocumentDefinition(logoDataUrl);
 
             const now = new Date();
-            const filenameBase = metaData && metaData.version_string ? metaData.version_string : "AGB";
-            const filename = filenameBase + "_" + now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
+            const filenameBase = AGB_VERSION || "AGB";
+            const filename = filenameBase + "_" +
+                now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
 
             pdfMake.createPdf(docDef).download(filename);
         } catch (e) {
@@ -651,5 +679,3 @@ init().catch(err => {
 
 </body>
 </html>
-
-
