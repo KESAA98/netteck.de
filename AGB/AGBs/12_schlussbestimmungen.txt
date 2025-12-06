@@ -1,4 +1,0 @@
-{
-  "Titel": "§ 12 Schlussbestimmungen",
-  "Text": "Sollte eine Bestimmung dieser AGB unwirksam oder undurchführbar sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.\nAnstelle der unwirksamen Bestimmung gilt eine Regelung, die dem wirtschaftlichen Zweck der ursprünglichen Bestimmung am nächsten kommt."
-}
