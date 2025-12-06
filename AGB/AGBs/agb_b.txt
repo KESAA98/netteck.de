@@ -1,0 +1,40 @@
+{
+  "agb_b": [
+    {
+      "title": "§ 14 Geltungsbereich dieser Ergänzungen",
+      "text": "(1) Diese ergänzenden Bestimmungen gelten für alle Wartungs-, Service- und Supportverträge, insbesondere für Verträge über die regelmäßige Wartung von LANCOM-Routern sowie vergleichbaren Netzwerkgeräten.\n(2) Soweit diese Regelungen von den allgemeinen AGB abweichen, gehen sie für den Bereich der Wartungsverträge vor."
+    },
+    {
+      "title": "§ 15 Leistungsumfang von Wartungsverträgen",
+      "text": "(1) Der Wartungsvertrag umfasst ausschließlich die im jeweiligen Vertrag oder Angebot aufgeführten Leistungen (z. B. jährliche Routerwartung, Backup, Remote-Support).\n(2) Der Auftragnehmer schuldet keine dauerhafte Überwachung, keine garantierten Reaktionszeiten und keine bestimmte Verfügbarkeit des Systems, sofern dies nicht ausdrücklich schriftlich vereinbart wurde.\n(3) Der Wartungsvertrag stellt keine Erfolgsgarantie dar. Die Verantwortung für den technischen Zustand der Gesamtanlage (z. B. Internetanbindung, Stromversorgung, externe Netzwerkinfrastruktur) bleibt beim Kunden.\n(4) Der Auftragnehmer ist berechtigt, Wartungsarbeiten per Fernzugriff durchzuführen. Vor-Ort-Einsätze sind nur vereinbart, wenn sie ausdrücklich im Vertrag genannt sind oder gesondert beauftragt werden."
+    },
+    {
+      "title": "§ 16 Pflichten des Kunden im Rahmen von Wartungsverträgen",
+      "text": "(1) Der Kunde stellt sicher, dass der Auftragnehmer während der Vertragslaufzeit über alle erforderlichen Zugänge, Berechtigungen und technischen Informationen verfügt, um Wartungen durchführen zu können.\n(2) Störungen, Änderungen an der Installation oder eigenmächtige Konfigurationsanpassungen sind dem Auftragnehmer unverzüglich mitzuteilen.\n(3) Der Kunde verpflichtet sich, die Umgebungsbedingungen einzuhalten, insbesondere stabile Internetversorgung, Stromversorgung, Schaltschrankschutz und ausreichende Kühlung der Geräte."
+    },
+    {
+      "title": "§ 17 LANcare und Leistungen Dritter",
+      "text": "(1) Für jeden im Wartungsvertrag enthaltenen Router erwirbt und registriert der Auftragnehmer ein offizielles LANCOM-LANcare-Paket (z. B. LANcare Direct Advanced 24/7).\n(2) Hardwaretausch-, Express- und Herstellerservices werden ausschließlich durch LANCOM Systems erbracht.\n(3) Der Auftragnehmer übernimmt im Rahmen des Wartungsvertrages die technische Erstdiagnose, Ticket-Erstellung, Fehleranalyse und die Kommunikation mit LANCOM, ist jedoch nicht Leistungserbringer der Hersteller-Services.\n(4) Verzögerungen oder Einschränkungen durch LANCOM oder andere Drittdienstleister stellen keinen Mangel der Leistung des Auftragnehmers dar."
+    },
+    {
+      "title": "§ 18 Backup & Dokumentation",
+      "text": "(1) Der Auftragnehmer sichert während der Vertragslaufzeit die jeweils aktuelle Konfiguration der betreuten Geräte, sofern technisch möglich.\n(2) Diese Konfigurationen dienen ausschließlich der Wiederherstellung und werden vertraulich behandelt.\n(3) Der Kunde bleibt selbst verantwortlich für Backups seiner übrigen IT-Systeme."
+    },
+    {
+      "title": "§ 19 Remote-Support und Mehrleistungen",
+      "text": "(1) Im Wartungsvertrag enthaltene Supportstunden (z. B. 10 Stunden pro Jahr) können telefonisch, per Fernzugriff oder per Online-Kommunikation genutzt werden.\n(2) Nicht genutzte Stunden verfallen am Ende der jeweiligen Vertragsperiode.\n(3) Leistungen, die über den vereinbarten Umfang hinausgehen, werden nach den gültigen Stundensätzen berechnet.\n(4) Vor-Ort-Einsätze sind nicht Bestandteil des Wartungsvertrags und werden separat berechnet."
+    },
+    {
+      "title": "§ 20 Vertragslaufzeit und Beendigung",
+      "text": "(1) Wartungsverträge haben eine feste Laufzeit von 1, 3 oder 5 Jahren.\n(2) Nach Ablauf der vereinbarten Vertragslaufzeit endet der Vertrag automatisch, ohne dass es einer Kündigung bedarf.\n(3) Eine Verlängerung erfolgt nur durch ausdrückliche schriftliche Vereinbarung beider Parteien.\n(4) Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt."
+    },
+    {
+      "title": "§ 21 Haftung im Rahmen von Wartungsverträgen",
+      "text": "(1) Für Leistungen des Auftragnehmers gelten die Haftungsregelungen der allgemeinen AGB entsprechend.\n(2) Keine Haftung besteht insbesondere für:\n– Ausfälle von Internetanbindungen, LTE-Netzen oder Providerdiensten\n– Stillstandszeiten, Produktionsausfälle oder Ertragsverluste\n– Fehlkonfigurationen durch Dritte oder eigenmächtige Änderungen\n– Einschränkungen oder Verzögerungen der Hersteller-Services (LANCARE)\n(3) Die Verantwortung für die Gesamtanlage, Stromversorgung und äußere Einflüsse (z. B. Hitze, Feuchtigkeit, Überspannung) liegt beim Kunden."
+    },
+    {
+      "title": "§ 22 Schlussbestimmungen",
+      "text": "Diese ergänzenden AGB sind Bestandteil jedes Wartungs- oder Servicevertrags. Im Übrigen gelten die allgemeinen AGB des Auftragnehmers unverändert weiter."
+    }
+  ]
+}
