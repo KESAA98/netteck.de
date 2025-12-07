@@ -644,6 +644,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     agbData.forEach((para, idx) => {
         const text = para.text || para.Text || "";
 
+        // Hinweis-Absätze (note) bleiben wie bisher
         if (para.isNote) {
             content.push({
                 text: text,
@@ -655,22 +656,37 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         }
 
         const title = para.title || para.Titel || ("§ " + (idx + 1));
+        const blocks = buildPdfBlocksFromText(text);
 
-        const heading = {
-            text: title,
-            style: "h2",
-            margin: [0, 10, 0, 4]
+        // Stack für einen kompletten Paragraphen (Überschrift + Textblöcke)
+        const paragraphStack = {
+            stack: [
+                {
+                    text: title,
+                    style: "h2",
+                    margin: [0, 10, 0, 4]
+                },
+                ...blocks
+            ]
         };
 
-        // Beispiel: bestimmte §§ auf neuer Seite (optional, via Muster)
+        // Tabelle mit einer Zeile/Spalte, damit pdfMake die Zeile zusammenhält
+        const paragraphTable = {
+            table: {
+                widths: ["*"],
+                body: [[paragraphStack]]
+            },
+            layout: "noBorders",
+            dontBreakRows: true,
+            margin: [0, 0, 0, 0]
+        };
+
+        // Optional: bestimmte Paragraphen auf neuer Seite beginnen lassen
         if (/^§\s*4\b/.test(title) || /^§\s*8\b/.test(title) || /^§\s*11\b/.test(title)) {
-            heading.pageBreak = "before";
+            paragraphTable.pageBreak = "before";
         }
 
-        content.push(heading);
-
-        const blocks = buildPdfBlocksFromText(text);
-        blocks.forEach(b => content.push(b));
+        content.push(paragraphTable);
     });
 
     return {
@@ -690,7 +706,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
-            stack: [
+                stack: [
                     {
                         columns: [
                             {
