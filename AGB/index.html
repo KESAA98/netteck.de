@@ -338,6 +338,11 @@
                 max-height: none;
                 margin-bottom: 0.75rem;
             }
+
+            /* "Strg+F" auf Mobile ausblenden */
+            .search-box span {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -780,10 +785,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             margin: [0, 0, 0, 0]
         };
 
-        if (/^§\s*4\b/.test(title) || /^§\s*8\b/.test(title) || /^§\s*11\b/.test(title)) {
-            paragraphTable.pageBreak = "before";
-        }
-
         content.push(paragraphTable);
     });
 
@@ -804,29 +805,29 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
-            stack: [
-                {
-                    columns: [
-                        {
-                            text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
-                            alignment: "left",
-                            fontSize: 8
-                        },
-                        {
-                            text: "Seite " + currentPage + " von " + pageCount,
-                            alignment: "right",
-                            fontSize: 8
-                        }
-                    ]
-                },
-                {
-                    text: exportStamp,
-                    alignment: "center",
-                    fontSize: 8,
-                    color: "#999999",
-                    margin: [0, 4, 0, 0]
-                }
-            ]
+                stack: [
+                    {
+                        columns: [
+                            {
+                                text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
+                                alignment: "left",
+                                fontSize: 8
+                            },
+                            {
+                                text: "Seite " + currentPage + " von " + pageCount,
+                                alignment: "right",
+                                fontSize: 8
+                            }
+                        ]
+                    },
+                    {
+                        text: exportStamp,
+                        alignment: "center",
+                        fontSize: 8,
+                        color: "#999999",
+                        margin: [0, 4, 0, 0]
+                    }
+                ]
             };
         },
         content: content
