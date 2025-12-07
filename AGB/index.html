@@ -290,7 +290,11 @@
 // Logo-Pfad relativ zu /AGB/index.html
 const LOGO_PATH = "../Logos/logo_name.jpeg";
 
-// Liste der AGB-Dateien wird dynamisch aus AGBs/agb_files.json geladen
+// GitHub-API für den Ordner /AGB/AGBs im Repo KESAA98/netteck.de
+const GITHUB_CONTENT_API =
+  "https://api.github.com/repos/KESAA98/netteck.de/contents/AGB/AGBs";
+
+// Liste der AGB-Dateien (wird dynamisch gefüllt)
 let AGB_FILES = [];
 
 // Version für PDF-Kopf
@@ -365,24 +369,30 @@ async function updateStandFromLastModified(files) {
 }
 
 async function init() {
-    // 0) Datei-Liste aus Index-Datei laden
+    // 0) Dateiliste aus GitHub-API laden
     try {
-        const listResp = await fetch("AGBs/agb_files.json");
+        const listResp = await fetch(GITHUB_CONTENT_API);
         if (!listResp.ok) {
-            console.error("agb_files.json konnte nicht geladen werden");
+            console.error("GitHub API Fehler:", listResp.status);
             return;
         }
         const listJson = await listResp.json();
-        AGB_FILES = Array.isArray(listJson.files) ? listJson.files : [];
+        AGB_FILES = listJson
+            .filter(entry =>
+                entry.type === "file" &&
+                entry.name.toLowerCase().endsWith(".txt")
+            )
+            .map(entry => entry.name)
+            .sort();
     } catch (e) {
-        console.error("Fehler beim Laden von agb_files.json:", e);
+        console.error("Fehler beim Laden der Dateiliste aus GitHub:", e);
         return;
     }
 
-    // 1) Stand anhand Last-Modified der Dateien bestimmen
+    // 1) Stand anhand Last-Modified der lokalen Dateien bestimmen
     await updateStandFromLastModified(AGB_FILES);
 
-    // 2) AGB-Dateien laden (JSON aus .txt)
+    // 2) AGB-Dateien laden (JSON aus .txt, lokal vom Server)
     const filePromises = AGB_FILES.map(async (file) => {
         try {
             const resp = await fetch("AGBs/" + file);
@@ -406,7 +416,6 @@ async function init() {
     rawFiles.forEach(fileObj => {
         if (!fileObj) return;
 
-        // note dieser Datei als eigener "Hinweis-Absatz"
         if (fileObj.note) {
             agbData.push({
                 isNote: true,
@@ -421,7 +430,6 @@ async function init() {
             agbData.push(...fileObj.agb_b);
         }
 
-        // Fallback: einzelner Paragraph ohne Array
         if (!fileObj.agb_a && !fileObj.agb_b && (fileObj.title || fileObj.Titel)) {
             agbData.push(fileObj);
         }
@@ -442,7 +450,6 @@ function renderAgb(data) {
         section.className = "para";
         section.id = "para-" + (idx + 1);
 
-        // Hinweis-Absatz aus note
         if (para.isNote) {
             section.classList.add("para-note");
             const bodyNote = document.createElement("div");
@@ -475,23 +482,23 @@ function buildToc(data) {
     toc.querySelectorAll(".toc-item").forEach(n => n.remove());
 
     data.forEach((para, idx) => {
-        if (para.isNote) return; // Hinweise nicht im Inhaltsverzeichnis
+        if (para.isNote) return;
 
         const title = para.title || para.Titel || ("§ " + (idx + 1));
 
         const item = document.createElement("div");
-            item.className = "toc-item";
-            item.textContent = title;
-            item.dataset.target = "para-" + (idx + 1);
-            item.addEventListener("click", () => {
-                document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
-                item.classList.add("active");
-                const target = document.getElementById(item.dataset.target);
-                if (target) {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            });
-            toc.appendChild(item);
+        item.className = "toc-item";
+        item.textContent = title;
+        item.dataset.target = "para-" + (idx + 1);
+        item.addEventListener("click", () => {
+            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+            item.classList.add("active");
+            const target = document.getElementById(item.dataset.target);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+        toc.appendChild(item);
     });
 }
 
@@ -604,7 +611,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
     const content = [];
 
-    // großes Logo im PDF
     content.push({
         image: logoDataUrl,
         width: 520,
@@ -624,11 +630,9 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 10]
     });
 
-    // AGB-Inhalte
     agbData.forEach((para, idx) => {
         const text = para.text || para.Text || "";
 
-        // Hinweis-Absatz (note) im PDF
         if (para.isNote) {
             content.push({
                 text: text,
@@ -647,7 +651,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             margin: [0, 10, 0, 4]
         };
 
-        // Seitenumbrüche für bestimmte Paragraphen anhand des Titels
         if (/^§\s*4\b/.test(title) || /^§\s*8\b/.test(title) || /^§\s*11\b/.test(title)) {
             heading.pageBreak = "before";
         }
