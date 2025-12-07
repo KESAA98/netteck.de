@@ -26,8 +26,8 @@
       "text": "(1) Enthaltene Supportstunden können telefonisch oder per Fernzugriff genutzt werden.\n(2) Nicht genutzte Stunden verfallen.\n(3) Mehrleistungen werden nach Stundensatz berechnet.\n(4) Vor-Ort-Einsätze sind nicht enthalten und kostenpflichtig."
     },
     {
-      "title": "§ 20 Vertragslaufzeit und Beendigung",
-      "text": "(1) Laufzeit 1, 3 oder 5 Jahre.\n(2) Vertrag endet automatisch ohne Kündigung.\n(3) Verlängerung nur bei schriftlicher Vereinbarung.\n(4) außerordentliche Kündigung bleibt möglich."
+  "paragraph": "§ 20 Vertragslaufzeit und Beendigung",
+  "text": "Die Vertragslaufzeit beträgt wahlweise 1, 3 oder 5 Jahre. Innerhalb der vereinbarten Vertragslaufzeit erfolgt die Abrechnung jeweils jahresweise. Der Kunde oder der Auftragnehmer kann den Vertrag mit einer Frist von einem Monat zum Ende des jeweiligen Vertragsjahres kündigen. Erfolgt keine Kündigung, läuft der Vertrag für das nächste Vertragsjahr weiter, jedoch höchstens bis zum Ablauf der insgesamt vereinbarten Vertragslaufzeit. Mit Ablauf der vereinbarten Gesamtlaufzeit endet der Vertrag automatisch, ohne dass es einer Kündigung bedarf. Eine anteilige Erstattung der Jahresvergütung bei vorzeitiger Beendigung eines laufenden Vertragsjahres ist ausgeschlossen. Das Recht zur außerordentlichen Kündigung bleibt unberührt."
     },
     {
       "title": "§ 21 Haftung im Rahmen von Wartungsverträgen",
@@ -39,4 +39,5 @@
     }
   ]
 }
+
 
