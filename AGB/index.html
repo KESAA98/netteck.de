@@ -410,12 +410,13 @@ async function init() {
     const rawFiles = await Promise.all(filePromises);
 
     // 3) Daten zu einer Liste zusammenführen:
-    //    pro Datei erst note (falls vorhanden), dann die jeweiligen Paragraphen
+    //    pro Datei erst note (falls vorhanden), dann ALLE Arrays / Paragraphen (egal wie sie heißen)
     agbData = [];
 
     rawFiles.forEach(fileObj => {
         if (!fileObj) return;
 
+        // Hinweis aus "note"
         if (fileObj.note) {
             agbData.push({
                 isNote: true,
@@ -423,16 +424,23 @@ async function init() {
             });
         }
 
-        if (Array.isArray(fileObj.agb_a)) {
-            agbData.push(...fileObj.agb_a);
-        }
-        if (Array.isArray(fileObj.agb_b)) {
-            agbData.push(...fileObj.agb_b);
-        }
+        // alle übrigen Keys durchsuchen
+        Object.keys(fileObj).forEach(key => {
+            if (key === "note") return;
 
-        if (!fileObj.agb_a && !fileObj.agb_b && (fileObj.title || fileObj.Titel)) {
-            agbData.push(fileObj);
-        }
+            const value = fileObj[key];
+
+            // Arrays mit Paragraphen (z.B. agb_allgemein, agb_b, agb_xyz, ...)
+            if (Array.isArray(value)) {
+                agbData.push(...value);
+            }
+
+            // einzelner Paragraph als Objekt
+            if (value && typeof value === "object" &&
+                (value.title || value.Titel || value.text || value.Text)) {
+                agbData.push(value);
+            }
+        });
     });
 
     renderAgb(agbData);
@@ -450,6 +458,7 @@ function renderAgb(data) {
         section.className = "para";
         section.id = "para-" + (idx + 1);
 
+        // Hinweis-Absatz (note)
         if (para.isNote) {
             section.classList.add("para-note");
             const bodyNote = document.createElement("div");
@@ -611,6 +620,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
     const content = [];
 
+    // Logo + Kopf
     content.push({
         image: logoDataUrl,
         width: 520,
@@ -630,6 +640,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 10]
     });
 
+    // Inhalt aus agbData: Hinweise + Paragraphen
     agbData.forEach((para, idx) => {
         const text = para.text || para.Text || "";
 
@@ -651,6 +662,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             margin: [0, 10, 0, 4]
         };
 
+        // Beispiel: bestimmte §§ auf neuer Seite (optional, via Muster)
         if (/^§\s*4\b/.test(title) || /^§\s*8\b/.test(title) || /^§\s*11\b/.test(title)) {
             heading.pageBreak = "before";
         }
@@ -678,7 +690,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
-                stack: [
+            stack: [
                     {
                         columns: [
                             {
