@@ -19,8 +19,16 @@
             --text-muted: #6b7280;
             --radius-lg: 14px;
         }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: var(--bg);
@@ -28,11 +36,19 @@
             line-height: 1.6;
         }
 
+        /* Bilder generell responsive halten */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .page {
             max-width: 1100px;
             margin: 2rem auto 3rem;
             padding: 0 1rem;
         }
+
         .card {
             background: var(--card-bg);
             border-radius: var(--radius-lg);
@@ -49,14 +65,22 @@
             flex-wrap: wrap;
             margin-bottom: 1.25rem;
         }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
         .logo-wrapper img {
             max-height: 60px;
             width: auto;
         }
+
         .title-block h1 {
             font-size: 1.5rem;
             margin: 0 0 0.25rem;
         }
+
         .title-block .meta {
             font-size: 0.9rem;
             color: var(--text-muted);
@@ -70,10 +94,12 @@
             justify-content: space-between;
             margin-bottom: 1.25rem;
         }
+
         .search-box {
             flex: 1 1 220px;
             position: relative;
         }
+
         .search-box input {
             width: 100%;
             padding: 0.55rem 2.1rem 0.55rem 0.9rem;
@@ -83,11 +109,13 @@
             outline: none;
             background: #f9fafb;
         }
+
         .search-box input:focus {
             border-color: var(--primary);
             background: #fff;
             box-shadow: 0 0 0 3px var(--primary-soft);
         }
+
         .search-box span {
             position: absolute;
             right: 0.75rem;
@@ -96,6 +124,7 @@
             font-size: 0.8rem;
             color: var(--text-muted);
         }
+
         .search-info {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -115,14 +144,17 @@
             cursor: pointer;
             white-space: nowrap;
         }
+
         .btn:hover {
             background: var(--primary);
             color: #fff;
         }
+
         .btn.secondary {
             border-color: var(--border);
             color: var(--text-muted);
         }
+
         .btn.secondary:hover {
             background: #f3f4f6;
         }
@@ -132,6 +164,7 @@
             grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
             gap: 1.5rem;
         }
+
         @media (max-width: 800px) {
             .agb-layout {
                 grid-template-columns: minmax(0, 1fr);
@@ -149,22 +182,26 @@
             top: 1rem;
             background: #ffffff;
         }
+
         .toc-title {
             font-weight: 600;
             font-size: 0.9rem;
             margin-bottom: 0.4rem;
         }
+
         .toc-item {
             padding: 0.3rem 0.45rem;
             border-radius: 999px;
             cursor: pointer;
             color: var(--text-muted);
         }
+
         .toc-item.active {
             background: var(--primary-soft);
             color: var(--primary);
             font-weight: 600;
         }
+
         .toc-item:hover {
             background: #f3f4f6;
         }
@@ -173,12 +210,20 @@
             padding: 0.7rem 0 0.9rem;
             border-bottom: 1px solid #edf0f4;
         }
-        .para:last-child { border-bottom: none; }
+
+        .para:last-child {
+            border-bottom: none;
+        }
+
         .para-title {
             font-weight: 600;
             margin: 0 0 0.25rem;
         }
-        .para-text p { margin: 0.2rem 0; }
+
+        .para-text p {
+            margin: 0.2rem 0;
+        }
+
         .para-text ul {
             margin: 0.25rem 0 0.5rem 1.2rem;
         }
@@ -189,6 +234,7 @@
             margin-top: 0.3rem;
             margin-bottom: 0.3rem;
         }
+
         .para-note .para-text {
             font-size: 0.85rem;
             color: var(--text-muted);
@@ -230,6 +276,68 @@
 
         .footer-link:hover {
             color: var(--text-main);
+        }
+
+        /* --------- MOBILE-OPTIMIERUNG --------- */
+        @media (max-width: 600px) {
+            .page {
+                margin: 1.25rem auto 2rem;
+                padding: 0 0.75rem;
+            }
+
+            .card {
+                padding: 1.25rem 1.1rem 1.6rem;
+                border-radius: 12px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .logo-wrapper {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .logo-wrapper img {
+                max-height: 52px;
+            }
+
+            .title-block {
+                width: 100%;
+                text-align: left;
+            }
+
+            .title-block h1 {
+                font-size: 1.25rem;
+                line-height: 1.3;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.6rem;
+            }
+
+            .toolbar > div:last-child {
+                display: flex;
+                width: 100%;
+                justify-content: stretch;
+                gap: 0.5rem;
+            }
+
+            .toolbar .btn {
+                flex: 1 1 auto;
+                justify-content: center;
+            }
+
+            .toc {
+                position: static;
+                max-height: none;
+                margin-bottom: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -409,14 +517,12 @@ async function init() {
 
     const rawFiles = await Promise.all(filePromises);
 
-    // 3) Daten zu einer Liste zusammenführen:
-    //    pro Datei erst note (falls vorhanden), dann ALLE Arrays / Paragraphen (egal wie sie heißen)
+    // 3) Daten zu einer Liste zusammenführen
     agbData = [];
 
     rawFiles.forEach(fileObj => {
         if (!fileObj) return;
 
-        // Hinweis aus "note"
         if (fileObj.note) {
             agbData.push({
                 isNote: true,
@@ -424,18 +530,15 @@ async function init() {
             });
         }
 
-        // alle übrigen Keys durchsuchen
         Object.keys(fileObj).forEach(key => {
             if (key === "note") return;
 
             const value = fileObj[key];
 
-            // Arrays mit Paragraphen (z.B. agb_allgemein, agb_b, agb_xyz, ...)
             if (Array.isArray(value)) {
                 agbData.push(...value);
             }
 
-            // einzelner Paragraph als Objekt
             if (value && typeof value === "object" &&
                 (value.title || value.Titel || value.text || value.Text)) {
                 agbData.push(value);
@@ -458,7 +561,6 @@ function renderAgb(data) {
         section.className = "para";
         section.id = "para-" + (idx + 1);
 
-        // Hinweis-Absatz (note)
         if (para.isNote) {
             section.classList.add("para-note");
             const bodyNote = document.createElement("div");
@@ -644,7 +746,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     agbData.forEach((para, idx) => {
         const text = para.text || para.Text || "";
 
-        // Hinweis-Absätze (note) bleiben wie bisher
         if (para.isNote) {
             content.push({
                 text: text,
@@ -658,7 +759,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         const title = para.title || para.Titel || ("§ " + (idx + 1));
         const blocks = buildPdfBlocksFromText(text);
 
-        // Stack für einen kompletten Paragraphen (Überschrift + Textblöcke)
         const paragraphStack = {
             stack: [
                 {
@@ -670,7 +770,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             ]
         };
 
-        // Tabelle mit einer Zeile/Spalte, damit pdfMake die Zeile zusammenhält
         const paragraphTable = {
             table: {
                 widths: ["*"],
@@ -681,7 +780,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             margin: [0, 0, 0, 0]
         };
 
-        // Optional: bestimmte Paragraphen auf neuer Seite beginnen lassen
         if (/^§\s*4\b/.test(title) || /^§\s*8\b/.test(title) || /^§\s*11\b/.test(title)) {
             paragraphTable.pageBreak = "before";
         }
@@ -706,29 +804,29 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         footer: function(currentPage, pageCount) {
             return {
                 margin: [40, 0, 40, 20],
-                stack: [
-                    {
-                        columns: [
-                            {
-                                text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
-                                alignment: "left",
-                                fontSize: 8
-                            },
-                            {
-                                text: "Seite " + currentPage + " von " + pageCount,
-                                alignment: "right",
-                                fontSize: 8
-                            }
-                        ]
-                    },
-                    {
-                        text: exportStamp,
-                        alignment: "center",
-                        fontSize: 8,
-                        color: "#999999",
-                        margin: [0, 4, 0, 0]
-                    }
-                ]
+            stack: [
+                {
+                    columns: [
+                        {
+                            text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
+                            alignment: "left",
+                            fontSize: 8
+                        },
+                        {
+                            text: "Seite " + currentPage + " von " + pageCount,
+                            alignment: "right",
+                            fontSize: 8
+                        }
+                    ]
+                },
+                {
+                    text: exportStamp,
+                    alignment: "center",
+                    fontSize: 8,
+                    color: "#999999",
+                    margin: [0, 4, 0, 0]
+                }
+            ]
             };
         },
         content: content
