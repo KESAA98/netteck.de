@@ -1,5 +1,5 @@
 {
-  "note": "AGB-B ergänzt die allgemeinen AGB-A ausschließlich für Wartungs-, Service- und Supportverträge. Sie gelten nur zusätzlich zu AGB-A.",
+  "note": "Die ergänzenden Bestimmungen dieses Teil B gelten ausschließlich für Wartungs-, Service- und Supportverträge. Sie finden nur zusätzlich zu den allgemeinen Geschäftsbedingungen Anwendung, sofern ein entsprechender Wartungs- oder Servicevertrag abgeschlossen wurde.",
   "agb_b": [
     {
       "title": "§ B1 Geltungsbereich der besonderen Bedingungen",
@@ -39,3 +39,4 @@
     }
   ]
 }
+
