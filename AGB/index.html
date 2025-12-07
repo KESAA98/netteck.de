@@ -131,6 +131,12 @@
             margin-top: 0.25rem;
         }
 
+        /* Wenn keine Treffer angezeigt werden, Lücke komplett entfernen */
+        .search-info:empty {
+            margin-top: 0;
+            display: none;
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -380,8 +386,8 @@
                 <div class="toc-title">Inhalt</div>
             </nav>
 
-            <main class="agb-content" id="agbContent">
-            </main>
+        <main class="agb-content" id="agbContent">
+        </main>
         </div>
 
         <footer>
@@ -751,6 +757,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     agbData.forEach((para, idx) => {
         const text = para.text || para.Text || "";
 
+        // Hinweis-Absätze
         if (para.isNote) {
             content.push({
                 text: text,
@@ -764,7 +771,11 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         const title = para.title || para.Titel || ("§ " + (idx + 1));
         const blocks = buildPdfBlocksFromText(text);
 
+        // Unbreakable-Stack: kompletter Paragraph (Überschrift + Text) wird
+        // nach Möglichkeit immer als Ganzes auf eine Seite gelegt.
         const paragraphStack = {
+            unbreakable: true,
+            margin: [0, 4, 0, 4],
             stack: [
                 {
                     text: title,
@@ -775,17 +786,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             ]
         };
 
-        const paragraphTable = {
-            table: {
-                widths: ["*"],
-                body: [[paragraphStack]]
-            },
-            layout: "noBorders",
-            dontBreakRows: true,
-            margin: [0, 0, 0, 0]
-        };
-
-        content.push(paragraphTable);
+        content.push(paragraphStack);
     });
 
     return {
