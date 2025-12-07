@@ -52,6 +52,11 @@
     {
       "title": "§ 13 Datenschutz & Speicherung von Auftragsdaten",
       "text": "(1) Daten werden nur zur Vertragserfüllung verarbeitet.\n(2) Speicherung erfolgt gemäß gesetzlichen Fristen.\n(3) Längere Speicherung technischer Unterlagen ist mit Einwilligung möglich.\n(4) Weitergabe an Dritte erfolgt nur zur Erfüllung oder aufgrund gesetzlicher Pflichten.\n(5) Weitere Informationen stehen in der Datenschutzerklärung."
+    },
+    {
+  "paragraph": "§ 14 Wegfall der Leistungserbringung",
+  "text": "Sollte der Auftragnehmer aufgrund dauerhafter Krankheit, Berufsunfähigkeit oder Todes des Inhabers die vertraglich geschuldeten Leistungen nicht mehr erbringen können, endet der Vertrag automatisch mit dem Zeitpunkt des Wegfalls der Leistungsfähigkeit. Eine anteilige Erstattung bereits gezahlter Vergütungen ist ausgeschlossen, da der Wegfall der Leistungserbringung einen wichtigen Grund im Sinne der außerordentlichen Vertragsbeendigung darstellt. Etwaige Erben oder Rechtsnachfolger sind nicht verpflichtet, den Vertrag fortzuführen oder bereits gezahlte Beträge zurückzuerstatten."
     }
   ]
 }
+
