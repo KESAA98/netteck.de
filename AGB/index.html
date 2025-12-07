@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
@@ -290,7 +290,7 @@
             color: var(--text-main);
         }
 
-        /* --------- MOBILE-OPTIMIERUNG --------- */
+        /* --------- MOBILE-OPTIMIERUNG + LÜCKEN-FIX --------- */
         @media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
@@ -334,16 +334,41 @@
                 margin-bottom: 0.75rem;
             }
 
-            /* Buttons in der Toolbar auf Mobil komplett ausblenden,
-               damit direkt nach der Suche der Inhalt beginnt */
+            /* Buttons auch mobil sichtbar, aber untereinander / nebeneinander im Vollbreiten-Container */
             .toolbar-actions {
-                display: none;
+                display: flex;
+                width: 100%;
+                gap: 0.5rem;
+                justify-content: space-between;
             }
 
+            .toolbar-actions .btn {
+                flex: 1 1 0;
+                justify-content: center;
+            }
+
+            /* Grid aufheben, damit keine „unsichtbare Spalte“ eine Lücke erzeugt */
+            .agb-layout {
+                display: block;
+                grid-template-columns: none;
+                gap: 0;
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            /* TOC normal in den Flow setzen, ohne zusätzlichen oberen Abstand */
             .toc {
                 position: static;
                 max-height: none;
+                margin-top: 0;
+                padding-top: 0;
                 margin-bottom: 0.75rem;
+            }
+
+            /* Inhalt direkt unter dem TOC beginnen */
+            .agb-content {
+                margin-top: 0;
+                padding-top: 0;
             }
 
             /* "Strg+F" auf Mobile ausblenden */
