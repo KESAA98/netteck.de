@@ -62,17 +62,6 @@
             color: var(--text-muted);
         }
 
-        /* NEU: Hinweisbox für note aus JSON */
-        .note-hint {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            background: #f9fafb;
-            border-radius: 8px;
-            border: 1px dashed var(--border);
-            padding: 0.5rem 0.75rem;
-            margin: 0 0 1rem 0;
-        }
-
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -194,6 +183,21 @@
             margin: 0.25rem 0 0.5rem 1.2rem;
         }
 
+        /* Hinweis-Absätze aus note-Feldern */
+        .para-note {
+            border-bottom: none;
+            margin-top: 0.3rem;
+            margin-bottom: 0.3rem;
+        }
+        .para-note .para-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            padding: 0.5rem 0.75rem;
+        }
+
         mark {
             background: #fef08a;
             padding: 0 2px;
@@ -246,9 +250,6 @@
             </div>
         </header>
 
-        <!-- NEU: Hinweis aus note-Feld -->
-        <p class="note-hint" id="noteGlobal"></p>
-
         <div class="toolbar">
             <div class="search-box">
                 <input id="searchInput" type="search" placeholder="In AGB suchen …">
@@ -300,8 +301,6 @@ const AGB_VERSION = "AGB_KS_2025_12_03";
 
 let agbData = [];
 let standDateStr = null; // "dd.mm.yyyy"
-// NEU: notes aus den Dateien (z.B. aus agb_b.note)
-let notes = [];
 
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
@@ -389,16 +388,19 @@ async function init() {
 
     const rawFiles = await Promise.all(filePromises);
 
-    // 3) Daten aus agb_a / agb_b Arrays zu einer Liste zusammenführen
+    // 3) Daten zu einer Liste zusammenführen:
+    //    pro Datei erst note (falls vorhanden), dann die jeweiligen Paragraphen
     agbData = [];
-    notes = [];
 
     rawFiles.forEach(fileObj => {
         if (!fileObj) return;
 
-        // NEU: note-Feld einsammeln (z.B. aus agb_b.note)
+        // note dieser Datei als eigener "Hinweis-Absatz"
         if (fileObj.note) {
-            notes.push(fileObj.note);
+            agbData.push({
+                isNote: true,
+                text: fileObj.note
+            });
         }
 
         if (Array.isArray(fileObj.agb_a)) {
@@ -408,7 +410,7 @@ async function init() {
             agbData.push(...fileObj.agb_b);
         }
 
-        // Fallback: falls einzelne Paragraph-Struktur ohne Array
+        // Fallback: einzelner Paragraph ohne Array
         if (!fileObj.agb_a && !fileObj.agb_b && (fileObj.title || fileObj.Titel)) {
             agbData.push(fileObj);
         }
@@ -416,22 +418,8 @@ async function init() {
 
     renderAgb(agbData);
     buildToc(agbData);
-    renderNoteHint();
     setupSearch();
     setupPdfExport();
-}
-
-// NEU: Hinweis im HTML setzen
-function renderNoteHint() {
-    const el = document.getElementById("noteGlobal");
-    if (!el) return;
-
-    if (notes.length) {
-        // wenn mehrere notes existieren, einfach zusammenführen
-        el.textContent = notes.join(" ");
-    } else {
-        el.style.display = "none";
-    }
 }
 
 function renderAgb(data) {
@@ -442,6 +430,17 @@ function renderAgb(data) {
         const section = document.createElement("section");
         section.className = "para";
         section.id = "para-" + (idx + 1);
+
+        // Hinweis-Absatz aus note
+        if (para.isNote) {
+            section.classList.add("para-note");
+            const body = document.createElement("div");
+            body.className = "para-text";
+            body.appendChild(renderTextToHtml(para.text || para.Text || ""));
+            section.appendChild(body);
+            container.appendChild(section);
+            return;
+        }
 
         const title = para.title || para.Titel || ("§ " + (idx + 1));
         const text = para.text || para.Text || "";
@@ -465,6 +464,8 @@ function buildToc(data) {
     toc.querySelectorAll(".toc-item").forEach(n => n.remove());
 
     data.forEach((para, idx) => {
+        if (para.isNote) return; // Hinweise nicht im Inhaltsverzeichnis
+
         const title = para.title || para.Titel || ("§ " + (idx + 1));
 
         const item = document.createElement("div");
@@ -612,22 +613,22 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 10]
     });
 
-    // NEU: Hinweis (note) auch im PDF anzeigen, falls vorhanden
-    if (notes.length) {
-        content.push({
-            text: notes.join(" "),
-            fontSize: 9,
-            color: "#555555",
-            margin: [0, 0, 0, 16]
-        });
-    }
-
-    // Seitenumbrüche: § 4, § 8, § 11 auf neuer Seite (Index 3,7,10 in agbData)
-    const breakBeforeIdx = [3, 7, 10];
-
+    // AGB-Inhalte
     agbData.forEach((para, idx) => {
-        const title = para.title || para.Titel || ("§ " + (idx + 1));
         const text = para.text || para.Text || "";
+
+        // Hinweis-Absatz (note) im PDF
+        if (para.isNote) {
+            content.push({
+                text: text,
+                fontSize: 9,
+                color: "#555555",
+                margin: [0, 4, 0, 8]
+            });
+            return;
+        }
+
+        const title = para.title || para.Titel || ("§ " + (idx + 1));
 
         const heading = {
             text: title,
@@ -635,7 +636,8 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             margin: [0, 10, 0, 4]
         };
 
-        if (breakBeforeIdx.includes(idx)) {
+        // Seitenumbrüche für bestimmte Paragraphen anhand des Titels
+        if (/^§\s*4\b/.test(title) || /^§\s*8\b/.test(title) || /^§\s*11\b/.test(title)) {
             heading.pageBreak = "before";
         }
 
