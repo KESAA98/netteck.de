@@ -330,15 +330,15 @@
             .toolbar {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 0.6rem;
-                margin-bottom: 0.75rem;
+                gap: 0.15rem;          /* sehr kleine Lücke zwischen Suche und Buttons */
+                margin-bottom: 0.2rem;  /* minimale Lücke zur TOC/AGB-Layout */
             }
 
-            /* Buttons auch mobil sichtbar, aber untereinander / nebeneinander im Vollbreiten-Container */
+            /* Buttons auch mobil sichtbar, im Vollbreiten-Container */
             .toolbar-actions {
                 display: flex;
                 width: 100%;
-                gap: 0.5rem;
+                gap: 0.25rem;
                 justify-content: space-between;
             }
 
@@ -347,7 +347,7 @@
                 justify-content: center;
             }
 
-            /* Grid aufheben, damit keine „unsichtbare Spalte“ eine Lücke erzeugt */
+            /* Grid aufheben, damit keine „unsichtbare Spalte“ Platz frisst */
             .agb-layout {
                 display: block;
                 grid-template-columns: none;
@@ -356,13 +356,13 @@
                 padding-top: 0;
             }
 
-            /* TOC normal in den Flow setzen, ohne zusätzlichen oberen Abstand */
+            /* TOC normal in den Flow setzen, ohne extra Abstand */
             .toc {
                 position: static;
                 max-height: none;
                 margin-top: 0;
                 padding-top: 0;
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.4rem;
             }
 
             /* Inhalt direkt unter dem TOC beginnen */
