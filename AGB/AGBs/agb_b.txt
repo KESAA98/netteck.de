@@ -14,8 +14,8 @@
       "text": "(1) Der Kunde stellt notwendige Zugänge, Berechtigungen und technischen Informationen bereit.\n(2) Störungen oder Änderungen müssen unverzüglich gemeldet werden.\n(3) Der Kunde sorgt für stabile Internetversorgung, Stromversorgung, Schaltschrankschutz und ausreichende Kühlung."
     },
     {
-      "title": "§ 17 LANcare und Leistungen Dritter",
-      "text": "(1) Für jeden Router wird ein LANcare-Paket erworben und registriert.\n(2) Hersteller-Services werden ausschließlich durch LANCOM erbracht.\n(3) Der Auftragnehmer übernimmt Diagnose, Ticket-Erstellung, Analyse und Kommunikation.\n(4) Verzögerungen durch LANCOM begründen keinen Mangel."
+  "paragraph": "§ 17 Hersteller-Services und Notfallunterstützung (LANCOM)",
+  "text": "Der Auftragnehmer übernimmt die planbare Wartung, regelmäßige Betreuung sowie den technischen Support im Rahmen dieses Vertrages. Für schwerwiegende Betriebsstörungen, akute Hardwareprobleme oder Fälle, in denen der Auftragnehmer vorübergehend nicht erreichbar ist (z. B. Wochenende, Urlaub, Notfall), kann der Kunde die offiziellen LANCOM-Herstellerservices, insbesondere LANcare-Servicepakete, direkt nutzen. LANcare stellt keinen Garantieservice dar, sondern ein zusätzliches herstellerseitiges Support- und Austauschpaket. Der Auftragnehmer führt die Registrierung des Gerätes und des LANcare-Pakets für den Kunden durch und hinterlegt die erforderlichen Daten im Rahmen der Wartung. Die Verantwortung für Art, Umfang und Dauer der durch LANCOM erbrachten Leistungen liegt ausschließlich beim Hersteller. Der Auftragnehmer ist in solchen Fällen nicht zu einer sofortigen Vor-Ort-Leistung verpflichtet."
     },
     {
       "title": "§ 18 Backup & Dokumentation",
@@ -39,3 +39,4 @@
     }
   ]
 }
+
