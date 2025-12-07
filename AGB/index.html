@@ -290,11 +290,8 @@
 // Logo-Pfad relativ zu /AGB/index.html
 const LOGO_PATH = "../Logos/logo_name.jpeg";
 
-// AGB-Dateien im Ordner /AGB/AGBs (JSON in .txt)
-const AGB_FILES = [
-    "agb_a.txt",
-    "agb_b.txt"
-];
+// Liste der AGB-Dateien wird dynamisch aus AGBs/agb_files.json geladen
+let AGB_FILES = [];
 
 // Version für PDF-Kopf
 const AGB_VERSION = "AGB_KS_2025_12_03";
@@ -368,6 +365,20 @@ async function updateStandFromLastModified(files) {
 }
 
 async function init() {
+    // 0) Datei-Liste aus Index-Datei laden
+    try {
+        const listResp = await fetch("AGBs/agb_files.json");
+        if (!listResp.ok) {
+            console.error("agb_files.json konnte nicht geladen werden");
+            return;
+        }
+        const listJson = await listResp.json();
+        AGB_FILES = Array.isArray(listJson.files) ? listJson.files : [];
+    } catch (e) {
+        console.error("Fehler beim Laden von agb_files.json:", e);
+        return;
+    }
+
     // 1) Stand anhand Last-Modified der Dateien bestimmen
     await updateStandFromLastModified(AGB_FILES);
 
@@ -434,10 +445,10 @@ function renderAgb(data) {
         // Hinweis-Absatz aus note
         if (para.isNote) {
             section.classList.add("para-note");
-            const body = document.createElement("div");
-            body.className = "para-text";
-            body.appendChild(renderTextToHtml(para.text || para.Text || ""));
-            section.appendChild(body);
+            const bodyNote = document.createElement("div");
+            bodyNote.className = "para-text";
+            bodyNote.appendChild(renderTextToHtml(para.text || para.Text || ""));
+            section.appendChild(bodyNote);
             container.appendChild(section);
             return;
         }
@@ -469,18 +480,18 @@ function buildToc(data) {
         const title = para.title || para.Titel || ("§ " + (idx + 1));
 
         const item = document.createElement("div");
-        item.className = "toc-item";
-        item.textContent = title;
-        item.dataset.target = "para-" + (idx + 1);
-        item.addEventListener("click", () => {
-            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
-            item.classList.add("active");
-            const target = document.getElementById(item.dataset.target);
-            if (target) {
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        });
-        toc.appendChild(item);
+            item.className = "toc-item";
+            item.textContent = title;
+            item.dataset.target = "para-" + (idx + 1);
+            item.addEventListener("click", () => {
+                document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+                item.classList.add("active");
+                const target = document.getElementById(item.dataset.target);
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
+            toc.appendChild(item);
     });
 }
 
