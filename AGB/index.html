@@ -62,6 +62,17 @@
             color: var(--text-muted);
         }
 
+        /* NEU: Hinweisbox für note aus JSON */
+        .note-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            padding: 0.5rem 0.75rem;
+            margin: 0 0 1rem 0;
+        }
+
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -235,6 +246,9 @@
             </div>
         </header>
 
+        <!-- NEU: Hinweis aus note-Feld -->
+        <p class="note-hint" id="noteGlobal"></p>
+
         <div class="toolbar">
             <div class="search-box">
                 <input id="searchInput" type="search" placeholder="In AGB suchen …">
@@ -286,6 +300,8 @@ const AGB_VERSION = "AGB_KS_2025_12_03";
 
 let agbData = [];
 let standDateStr = null; // "dd.mm.yyyy"
+// NEU: notes aus den Dateien (z.B. aus agb_b.note)
+let notes = [];
 
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
@@ -375,9 +391,15 @@ async function init() {
 
     // 3) Daten aus agb_a / agb_b Arrays zu einer Liste zusammenführen
     agbData = [];
+    notes = [];
 
     rawFiles.forEach(fileObj => {
         if (!fileObj) return;
+
+        // NEU: note-Feld einsammeln (z.B. aus agb_b.note)
+        if (fileObj.note) {
+            notes.push(fileObj.note);
+        }
 
         if (Array.isArray(fileObj.agb_a)) {
             agbData.push(...fileObj.agb_a);
@@ -394,8 +416,22 @@ async function init() {
 
     renderAgb(agbData);
     buildToc(agbData);
+    renderNoteHint();
     setupSearch();
     setupPdfExport();
+}
+
+// NEU: Hinweis im HTML setzen
+function renderNoteHint() {
+    const el = document.getElementById("noteGlobal");
+    if (!el) return;
+
+    if (notes.length) {
+        // wenn mehrere notes existieren, einfach zusammenführen
+        el.textContent = notes.join(" ");
+    } else {
+        el.style.display = "none";
+    }
 }
 
 function renderAgb(data) {
@@ -573,10 +609,20 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     content.push({
         text: "Version " + versionStr,
         style: "meta",
-        margin: [0, 0, 0, 16]
+        margin: [0, 0, 0, 10]
     });
 
-    // Seitenumbrüche: § 4, § 8, § 11 auf neuer Seite
+    // NEU: Hinweis (note) auch im PDF anzeigen, falls vorhanden
+    if (notes.length) {
+        content.push({
+            text: notes.join(" "),
+            fontSize: 9,
+            color: "#555555",
+            margin: [0, 0, 0, 16]
+        });
+    }
+
+    // Seitenumbrüche: § 4, § 8, § 11 auf neuer Seite (Index 3,7,10 in agbData)
     const breakBeforeIdx = [3, 7, 10];
 
     agbData.forEach((para, idx) => {
