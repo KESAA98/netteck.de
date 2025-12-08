@@ -330,9 +330,13 @@
             .toolbar {
                 flex-direction: column;
                 align-items: stretch;
-                justify-content: flex-start; /* Lücken-Fix */
-                gap: 0.15rem;                /* sehr kleine Lücke zwischen Suche und Buttons */
-                margin-bottom: 0.2rem;        /* minimale Lücke zur TOC/AGB-Layout */
+                justify-content: flex-start; /* keine Verteilung über volle Höhe */
+                gap: 0.5rem;                 /* etwas mehr Platz zwischen Suche und Buttons */
+                margin-bottom: 0.8rem;       /* angenehmer Abstand zur TOC */
+            }
+
+            .search-box {
+                flex: 0 0 auto;              /* verhindert die 220px-Mindesthöhe -> Lücke weg */
             }
 
             /* Buttons auch mobil sichtbar, im Vollbreiten-Container */
@@ -750,7 +754,7 @@ function buildPdfBlocksFromText(text) {
 
 function buildPdfDocumentDefinition(logoDataUrl) {
     const now = new Date();
-    const ts = now.toLocaleString("de-DE");
+       const ts = now.toLocaleString("de-DE");
 
     const versionStr = AGB_VERSION;
     const standStr = standDateStr;
