@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Kontakt – Kevin Strakerjahn Networks &amp; Automation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon (Tab-Icon) -->
+    <link rel="icon" type="image/png" href="../Logos/logo.png">
+
+    <style>
+        :root {
+            --primary: #0b74ff;
+            --primary-soft: rgba(11, 116, 255, 0.08);
+            --bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --border: #e1e4ec;
+            --text-main: #1f2933;
+            --text-muted: #6b7280;
+            --radius-lg: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            padding: 1.75rem 1.9rem 2.1rem;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-wrapper img {
+            max-height: 60px;
+            width: auto;
+        }
+
+        .title-block h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.25rem;
+        }
+
+        .title-block .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+            gap: 1.8rem;
+            align-items: flex-start;
+            margin-top: 0.5rem;
+        }
+
+        .contact-info {
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .contact-info p {
+            margin: 0.3rem 0;
+        }
+
+        .contact-info h2 {
+            font-size: 1.05rem;
+            margin: 0 0 0.35rem;
+        }
+
+        .contact-info small {
+            color: var(--text-muted);
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        .contact-highlight {
+            padding: 0.7rem 0.85rem;
+            border-radius: 10px;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 0.88rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-main);
+        }
+
+        .input, textarea, select {
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            background: #f9fafb;
+            outline: none;
+        }
+
+        .input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.1rem;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            margin-top: 0.2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            background: var(--primary);
+            color: #ffffff;
+            padding: 0.55rem 1.4rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: #0756c4;
+            border-color: #0756c4;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .netlify-honeypot {
+            display: none;
+        }
+
+        footer {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .footer-link {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+        }
+
+        /* ---------- MOBILE ---------- */
+        @media (max-width: 800px) {
+            .contact-layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                margin: 1.25rem auto 2rem;
+                padding: 0 0.75rem;
+            }
+
+            .card {
+                padding: 1.25rem 1.1rem 1.8rem;
+                border-radius: 12px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .logo-wrapper {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .logo-wrapper img {
+                max-height: 52px;
+            }
+
+            .title-block {
+                width: 100%;
+                text-align: left;
+            }
+
+            .title-block h1 {
+                font-size: 1.25rem;
+                line-height: 1.3;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <div class="card">
+
+        <header class="header">
+            <div class="logo-wrapper">
+                <img src="../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+            </div>
+            <div class="title-block">
+                <h1>Kontakt</h1>
+                <div class="meta">
+                    Sie haben eine Frage zu Projekten, Windparks oder IT-Automatisierung? Schreiben Sie mir gern direkt.
+                </div>
+            </div>
+        </header>
+
+        <div class="contact-layout">
+            <!-- Linke Spalte: Info (wird per JSON überschrieben) -->
+            <section class="contact-info">
+                <h2>Direktkontakt</h2>
+
+                <p>
+                    <strong><span id="unternehmen">Kevin Strakerjahn Networks &amp; Automation</span></strong>
+                </p>
+                <p>
+                    <span id="strasse">Bundesstraße 5 6</span><br>
+                    <span id="plz">25795</span> <span id="ort">Stelle-Wittenwurth</span>
+                </p>
+                <p>
+                    E-Mail:
+                    <a id="emailLink" href="mailto:info@netteck.de">
+                        <span id="email">info@netteck.de</span>
+                    </a><br>
+                    Telefon:
+                    <a id="telefonLink" href="tel:+4915129047232">
+                        <span id="telefon">+49 151 29047232</span>
+                    </a><br>
+                    <span id="websiteWrapper">
+                        Website:
+                        <a id="websiteLink" href="https://netteck.de" target="_blank" rel="noopener">
+                            <span id="website">https://netteck.de</span>
+                        </a>
+                    </span>
+                </p>
+
+                <small>Ich melde mich in der Regel innerhalb von 1–2 Werktagen zurück.</small>
+
+                <div class="contact-highlight">
+                    Bitte nutzen Sie das Formular rechts für Anfragen zu
+                    <br>– Windpark-Netzwerken &amp; Router-Konfiguration
+                    <br>– Monitoring, Automatisierung &amp; Wartung
+                    <br>– sonstigen technischen Projekten
+                </div>
+            </section>
+
+            <!-- Rechte Spalte: Netlify-Formular -->
+            <section>
+                <form name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <!-- Netlify Hidden Fields -->
+                    <input type="hidden" name="form-name" value="kontakt">
+                    <p class="netlify-honeypot">
+                        <label>Bitte leer lassen: <input name="bot-field"></label>
+                    </p>
+
+                    <div class="full-width">
+                        <label for="anliegen">Anliegen</label>
+                        <select id="anliegen" name="Anliegen">
+                            <option value="">Allgemeine Anfrage</option>
+                            <option value="windpark">Windpark / Router &amp; SCADA</option>
+                            <option value="monitoring">Monitoring / Automatisierung</option>
+                            <option value="angebot">Angebotsanfrage</option>
+                            <option value="sonstiges">Sonstiges</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="name">Name *</label>
+                        <input class="input" type="text" id="name" name="Name" required>
+                    </div>
+
+                    <div>
+                        <label for="firma">Firma (optional)</label>
+                        <input class="input" type="text" id="firma" name="Firma">
+                    </div>
+
+                    <div>
+                        <label for="emailField">E-Mail *</label>
+                        <input class="input" type="email" id="emailField" name="E-Mail" required>
+                        <div class="hint">Für Rückfragen und Antworten.</div>
+                    </div>
+
+                    <div>
+                        <label for="telefonField">Telefon (optional)</label>
+                        <input class="input" type="tel" id="telefonField" name="Telefon">
+                    </div>
+
+                    <div class="full-width">
+                        <label for="betreff">Betreff *</label>
+                        <input class="input" type="text" id="betreff" name="Betreff" required>
+                    </div>
+
+                    <div class="full-width">
+                        <label for="nachricht">Nachricht *</label>
+                        <textarea id="nachricht" name="Nachricht" required></textarea>
+                        <div class="hint">Bitte beschreiben Sie Ihr Anliegen möglichst kurz und konkret.</div>
+                    </div>
+
+                    <div class="full-width">
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="datenschutz" name="Datenschutz" value="einverstanden" required>
+                            <label for="datenschutz">
+                                Ich stimme zu, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden.
+                                Weitere Informationen finden Sie im <a href="/impressum/">Impressum</a> und in den AGB.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="full-width">
+                        <button type="submit" class="btn-primary">
+                            Anfrage senden
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <footer>
+            <div class="footer-buttons">
+                <a class="footer-link" href="/">Start</a>
+                <a class="footer-link" href="/kontakt/">Kontakt</a>
+                <a class="footer-link" href="/impressum/">Impressum</a>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+<script>
+// Reihenfolge: erst kontakt.txt im gleichen Ordner, dann impressum.json
+const CONTACT_SOURCES = [
+    "kontakt.txt",
+    "../impressum/impressum.json"
+];
+
+async function loadJson(url) {
+    try {
+        const resp = await fetch(url);
+        if (!resp.ok) return null;
+        return await resp.json();
+    } catch (e) {
+        console.warn("Konnte JSON nicht laden:", url, e);
+        return null;
+    }
+}
+
+function extractContact(data) {
+    // Unterstützt dein Impressums-JSON:
+    // { "impressum": { ... , "kontakt": {...} } }
+    let imp = data.impressum || data;
+    let kontakt = imp.kontakt || imp;
+
+    const adresse = imp.adresse || {};
+
+    return {
+        unternehmen: imp.unternehmen || "",
+        inhaber: imp.inhaber || "",
+        strasse: adresse.strasse || "",
+        plz: adresse.plz || "",
+        ort: adresse.ort || "",
+        telefon: kontakt.telefon || "",
+        email: kontakt.email || "",
+        website: kontakt.website || ""
+    };
+}
+
+function applyContactToDom(contact) {
+    const unternehmenEl = document.getElementById("unternehmen");
+    const strasseEl     = document.getElementById("strasse");
+    const plzEl         = document.getElementById("plz");
+    const ortEl         = document.getElementById("ort");
+    const emailEl       = document.getElementById("email");
+    const emailLinkEl   = document.getElementById("emailLink");
+    const telefonEl     = document.getElementById("telefon");
+    const telefonLinkEl = document.getElementById("telefonLink");
+    const websiteEl     = document.getElementById("website");
+    const websiteLinkEl = document.getElementById("websiteLink");
+    const websiteWrapperEl = document.getElementById("websiteWrapper");
+
+    if (contact.unternehmen && unternehmenEl) unternehmenEl.textContent = contact.unternehmen;
+    if (contact.strasse && strasseEl) strasseEl.textContent = contact.strasse;
+    if (contact.plz && plzEl) plzEl.textContent = contact.plz;
+    if (contact.ort && ortEl) ortEl.textContent = contact.ort;
+
+    if (contact.email && emailEl && emailLinkEl) {
+        emailEl.textContent = contact.email;
+        emailLinkEl.href = "mailto:" + contact.email;
+    }
+
+    if (contact.telefon && telefonEl && telefonLinkEl) {
+        telefonEl.textContent = contact.telefon;
+        // einfache Normalisierung für tel:
+        const telHref = contact.telefon.replace(/\s+/g, "");
+        telefonLinkEl.href = "tel:" + telHref;
+    }
+
+    if (contact.website && websiteEl && websiteLinkEl && websiteWrapperEl) {
+        websiteEl.textContent = contact.website;
+        websiteLinkEl.href = contact.website;
+    } else if (websiteWrapperEl) {
+        // Wenn keine Website im JSON, Block ausblenden
+        websiteWrapperEl.style.display = "none";
+    }
+}
+
+(async function initContactJson() {
+    for (const src of CONTACT_SOURCES) {
+        const data = await loadJson(src);
+        if (!data) continue;
+
+        try {
+            const contact = extractContact(data);
+            applyContactToDom(contact);
+            break; // sobald eine Quelle funktioniert, abbrechen
+        } catch (e) {
+            console.warn("Konnte Kontaktdaten aus Quelle nicht auslesen:", src, e);
+        }
+    }
+})();
+</script>
+
+</body>
+</html>
