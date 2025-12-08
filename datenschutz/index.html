@@ -19,8 +19,16 @@
             --text-muted: #6b7280;
             --radius-lg: 14px;
         }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: var(--bg);
@@ -28,11 +36,18 @@
             line-height: 1.6;
         }
 
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .page {
             max-width: 1100px;
             margin: 2rem auto 3rem;
             padding: 0 1rem;
         }
+
         .card {
             background: var(--card-bg);
             border-radius: var(--radius-lg);
@@ -49,14 +64,22 @@
             flex-wrap: wrap;
             margin-bottom: 1.25rem;
         }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
         .logo-wrapper img {
             max-height: 60px;
             width: auto;
         }
+
         .title-block h1 {
             font-size: 1.5rem;
             margin: 0 0 0.25rem;
         }
+
         .title-block .meta {
             font-size: 0.9rem;
             color: var(--text-muted);
@@ -70,10 +93,12 @@
             justify-content: space-between;
             margin-bottom: 1.25rem;
         }
+
         .search-box {
             flex: 1 1 220px;
             position: relative;
         }
+
         .search-box input {
             width: 100%;
             padding: 0.55rem 2.1rem 0.55rem 0.9rem;
@@ -83,11 +108,13 @@
             outline: none;
             background: #f9fafb;
         }
+
         .search-box input:focus {
             border-color: var(--primary);
             background: #fff;
             box-shadow: 0 0 0 3px var(--primary-soft);
         }
+
         .search-box span {
             position: absolute;
             right: 0.75rem;
@@ -96,10 +123,16 @@
             font-size: 0.8rem;
             color: var(--text-muted);
         }
+
         .search-info {
             font-size: 0.8rem;
             color: var(--text-muted);
             margin-top: 0.25rem;
+        }
+
+        .search-info:empty {
+            margin-top: 0;
+            display: none;
         }
 
         .btn {
@@ -115,16 +148,24 @@
             cursor: pointer;
             white-space: nowrap;
         }
+
         .btn:hover {
             background: var(--primary);
             color: #fff;
         }
+
         .btn.secondary {
             border-color: var(--border);
             color: var(--text-muted);
         }
+
         .btn.secondary:hover {
             background: #f3f4f6;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .agb-layout {
@@ -132,6 +173,7 @@
             grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
             gap: 1.5rem;
         }
+
         @media (max-width: 800px) {
             .agb-layout {
                 grid-template-columns: minmax(0, 1fr);
@@ -149,22 +191,26 @@
             top: 1rem;
             background: #ffffff;
         }
+
         .toc-title {
             font-weight: 600;
             font-size: 0.9rem;
             margin-bottom: 0.4rem;
         }
+
         .toc-item {
             padding: 0.3rem 0.45rem;
             border-radius: 999px;
             cursor: pointer;
             color: var(--text-muted);
         }
+
         .toc-item.active {
             background: var(--primary-soft);
             color: var(--primary);
             font-weight: 600;
         }
+
         .toc-item:hover {
             background: #f3f4f6;
         }
@@ -173,14 +219,37 @@
             padding: 0.7rem 0 0.9rem;
             border-bottom: 1px solid #edf0f4;
         }
-        .para:last-child { border-bottom: none; }
+
+        .para:last-child {
+            border-bottom: none;
+        }
+
         .para-title {
             font-weight: 600;
             margin: 0 0 0.25rem;
         }
-        .para-text p { margin: 0.2rem 0; }
+
+        .para-text p {
+            margin: 0.2rem 0;
+        }
+
         .para-text ul {
             margin: 0.25rem 0 0.5rem 1.2rem;
+        }
+
+        .para-note {
+            border-bottom: none;
+            margin-top: 0.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .para-note .para-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            padding: 0.5rem 0.75rem;
         }
 
         mark {
@@ -216,6 +285,92 @@
         .footer-link:hover {
             color: var(--text-main);
         }
+
+        /* ---------- MOBILE ---------- */
+        @media (max-width: 600px) {
+            .page {
+                margin: 1.25rem auto 2rem;
+                padding: 0 0.75rem;
+            }
+
+            .card {
+                padding: 1.25rem 1.1rem 1.8rem;
+                border-radius: 12px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .logo-wrapper {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .logo-wrapper img {
+                max-height: 52px;
+            }
+
+            .title-block {
+                width: 100%;
+                text-align: left;
+            }
+
+            .title-block h1 {
+                font-size: 1.25rem;
+                line-height: 1.3;
+            }
+
+            /* Toolbar: Block-Layout, damit keine Flex-Lücke entstehen kann */
+            .toolbar {
+                display: block;
+                margin-bottom: 1rem;   /* etwas Abstand zu "Inhalt" */
+            }
+
+            .search-box {
+                flex: none;
+                margin-bottom: 0.4rem; /* kleiner Abstand zu den Buttons */
+            }
+
+            .toolbar-actions {
+                display: flex;
+                width: 100%;
+                gap: 0.25rem;
+                justify-content: space-between;
+            }
+
+            .toolbar-actions .btn {
+                flex: 1 1 0;
+                justify-content: center;
+            }
+
+            .agb-layout {
+                display: block;
+                grid-template-columns: none;
+                gap: 0;
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            .toc {
+                position: static;
+                max-height: none;
+                margin-top: 0;
+                padding-top: 0;
+                margin-bottom: 0.4rem;
+            }
+
+            .agb-content {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            .search-box span {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -241,7 +396,8 @@
                 <span>Strg+F</span>
                 <div class="search-info" id="searchInfo"></div>
             </div>
-            <div style="display:flex;gap:0.5rem;">
+
+            <div class="toolbar-actions">
                 <button class="btn secondary" id="btnResetSearch">Suche zurücksetzen</button>
                 <button class="btn" id="btnPdf">PDF exportieren</button>
             </div>
@@ -279,7 +435,7 @@ const LOGO_PATH = "../Logos/logo_name.jpeg";
 const DS_FILE = "datenschutz.txt";
 
 let dsData = [];
-let standDateStr = null;
+let standDateStr = null; // "dd.mm.yyyy"
 
 function renderTextToHtml(text) {
     const paragraphs = text.split(/\n+/);
@@ -336,14 +492,13 @@ async function updateStandFromLastModified() {
         metaEl.textContent = "Stand: " + standDateStr;
     } catch (e) {
         console.warn("Last-Modified Fehler bei", DS_FILE, e);
-        document.getElementById("metaVersion").textContent = "Stand: unbekannt";
+        metaEl.textContent = "Stand: unbekannt";
     }
 }
 
 async function init() {
     await updateStandFromLastModified();
 
-    // Datenschutzerklärung laden
     try {
         const resp = await fetch(DS_FILE);
         if (!resp.ok) {
@@ -517,6 +672,12 @@ function buildPdfDocumentDefinition(logoDataUrl) {
     const now = new Date();
     const ts = now.toLocaleString("de-DE");
 
+    const standStr = standDateStr;
+
+    const exportStamp =
+        (standStr ? "Stand: " + standStr + " – " : "") +
+        "PDF erstellt am: " + ts;
+
     const content = [];
 
     content.push({
@@ -532,31 +693,38 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 6]
     });
 
-    if (standDateStr) {
+    if (standStr) {
         content.push({
-            text: "Stand: " + standDateStr,
+            text: "Stand: " + standStr,
             style: "meta",
             margin: [0, 0, 0, 10]
         });
     }
 
     dsData.forEach((para, idx) => {
-        const title = para.title || para.Titel || ("Abschnitt " + (idx + 1));
         const text = para.text || para.Text || "";
-
-        content.push({
-            text: title,
-            style: "h2",
-            margin: [0, 10, 0, 4]
-        });
-
+        const title = para.title || para.Titel || ("Abschnitt " + (idx + 1));
         const blocks = buildPdfBlocksFromText(text);
-        blocks.forEach(b => content.push(b));
+
+        const paragraphStack = {
+            unbreakable: true,
+            margin: [0, 4, 0, 4],
+            stack: [
+                {
+                    text: title,
+                    style: "h2",
+                    margin: [0, 10, 0, 4]
+                },
+                ...blocks
+            ]
+        };
+
+        content.push(paragraphStack);
     });
 
     return {
         info: {
-            title: "Datenschutzerklärung – Kevin Strakerjahn Networks & Automation",
+            title: "Datenschutzerklärung Kevin Strakerjahn Networks & Automation",
             subject: "Datenschutzerklärung",
             author: "Kevin Strakerjahn Networks & Automation"
         },
@@ -569,8 +737,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
             meta: { fontSize: 9, color: "#555555" }
         },
         footer: function(currentPage, pageCount) {
-            const stamp = "PDF erstellt am: " + ts +
-                (standDateStr ? " – Stand: " + standDateStr : "");
             return {
                 margin: [40, 0, 40, 20],
                 stack: [
@@ -589,7 +755,7 @@ function buildPdfDocumentDefinition(logoDataUrl) {
                         ]
                     },
                     {
-                        text: stamp,
+                        text: exportStamp,
                         alignment: "center",
                         fontSize: 8,
                         color: "#999999",
