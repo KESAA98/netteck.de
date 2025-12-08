@@ -330,8 +330,9 @@
             .toolbar {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 0.15rem;          /* sehr kleine Lücke zwischen Suche und Buttons */
-                margin-bottom: 0.2rem;  /* minimale Lücke zur TOC/AGB-Layout */
+                justify-content: flex-start; /* Lücken-Fix */
+                gap: 0.15rem;                /* sehr kleine Lücke zwischen Suche und Buttons */
+                margin-bottom: 0.2rem;        /* minimale Lücke zur TOC/AGB-Layout */
             }
 
             /* Buttons auch mobil sichtbar, im Vollbreiten-Container */
