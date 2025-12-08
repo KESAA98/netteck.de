@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Datenschutz – Kevin Strakerjahn Networks &amp; Automation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon (Tab-Icon) -->
+    <link rel="icon" type="image/png" href="../Logos/logo.png">
+
+    <style>
+        :root {
+            --primary: #0b74ff;
+            --primary-soft: rgba(11, 116, 255, 0.08);
+            --bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --border: #e1e4ec;
+            --text-main: #1f2933;
+            --text-muted: #6b7280;
+            --radius-lg: 14px;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            padding: 1.75rem 1.9rem 2.1rem;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+        .logo-wrapper img {
+            max-height: 60px;
+            width: auto;
+        }
+        .title-block h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.25rem;
+        }
+        .title-block .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        .search-box {
+            flex: 1 1 220px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 0.55rem 2.1rem 0.55rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            outline: none;
+            background: #f9fafb;
+        }
+        .search-box input:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+        .search-box span {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .search-info {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            background: #fff;
+            color: var(--primary);
+            padding: 0.45rem 0.9rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn.secondary {
+            border-color: var(--border);
+            color: var(--text-muted);
+        }
+        .btn.secondary:hover {
+            background: #f3f4f6;
+        }
+
+        .agb-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+        @media (max-width: 800px) {
+            .agb-layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .toc {
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+            position: sticky;
+            top: 1rem;
+            background: #ffffff;
+        }
+        .toc-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+        .toc-item {
+            padding: 0.3rem 0.45rem;
+            border-radius: 999px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .toc-item.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .toc-item:hover {
+            background: #f3f4f6;
+        }
+
+        .para {
+            padding: 0.7rem 0 0.9rem;
+            border-bottom: 1px solid #edf0f4;
+        }
+        .para:last-child { border-bottom: none; }
+        .para-title {
+            font-weight: 600;
+            margin: 0 0 0.25rem;
+        }
+        .para-text p { margin: 0.2rem 0; }
+        .para-text ul {
+            margin: 0.25rem 0 0.5rem 1.2rem;
+        }
+
+        mark {
+            background: #fef08a;
+            padding: 0 2px;
+        }
+
+        footer {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .footer-link {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <div class="card">
+
+        <header class="header">
+            <div class="logo-wrapper">
+                <img src="../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+            </div>
+            <div class="title-block">
+                <h1>Datenschutzerklärung</h1>
+                <div class="meta" id="metaVersion">
+                    Stand wird geladen…
+                </div>
+            </div>
+        </header>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <input id="searchInput" type="search" placeholder="In der Datenschutzerklärung suchen …">
+                <span>Strg+F</span>
+                <div class="search-info" id="searchInfo"></div>
+            </div>
+            <div style="display:flex;gap:0.5rem;">
+                <button class="btn secondary" id="btnResetSearch">Suche zurücksetzen</button>
+                <button class="btn" id="btnPdf">PDF exportieren</button>
+            </div>
+        </div>
+
+        <div class="agb-layout">
+            <nav class="toc" id="toc">
+                <div class="toc-title">Inhalt</div>
+            </nav>
+
+            <main class="agb-content" id="agbContent">
+            </main>
+        </div>
+
+        <footer>
+            <div class="footer-buttons">
+                <a class="footer-link" href="/">Start</a>
+                <a class="footer-link" href="/kontakt/">Kontakt</a>
+                <a class="footer-link" href="/impressum/">Impressum</a>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+<!-- pdfMake für PDF-Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script>
+// Logo-Pfad relativ zu /datenschutz/index.html
+const LOGO_PATH = "../Logos/logo_name.jpeg";
+
+// Einzelne Datenschutz-Datei im selben Ordner
+const DS_FILE = "datenschutz.txt";
+
+let dsData = [];
+let standDateStr = null;
+
+function renderTextToHtml(text) {
+    const paragraphs = text.split(/\n+/);
+    const frag = document.createDocumentFragment();
+    let currentUl = null;
+
+    paragraphs.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+
+        if (/^[•\-–]/.test(trimmed)) {
+            if (!currentUl) {
+                currentUl = document.createElement("ul");
+                frag.appendChild(currentUl);
+            }
+            const li = document.createElement("li");
+            li.textContent = trimmed.replace(/^[•\-–]\s*/, "");
+            currentUl.appendChild(li);
+        } else {
+            currentUl = null;
+            const p = document.createElement("p");
+            p.textContent = trimmed;
+            frag.appendChild(p);
+        }
+    });
+
+    return frag;
+}
+
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+async function updateStandFromLastModified() {
+    const metaEl = document.getElementById("metaVersion");
+    try {
+        const resp = await fetch(DS_FILE, { method: "HEAD" });
+        if (!resp.ok) {
+            metaEl.textContent = "Stand: unbekannt";
+            return;
+        }
+        const lm = resp.headers.get("Last-Modified");
+        if (!lm) {
+            metaEl.textContent = "Stand: unbekannt";
+            return;
+        }
+        const d = new Date(lm);
+        if (isNaN(d.getTime())) {
+            metaEl.textContent = "Stand: unbekannt";
+            return;
+        }
+        const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+        standDateStr = d.toLocaleDateString("de-DE", options);
+        metaEl.textContent = "Stand: " + standDateStr;
+    } catch (e) {
+        console.warn("Last-Modified Fehler bei", DS_FILE, e);
+        document.getElementById("metaVersion").textContent = "Stand: unbekannt";
+    }
+}
+
+async function init() {
+    await updateStandFromLastModified();
+
+    // Datenschutzerklärung laden
+    try {
+        const resp = await fetch(DS_FILE);
+        if (!resp.ok) {
+            console.error("Fehler beim Laden von", DS_FILE, resp.status);
+            renderError("Fehler beim Laden der Datenschutzerklärung.");
+            return;
+        }
+        const json = await resp.json();
+        dsData = Array.isArray(json.datenschutz) ? json.datenschutz : [];
+    } catch (e) {
+        console.error("Exception bei", DS_FILE, e);
+        renderError("Fehler beim Verarbeiten der Datenschutzerklärung.");
+        return;
+    }
+
+    renderDs(dsData);
+    buildToc(dsData);
+    setupSearch();
+    setupPdfExport();
+}
+
+function renderError(msg) {
+    const container = document.getElementById("agbContent");
+    container.innerHTML = "";
+    const p = document.createElement("p");
+    p.textContent = msg;
+    container.appendChild(p);
+}
+
+function renderDs(data) {
+    const container = document.getElementById("agbContent");
+    container.innerHTML = "";
+
+    data.forEach((para, idx) => {
+        const section = document.createElement("section");
+        section.className = "para";
+        section.id = "para-" + (idx + 1);
+
+        const h = document.createElement("div");
+        h.className = "para-title";
+        h.textContent = para.title || para.Titel || ("Abschnitt " + (idx + 1));
+        section.appendChild(h);
+
+        const body = document.createElement("div");
+        body.className = "para-text";
+        body.appendChild(renderTextToHtml(para.text || para.Text || ""));
+        section.appendChild(body);
+
+        container.appendChild(section);
+    });
+}
+
+function buildToc(data) {
+    const toc = document.getElementById("toc");
+    toc.querySelectorAll(".toc-item").forEach(n => n.remove());
+
+    data.forEach((para, idx) => {
+        const item = document.createElement("div");
+        item.className = "toc-item";
+        item.textContent = para.title || para.Titel || ("Abschnitt " + (idx + 1));
+        item.dataset.target = "para-" + (idx + 1);
+        item.addEventListener("click", () => {
+            document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
+            item.classList.add("active");
+            const target = document.getElementById(item.dataset.target);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+        toc.appendChild(item);
+    });
+}
+
+function setupSearch() {
+    const input = document.getElementById("searchInput");
+    const info = document.getElementById("searchInfo");
+    const resetBtn = document.getElementById("btnResetSearch");
+
+    function applySearch(query) {
+        const q = query.trim();
+        const sections = document.querySelectorAll(".para");
+        let hits = 0;
+
+        sections.forEach(sec => {
+            const paraIndex = parseInt(sec.id.replace("para-", ""), 10) - 1;
+            const paraData = dsData[paraIndex];
+            const body = sec.querySelector(".para-text");
+            const fullText = (paraData && (paraData.text || paraData.Text)) || "";
+
+            body.innerHTML = "";
+            body.appendChild(renderTextToHtml(fullText));
+
+            if (!q) {
+                sec.style.display = "";
+                return;
+            }
+
+            const lower = fullText.toLowerCase();
+            const qLower = q.toLowerCase();
+
+            if (lower.includes(qLower)) {
+                sec.style.display = "";
+                hits++;
+
+                const reg = new RegExp(escapeRegExp(q), "gi");
+                body.querySelectorAll("p, li").forEach(el => {
+                    if (!el.textContent.toLowerCase().includes(qLower)) return;
+                    el.innerHTML = el.textContent.replace(reg, match => `<mark>${match}</mark>`);
+                });
+            } else {
+                sec.style.display = "none";
+            }
+        });
+
+        info.textContent = q ? hits + " Treffer für „" + q + "“" : "";
+    }
+
+    input.addEventListener("input", () => applySearch(input.value));
+    resetBtn.addEventListener("click", () => {
+        input.value = "";
+        applySearch("");
+    });
+}
+
+function loadLogoDataUrl(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = function () {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            try { resolve(canvas.toDataURL("image/png")); }
+            catch (e) { reject(e); }
+        };
+        img.onerror = reject;
+        img.src = url;
+    });
+}
+
+function buildPdfBlocksFromText(text) {
+    const lines = text.split(/\n+/);
+    const blocks = [];
+    let currentList = null;
+
+    lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+
+        const isBullet = /^[•\-–]/.test(trimmed);
+
+        if (isBullet) {
+            const itemText = trimmed.replace(/^[•\-–]\s*/, "");
+            if (!currentList) {
+                currentList = { ul: [], margin: [0, 2, 0, 2] };
+                blocks.push(currentList);
+            }
+            currentList.ul.push(itemText);
+        } else {
+            currentList = null;
+            blocks.push({ text: trimmed, margin: [0, 2, 0, 2] });
+        }
+    });
+
+    return blocks;
+}
+
+function buildPdfDocumentDefinition(logoDataUrl) {
+    const now = new Date();
+    const ts = now.toLocaleString("de-DE");
+
+    const content = [];
+
+    content.push({
+        image: logoDataUrl,
+        width: 520,
+        alignment: "center",
+        margin: [0, 0, 0, 15]
+    });
+
+    content.push({
+        text: "Datenschutzerklärung",
+        style: "h1",
+        margin: [0, 0, 0, 6]
+    });
+
+    if (standDateStr) {
+        content.push({
+            text: "Stand: " + standDateStr,
+            style: "meta",
+            margin: [0, 0, 0, 10]
+        });
+    }
+
+    dsData.forEach((para, idx) => {
+        const title = para.title || para.Titel || ("Abschnitt " + (idx + 1));
+        const text = para.text || para.Text || "";
+
+        content.push({
+            text: title,
+            style: "h2",
+            margin: [0, 10, 0, 4]
+        });
+
+        const blocks = buildPdfBlocksFromText(text);
+        blocks.forEach(b => content.push(b));
+    });
+
+    return {
+        info: {
+            title: "Datenschutzerklärung – Kevin Strakerjahn Networks & Automation",
+            subject: "Datenschutzerklärung",
+            author: "Kevin Strakerjahn Networks & Automation"
+        },
+        pageSize: "A4",
+        pageMargins: [40, 60, 40, 60],
+        defaultStyle: { fontSize: 11 },
+        styles: {
+            h1: { fontSize: 18, bold: true },
+            h2: { fontSize: 12, bold: true },
+            meta: { fontSize: 9, color: "#555555" }
+        },
+        footer: function(currentPage, pageCount) {
+            const stamp = "PDF erstellt am: " + ts +
+                (standDateStr ? " – Stand: " + standDateStr : "");
+            return {
+                margin: [40, 0, 40, 20],
+                stack: [
+                    {
+                        columns: [
+                            {
+                                text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
+                                alignment: "left",
+                                fontSize: 8
+                            },
+                            {
+                                text: "Seite " + currentPage + " von " + pageCount,
+                                alignment: "right",
+                                fontSize: 8
+                            }
+                        ]
+                    },
+                    {
+                        text: stamp,
+                        alignment: "center",
+                        fontSize: 8,
+                        color: "#999999",
+                        margin: [0, 4, 0, 0]
+                    }
+                ]
+            };
+        },
+        content: content
+    };
+}
+
+function setupPdfExport() {
+    const btn = document.getElementById("btnPdf");
+    if (!btn) return;
+
+    btn.addEventListener("click", async () => {
+        if (typeof pdfMake === "undefined") {
+            alert("PDF-Funktion nicht geladen (pdfMake).");
+            return;
+        }
+
+        try {
+            const logoDataUrl = await loadLogoDataUrl(LOGO_PATH);
+            const docDef = buildPdfDocumentDefinition(logoDataUrl);
+
+            const now = new Date();
+            const filename = "Datenschutzerklaerung_" +
+                now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
+
+            pdfMake.createPdf(docDef).download(filename);
+        } catch (e) {
+            console.error("Fehler beim Erzeugen des PDFs:", e);
+            alert("Beim Erzeugen des PDFs ist ein Fehler aufgetreten (Details in der Konsole).");
+        }
+    });
+}
+
+init().catch(err => {
+    console.error("Fehler bei Initialisierung:", err);
+});
+</script>
+
+</body>
+</html>
