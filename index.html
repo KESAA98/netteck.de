@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>AGB – Kevin Strakerjahn Networks &amp; Automation</title>
+    <title>Kevin Strakerjahn Networks &amp; Automation – Startseite</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon (Tab-Icon) -->
-    <link rel="icon" type="image/png" href="KS_Logo_PNG.png">
+    <link rel="icon" type="image/png" href="Logos/logo.png">
 
     <style>
         :root {
@@ -18,593 +18,764 @@
             --text-main: #1f2933;
             --text-muted: #6b7280;
             --radius-lg: 14px;
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
         }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg);
+            background: radial-gradient(circle at top, #e3f0ff 0, #f5f7fb 42%, #eef2ff 100%);
+            min-height: 100vh;
             color: var(--text-main);
-            line-height: 1.6;
         }
 
         .page {
-            max-width: 1100px;
-            margin: 2rem auto 3rem;
-            padding: 0 1rem;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-            padding: 1.75rem 1.9rem 2.1rem;
-            border: 1px solid var(--border);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .header {
+        main {
+            flex: 1;
+            padding: 32px 16px 24px;
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 1.25rem;
-        }
-        .logo-wrapper img {
-            max-height: 60px;
-            width: auto;
-        }
-        .title-block h1 {
-            font-size: 1.5rem;
-            margin: 0 0 0.25rem;
-        }
-        .title-block .meta {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+            justify-content: center;
         }
 
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.25rem;
-        }
-        .search-box {
-            flex: 1 1 220px;
-            position: relative;
-        }
-        .search-box input {
+        .shell {
             width: 100%;
-            padding: 0.55rem 2.1rem 0.55rem 0.9rem;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            font-size: 0.95rem;
-            outline: none;
-            background: #f9fafb;
-        }
-        .search-box input:focus {
-            border-color: var(--primary);
-            background: #fff;
-            box-shadow: 0 0 0 3px var(--primary-soft);
-        }
-        .search-box span {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-        .search-info {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
+            max-width: 1100px;
         }
 
-        .btn {
+        header.site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo img {
+            max-width: 86%;
+            max-height: 86%;
+            display: block;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-text .name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-text .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .top-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .top-link {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid transparent;
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
-            border-radius: 999px;
-            border: 1px solid var(--primary);
-            background: #fff;
-            color: var(--primary);
-            padding: 0.45rem 0.9rem;
-            font-size: 0.9rem;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .btn:hover {
-            background: var(--primary);
-            color: #fff;
-        }
-        .btn.secondary {
-            border-color: var(--border);
-            color: var(--text-muted);
-        }
-        .btn.secondary:hover {
-            background: #f3f4f6;
+            gap: 6px;
         }
 
-        .agb-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
-            gap: 1.5rem;
+        .top-link:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--border);
         }
-        @media (max-width: 800px) {
-            .agb-layout {
-                grid-template-columns: minmax(0, 1fr);
+
+        .top-link.primary {
+            color: #fff;
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 12px 30px rgba(11, 116, 255, 0.45);
+        }
+
+        .top-link.primary:hover {
+            background: #0755c4;
+            border-color: #0755c4;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            padding: 24px 24px 20px;
+        }
+
+        @media (min-width: 992px) {
+            .content-card {
+                padding: 32px 32px 24px;
             }
         }
 
-        .toc {
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            padding: 0.8rem;
-            font-size: 0.9rem;
-            max-height: calc(100vh - 220px);
-            overflow-y: auto;
-            position: sticky;
-            top: 1rem;
-            background: #ffffff;
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr);
+            gap: 32px;
+            align-items: center;
+            margin-bottom: 28px;
         }
-        .toc-title {
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.4rem;
+
+        @media (max-width: 800px) {
+            .hero {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 22px;
+            }
         }
-        .toc-item {
-            padding: 0.3rem 0.45rem;
+
+        .hero-text h1 {
+            font-size: clamp(1.55rem, 2.3vw, 2rem);
+            margin: 0 0 10px;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-text p {
+            margin: 0 0 6px;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+        }
+
+        .hero-highlight {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
             border-radius: 999px;
-            cursor: pointer;
+            background: var(--primary-soft);
+            color: #0b4ba8;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .hero-highlight span {
+            font-size: 1.1rem;
+        }
+
+        .hero-kpi {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .hero-kpi-item {
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: #f3f6ff;
+            font-size: 0.85rem;
+            color: #374151;
+        }
+
+        .hero-aside {
+            border-radius: 18px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #0b74ff 0%, #0bafea 52%, #00c3a0 100%);
+            color: #eaf3ff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-aside::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.28) 0, transparent 54%),
+                radial-gradient(circle at 82% 82%, rgba(0, 0, 0, 0.12) 0, transparent 60%);
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .hero-aside-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-aside-title {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+
+        .hero-aside-main {
+            font-size: 0.98rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .hero-aside-note {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .hero-aside-pill {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.25);
+        }
+
+        .hero-aside-pill span {
+            font-size: 1.05rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .section-header p {
+            margin: 0;
+            font-size: 0.9rem;
             color: var(--text-muted);
         }
-        .toc-item.active {
-            background: var(--primary-soft);
-            color: var(--primary);
+
+        .aktuelles-container {
+            margin-top: 10px;
+        }
+
+        .aktuelles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .aktuelles-item {
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: #f9fafb;
+            padding: 12px 14px 10px;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+            cursor: pointer;
+        }
+
+        .aktuelles-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
+            border-color: rgba(11, 116, 255, 0.55);
+            background: #ffffff;
+        }
+
+        .aktuelles-item-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .aktuelles-item-title {
+            font-size: 0.98rem;
             font-weight: 600;
         }
-        .toc-item:hover {
+
+        .aktuelles-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .aktuelles-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            border: 1px solid transparent;
+        }
+
+        .badge.category {
+            background: #e0edff;
+            color: #0b4ba8;
+            border-color: #b7d0ff;
+        }
+
+        .badge.tag {
             background: #f3f4f6;
+            color: #374151;
+            border-color: #e5e7eb;
         }
 
-        .para {
-            padding: 0.7rem 0 0.9rem;
-            border-bottom: 1px solid #edf0f4;
-        }
-        .para:last-child { border-bottom: none; }
-        .para-title {
-            font-weight: 600;
-            margin: 0 0 0.25rem;
-        }
-        .para-text p { margin: 0.2rem 0; }
-        .para-text ul {
-            margin: 0.25rem 0 0.5rem 1.2rem;
+        .aktuelles-teaser {
+            margin: 0 0 4px;
+            font-size: 0.88rem;
+            color: #4b5563;
         }
 
-        mark {
-            background: #fef08a;
-            padding: 0 2px;
+        .aktuelles-link {
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .aktuelles-link:hover {
+            text-decoration: underline;
+        }
+
+        .aktuelles-empty,
+        .aktuelles-error,
+        .aktuelles-loading {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+
+        .aktuelles-loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            border: 2px solid rgba(148, 163, 184, 0.5);
+            border-top-color: var(--primary);
+            animation: spin 0.7s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         footer {
-            margin-top: 1.2rem;
-            font-size: 0.85rem;
+            padding: 10px 16px 16px;
+            text-align: center;
             color: var(--text-muted);
-            border-top: 1px solid var(--border);
-            padding-top: 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-bottom: 6px;
+        }
+
+        .footer-link {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+        }
+
+        .footer-note {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding-top: 20px;
+            }
+
+            header.site-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .top-links {
+                align-self: stretch;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .content-card {
+                border-radius: 18px;
+                padding: 20px 16px 16px;
+            }
+
+            .aktuelles-item {
+                padding: 10px 10px 8px;
+            }
+
+            .footer-buttons {
+                gap: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
-
 <div class="page">
-    <div class="card">
-
-        <header class="header">
-            <div class="logo-wrapper">
-                <img src="Logo KS.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
-            </div>
-            <div class="title-block">
-                <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
-                <div class="meta" id="metaVersion">
-                    Stand wird geladen…
+    <main>
+        <div class="shell">
+            <header class="site-header">
+                <div class="brand">
+                    <div class="brand-logo">
+                        <img src="Logos/logo.png" alt="Logo Netteck">
+                    </div>
+                    <div class="brand-text">
+                        <div class="name">Kevin Strakerjahn</div>
+                        <div class="subtitle">Networks &amp; Automation – Windenergie &amp; IT</div>
+                    </div>
                 </div>
-            </div>
-        </header>
+                <nav class="top-links" aria-label="Hauptnavigation">
+                    <a class="top-link" href="/AGB/">AGB</a>
+                    <a class="top-link" href="/impressum/">Impressum</a>
+                    <a class="top-link primary" href="/kontakt/">Kontakt aufnehmen</a>
+                </nav>
+            </header>
 
-        <div class="toolbar">
-            <div class="search-box">
-                <input id="searchInput" type="search" placeholder="In AGB suchen …">
-                <span>Strg+F</span>
-                <div class="search-info" id="searchInfo"></div>
-            </div>
-            <div style="display:flex;gap:0.5rem;">
-                <button class="btn secondary" id="btnResetSearch">Suche zurücksetzen</button>
-                <button class="btn" id="btnPdf">PDF exportieren</button>
-            </div>
+            <section class="content-card" aria-label="Start und Aktuelles">
+                <div class="hero">
+                    <div class="hero-text">
+                        <div class="hero-highlight">
+                            <span>⚡</span>
+                            <span>Monitoring &amp; Netzwerke für Windparks</span>
+                        </div>
+                        <h1>Technische Betriebsführung trifft IT-Automatisierung.</h1>
+                        <p>
+                            Planung, Einrichtung und Betreuung von Netzwerken und Monitoring-Lösungen
+                            in Windenergie-Anlagen – von Router-Konfiguration bis UPS-Überwachung.
+                        </p>
+                        <p>
+                            Auf dieser Seite finden Sie aktuelle Projekte und Themen, an denen ich arbeite.
+                        </p>
+                        <div class="hero-kpi">
+                            <div class="hero-kpi-item">
+                                🔌 LANCOM-Router &amp; VPN-Konzepte
+                            </div>
+                            <div class="hero-kpi-item">
+                                🌬️ Fokus auf Windparks &amp; Enercon-Anlagen
+                            </div>
+                            <div class="hero-kpi-item">
+                                📡 Monitoring &amp; Alarmierung per E-Mail / Dashboard
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="hero-aside">
+                        <div class="hero-aside-inner">
+                            <div class="hero-aside-title">Aktuelles Beispiel</div>
+                            <div class="hero-aside-main">
+                                Kundenrouter in ENERCON-Windkraftanlagen
+                            </div>
+                            <div class="hero-aside-note">
+                                Zentrale Konfiguration, sichere Anbindung und Monitoring
+                                von Service-Routern in bestehenden Windparks.
+                            </div>
+                            <div class="hero-aside-pill">
+                                <span>📶</span>
+                                <span>Detailansicht im Bereich „Aktuelles“ unten.</span>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="section-header">
+                    <h2>Aktuelles</h2>
+                    <p id="aktuelles-count-label">Laufende Projekte und Themen.</p>
+                </div>
+
+                <div class="aktuelles-container">
+                    <div id="aktuelles-loading" class="aktuelles-loading">
+                        <span class="aktuelles-loading-spinner"></span>
+                        <span>Aktuelle Einträge werden geladen …</span>
+                    </div>
+                    <div id="aktuelles-error" class="aktuelles-error" style="display:none;"></div>
+                    <div id="aktuelles-empty" class="aktuelles-empty" style="display:none;">
+                        Derzeit liegen keine Einträge im Bereich „Aktuelles“ vor.
+                    </div>
+                    <ul id="aktuelles-list" class="aktuelles-list" aria-live="polite"></ul>
+                </div>
+            </section>
         </div>
+    </main>
 
-        <div class="agb-layout">
-            <nav class="toc" id="toc">
-                <div class="toc-title">Inhalt</div>
-            </nav>
-
-            <main class="agb-content" id="agbContent">
-            </main>
+    <footer>
+        <div class="footer-buttons">
+            <a class="footer-link" href="/">Start</a>
+            <a class="footer-link" href="/kontakt/">Kontakt</a>
+            <a class="footer-link" href="/impressum/">Impressum</a>
         </div>
-
-        <footer>
-            <div>Kevin Strakerjahn Networks &amp; Automation</div>
-            <div>Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232</div>
-        </footer>
-
-    </div>
+        <div class="footer-note">
+            © <span id="year"></span> Kevin Strakerjahn – Networks &amp; Automation
+        </div>
+    </footer>
 </div>
 
-<!-- pdfMake für PDF-Export -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-
 <script>
-const LOGO_PATH = "Logo KS.jpeg";
+    // Jahr im Footer setzen
+    document.getElementById("year").textContent = new Date().getFullYear().toString();
 
-const AGB_FILES = [
-    "01_geltungsbereich.txt",
-    "02_vertragsschluss.txt",
-    "03_mitwirkungspflichten.txt",
-    "04_ruecktritt.txt",
-    "05_leistungsnachweise.txt",
-    "06_liefer_ausfuehrungs_einsatzzeiten.txt",
-    "07_gewaehrleistung.txt",
-    "08_haftung.txt",
-    "09_preise_und_zahlungen.txt",
-    "10_eigentumsvorbehalt.txt",
-    "11_gerichtsstand_recht.txt",
-    "12_schlussbestimmungen.txt",
-    "13_datenschutz_speicherung.txt"
-];
+    const GITHUB_API_BASE = "https://api.github.com/repos/kesaa98/netteck.de/contents/aktuelles";
 
-let agbData = [];
-let metaData = null;
-
-function renderTextToHtml(text) {
-    const paragraphs = text.split(/\n+/);
-    const frag = document.createDocumentFragment();
-    let currentUl = null;
-
-    paragraphs.forEach(line => {
-        const trimmed = line.trim();
-        if (!trimmed) return;
-
-        if (/^[•\-–]/.test(trimmed)) {
-            if (!currentUl) {
-                currentUl = document.createElement("ul");
-                frag.appendChild(currentUl);
-            }
-            const li = document.createElement("li");
-            li.textContent = trimmed.replace(/^[•\-–]\s*/, "");
-            currentUl.appendChild(li);
-        } else {
-            currentUl = null;
-            const p = document.createElement("p");
-            p.textContent = trimmed;
-            frag.appendChild(p);
+    async function fetchAktuellesFolders() {
+        const res = await fetch(GITHUB_API_BASE);
+        if (!res.ok) {
+            throw new Error("Fehler beim Laden des Verzeichnisses /aktuelles (Status " + res.status + ")");
         }
-    });
-
-    return frag;
-}
-
-function escapeRegExp(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-async function init() {
-    try {
-        const metaResp = await fetch("AGBs/meta.json");
-        if (metaResp.ok) {
-            metaData = await metaResp.json();
-            const metaEl = document.getElementById("metaVersion");
-            if (metaData.anzeige) {
-                metaEl.textContent = metaData.anzeige;
-            } else if (metaData.stand_datum) {
-                metaEl.textContent = "Stand: " + metaData.stand_datum;
-            } else {
-                metaEl.textContent = "Stand: unbekannt";
-            }
-        }
-    } catch (e) {
-        console.warn("meta.json Problem:", e);
+        const entries = await res.json();
+        // nur Unterordner, keine Dateien
+        return entries.filter(e => e.type === "dir");
     }
 
-    const promises = AGB_FILES.map(async (file) => {
+    async function fetchIntroForSlug(slug) {
+        const url = GITHUB_API_BASE + "/" + encodeURIComponent(slug) + "/intro.txt";
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error("intro.txt für " + slug + " nicht gefunden (Status " + res.status + ")");
+        }
+
+        const fileMeta = await res.json();
+        if (!fileMeta.download_url) {
+            throw new Error("Keine download_url für intro.txt in " + slug);
+        }
+
+        const textRes = await fetch(fileMeta.download_url);
+        if (!textRes.ok) {
+            throw new Error("Download von intro.txt für " + slug + " fehlgeschlagen (Status " + textRes.status + ")");
+        }
+
+        const rawText = await textRes.text();
+        let data;
         try {
-            const resp = await fetch("AGBs/" + file);
-            if (!resp.ok) {
-                console.error("Fehler beim Laden von", file, resp.status);
-                return { Titel: file, Text: "Fehler beim Laden dieser AGB-Datei (" + file + ")." };
-            }
-            return await resp.json();
+            data = JSON.parse(rawText);
         } catch (e) {
-            console.error("Exception bei", file, e);
-            return { Titel: file, Text: "Fehler beim Verarbeiten dieser AGB-Datei (" + file + ")." };
+            throw new Error("intro.txt in " + slug + " enthält kein gültiges JSON");
         }
-    });
 
-    agbData = await Promise.all(promises);
-    renderAgb(agbData);
-    buildToc(agbData);
-    setupSearch();
-    setupPdfExport();
-}
+        // slug aus Ordner ergänzen, falls nicht gesetzt
+        if (!data.slug) {
+            data.slug = slug;
+        }
 
-function renderAgb(data) {
-    const container = document.getElementById("agbContent");
-    container.innerHTML = "";
-
-    data.forEach((para, idx) => {
-        const section = document.createElement("section");
-        section.className = "para";
-        section.id = "para-" + (idx + 1);
-
-        const h = document.createElement("div");
-        h.className = "para-title";
-        h.textContent = para.Titel || ("§ " + (idx + 1));
-        section.appendChild(h);
-
-        const body = document.createElement("div");
-        body.className = "para-text";
-        body.appendChild(renderTextToHtml(para.Text || ""));
-        section.appendChild(body);
-
-        container.appendChild(section);
-    });
-}
-
-function buildToc(data) {
-    const toc = document.getElementById("toc");
-    toc.querySelectorAll(".toc-item").forEach(n => n.remove());
-
-    data.forEach((para, idx) => {
-        const item = document.createElement("div");
-            item.className = "toc-item";
-            item.textContent = para.Titel || ("§ " + (idx + 1));
-            item.dataset.target = "para-" + (idx + 1);
-            item.addEventListener("click", () => {
-                document.querySelectorAll(".toc-item").forEach(t => t.classList.remove("active"));
-                item.classList.add("active");
-                const target = document.getElementById(item.dataset.target);
-                if (target) {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            });
-            toc.appendChild(item);
-    });
-}
-
-function setupSearch() {
-    const input = document.getElementById("searchInput");
-    const info = document.getElementById("searchInfo");
-    const resetBtn = document.getElementById("btnResetSearch");
-
-    function applySearch(query) {
-        const q = query.trim();
-        const sections = document.querySelectorAll(".para");
-        let hits = 0;
-
-        sections.forEach(sec => {
-            const paraIndex = parseInt(sec.id.replace("para-", ""), 10) - 1;
-            const paraData = agbData[paraIndex];
-            const body = sec.querySelector(".para-text");
-            body.innerHTML = "";
-            body.appendChild(renderTextToHtml(paraData.Text || ""));
-
-            if (!q) {
-                sec.style.display = "";
-                return;
-            }
-
-            const text = (paraData.Text || "").toLowerCase();
-            if (text.includes(q.toLowerCase())) {
-                sec.style.display = "";
-                hits++;
-
-                const reg = new RegExp(escapeRegExp(q), "gi");
-                body.querySelectorAll("p, li").forEach(el => {
-                    if (!el.textContent.toLowerCase().includes(q.toLowerCase())) return;
-                    el.innerHTML = el.textContent.replace(reg, match => `<mark>${match}</mark>`);
-                });
-            } else {
-                sec.style.display = "none";
-            }
-        });
-
-        info.textContent = q ? hits + " Treffer für „" + q + "“" : "";
+        return data;
     }
 
-    input.addEventListener("input", () => applySearch(input.value));
-    resetBtn.addEventListener("click", () => {
-        input.value = "";
-        applySearch("");
-    });
-}
+    function sortEntriesByDate(entries) {
+        return entries.slice().sort((a, b) => {
+            const da = a.date ? new Date(a.date) : null;
+            const db = b.date ? new Date(b.date) : null;
 
-function loadLogoDataUrl(url) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = function () {
-            const canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            try { resolve(canvas.toDataURL("image/png")); }
-            catch (e) { reject(e); }
-        };
-        img.onerror = reject;
-        img.src = url;
-    });
-}
-
-function buildPdfBlocksFromText(text) {
-    const lines = text.split(/\n+/);
-    const blocks = [];
-    let currentList = null;
-
-    lines.forEach(line => {
-        const trimmed = line.trim();
-        if (!trimmed) return;
-
-        const isBullet = /^[•\-–]/.test(trimmed);
-
-        if (isBullet) {
-            const itemText = trimmed.replace(/^[•\-–]\s*/, "");
-            if (!currentList) {
-                currentList = { ul: [], margin: [0, 2, 0, 2] };
-                blocks.push(currentList);
+            if (da && db && !isNaN(da) && !isNaN(db)) {
+                return db - da; // neueste zuerst
             }
-            currentList.ul.push(itemText);
-        } else {
-            currentList = null;
-            blocks.push({ text: trimmed, margin: [0, 2, 0, 2] });
-        }
-    });
+            if (da && !db) return -1;
+            if (!da && db) return 1;
+            return (a.slug || "").localeCompare(b.slug || "");
+        });
+    }
 
-    return blocks;
-}
+    function formatDate(dateStr) {
+        if (!dateStr) return "";
+        const d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleDateString("de-DE", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        });
+    }
 
-function buildPdfDocumentDefinition(logoDataUrl) {
-    const now = new Date();
-    const ts = now.toLocaleString("de-DE");
+    function renderAktuelles(entries) {
+        const list = document.getElementById("aktuelles-list");
+        const emptyEl = document.getElementById("aktuelles-empty");
+        const countLabel = document.getElementById("aktuelles-count-label");
 
-    const versionStr = (metaData && metaData.version_string) ? metaData.version_string : "AGB_KS_2025_12_03";
-    const standStr   = (metaData && metaData.stand_datum) ? metaData.stand_datum : null;
+        list.innerHTML = "";
 
-    const exportStamp = (standStr ? "Stand: " + standStr + " – " : "") +
-                        "Version " + versionStr + " – PDF erstellt am: " + ts;
-
-    const content = [];
-
-    // großes Logo im PDF
-    content.push({
-        image: logoDataUrl,
-        width: 520,
-        alignment: "center",
-        margin: [0, 0, 0, 15]
-    });
-
-    content.push({
-        text: "Allgemeine Geschäftsbedingungen (AGB)",
-        style: "h1",
-        margin: [0, 0, 0, 6]
-    });
-
-    content.push({
-        text: "Version " + versionStr,
-        style: "meta",
-        margin: [0, 0, 0, 16]
-    });
-
-    // Seitenumbrüche: §4, §8, §11 auf neuer Seite
-    const breakBeforeIdx = [3, 7, 10];
-
-    agbData.forEach((para, idx) => {
-        const heading = {
-            text: para.Titel || ("§ " + (idx + 1)),
-            style: "h2",
-            margin: [0, 10, 0, 4]
-        };
-
-        if (breakBeforeIdx.includes(idx)) {
-            heading.pageBreak = "before";
-        }
-
-        content.push(heading);
-
-        const blocks = buildPdfBlocksFromText(para.Text || "");
-        blocks.forEach(b => content.push(b));
-    });
-
-    return {
-        info: {
-            title: "AGB Kevin Strakerjahn Networks & Automation",
-            subject: "Allgemeine Geschäftsbedingungen",
-            author: "Kevin Strakerjahn Networks & Automation"
-        },
-        pageSize: "A4",
-        pageMargins: [40, 60, 40, 60],
-        defaultStyle: { fontSize: 11 },
-        styles: {
-            h1: { fontSize: 18, bold: true },
-            h2: { fontSize: 12, bold: true },
-            meta: { fontSize: 9, color: "#555555" }
-        },
-        // kein background mehr – Stempel kommt in den Footer
-        footer: function(currentPage, pageCount) {
-            return {
-                margin: [40, 0, 40, 20],
-                stack: [
-                    {
-                        columns: [
-                            {
-                                text: "Kevin Strakerjahn Networks & Automation · Bundesstraße 5 6 · 25795 Stelle-Wittenwurth · info@netteck.de · +49 151 29047232",
-                                alignment: "left",
-                                fontSize: 8
-                            },
-                            {
-                                text: "Seite " + currentPage + " von " + pageCount,
-                                alignment: "right",
-                                fontSize: 8
-                            }
-                        ]
-                    },
-                    {
-                        text: exportStamp,
-                        alignment: "center",
-                        fontSize: 8,
-                        color: "#999999",
-                        margin: [0, 4, 0, 0]
-                    }
-                ]
-            };
-        },
-        content: content
-    };
-}
-
-function setupPdfExport() {
-    const btn = document.getElementById("btnPdf");
-    if (!btn) return;
-
-    btn.addEventListener("click", async () => {
-        if (typeof pdfMake === "undefined") {
-            alert("PDF-Funktion nicht geladen (pdfMake).");
+        if (!entries || entries.length === 0) {
+            emptyEl.style.display = "block";
+            countLabel.textContent = "Aktuell keine Einträge vorhanden.";
             return;
         }
 
+        emptyEl.style.display = "none";
+        countLabel.textContent = entries.length + " Eintrag" + (entries.length === 1 ? "" : "e") + " im Überblick.";
+
+        const sorted = sortEntriesByDate(entries);
+
+        sorted.forEach(entry => {
+            const slug = entry.slug || "";
+            const title = entry.title || slug || "Aktueller Eintrag";
+            const teaser = entry.teaser || entry.comment || "";
+            const comment = entry.comment || "";
+            const category = entry.category || "Projekt";
+            const tags = Array.isArray(entry.tags) ? entry.tags : [];
+            const dateStr = entry.date ? formatDate(entry.date) : "";
+
+            const li = document.createElement("li");
+            li.className = "aktuelles-item";
+            li.tabIndex = 0;
+            li.setAttribute("role", "link");
+
+            const linkHref = "/aktuelles/" + encodeURIComponent(slug) + "/";
+
+            li.addEventListener("click", () => {
+                window.location.href = linkHref;
+            });
+
+            li.addEventListener("keypress", (evt) => {
+                if (evt.key === "Enter" || evt.key === " ") {
+                    evt.preventDefault();
+                    window.location.href = linkHref;
+                }
+            });
+
+            const header = document.createElement("div");
+            header.className = "aktuelles-item-header";
+
+            const titleEl = document.createElement("div");
+            titleEl.className = "aktuelles-item-title";
+            titleEl.textContent = title;
+
+            const dateEl = document.createElement("div");
+            dateEl.className = "aktuelles-date";
+            dateEl.textContent = dateStr ? "Stand: " + dateStr : "";
+
+            header.appendChild(titleEl);
+            header.appendChild(dateEl);
+
+            const meta = document.createElement("div");
+            meta.className = "aktuelles-meta";
+
+            const catBadge = document.createElement("span");
+            catBadge.className = "badge category";
+            catBadge.textContent = category;
+            meta.appendChild(catBadge);
+
+            tags.forEach(tag => {
+                const tagBadge = document.createElement("span");
+                tagBadge.className = "badge tag";
+                tagBadge.textContent = tag;
+                meta.appendChild(tagBadge);
+            });
+
+            const teaserEl = document.createElement("p");
+            teaserEl.className = "aktuelles-teaser";
+            teaserEl.textContent = teaser || comment;
+
+            const link = document.createElement("a");
+            link.className = "aktuelles-link";
+            link.href = linkHref;
+            link.textContent = "Details ansehen";
+            const arrow = document.createElement("span");
+            arrow.textContent = "↗";
+            link.appendChild(arrow);
+
+            li.appendChild(header);
+            li.appendChild(meta);
+            li.appendChild(teaserEl);
+            li.appendChild(link);
+
+            list.appendChild(li);
+        });
+    }
+
+    async function initAktuelles() {
+        const loadingEl = document.getElementById("aktuelles-loading");
+        const errorEl = document.getElementById("aktuelles-error");
+        const emptyEl = document.getElementById("aktuelles-empty");
+        const list = document.getElementById("aktuelles-list");
+
+        loadingEl.style.display = "block";
+        errorEl.style.display = "none";
+        emptyEl.style.display = "none";
+        list.innerHTML = "";
+
         try {
-            const logoDataUrl = await loadLogoDataUrl(LOGO_PATH);
-            const docDef = buildPdfDocumentDefinition(logoDataUrl);
+            const folders = await fetchAktuellesFolders();
 
-            const now = new Date();
-            const filenameBase = metaData && metaData.version_string ? metaData.version_string : "AGB";
-            const filename = filenameBase + "_" + now.toISOString().slice(0,19).replace(/[:T]/g, "-") + ".pdf";
+            if (!folders || folders.length === 0) {
+                loadingEl.style.display = "none";
+                emptyEl.style.display = "block";
+                return;
+            }
 
-            pdfMake.createPdf(docDef).download(filename);
-        } catch (e) {
-            console.error("Fehler beim Erzeugen des PDFs:", e);
-            alert("Beim Erzeugen des PDFs ist ein Fehler aufgetreten (Details in der Konsole).");
+            const introPromises = folders.map(folder =>
+                fetchIntroForSlug(folder.name).catch(err => {
+                    console.warn("Fehler bei intro für", folder.name, err);
+                    return null;
+                })
+            );
+
+            const introData = await Promise.all(introPromises);
+            const validEntries = introData.filter(Boolean);
+
+            loadingEl.style.display = "none";
+
+            renderAktuelles(validEntries);
+        } catch (err) {
+            console.error(err);
+            loadingEl.style.display = "none";
+            errorEl.textContent = "Die aktuellen Einträge konnten nicht geladen werden. Bitte später erneut versuchen.";
+            errorEl.style.display = "block";
         }
-    });
-}
+    }
 
-init().catch(err => {
-    console.error("Fehler bei Initialisierung:", err);
-});
+    initAktuelles();
 </script>
-
 </body>
 </html>
