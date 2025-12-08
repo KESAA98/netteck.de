@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Kevin Strakerjahn Networks &amp; Automation – Startseite</title>
+    <title>Kevin Strakerjahn Networks &amp; Automation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon (Tab-Icon) -->
@@ -18,374 +18,109 @@
             --text-main: #1f2933;
             --text-muted: #6b7280;
             --radius-lg: 14px;
-            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
         }
 
         * {
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+        }
+
+        body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(circle at top, #e3f0ff 0, #f5f7fb 42%, #eef2ff 100%);
-            min-height: 100vh;
+            background: var(--bg);
             color: var(--text-main);
+            line-height: 1.6;
         }
 
-        .page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        main {
-            flex: 1;
-            padding: 32px 16px 24px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .shell {
-            width: 100%;
-            max-width: 1100px;
-        }
-
-        header.site-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand-logo {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #fff;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .brand-logo img {
-            max-width: 86%;
-            max-height: 86%;
+        img {
+            max-width: 100%;
+            height: auto;
             display: block;
         }
 
-        .brand-text {
-            display: flex;
-            flex-direction: column;
+        .page {
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
         }
 
-        .brand-text .name {
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-        }
-
-        .brand-text .subtitle {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .top-links {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .top-link {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            padding: 6px 10px;
-            border-radius: 999px;
-            border: 1px solid transparent;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .top-link:hover {
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.8);
-            border-color: var(--border);
-        }
-
-        .top-link.primary {
-            color: #fff;
-            background: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 12px 30px rgba(11, 116, 255, 0.45);
-        }
-
-        .top-link.primary:hover {
-            background: #0755c4;
-            border-color: #0755c4;
-        }
-
-        .content-card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 24px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            padding: 24px 24px 20px;
-        }
-
-        @media (min-width: 992px) {
-            .content-card {
-                padding: 32px 32px 24px;
-            }
-        }
-
-        .hero {
-            display: grid;
-            grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr);
-            gap: 32px;
-            align-items: center;
-            margin-bottom: 28px;
-        }
-
-        @media (max-width: 800px) {
-            .hero {
-                grid-template-columns: minmax(0, 1fr);
-                gap: 22px;
-            }
-        }
-
-        .hero-text h1 {
-            font-size: clamp(1.55rem, 2.3vw, 2rem);
-            margin: 0 0 10px;
-            letter-spacing: 0.02em;
-        }
-
-        .hero-text p {
-            margin: 0 0 6px;
-            color: var(--text-muted);
-            font-size: 0.98rem;
-        }
-
-        .hero-highlight {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: var(--primary-soft);
-            color: #0b4ba8;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-        }
-
-        .hero-highlight span {
-            font-size: 1.1rem;
-        }
-
-        .hero-kpi {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .hero-kpi-item {
-            padding: 7px 10px;
-            border-radius: 999px;
-            background: #f3f6ff;
-            font-size: 0.85rem;
-            color: #374151;
-        }
-
-        .hero-aside {
-            border-radius: 18px;
-            padding: 14px 16px;
-            background: linear-gradient(135deg, #0b74ff 0%, #0bafea 52%, #00c3a0 100%);
-            color: #eaf3ff;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-aside::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.28) 0, transparent 54%),
-                radial-gradient(circle at 82% 82%, rgba(0, 0, 0, 0.12) 0, transparent 60%);
-            opacity: 0.9;
-            pointer-events: none;
-        }
-
-        .hero-aside-inner {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-aside-title {
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 6px;
-            opacity: 0.9;
-        }
-
-        .hero-aside-main {
-            font-size: 0.98rem;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        .hero-aside-note {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-
-        .hero-aside-pill {
-            margin-top: 10px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.25);
-        }
-
-        .hero-aside-pill span {
-            font-size: 1.05rem;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .section-header h2 {
-            margin: 0;
-            font-size: 1.1rem;
-        }
-
-        .section-header p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .aktuelles-container {
-            margin-top: 10px;
-        }
-
-        .aktuelles-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .aktuelles-item {
-            border-radius: 16px;
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            padding: 1.75rem 1.9rem 2.1rem;
             border: 1px solid var(--border);
-            background: #f9fafb;
-            padding: 12px 14px 10px;
-            transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease, background 0.12s ease;
-            cursor: pointer;
         }
 
-        .aktuelles-item:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
-            border-color: rgba(11, 116, 255, 0.55);
-            background: #ffffff;
+        /* ---------- HEADER / BILD ---------- */
+
+        .header {
+            margin-bottom: 1.5rem;
         }
 
-        .aktuelles-item-header {
+        .logo-wrapper {
+            width: 100%;
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        /* ---------- EINLEITUNG ---------- */
+
+        .intro {
+            margin-bottom: 1.75rem;
+        }
+
+        .intro h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.4rem;
+        }
+
+        .intro p {
+            margin: 0.1rem 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ---------- AKTUELLES-TABELLE ---------- */
+
+        .aktuelles-section {
+            margin-top: 1.5rem;
+        }
+
+        .aktuelles-header {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
             align-items: baseline;
-            margin-bottom: 4px;
-        }
-
-        .aktuelles-item-title {
-            font-size: 0.98rem;
-            font-weight: 600;
-        }
-
-        .aktuelles-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        .aktuelles-meta {
-            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.6rem;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 4px;
         }
 
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 8px;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            border: 1px solid transparent;
+        .aktuelles-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
         }
 
-        .badge.category {
-            background: #e0edff;
-            color: #0b4ba8;
-            border-color: #b7d0ff;
-        }
-
-        .badge.tag {
-            background: #f3f4f6;
-            color: #374151;
-            border-color: #e5e7eb;
-        }
-
-        .aktuelles-teaser {
-            margin: 0 0 4px;
-            font-size: 0.88rem;
-            color: #4b5563;
-        }
-
-        .aktuelles-link {
-            font-size: 0.8rem;
-            text-decoration: none;
-            color: var(--primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .aktuelles-link:hover {
-            text-decoration: underline;
-        }
-
-        .aktuelles-empty,
-        .aktuelles-error,
-        .aktuelles-loading {
+        .aktuelles-header span {
             font-size: 0.9rem;
             color: var(--text-muted);
-            padding: 8px 0;
+        }
+
+        .aktuelles-loading,
+        .aktuelles-error,
+        .aktuelles-empty {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0.4rem 0 0.6rem;
         }
 
         .aktuelles-loading-spinner {
@@ -396,31 +131,106 @@
             border: 2px solid rgba(148, 163, 184, 0.5);
             border-top-color: var(--primary);
             animation: spin 0.7s linear infinite;
-            margin-right: 6px;
             vertical-align: middle;
+            margin-right: 0.4rem;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        footer {
-            padding: 10px 16px 16px;
-            text-align: center;
-            color: var(--text-muted);
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #f9fafb;
+        }
+
+        table.aktuelles-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 520px;
+        }
+
+        table.aktuelles-table thead {
+            background: #eef1f6;
+        }
+
+        table.aktuelles-table th,
+        table.aktuelles-table td {
+            padding: 0.55rem 0.7rem;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table.aktuelles-table th {
+            font-weight: 600;
+            color: #374151;
+            white-space: nowrap;
+        }
+
+        table.aktuelles-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.aktuelles-table tbody tr:hover {
+            background: #f3f4f6;
+        }
+
+        .small-text {
             font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            background: #e5e7eb;
+            color: #374151;
+            padding: 0.1rem 0.45rem;
+            border-radius: 999px;
+        }
+
+        .aktuelles-link {
+            font-size: 0.85rem;
+            color: var(--primary);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .aktuelles-link:hover {
+            color: #0649a8;
+        }
+
+        /* ---------- FOOTER ---------- */
+
+        footer {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
         }
 
         .footer-buttons {
             display: flex;
             justify-content: center;
             gap: 2.5rem;
-            margin-bottom: 6px;
+            margin-top: 0.2rem;
+            margin-bottom: 0.1rem;
         }
 
         .footer-link {
             font-size: 1.05rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-muted);
             text-decoration: underline;
             text-underline-offset: 3px;
@@ -431,34 +241,24 @@
             color: var(--text-main);
         }
 
-        .footer-note {
-            opacity: 0.9;
-        }
-
-        @media (max-width: 640px) {
-            main {
-                padding-top: 20px;
+        /* ---------- MOBILE ---------- */
+        @media (max-width: 600px) {
+            .page {
+                margin: 1.25rem auto 2rem;
+                padding: 0 0.75rem;
             }
 
-            header.site-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+            .card {
+                padding: 1.25rem 1.1rem 1.8rem;
+                border-radius: 12px;
             }
 
-            .top-links {
-                align-self: stretch;
-                justify-content: flex-start;
-                flex-wrap: wrap;
+            .logo-wrapper img {
+                border-radius: 8px;
             }
 
-            .content-card {
-                border-radius: 18px;
-                padding: 20px 16px 16px;
-            }
-
-            .aktuelles-item {
-                padding: 10px 10px 8px;
+            .intro h1 {
+                font-size: 1.25rem;
             }
 
             .footer-buttons {
@@ -468,153 +268,92 @@
     </style>
 </head>
 <body>
+
 <div class="page">
-    <main>
-        <div class="shell">
-            <header class="site-header">
-                <div class="brand">
-                    <div class="brand-logo">
-                        <img src="Logos/logo.png" alt="Logo Netteck">
-                    </div>
-                    <div class="brand-text">
-                        <div class="name">Kevin Strakerjahn</div>
-                        <div class="subtitle">Networks &amp; Automation – Windenergie &amp; IT</div>
-                    </div>
-                </div>
-                <nav class="top-links" aria-label="Hauptnavigation">
-                    <a class="top-link" href="/AGB/">AGB</a>
-                    <a class="top-link" href="/impressum/">Impressum</a>
-                    <a class="top-link primary" href="/kontakt/">Kontakt aufnehmen</a>
-                </nav>
-            </header>
+    <div class="card">
 
-            <section class="content-card" aria-label="Start und Aktuelles">
-                <div class="hero">
-                    <div class="hero-text">
-                        <div class="hero-highlight">
-                            <span>⚡</span>
-                            <span>Monitoring &amp; Netzwerke für Windparks</span>
-                        </div>
-                        <h1>Technische Betriebsführung trifft IT-Automatisierung.</h1>
-                        <p>
-                            Planung, Einrichtung und Betreuung von Netzwerken und Monitoring-Lösungen
-                            in Windenergie-Anlagen – von Router-Konfiguration bis UPS-Überwachung.
-                        </p>
-                        <p>
-                            Auf dieser Seite finden Sie aktuelle Projekte und Themen, an denen ich arbeite.
-                        </p>
-                        <div class="hero-kpi">
-                            <div class="hero-kpi-item">
-                                🔌 LANCOM-Router &amp; VPN-Konzepte
-                            </div>
-                            <div class="hero-kpi-item">
-                                🌬️ Fokus auf Windparks &amp; Enercon-Anlagen
-                            </div>
-                            <div class="hero-kpi-item">
-                                📡 Monitoring &amp; Alarmierung per E-Mail / Dashboard
-                            </div>
-                        </div>
-                    </div>
-                    <aside class="hero-aside">
-                        <div class="hero-aside-inner">
-                            <div class="hero-aside-title">Aktuelles Beispiel</div>
-                            <div class="hero-aside-main">
-                                Kundenrouter in ENERCON-Windkraftanlagen
-                            </div>
-                            <div class="hero-aside-note">
-                                Zentrale Konfiguration, sichere Anbindung und Monitoring
-                                von Service-Routern in bestehenden Windparks.
-                            </div>
-                            <div class="hero-aside-pill">
-                                <span>📶</span>
-                                <span>Detailansicht im Bereich „Aktuelles“ unten.</span>
-                            </div>
-                        </div>
-                    </aside>
-                </div>
+        <!-- Vollbreites Bild -->
+        <header class="header">
+            <div class="logo-wrapper">
+                <!-- Pfad von der Startseite aus -->
+                <img src="Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+            </div>
+        </header>
 
-                <div class="section-header">
-                    <h2>Aktuelles</h2>
-                    <p id="aktuelles-count-label">Laufende Projekte und Themen.</p>
-                </div>
+        <!-- Einleitung -->
+        <section class="intro">
+            <h1>Networks &amp; Automation für Windenergie und Industrie</h1>
+            <p>
+                Planung, Einrichtung und Betreuung von Netzwerken, Routern und Monitoring-Lösungen –
+                mit Fokus auf Windparks und technische Betriebsführung.
+            </p>
+            <p>
+                Unten finden Sie eine Übersicht aktueller Themen und Projekte.
+            </p>
+        </section>
 
-                <div class="aktuelles-container">
-                    <div id="aktuelles-loading" class="aktuelles-loading">
-                        <span class="aktuelles-loading-spinner"></span>
-                        <span>Aktuelle Einträge werden geladen …</span>
-                    </div>
-                    <div id="aktuelles-error" class="aktuelles-error" style="display:none;"></div>
-                    <div id="aktuelles-empty" class="aktuelles-empty" style="display:none;">
-                        Derzeit liegen keine Einträge im Bereich „Aktuelles“ vor.
-                    </div>
-                    <ul id="aktuelles-list" class="aktuelles-list" aria-live="polite"></ul>
-                </div>
-            </section>
-        </div>
-    </main>
+        <!-- Aktuelles (Tabelle aus /aktuelles/*/intro.txt) -->
+        <section class="aktuelles-section" aria-label="Aktuelle Themen und Projekte">
+            <div class="aktuelles-header">
+                <h2>Aktuelles</h2>
+                <span id="aktuelles-meta">Wird geladen …</span>
+            </div>
 
-    <footer>
-        <div class="footer-buttons">
-            <a class="footer-link" href="/">Start</a>
-            <a class="footer-link" href="/kontakt/">Kontakt</a>
-            <a class="footer-link" href="/impressum/">Impressum</a>
-        </div>
-        <div class="footer-note">
-            © <span id="year"></span> Kevin Strakerjahn – Networks &amp; Automation
-        </div>
-    </footer>
+            <div id="aktuelles-loading" class="aktuelles-loading">
+                <span class="aktuelles-loading-spinner"></span>
+                <span>Aktuelle Einträge werden geladen …</span>
+            </div>
+            <div id="aktuelles-error" class="aktuelles-error" style="display:none;"></div>
+            <div id="aktuelles-empty" class="aktuelles-empty" style="display:none;">
+                Derzeit liegen keine Einträge im Bereich „Aktuelles“ vor.
+            </div>
+
+            <div class="table-wrapper" id="aktuelles-table-wrapper" style="display:none;">
+                <table class="aktuelles-table" aria-describedby="aktuelles-meta">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Thema</th>
+                            <th>Kategorie</th>
+                            <th>Beschreibung</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="aktuelles-tbody">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-buttons">
+                <a class="footer-link" href="/">Start</a>
+                <a class="footer-link" href="/kontakt/">Kontakt</a>
+                <a class="footer-link" href="/impressum/">Impressum</a>
+                <a class="footer-link" href="/datenschutz/">Datenschutz</a>
+            </div>
+        </footer>
+
+    </div>
 </div>
 
 <script>
-    // Jahr im Footer setzen
-    document.getElementById("year").textContent = new Date().getFullYear().toString();
+    // GitHub-API-Basis für /aktuelles im Repo
+    const GITHUB_AKTUELLES_API =
+        "https://api.github.com/repos/KESAA98/netteck.de/contents/aktuelles";
 
-    const GITHUB_API_BASE = "https://api.github.com/repos/kesaa98/netteck.de/contents/aktuelles";
-
-    async function fetchAktuellesFolders() {
-        const res = await fetch(GITHUB_API_BASE);
-        if (!res.ok) {
-            throw new Error("Fehler beim Laden des Verzeichnisses /aktuelles (Status " + res.status + ")");
-        }
-        const entries = await res.json();
-        // nur Unterordner, keine Dateien
-        return entries.filter(e => e.type === "dir");
+    function formatDate(dateStr) {
+        if (!dateStr) return "";
+        const d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleDateString("de-DE", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        });
     }
 
-    async function fetchIntroForSlug(slug) {
-        const url = GITHUB_API_BASE + "/" + encodeURIComponent(slug) + "/intro.txt";
-        const res = await fetch(url);
-        if (!res.ok) {
-            throw new Error("intro.txt für " + slug + " nicht gefunden (Status " + res.status + ")");
-        }
-
-        const fileMeta = await res.json();
-        if (!fileMeta.download_url) {
-            throw new Error("Keine download_url für intro.txt in " + slug);
-        }
-
-        const textRes = await fetch(fileMeta.download_url);
-        if (!textRes.ok) {
-            throw new Error("Download von intro.txt für " + slug + " fehlgeschlagen (Status " + textRes.status + ")");
-        }
-
-        const rawText = await textRes.text();
-        let data;
-        try {
-            data = JSON.parse(rawText);
-        } catch (e) {
-            throw new Error("intro.txt in " + slug + " enthält kein gültiges JSON");
-        }
-
-        // slug aus Ordner ergänzen, falls nicht gesetzt
-        if (!data.slug) {
-            data.slug = slug;
-        }
-
-        return data;
-    }
-
-    function sortEntriesByDate(entries) {
+    function sortByDate(entries) {
         return entries.slice().sort((a, b) => {
             const da = a.date ? new Date(a.date) : null;
             const db = b.date ? new Date(b.date) : null;
@@ -628,109 +367,132 @@
         });
     }
 
-    function formatDate(dateStr) {
-        if (!dateStr) return "";
-        const d = new Date(dateStr);
-        if (isNaN(d)) return dateStr;
-        return d.toLocaleDateString("de-DE", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        });
+    async function fetchFolders() {
+        const res = await fetch(GITHUB_AKTUELLES_API);
+        if (!res.ok) {
+            throw new Error("Fehler beim Laden von /aktuelles (Status " + res.status + ")");
+        }
+        const json = await res.json();
+        return json.filter(entry => entry.type === "dir");
+    }
+
+    async function fetchIntroForSlug(slug) {
+        const url = GITHUB_AKTUELLES_API + "/" + encodeURIComponent(slug) + "/intro.txt";
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error("intro.txt für " + slug + " nicht gefunden (Status " + res.status + ")");
+        }
+
+        const meta = await res.json();
+        if (!meta.download_url) {
+            throw new Error("Keine download_url für intro.txt in " + slug);
+        }
+
+        const textRes = await fetch(meta.download_url);
+        if (!textRes.ok) {
+            throw new Error("Download von intro.txt für " + slug + " fehlgeschlagen (Status " + textRes.status + ")");
+        }
+
+        const raw = await textRes.text();
+        let data;
+        try {
+            data = JSON.parse(raw);
+        } catch (e) {
+            throw new Error("intro.txt in " + slug + " enthält kein gültiges JSON");
+        }
+
+        if (!data.slug) {
+            data.slug = slug;
+        }
+
+        return data;
     }
 
     function renderAktuelles(entries) {
-        const list = document.getElementById("aktuelles-list");
+        const tbody = document.getElementById("aktuelles-tbody");
+        const wrapper = document.getElementById("aktuelles-table-wrapper");
+        const meta = document.getElementById("aktuelles-meta");
         const emptyEl = document.getElementById("aktuelles-empty");
-        const countLabel = document.getElementById("aktuelles-count-label");
 
-        list.innerHTML = "";
+        tbody.innerHTML = "";
 
         if (!entries || entries.length === 0) {
+            wrapper.style.display = "none";
             emptyEl.style.display = "block";
-            countLabel.textContent = "Aktuell keine Einträge vorhanden.";
+            meta.textContent = "Aktuell keine Einträge vorhanden.";
             return;
         }
 
+        wrapper.style.display = "block";
         emptyEl.style.display = "none";
-        countLabel.textContent = entries.length + " Eintrag" + (entries.length === 1 ? "" : "e") + " im Überblick.";
 
-        const sorted = sortEntriesByDate(entries);
+        const sorted = sortByDate(entries);
+
+        meta.textContent =
+            sorted.length + " Eintrag" + (sorted.length === 1 ? "" : "e") + " im Überblick.";
 
         sorted.forEach(entry => {
+            const tr = document.createElement("tr");
+
+            const dateCell = document.createElement("td");
+            dateCell.textContent = entry.date ? formatDate(entry.date) : "";
+            tr.appendChild(dateCell);
+
+            const titleCell = document.createElement("td");
+            const titleText = entry.title || entry.slug || "Aktueller Eintrag";
+            const titleDiv = document.createElement("div");
+            titleDiv.textContent = titleText;
+            titleCell.appendChild(titleDiv);
+
+            if (entry.comment) {
+                const small = document.createElement("div");
+                small.className = "small-text";
+                small.textContent = entry.comment;
+                titleCell.appendChild(small);
+            }
+
+            tr.appendChild(titleCell);
+
+            const catCell = document.createElement("td");
+            const cat = entry.category || "Projekt";
+            const catDiv = document.createElement("div");
+            catDiv.textContent = cat;
+            catCell.appendChild(catDiv);
+
+            if (Array.isArray(entry.tags) && entry.tags.length > 0) {
+                const tagsDiv = document.createElement("div");
+                tagsDiv.className = "tag-list";
+                entry.tags.forEach(tag => {
+                    const t = document.createElement("span");
+                    t.className = "tag";
+                    t.textContent = tag;
+                    tagsDiv.appendChild(t);
+                });
+                catCell.appendChild(tagsDiv);
+            }
+
+            tr.appendChild(catCell);
+
+            const descCell = document.createElement("td");
+            const teaser = entry.teaser || "";
+            const desc = teaser || "";
+            descCell.textContent = desc;
+            tr.appendChild(descCell);
+
+            const linkCell = document.createElement("td");
             const slug = entry.slug || "";
-            const title = entry.title || slug || "Aktueller Eintrag";
-            const teaser = entry.teaser || entry.comment || "";
-            const comment = entry.comment || "";
-            const category = entry.category || "Projekt";
-            const tags = Array.isArray(entry.tags) ? entry.tags : [];
-            const dateStr = entry.date ? formatDate(entry.date) : "";
+            if (slug) {
+                const a = document.createElement("a");
+                a.href = "/aktuelles/" + encodeURIComponent(slug) + "/";
+                a.className = "aktuelles-link";
+                a.textContent = "Öffnen";
+                linkCell.appendChild(a);
+            } else {
+                linkCell.textContent = "-";
+            }
+            tr.appendChild(linkCell);
 
-            const li = document.createElement("li");
-            li.className = "aktuelles-item";
-            li.tabIndex = 0;
-            li.setAttribute("role", "link");
-
-            const linkHref = "/aktuelles/" + encodeURIComponent(slug) + "/";
-
-            li.addEventListener("click", () => {
-                window.location.href = linkHref;
-            });
-
-            li.addEventListener("keypress", (evt) => {
-                if (evt.key === "Enter" || evt.key === " ") {
-                    evt.preventDefault();
-                    window.location.href = linkHref;
-                }
-            });
-
-            const header = document.createElement("div");
-            header.className = "aktuelles-item-header";
-
-            const titleEl = document.createElement("div");
-            titleEl.className = "aktuelles-item-title";
-            titleEl.textContent = title;
-
-            const dateEl = document.createElement("div");
-            dateEl.className = "aktuelles-date";
-            dateEl.textContent = dateStr ? "Stand: " + dateStr : "";
-
-            header.appendChild(titleEl);
-            header.appendChild(dateEl);
-
-            const meta = document.createElement("div");
-            meta.className = "aktuelles-meta";
-
-            const catBadge = document.createElement("span");
-            catBadge.className = "badge category";
-            catBadge.textContent = category;
-            meta.appendChild(catBadge);
-
-            tags.forEach(tag => {
-                const tagBadge = document.createElement("span");
-                tagBadge.className = "badge tag";
-                tagBadge.textContent = tag;
-                meta.appendChild(tagBadge);
-            });
-
-            const teaserEl = document.createElement("p");
-            teaserEl.className = "aktuelles-teaser";
-            teaserEl.textContent = teaser || comment;
-
-            const link = document.createElement("a");
-            link.className = "aktuelles-link";
-            link.href = linkHref;
-            link.textContent = "Details ansehen";
-            const arrow = document.createElement("span");
-            arrow.textContent = "↗";
-            link.appendChild(arrow);
-
-            li.appendChild(header);
-            li.appendChild(meta);
-            li.appendChild(teaserEl);
-            li.appendChild(link);
-
-            list.appendChild(li);
+            tbody.appendChild(tr);
         });
     }
 
@@ -738,16 +500,15 @@
         const loadingEl = document.getElementById("aktuelles-loading");
         const errorEl = document.getElementById("aktuelles-error");
         const emptyEl = document.getElementById("aktuelles-empty");
-        const list = document.getElementById("aktuelles-list");
+        const wrapper = document.getElementById("aktuelles-table-wrapper");
 
         loadingEl.style.display = "block";
         errorEl.style.display = "none";
         emptyEl.style.display = "none";
-        list.innerHTML = "";
+        wrapper.style.display = "none";
 
         try {
-            const folders = await fetchAktuellesFolders();
-
+            const folders = await fetchFolders();
             if (!folders || folders.length === 0) {
                 loadingEl.style.display = "none";
                 emptyEl.style.display = "block";
@@ -765,17 +526,17 @@
             const validEntries = introData.filter(Boolean);
 
             loadingEl.style.display = "none";
-
             renderAktuelles(validEntries);
-        } catch (err) {
-            console.error(err);
+        } catch (e) {
+            console.error(e);
             loadingEl.style.display = "none";
             errorEl.textContent = "Die aktuellen Einträge konnten nicht geladen werden. Bitte später erneut versuchen.";
             errorEl.style.display = "block";
         }
     }
 
-    initAktuelles();
+    document.addEventListener("DOMContentLoaded", initAktuelles);
 </script>
+
 </body>
 </html>
