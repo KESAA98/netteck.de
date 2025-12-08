@@ -36,7 +36,6 @@
             line-height: 1.6;
         }
 
-        /* Bilder generell responsive halten */
         img {
             max-width: 100%;
             height: auto;
@@ -131,7 +130,6 @@
             margin-top: 0.25rem;
         }
 
-        /* Wenn keine Treffer angezeigt werden, Lücke komplett entfernen */
         .search-info:empty {
             margin-top: 0;
             display: none;
@@ -165,7 +163,6 @@
             background: #f3f4f6;
         }
 
-        /* Buttons rechts von der Suche (Desktop/Tablet) */
         .toolbar-actions {
             display: flex;
             gap: 0.5rem;
@@ -240,7 +237,6 @@
             margin: 0.25rem 0 0.5rem 1.2rem;
         }
 
-        /* Hinweis-Absätze aus note-Feldern */
         .para-note {
             border-bottom: none;
             margin-top: 0.3rem;
@@ -290,7 +286,7 @@
             color: var(--text-main);
         }
 
-        /* --------- MOBILE-OPTIMIERUNG + LÜCKEN-FIX --------- */
+        /* ---------- MOBILE ---------- */
         @media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
@@ -298,7 +294,7 @@
             }
 
             .card {
-                padding: 1.25rem 1.1rem 1.6rem;
+                padding: 1.25rem 1.1rem 1.8rem;
                 border-radius: 12px;
             }
 
@@ -327,19 +323,17 @@
                 line-height: 1.3;
             }
 
+            /* Toolbar: Block-Layout, damit keine Flex-Lücke entstehen kann */
             .toolbar {
-                flex-direction: column;
-                align-items: stretch;
-                justify-content: flex-start; /* keine Verteilung über volle Höhe */
-                gap: 0.5rem;                 /* etwas mehr Platz zwischen Suche und Buttons */
-                margin-bottom: 0.8rem;       /* angenehmer Abstand zur TOC */
+                display: block;
+                margin-bottom: 1rem;   /* etwas Abstand zu "Inhalt" */
             }
 
             .search-box {
-                flex: 0 0 auto;              /* verhindert die 220px-Mindesthöhe -> Lücke weg */
+                flex: none;
+                margin-bottom: 0.4rem; /* kleiner Abstand zu den Buttons */
             }
 
-            /* Buttons auch mobil sichtbar, im Vollbreiten-Container */
             .toolbar-actions {
                 display: flex;
                 width: 100%;
@@ -352,7 +346,6 @@
                 justify-content: center;
             }
 
-            /* Grid aufheben, damit keine „unsichtbare Spalte“ Platz frisst */
             .agb-layout {
                 display: block;
                 grid-template-columns: none;
@@ -361,7 +354,6 @@
                 padding-top: 0;
             }
 
-            /* TOC normal in den Flow setzen, ohne extra Abstand */
             .toc {
                 position: static;
                 max-height: none;
@@ -370,13 +362,11 @@
                 margin-bottom: 0.4rem;
             }
 
-            /* Inhalt direkt unter dem TOC beginnen */
             .agb-content {
                 margin-top: 0;
                 padding-top: 0;
             }
 
-            /* "Strg+F" auf Mobile ausblenden */
             .search-box span {
                 display: none;
             }
@@ -445,10 +435,7 @@ const LOGO_PATH = "../Logos/logo_name.jpeg";
 const GITHUB_CONTENT_API =
   "https://api.github.com/repos/KESAA98/netteck.de/contents/AGB/AGBs";
 
-// Liste der AGB-Dateien (wird dynamisch gefüllt)
 let AGB_FILES = [];
-
-// Version für PDF-Kopf
 const AGB_VERSION = "AGB_KS_2025_12_03";
 
 let agbData = [];
@@ -520,7 +507,6 @@ async function updateStandFromLastModified(files) {
 }
 
 async function init() {
-    // 0) Dateiliste aus GitHub-API laden
     try {
         const listResp = await fetch(GITHUB_CONTENT_API);
         if (!listResp.ok) {
@@ -540,10 +526,8 @@ async function init() {
         return;
     }
 
-    // 1) Stand anhand Last-Modified der lokalen Dateien bestimmen
     await updateStandFromLastModified(AGB_FILES);
 
-    // 2) AGB-Dateien laden (JSON aus .txt, lokal vom Server)
     const filePromises = AGB_FILES.map(async (file) => {
         try {
             const resp = await fetch("AGBs/" + file);
@@ -560,7 +544,6 @@ async function init() {
 
     const rawFiles = await Promise.all(filePromises);
 
-    // 3) Daten zu einer Liste zusammenführen
     agbData = [];
 
     rawFiles.forEach(fileObj => {
@@ -754,7 +737,7 @@ function buildPdfBlocksFromText(text) {
 
 function buildPdfDocumentDefinition(logoDataUrl) {
     const now = new Date();
-       const ts = now.toLocaleString("de-DE");
+    const ts = now.toLocaleString("de-DE");
 
     const versionStr = AGB_VERSION;
     const standStr = standDateStr;
@@ -765,7 +748,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
 
     const content = [];
 
-    // Logo + Kopf
     content.push({
         image: logoDataUrl,
         width: 520,
@@ -785,11 +767,9 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         margin: [0, 0, 0, 10]
     });
 
-    // Inhalt aus agbData: Hinweise + Paragraphen
     agbData.forEach((para, idx) => {
         const text = para.text || para.Text || "";
 
-        // Hinweis-Absätze
         if (para.isNote) {
             content.push({
                 text: text,
@@ -803,7 +783,6 @@ function buildPdfDocumentDefinition(logoDataUrl) {
         const title = para.title || para.Titel || ("§ " + (idx + 1));
         const blocks = buildPdfBlocksFromText(text);
 
-        // Unbreakable-Stack für elektronische Version (Paragraph bleibt zusammen)
         const paragraphStack = {
             unbreakable: true,
             margin: [0, 4, 0, 4],
