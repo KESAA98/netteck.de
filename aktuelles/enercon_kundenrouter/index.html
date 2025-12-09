@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Router-Einbau in ENERCON-Windkraftanlagen</title>
+    <title>Router-Einbau im ENERCON-Windpark</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon (Tab-Icon) -->
-    <link rel="icon" type="image/png" href="/Logos/logo.png">
+    <link rel="icon" type="image/png" href="../../Logos/logo.png">
 
     <style>
         :root {
@@ -77,12 +77,22 @@
 
         .intro h1 {
             font-size: 1.5rem;
-            margin: 0 0 0.4rem;
+            margin: 0 0 0.7rem;
         }
 
         .intro p {
-            margin: 0.1rem 0;
-            color: var(--text-muted);
+            margin: 0.4rem 0;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .intro ul {
+            margin: 0.4rem 0 0.6rem 1.1rem;
+            padding: 0;
+        }
+
+        .intro li {
+            margin: 0.15rem 0;
             font-size: 0.95rem;
         }
 
@@ -139,31 +149,40 @@
             border: 1px solid #fed7aa;
             font-size: 0.9rem;
             color: #7c2d12;
-            display: none; /* wird per JS eingeblendet */
+            display: none;
         }
 
-        /* KONTAKT-FORMULAR */
-        .contact-section {
+        /* SEKTIONEN */
+        .section-divider {
             margin-top: 2rem;
             border-top: 1px solid var(--border);
             padding-top: 1.5rem;
         }
 
-        .contact-section h2 {
-            margin: 0 0 0.5rem;
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .section-header h2 {
+            margin: 0;
             font-size: 1.2rem;
         }
 
-        .contact-section p {
-            margin: 0.15rem 0 0.9rem;
-            font-size: 0.95rem;
+        .section-header span {
+            font-size: 0.9rem;
             color: var(--text-muted);
         }
 
+        /* FORMULAR ALLGEMEIN */
         form.router-form {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.4rem;
+            margin-top: 1rem;
         }
 
         .form-grid {
@@ -256,6 +275,61 @@
             transform: translateY(0);
         }
 
+        .btn-secondary,
+        .btn-text {
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+        }
+
+        .btn-text {
+            border: none;
+            padding: 0.2rem 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn-text:hover {
+            color: var(--text-main);
+        }
+
+        /* WINDPARK-KARTEN */
+        .windparks-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 0.7rem;
+        }
+
+        .windpark-card {
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 0.9rem 1rem 1.1rem;
+            background: #f9fafb;
+        }
+
+        .windpark-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.7rem;
+        }
+
+        .windpark-card-header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
         /* FOOTER */
         footer {
             margin-top: 1.6rem;
@@ -326,20 +400,53 @@
         <!-- Bild / Header -->
         <header class="header">
             <div class="logo-wrapper">
-                <img src="/Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+                <img src="../../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
             </div>
         </header>
 
         <!-- Einleitung -->
         <section class="intro">
-            <h1>Router-Einbau in ENERCON-Windkraftanlagen</h1>
+            <h1>Router-Einbau im ENERCON-Windpark</h1>
+
             <p>
-                Fachgerechte Montage, Inbetriebnahme und Übergabe eines Kundenrouters im bestehenden Windpark –
-                inklusive sauberer Integration in die vorhandene Infrastruktur.
+                Eine stabile und klar strukturierte Netzwerkverbindung ist entscheidend für den sicheren Betrieb
+                moderner Windenergieanlagen. Viele Bestandsanlagen verfügen jedoch noch über ältere Router,
+                gewachsene Verkabelungen oder nicht mehr zeitgemäße Konfigurationen. Damit Betreiber und
+                Servicepartner zuverlässig auf die Anlagen zugreifen können, ist eine professionelle Modernisierung
+                der Router-Infrastruktur erforderlich.
             </p>
+
             <p>
-                Auf dieser Seite finden Sie den typischen Leistungsumfang des Router-Einbaus sowie ein Formular,
-                mit dem Sie gezielt ein Angebot anfragen können.
+                In vielen Windparks entsteht dieser Bedarf, weil ENERCON bei älteren Anlagen inzwischen erwartet
+                bzw. vorgibt, dass der Betreiber einen eigenen Router bereitstellt und fachgerecht installieren lässt.
+                Hintergrund ist, dass zahlreiche Altanlagen noch mit Kommunikationslösungen ausgestattet sind, die
+                heutigen Sicherheits- und Verfügbarkeitsanforderungen nicht mehr entsprechen.
+            </p>
+
+            <p>
+                Ich übernehme die vollständige Installation und Einrichtung solcher Kundenrouter in
+                ENERCON-Windkraftanlagen – sowohl im Turm als auch in der Übergabestation. Die Umsetzung basiert
+                auf einer klar definierten technischen Struktur, die speziell auf die typischen Netzwerkarchitekturen
+                in ENERCON-Windparks abgestimmt ist.
+            </p>
+
+            <p>Zum Einsatz kommen ausschließlich industrietaugliche, praxiserprobte Komponenten:</p>
+
+            <ul>
+                <li>LANCOM 1800VA-4G – Router für sichere VPN-Anbindung, Routing und Standortvernetzung</li>
+                <li>Eaton Ellipse PRO / ECO oder vergleichbare USV – Schutz vor Spannungsschwankungen und Ausfällen</li>
+                <li>IP54-Montagegehäuse für einen geschützten und sauberen Einbau im Turm oder der Übergabestation</li>
+                <li>Strukturierte Verkabelung mit klar beschrifteten und genormten Übergabepunkten</li>
+            </ul>
+
+            <p>
+                Durch die Kombination aus vorkonfigurierter Hardware, standardisiertem Schaltschrankaufbau und einer
+                sauberen Integration in die vorhandene Infrastruktur entsteht ein stabiles, wartbares und
+                zukunftssicheres Kommunikationssystem für den gesamten Windpark.
+            </p>
+
+            <p>
+                Das vollständige Leistungsverzeichnis finden Sie direkt unter diesem Abschnitt.
             </p>
         </section>
 
@@ -348,7 +455,7 @@
             <h2>Leistungsumfang Router-Einbau</h2>
             <p class="leistungen-hint">
                 Die folgenden Punkte beschreiben den typischen Ablauf von der Bestandsaufnahme bis zur Übergabe
-                der fertigen Lösung.
+                der fertigen Lösung. Details können je nach Windpark und Infrastruktur angepasst werden.
             </p>
 
             <div id="leistungen-list" class="leistungen-list">
@@ -358,13 +465,12 @@
             <div id="legal-box" class="legal-box"></div>
         </section>
 
-        <!-- Kontaktformular für Angebot -->
-        <section class="contact-section" aria-label="Angebot für Router-Einbau anfragen">
-            <h2>Angebot für Router-Einbau anfragen</h2>
-            <p>
-                Bitte tragen Sie die wichtigsten Eckdaten zum Windpark ein. Auf dieser Basis erstelle ich ein
-                individuelles Angebot für den Router-Einbau.
-            </p>
+        <!-- Formular: Windparks -->
+        <section class="section-divider" aria-label="Windparks für Router-Einbau">
+            <div class="section-header">
+                <h2>Windparks für die Angebotsanfrage</h2>
+                <span>Tragen Sie hier alle Windparks ein, für die ein Router-Einbau geplant ist.</span>
+            </div>
 
             <form
                 name="router-einbau-anfrage"
@@ -372,94 +478,111 @@
                 data-netlify="true"
                 class="router-form"
             >
-                <!-- Netlify-Form-Name (wichtig) -->
+                <!-- Netlify-Form-Name -->
                 <input type="hidden" name="form-name" value="router-einbau-anfrage">
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="firma">Firma / Betreiber<span class="required">*</span></label>
-                        <input type="text" id="firma" name="firma" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="ansprechpartner">Ansprechpartner<span class="required">*</span></label>
-                        <input type="text" id="ansprechpartner" name="ansprechpartner" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">E-Mail<span class="required">*</span></label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefon">Telefon</label>
-                        <input type="tel" id="telefon" name="telefon">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="windpark_name">Windpark / Standort<span class="required">*</span></label>
-                        <input type="text" id="windpark_name" name="windpark_name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="wp_nummer">WP-Nummer / Park-ID (falls bekannt)</label>
-                        <input type="text" id="wp_nummer" name="wp_nummer">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="wes_kunde">WES-Kunde?<span class="required">*</span></label>
-                        <select id="wes_kunde" name="wes_kunde" required>
-                            <option value="">Bitte auswählen …</option>
-                            <option value="ja">Ja, WES Technische Betriebsführung</option>
-                            <option value="nein">Nein, anderer Betriebsführer</option>
-                            <option value="unbekannt">Unbekannt / noch nicht geklärt</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="anzahl_anlagen">Anzahl Anlagen / Router</label>
-                        <input type="number" id="anzahl_anlagen" name="anzahl_anlagen" min="1" step="1">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="internet">Internet-Anbindung vor Ort</label>
-                        <select id="internet" name="internet">
-                            <option value="">Bitte auswählen …</option>
-                            <option value="vorhanden_betreiber">Vorhanden (über Betreiber)</option>
-                            <option value="vorhanden_enercon">Vorhanden (über Enercon / Transfernetz)</option>
-                            <option value="nicht_vorhanden">Noch nicht vorhanden</option>
-                            <option value="unklar">Unklar / muss geprüft werden</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="zeitraum">Geplanter Zeitraum / Deadline</label>
-                        <input type="text" id="zeitraum" name="zeitraum" placeholder="z. B. Q1/2026 oder konkretes Datum">
-                    </div>
+                <!-- Windpark-Liste -->
+                <div class="windparks-wrapper" id="windparks-container">
+                    <!-- Wird per JS befüllt -->
                 </div>
 
-                <div class="form-group">
-                    <label for="leistungsumfang">Kurzbeschreibung des Vorhabens<span class="required">*</span></label>
-                    <textarea
-                        id="leistungsumfang"
-                        name="leistungsumfang"
-                        required
-                        placeholder="z. B. Einbau eines neuen Kundenrouters inkl. USV im Übergabeschrank, Anbindung von 5 Anlagen, VPN-Zugang für Leitwarte …"
-                    ></textarea>
+                <div>
+                    <button type="button" class="btn-secondary" id="add-windpark-btn">
+                        + weiteren Windpark hinzufügen
+                    </button>
                     <div class="form-note">
-                        Je genauer Sie Ihr Vorhaben beschreiben, desto passgenauer kann das Angebot erstellt werden.
+                        Jeder Eintrag entspricht einem Windpark mit eigenem Betreiber bzw. Ansprechpartner.
                     </div>
                 </div>
 
+                <!-- Zusatzsysteme -->
                 <div class="form-group">
-                    <label for="besonderheiten">Besonderheiten vor Ort</label>
+                    <label for="zusatzsysteme">
+                        Zusatzsysteme, die Internet benötigen (z.&#8239;B. BNK, Kameras, Fernwirktechnik)
+                    </label>
                     <textarea
-                        id="besonderheiten"
-                        name="besonderheiten"
-                        placeholder="z. B. schwer zugänglicher Standort, vorhandene USV, bestehender Router, besondere Freischaltbedingungen …"
+                        id="zusatzsysteme"
+                        name="zusatzsysteme"
+                        placeholder="Bitte nennen Sie hier weitere Systeme, die über den Router angebunden werden sollen."
                     ></textarea>
                 </div>
 
+                <!-- Kontaktdaten Anfragender -->
+                <div class="section-divider" aria-label="Kontaktdaten für Rückfragen">
+                    <div class="section-header">
+                        <h2>Kontaktdaten für Rückfragen und Angebot</h2>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="anfrager_name">Name des Anfragenden<span class="required">*</span></label>
+                            <input type="text" id="anfrager_name" name="anfrager_name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="anfrager_firma">Firma / Organisation<span class="required">*</span></label>
+                            <input type="text" id="anfrager_firma" name="anfrager_firma" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="anfrager_email">E-Mail<span class="required">*</span></label>
+                            <input type="email" id="anfrager_email" name="anfrager_email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="anfrager_telefon">Telefon</label>
+                            <input type="tel" id="anfrager_telefon" name="anfrager_telefon">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WES-Kunde + WP-Nummern -->
+                <div class="section-divider" aria-label="Angaben zur technischen Betriebsführung">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="wes_kunde">
+                                WES Technische Betriebsführung GmbH – Kunde?<span class="required">*</span>
+                            </label>
+                            <select id="wes_kunde" name="wes_kunde" required>
+                                <option value="">Bitte auswählen …</option>
+                                <option value="ja">Ja, wir sind Kunde der WES Technische Betriebsführung GmbH</option>
+                                <option value="nein">Nein</option>
+                            </select>
+                            <div class="form-note">
+                                Diese Angabe hilft bei der Abstimmung mit der technischen Betriebsführung.
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="wes_details_group" style="display:none;">
+                            <label for="wes_wp_ids">WP-Nummern / Park-IDs (falls bekannt)</label>
+                            <textarea
+                                id="wes_wp_ids"
+                                name="wes_wp_ids"
+                                placeholder="z.&#8239;B. WP03, WP07, interne Park-IDs oder WES-Kundennummern."
+                            ></textarea>
+                            <div class="form-note">
+                                Optional, aber hilfreich für eine eindeutige Zuordnung in bestehenden Systemen.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checkbox WES IBS -->
+                <div class="form-group">
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="wes_ibs_checkbox" name="wes_ibs_checkbox" required>
+                        <label for="wes_ibs_checkbox">
+                            Mindestens eine der angegebenen Anlagen befindet sich in der technischen
+                            Betriebsführung der WES IBS Betriebsführung GmbH.
+                        </label>
+                    </div>
+                    <div class="form-note">
+                        Falls dies nicht zutrifft, können Sie diese Checkbox deaktivieren und im Freitext
+                        weitere Informationen zur Betriebsführung ergänzen.
+                    </div>
+                </div>
+
+                <!-- Datenschutz -->
                 <div class="form-group">
                     <div class="checkbox-row">
                         <input type="checkbox" id="datenschutz" name="datenschutz" required>
@@ -474,9 +597,10 @@
                     </div>
                 </div>
 
+                <!-- Absenden -->
                 <div class="submit-row">
                     <button type="submit" class="btn-primary">
-                        Anfrage absenden
+                        Anfrage für Router-Einbau absenden
                     </button>
                 </div>
             </form>
@@ -495,6 +619,7 @@
 </div>
 
 <script>
+    // Leistungsumfang laden
     async function loadRouterEinbauInfo() {
         const listEl = document.getElementById("leistungen-list");
         const legalBox = document.getElementById("legal-box");
@@ -547,7 +672,121 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", loadRouterEinbauInfo);
+    // Dynamische Windpark-Karten
+    function initWindparks() {
+        const container = document.getElementById("windparks-container");
+        const addBtn = document.getElementById("add-windpark-btn");
+        if (!container || !addBtn) return;
+
+        let index = 0;
+
+        function createWindparkCard(i) {
+            const card = document.createElement("div");
+            card.className = "windpark-card";
+            card.dataset.index = String(i);
+
+            card.innerHTML = `
+                <div class="windpark-card-header">
+                    <h3>Windpark ${i}</h3>
+                    <button type="button" class="btn-text remove-windpark" ${i === 1 ? 'style="display:none;"' : ""}>
+                        entfernen
+                    </button>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="windpark_${i}_name">Windpark / Standort<span class="required">*</span></label>
+                        <input type="text" id="windpark_${i}_name" name="windpark_${i}_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="windpark_${i}_betreiber">Betreiber-Firma<span class="required">*</span></label>
+                        <input type="text" id="windpark_${i}_betreiber" name="windpark_${i}_betreiber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="windpark_${i}_anzahl_anlagen">Anzahl Anlagen<span class="required">*</span></label>
+                        <input type="number" id="windpark_${i}_anzahl_anlagen" name="windpark_${i}_anzahl_anlagen" min="1" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="windpark_${i}_geschaeftsfuehrer">Geschäftsführer / Verantwortliche Person</label>
+                        <input type="text" id="windpark_${i}_geschaeftsfuehrer" name="windpark_${i}_geschaeftsfuehrer">
+                    </div>
+                    <div class="form-group">
+                        <label for="windpark_${i}_email">E-Mail des Betreibers</label>
+                        <input type="email" id="windpark_${i}_email" name="windpark_${i}_email">
+                    </div>
+                    <div class="form-group">
+                        <label for="windpark_${i}_internet">Internet-Anbindung vor Ort</label>
+                        <select id="windpark_${i}_internet" name="windpark_${i}_internet">
+                            <option value="">Bitte auswählen …</option>
+                            <option value="lte">LTE</option>
+                            <option value="glasfaser">Glasfaser</option>
+                            <option value="dsl">DSL</option>
+                            <option value="unbekannt">Unbekannt / muss geprüft werden</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top:0.5rem;">
+                    <label for="windpark_${i}_hinweise">Besondere Hinweise zu diesem Windpark</label>
+                    <textarea
+                        id="windpark_${i}_hinweise"
+                        name="windpark_${i}_hinweise"
+                        placeholder="z.&#8239;B. eingeschränkter Zugang, spezielle Schaltzeiten, bestehende Router oder USV, Besonderheiten im Übergabeschrank …"
+                    ></textarea>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function addWindpark() {
+            index += 1;
+            const card = createWindparkCard(index);
+            container.appendChild(card);
+        }
+
+        addBtn.addEventListener("click", () => {
+            addWindpark();
+        });
+
+        container.addEventListener("click", (event) => {
+            const target = event.target;
+            if (target && target.classList.contains("remove-windpark")) {
+                const card = target.closest(".windpark-card");
+                if (card) {
+                    container.removeChild(card);
+                }
+            }
+        });
+
+        // Mindestens ein Windpark vorbefüllen
+        addWindpark();
+    }
+
+    // WES-Kunde: WP-IDs Feld ein-/ausblenden
+    function initWesToggle() {
+        const select = document.getElementById("wes_kunde");
+        const group = document.getElementById("wes_details_group");
+        const textarea = document.getElementById("wes_wp_ids");
+
+        if (!select || !group) return;
+
+        function update() {
+            if (select.value === "ja") {
+                group.style.display = "";
+            } else {
+                group.style.display = "none";
+                if (textarea) textarea.value = "";
+            }
+        }
+
+        select.addEventListener("change", update);
+        update();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadRouterEinbauInfo();
+        initWindparks();
+        initWesToggle();
+    });
 </script>
 
 </body>
