@@ -2,8 +2,8 @@
   "title": "Kundenrouter in ENERCON-Windkraftanlagen",
   "slug": "enercon_kundenrouter",
   "date": "2025-12-08",
-  "teaser": "Planung, Einrichtung und zentrale Verwaltung von Kundenroutern in bestehenden ENERCON-Windparks – inklusive sicherer VPN-Anbindung und Monitoring.",
-  "comment": "Konzept und Umsetzung einer sauberen Trennung zwischen Hersteller-, Service- und Kundennetz, basierend auf LANCOM-Routern, definierten VLAN-Strukturen und einer klaren Zuständigkeit im Störungsfall.",
+  "teaser": "Planung, Einrichtung und zentrale Verwaltung von Kundenroutern in bestehenden ENERCON-Windparks – inklusive sicherer VPN-Anbindung.",
+  "comment": "Konzept und Umsetzung einer sauberen Trennung zwischen Hersteller-, Service- und Kundennetz, basierend auf LANCOM-Routern und klar definierten VLAN-Strukturen.",
   "category": "Windpark-Netzwerke",
-  "tags": ["Enercon", "LANCOM", "Router", "VPN", "Monitoring"]
+  "tags": ["Enercon", "LANCOM", "Router", "VPN"]
 }
