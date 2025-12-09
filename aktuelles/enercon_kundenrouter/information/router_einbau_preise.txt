@@ -1,0 +1,28 @@
+{
+  "posten": [
+    {
+      "title": "Router-Konfiguration / Ersteinrichtung",
+      "description": "Konfiguration des Kundenrouters einschließlich Einrichtung der VLAN-Struktur, IP-Netze, Firewall-Regeln sowie der notwendigen VPN-Verbindungen. Anpassung an die bestehende Infrastruktur des Windparks sowie abschließende Funktionsprüfung.",
+      "unit": "Psch.",
+      "price": 400.00
+    },
+    {
+      "title": "Vor-Ort-Installation des Routers",
+      "description": "Montage und Inbetriebnahme des Routers in der Anlage bzw. Übergabestation, einschließlich Verkabelung, Anschluss an die vorhandene Infrastruktur, Funktionsprüfung sowie Übergabe an den Betreiber.",
+      "unit": "Psch.",
+      "price": 400.00
+    },
+    {
+      "title": "Material / Komponenten",
+      "description": "Lieferung der benötigten Hardware bestehend aus LANCOM 1800VA-4G Router, IP54-Montagegehäuse sowie der Eaton 3P Ellipse 700 USB USV. Zusätzlich enthalten sind alle erforderlichen Anschluss- und Montagematerialien für den fachgerechten Einbau.",
+      "unit": "Psch.",
+      "price": 1199.00
+    },
+    {
+      "title": "Service- & Verwaltungspauschale",
+      "description": "Pauschale für administrativen Aufwand, Serviceorganisation, Terminabstimmung, Projektdokumentation, interne Verwaltung sowie laufende Kommunikation im Rahmen der Installation und Konfiguration des Routers.",
+      "unit": "Psch.",
+      "price": 100.00
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "title": "Leistungsumfang Router-Einbau",
+  "sections": [
+    {
+      "heading": "Bestandsaufnahme & Planung",
+      "text": "Analyse der vorhandenen Technik und Verbindungen.",
+      "note": "Vor Beginn der Arbeiten werden alle bestehenden Netzwerkkomponenten, Router, Leitungen sowie mögliche LTE- oder Satellitenanbindungen geprüft. Dadurch wird festgestellt, welche Voraussetzungen vor Ort bestehen und wie die optimale Umsetzung erfolgen kann."
+    },
+    {
+      "heading": "Lieferung der erforderlichen Hardware",
+      "text": "Bereitstellung des benötigten Router- und USV-Systems.",
+      "note": "Alle notwendigen Geräte – wie LANCOM-Router, USV-Systeme sowie benötigtes Zubehör – werden vollständig geliefert. Dadurch ist sichergestellt, dass alle Komponenten perfekt zueinander passen und sofort einsatzbereit sind."
+    },
+    {
+      "heading": "Vorkonfiguration des Routers",
+      "text": "Einrichtung aller Grundparameter vor dem Einbau.",
+      "note": "Der Router wird vorab professionell eingerichtet. Dazu zählen PPPoE-Zugangsdaten, VLAN-Configuration, Enercon-spezifische Vorgaben, Firewall-Basisschutz und alle technischen Werte, damit vor Ort ein schneller und reibungsloser Start möglich ist."
+    },
+    {
+      "heading": "Erstellung der Projektdokumentation",
+      "text": "Ausführliche Dokumentation aller Einstellungen.",
+      "note": "Alle wichtigen Unterlagen – Konfigurationsprotokolle, Zugangsdatenübersichten, Netzwerkschemata – werden vollständig erstellt und sicher hinterlegt. Der Betreiber erhält eine nachvollziehbare und vollständige Dokumentation des gesamten Systems."
+    },
+    {
+      "heading": "Terminabstimmung & Koordination",
+      "text": "Absprachen mit Internetanbieter und Enercon.",
+      "note": "Alle technisch relevanten Termine werden abgestimmt, damit die Installation ohne Verzögerungen stattfinden kann. Dazu gehören Provider-Schaltungen, Enercon-Freigaben und organisatorische Abläufe."
+    },
+    {
+      "heading": "Installation vor Ort",
+      "text": "Einbau und Anschluss des Routers im Windpark.",
+      "note": "Der Router wird vor Ort fachgerecht montiert, verkabelt und in die bestehende Infrastruktur integriert. Dabei wird besonders darauf geachtet, dass bestehende Systeme nicht beeinträchtigt werden."
+    },
+    {
+      "heading": "Funktionstests",
+      "text": "Überprüfung aller Funktionen nach der Installation.",
+      "note": "Es werden umfassende Tests durchgeführt: Internetzugang, Remotezugriff, VPN-Verbindungen und Systemstabilität. So wird sichergestellt, dass alles zuverlässig und dauerhaft funktioniert."
+    },
+    {
+      "heading": "Abnahme & Übergabe",
+      "text": "Dokumentierter Abschluss der Arbeiten.",
+      "note": "Der Abschluss wird in einem schriftlichen Übergabe- und Abnahmeprotokoll festgehalten. Dieses bestätigt, dass das System erfolgreich installiert und betriebsbereit übergeben wurde."
+    }
+  ],
+  "legal_notice": "Zusätzliche Kosten durch Enercon oder externe Provider sind nicht Bestandteil des Angebots und werden vom Auftraggeber direkt getragen. Vor Projektbeginn ist eine Anzahlung für das Material erforderlich; hierzu erfolgt eine separate Abschlagsrechnung."
+}
