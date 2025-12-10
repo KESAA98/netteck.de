@@ -1,0 +1,9 @@
+{
+  "title": "Service- & Wartungsvertrag für montierte Kundenrouter",
+  "slug": "router_service_wartung",
+  "date": "2025-12-08",
+  "teaser": "Laufende Betreuung, Wartung und technische Verwaltung von durch mich montierten Kundenroutern in Windkraftanlagen.",
+  "comment": "Umfasst Support, Konfigurationspflege, Sicherheitsupdates, Überwachung, Priorisierung von Störungen sowie die jährliche Wartung des installierten Router-Systems.",
+  "category": "Service & Wartung",
+  "tags": ["Servicevertrag", "Wartungsvertrag", "Router", "LANCOM", "Monitoring"]
+}

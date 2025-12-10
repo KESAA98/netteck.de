@@ -1,0 +1,61 @@
+{
+  "pakete": {
+    "1": {
+      "laufzeit_jahre": 1,
+      "varianten": [
+        {
+          "lancare_jahre": 1,
+          "wartungsvertrag_preis": 266.76,
+          "lancare_preis_netto": 92.24,
+          "lancare_preis_brutto": 109.77,
+          "gesamt": 359.00
+        },
+        {
+          "lancare_jahre": 3,
+          "wartungsvertrag_preis": 266.76,
+          "lancare_preis_netto": 140.33,
+          "lancare_preis_brutto": 166.99,
+          "gesamt": 407.08
+        },
+        {
+          "lancare_jahre": 5,
+          "wartungsvertrag_preis": 266.76,
+          "lancare_preis_netto": 201.82,
+          "lancare_preis_brutto": 240.16,
+          "gesamt": 468.57
+        }
+      ]
+    },
+    "3": {
+      "laufzeit_jahre": 3,
+      "varianten": [
+        {
+          "lancare_jahre": 3,
+          "wartungsvertrag_preis": 312.22,
+          "lancare_preis_netto": 140.33,
+          "lancare_preis_brutto": 166.99,
+          "gesamt": 1077.00
+        },
+        {
+          "lancare_jahre": 5,
+          "wartungsvertrag_preis": 312.22,
+          "lancare_preis_netto": 201.82,
+          "lancare_preis_brutto": 240.16,
+          "gesamt": 1138.49
+        }
+      ]
+    },
+    "5": {
+      "laufzeit_jahre": 5,
+      "varianten": [
+        {
+          "lancare_jahre": 5,
+          "wartungsvertrag_preis": 318.64,
+          "lancare_preis_netto": 201.82,
+          "lancare_preis_brutto": 240.16,
+          "gesamt": 1795.00
+        }
+      ]
+    }
+  }
+}

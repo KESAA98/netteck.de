@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>PDF-Upload zu Power Automate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
+            padding: 24px;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.3rem;
+            margin: 0 0 8px;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        .drop-zone {
+            border: 2px dashed #0b74ff;
+            border-radius: 10px;
+            padding: 30px 16px;
+            text-align: center;
+            background: rgba(11, 116, 255, 0.03);
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .drop-zone.dragover {
+            background: rgba(11, 116, 255, 0.08);
+            border-color: #0759bf;
+        }
+
+        .drop-zone span {
+            display: block;
+            font-size: 0.95rem;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .drop-zone small {
+            display: block;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #111827;
+        }
+
+        .file-info strong {
+            font-weight: 600;
+        }
+
+        .btn-row {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        button {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .btn-primary {
+            background: #0b74ff;
+            color: #ffffff;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 12px;
+            font-size: 0.85rem;
+        }
+
+        .status.success {
+            color: #15803d;
+        }
+
+        .status.error {
+            color: #b91c1c;
+        }
+
+        .status.info {
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="card">
+        <h1>Rechnung als PDF hochladen</h1>
+        <p>Ziehe eine PDF-Datei hier hinein oder klicke in das Feld. Beim Senden wird die Datei per HTTP an deinen Power-Automate-Flow geschickt.</p>
+
+        <div id="drop-zone" class="drop-zone">
+            <span>PDF hier ablegen oder anklicken</span>
+            <small>Nur eine Datei, idealerweise &lt; 10&nbsp;MB</small>
+        </div>
+
+        <!-- Verstecktes Datei-Input -->
+        <input id="file-input" type="file" accept="application/pdf" style="display:none" />
+
+        <div id="file-info" class="file-info"></div>
+
+        <div class="btn-row">
+            <button type="button" class="btn-secondary" id="clear-btn">Zurücksetzen</button>
+            <button type="button" class="btn-primary" id="send-btn" disabled>Senden</button>
+        </div>
+
+        <div id="status" class="status info"></div>
+    </div>
+</div>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileInfo = document.getElementById('file-info');
+    const sendBtn = document.getElementById('send-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const statusEl = document.getElementById('status');
+
+    let selectedFile = null;
+
+    // === Drag & Drop ===
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        if (!files || files.length === 0) return;
+
+        const file = files[0];
+
+        if (file.type !== 'application/pdf') {
+            selectedFile = null;
+            fileInfo.innerHTML = '';
+            sendBtn.disabled = true;
+            setStatus('Bitte eine PDF-Datei auswählen.', 'error');
+            return;
+        }
+
+        selectedFile = file;
+        fileInfo.innerHTML = `Ausgewählte Datei: <strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)} KB)`;
+        sendBtn.disabled = false;
+        setStatus('Bereit zum Senden.', 'info');
+    }
+
+    clearBtn.addEventListener('click', () => {
+        selectedFile = null;
+        fileInput.value = '';
+        fileInfo.innerHTML = '';
+        sendBtn.disabled = true;
+        setStatus('Auswahl zurückgesetzt.', 'info');
+    });
+
+    function setStatus(message, type) {
+        statusEl.textContent = message;
+        statusEl.className = 'status ' + (type || 'info');
+    }
+
+    // === Senden an Power Automate ===
+    sendBtn.addEventListener('click', () => {
+        if (!selectedFile) {
+            setStatus('Keine Datei ausgewählt.', 'error');
+            return;
+        }
+
+        setStatus('Datei wird gelesen und gesendet ...', 'info');
+        sendBtn.disabled = true;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const dataUrl = e.target.result; // z.B. "data:application/pdf;base64,AAAA..."
+            const base64 = dataUrl.split(',')[1]; // alles nach dem Komma ist Base64
+
+            const payload = {
+                fileName: selectedFile.name,
+                fileContent: base64
+            };
+
+            fetch("https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(async (response) => {
+                    let text = '';
+                    try {
+                        text = await response.text();
+                    } catch (e) {}
+
+                    if (response.ok) {
+                        setStatus('Upload erfolgreich gesendet. Antwort: ' + (text || response.status), 'success');
+                    } else {
+                        setStatus('Fehler beim Senden: ' + response.status + ' ' + text, 'error');
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setStatus('Netzwerkfehler: ' + err.message, 'error');
+                })
+                .finally(() => {
+                    sendBtn.disabled = false;
+                });
+        };
+
+        reader.onerror = function () {
+            setStatus('Fehler beim Lesen der Datei.', 'error');
+            sendBtn.disabled = false;
+        };
+
+        reader.readAsDataURL(selectedFile);
+    });
+</script>
+</body>
+</html>

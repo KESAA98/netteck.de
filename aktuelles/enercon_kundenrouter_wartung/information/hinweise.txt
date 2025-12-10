@@ -1,0 +1,24 @@
+{
+  "abschluss_hinweise": {
+    "agb": {
+      "id": "agb_zustimmung",
+      "text": "Ich bestätige, dass ich die Allgemeinen Geschäftsbedingungen von Kevin Strakerjahn Networks & Automation gelesen und akzeptiert habe.",
+      "link": "/AGB/"
+    },
+    "datenschutz": {
+      "id": "datenschutz_zustimmung",
+      "text": "Ich habe die Datenschutzerklärung gelesen und akzeptiere die dort beschriebenen Informationen zur Erhebung, Speicherung und Verarbeitung meiner Daten.",
+      "link": "/datenschutz/"
+    },
+    "datenweitergabe_wes": {
+      "id": "datenweitergabe_wes",
+      "text": "Ich willige ein, dass meine Anfrage- und Vertragsdaten zur Bearbeitung an die WES Technische Betriebsführung GmbH weitergegeben und dort verarbeitet bzw. gespeichert werden.",
+      "pflicht": true
+    },
+    "vertrag_verlaengerung_preise": {
+      "id": "hinweis_preise_verlaengerung",
+      "text": "Ich habe verstanden, dass nach Ablauf der gebuchten Erstlaufzeit keine weiteren LANcare-Jahre im Vertrag enthalten sind und eine Verlängerung nicht automatisch ein neues LANcare-Paket umfasst. Die Preise für eine Verlängerung können von den oben genannten Preisen abweichen.",
+      "pflicht": true
+    }
+  }
+}
