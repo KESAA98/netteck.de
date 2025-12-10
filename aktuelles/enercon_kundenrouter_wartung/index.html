@@ -2,282 +2,786 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>PDF-Upload zu Power Automate</title>
+    <title>Wartungsvertrag Router-Service</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Favicon (Tab-Icon) -->
+    <link rel="icon" type="image/png" href="/Logos/logo.png">
+
     <style>
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #f5f7fb;
+        :root {
+            --primary: #0b74ff;
+            --primary-soft: rgba(11, 116, 255, 0.08);
+            --bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --border: #e1e4ec;
+            --text-main: #1f2933;
+            --text-muted: #6b7280;
+            --radius-lg: 14px;
+            --error: #b91c1c;
+            --ok: #15803d;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
             margin: 0;
             padding: 0;
         }
 
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
         }
 
         .card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
-            padding: 24px;
-            max-width: 480px;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            padding: 1.75rem 1.9rem 2.1rem;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-wrapper {
             width: 100%;
         }
 
-        h1 {
-            font-size: 1.3rem;
-            margin: 0 0 8px;
-        }
-
-        p {
-            margin: 0 0 12px;
-            color: #4b5563;
-            font-size: 0.95rem;
-        }
-
-        .drop-zone {
-            border: 2px dashed #0b74ff;
+        .logo-wrapper img {
+            width: 100%;
+            height: auto;
             border-radius: 10px;
-            padding: 30px 16px;
-            text-align: center;
-            background: rgba(11, 116, 255, 0.03);
-            cursor: pointer;
-            transition: background 0.15s ease, border-color 0.15s ease;
+            object-fit: cover;
         }
 
-        .drop-zone.dragover {
-            background: rgba(11, 116, 255, 0.08);
-            border-color: #0759bf;
+        .intro {
+            margin-bottom: 1.75rem;
         }
 
-        .drop-zone span {
-            display: block;
+        .intro h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.7rem;
+        }
+
+        .intro p {
+            margin: 0.4rem 0;
+            color: var(--text-main);
             font-size: 0.95rem;
-            color: #111827;
-            margin-bottom: 4px;
         }
 
-        .drop-zone small {
-            display: block;
-            font-size: 0.8rem;
-            color: #6b7280;
+        .intro ul {
+            margin: 0.4rem 0 0.6rem 1.1rem;
+            padding: 0;
         }
 
-        .file-info {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #111827;
-        }
-
-        .file-info strong {
-            font-weight: 600;
-        }
-
-        .btn-row {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        button {
-            border: none;
-            border-radius: 999px;
-            padding: 10px 18px;
+        .intro li {
+            margin: 0.15rem 0;
             font-size: 0.95rem;
-            cursor: pointer;
+        }
+
+        .badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: #e0f2fe;
+            color: #075985;
+            margin-bottom: 0.4rem;
         }
 
-        .btn-secondary {
-            background: #e5e7eb;
-            color: #111827;
+        .section-divider {
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
         }
 
-        .btn-primary {
-            background: #0b74ff;
-            color: #ffffff;
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
         }
 
-        .status {
-            margin-top: 12px;
+        .section-header span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .section-text {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-top: 0.4rem;
+        }
+
+        .section-text ul {
+            margin: 0.4rem 0 0.6rem 1.2rem;
+            padding: 0;
+        }
+
+        .upload-wrapper {
+            margin-top: 1rem;
+        }
+
+        .upload-dropzone {
+            border-radius: 14px;
+            border: 2px dashed var(--border);
+            background: #f9fafb;
+            padding: 1.1rem 1.3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.4rem;
+            transition: border-color 0.12s ease, background 0.12s ease;
+            cursor: pointer;
+        }
+
+        .upload-dropzone.dragover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .upload-title {
+            font-weight: 600;
+            font-size: 0.98rem;
+        }
+
+        .upload-sub {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+        }
+
+        .upload-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .upload-badge {
+            margin-top: 0.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            border-radius: 999px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.78rem;
+            background: #ecfdf3;
+            color: #166534;
+        }
+
+        .upload-file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .upload-status {
+            margin-top: 0.3rem;
             font-size: 0.85rem;
         }
 
-        .status.success {
-            color: #15803d;
+        .upload-status.ok {
+            color: var(--ok);
         }
 
-        .status.error {
-            color: #b91c1c;
+        .upload-status.error {
+            color: var(--error);
         }
 
-        .status.info {
+        .upload-status.neutral {
+            color: var(--text-muted);
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.55rem 1.3rem;
+            border-radius: 999px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--primary);
+            color: #ffffff;
+            transition: background 0.12s ease, transform 0.06s ease;
+        }
+
+        .btn-primary:hover {
+            background: #075ad1;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary[disabled] {
+            opacity: 0.6;
+            cursor: default;
+            transform: none;
+        }
+
+        .btn-text {
+            border-radius: 999px;
+            border: none;
+            background: transparent;
+            padding: 0.2rem 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .btn-text:hover {
+            color: var(--text-main);
+        }
+
+        .result-section {
+            margin-top: 1.4rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 0.9rem 1rem;
+            background: #f9fafb;
+        }
+
+        .result-section h3 {
+            margin: 0 0 0.4rem;
+            font-size: 1rem;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.35rem 1.4rem;
+            font-size: 0.9rem;
+        }
+
+        .result-label {
+            font-weight: 500;
+        }
+
+        .result-value {
+            color: var(--text-main);
+        }
+
+        .result-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            background: #e0f2fe;
+            color: #075985;
+            margin-top: 0.3rem;
+        }
+
+        .result-error-box {
+            margin-top: 0.6rem;
+            padding: 0.5rem 0.7rem;
+            border-radius: 10px;
+            border: 1px solid #fecaca;
+            background: #fef2f2;
+            font-size: 0.86rem;
+            color: #7f1d1d;
+        }
+
+        .placeholder-box {
+            margin-top: 0.8rem;
+            padding: 0.75rem 0.9rem;
+            border-radius: 10px;
+            border: 1px dashed var(--border);
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            background: #f9fafb;
+        }
+
+        .contract-id-preview {
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
             color: #4b5563;
+        }
+
+        footer {
+            margin-top: 1.6rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .footer-link {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 800px) {
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                margin: 1.25rem auto 2rem;
+                padding: 0 0.75rem;
+            }
+
+            .card {
+                padding: 1.25rem 1.1rem 1.8rem;
+                border-radius: 12px;
+            }
+
+            .logo-wrapper img {
+                border-radius: 8px;
+            }
+
+            .intro h1 {
+                font-size: 1.25rem;
+            }
+
+            .footer-buttons {
+                gap: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
+
 <div class="page">
     <div class="card">
-        <h1>Rechnung als PDF hochladen</h1>
-        <p>Ziehe eine PDF-Datei hier hinein oder klicke in das Feld. Beim Senden wird die Datei per HTTP an deinen Power-Automate-Flow geschickt.</p>
 
-        <div id="drop-zone" class="drop-zone">
-            <span>PDF hier ablegen oder anklicken</span>
-            <small>Nur eine Datei, idealerweise &lt; 10&nbsp;MB</small>
-        </div>
+        <header class="header">
+            <div class="logo-wrapper">
+                <img src="/Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+            </div>
+        </header>
 
-        <!-- Verstecktes Datei-Input -->
-        <input id="file-input" type="file" accept="application/pdf" style="display:none" />
+        <section class="intro">
+            <div class="badge">
+                Automatische Vertragserstellung
+            </div>
 
-        <div id="file-info" class="file-info"></div>
+            <h1>Wartungsvertrag für Ihren Router-Service</h1>
 
-        <div class="btn-row">
-            <button type="button" class="btn-secondary" id="clear-btn">Zurücksetzen</button>
-            <button type="button" class="btn-primary" id="send-btn" disabled>Senden</button>
-        </div>
+            <p>
+                Dieser Bereich ist speziell für Kunden gedacht, bei denen der Router-Einbau im ENERCON-Windpark bereits
+                erfolgt ist und die nun einen passenden Wartungsvertrag abschließen möchten.
+            </p>
 
-        <div id="status" class="status info"></div>
+            <p>
+                Alle technischen Informationen zum Wartungsvertrag und zu den verfügbaren Paketen erhalten Sie direkt
+                auf dieser Seite. Konkrete Preise werden erst dann angezeigt, wenn Sie Ihre
+                <strong>Router-Einbau-Rechnung als PDF hochladen</strong>. Die Rechnung wird automatisiert analysiert,
+                sodass Windpark, Firma und Rechnungsdaten eindeutig zugeordnet werden können.
+            </p>
+
+            <p>
+                Der Ablauf im Überblick:
+            </p>
+            <ul>
+                <li>Router-Einbau-Rechnung als PDF hochladen (Drag &amp; Drop oder Dateiauswahl)</li>
+                <li>Automatische Auswertung über Power Automate &amp; OpenAI</li>
+                <li>Prüfung, ob es sich um eine gültige Router-Einbau-Rechnung handelt</li>
+                <li>Anzeige der ermittelten Stammdaten (Firma, Windpark, Rechnungsnummer, Datum)</li>
+                <li>Auswahl des gewünschten Wartungspakets und der Laufzeit</li>
+                <li>Vorschau des vollständigen Wartungsvertrages inkl. AGB-Anhang und Vertragsnummer</li>
+            </ul>
+
+            <p>
+                Die Vertragsnummer wird automatisch aus Windparknummer, Rechnungsnummer, Windparknamen und einem
+                Zeitstempel erzeugt. Sie erscheint später als Exportstempel auf jeder Seite des Vertrages.
+            </p>
+        </section>
+
+        <section aria-label="Technischer Ablauf" class="section-divider">
+            <div class="section-header">
+                <h2>So funktioniert die automatische Auswertung</h2>
+                <span>Upload der Router-Einbau-Rechnung als PDF</span>
+            </div>
+
+            <div class="section-text">
+                <p>
+                    Nach dem Upload wird Ihre PDF-Rechnung über einen sicheren HTTPS-Aufruf an einen
+                    <strong>Power Automate Flow</strong> übergeben. Die Übergabe erfolgt im JSON-Format mit
+                    <code>fileName</code> und <code>fileContent</code> (Base64-kodiert). Der Flow wertet die Rechnung
+                    mit Hilfe von OpenAI aus und liefert strukturierte Daten zurück.
+                </p>
+                <p>
+                    Die Antwort enthält insbesondere:
+                </p>
+                <ul>
+                    <li><code>ist_router_einbau_rechnung</code> – Validierung, ob es sich um eine passende Rechnung handelt</li>
+                    <li><code>Firma</code>, <code>windpark_nummer</code>, <code>windpark_name</code></li>
+                    <li><code>Ansprechpartner</code>, <code>Straße und Hausnummer</code>, <code>PLZ</code>, <code>Ort</code></li>
+                    <li><code>Rechnungs-Nr.</code> und <code>Rechnungsdatum</code></li>
+                </ul>
+            </div>
+
+            <div class="upload-wrapper">
+                <div id="upload-dropzone" class="upload-dropzone">
+                    <div class="upload-title">Rechnung hier ablegen oder klicken, um eine Datei auszuwählen</div>
+                    <div class="upload-sub">Akzeptiert werden PDF-Dateien des Router-Einbaus.</div>
+                    <div class="upload-hint">Die Auswertung erfolgt automatisiert über einen Power Automate Flow.</div>
+                    <div class="upload-badge">
+                        <span>POST</span>
+                        <span>/powerautomate/automations/direct/workflows/…/invoke</span>
+                    </div>
+                    <button type="button" class="btn-text" id="upload-select-button">
+                        Datei auswählen
+                    </button>
+                    <input type="file" id="upload-input" accept="application/pdf" style="display:none;">
+                    <div id="upload-file-name" class="upload-file-name"></div>
+                    <div id="upload-status" class="upload-status neutral">
+                        Noch keine Datei hochgeladen.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="Ermittelte Rechnungsdaten" class="section-divider">
+            <div class="section-header">
+                <h2>Ermittelte Daten aus der Rechnung</h2>
+                <span>Diese Angaben stammen direkt aus Ihrer PDF-Rechnung.</span>
+            </div>
+
+            <div id="result-section" class="result-section" style="display:none;">
+                <h3>Windpark &amp; Rechnungsdaten</h3>
+                <div class="result-grid">
+                    <div>
+                        <div class="result-label">Firma</div>
+                        <div id="result-firma" class="result-value">–</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Ansprechpartner</div>
+                        <div id="result-ansprechpartner" class="result-value">–</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Windpark-Nummer</div>
+                        <div id="result-windpark-nummer" class="result-value">–</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Windpark-Name</div>
+                        <div id="result-windpark-name" class="result-value">–</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Straße und Hausnummer</div>
+                        <div id="result-strasse" class="result-value">–</div>
+                    </div>
+                    <div>
+                        <div class="result-label">PLZ / Ort</div>
+                        <div id="result-plz-ort" class="result-value">–</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Rechnungs-Nr.</div>
+                        <div id="result-rechnungsnr" class="result-value">–</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Rechnungsdatum</div>
+                        <div id="result-rechnungsdatum" class="result-value">–</div>
+                    </div>
+                </div>
+
+                <div id="result-tag" class="result-tag">
+                    Router-Einbau-Rechnung erkannt
+                </div>
+
+                <div id="result-error" class="result-error-box" style="display:none;">
+                    Die hochgeladene Datei konnte nicht eindeutig als Router-Einbau-Rechnung erkannt werden.
+                    Bitte prüfen Sie, ob Sie die richtige Rechnung hochgeladen haben oder kontaktieren Sie mich direkt.
+                </div>
+
+                <div id="contract-id-preview" class="contract-id-preview"></div>
+            </div>
+
+            <div id="result-placeholder" class="placeholder-box">
+                Sobald eine gültige Router-Einbau-Rechnung erkannt wurde, erscheinen hier die ermittelten Stammdaten
+                für Firma, Windpark und Rechnung sowie eine Vorschau der späteren Vertragsnummer.
+            </div>
+        </section>
+
+        <section aria-label="Pakete und Laufzeiten" class="section-divider">
+            <div class="section-header">
+                <h2>Pakete &amp; Laufzeiten</h2>
+                <span>Auswahl erst nach erfolgreicher Rechnungsprüfung möglich.</span>
+            </div>
+
+            <div id="pakete-placeholder" class="placeholder-box">
+                Die Auswahl der Wartungspakete (z.&nbsp;B. unterschiedliche LANcare-Jahre und Vertragslaufzeiten) wird
+                eingeblendet, sobald eine gültige Router-Einbau-Rechnung erkannt wurde.
+                <br><br>
+                In einem nächsten Schritt werden hier dynamisch die verfügbaren Pakete und die passende Laufzeit
+                dargestellt. Auf Basis dieser Auswahl kann anschließend die Vertragsvorschau mit allen Details erzeugt
+                werden.
+            </div>
+        </section>
+
+        <section aria-label="Vertragsvorschau" class="section-divider">
+            <div class="section-header">
+                <h2>Vertragsvorschau</h2>
+                <span>Vollständiger Wartungsvertrag inkl. AGB-Anhang.</span>
+            </div>
+
+            <div id="vertrag-placeholder" class="placeholder-box">
+                Nach Auswahl von Paket und Laufzeit wird hier eine Vorschau des späteren Wartungsvertrages angezeigt.
+                Die endgültige Vertragsversion enthält die vollständigen AGB als Anhang sowie auf jeder Seite einen
+                Exportstempel mit der automatisch erzeugten Vertragsnummer.
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-buttons">
+                <a class="footer-link" href="/">Start</a>
+                <a class="footer-link" href="/kontakt/">Kontakt</a>
+                <a class="footer-link" href="/impressum/">Impressum</a>
+                <a class="footer-link" href="/datenschutz/">Datenschutz</a>
+            </div>
+        </footer>
+
     </div>
 </div>
 
 <script>
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const fileInfo = document.getElementById('file-info');
-    const sendBtn = document.getElementById('send-btn');
-    const clearBtn = document.getElementById('clear-btn');
-    const statusEl = document.getElementById('status');
+    const FLOW_URL =
+        "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443" +
+        "/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke" +
+        "?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ";
 
-    let selectedFile = null;
+    const dropzone = document.getElementById("upload-dropzone");
+    const fileInput = document.getElementById("upload-input");
+    const selectButton = document.getElementById("upload-select-button");
+    const fileNameEl = document.getElementById("upload-file-name");
+    const statusEl = document.getElementById("upload-status");
 
-    // === Drag & Drop ===
-    dropZone.addEventListener('click', () => {
-        fileInput.click();
-    });
+    const resultSection = document.getElementById("result-section");
+    const resultPlaceholder = document.getElementById("result-placeholder");
+    const resultTag = document.getElementById("result-tag");
+    const resultError = document.getElementById("result-error");
+    const contractIdPreview = document.getElementById("contract-id-preview");
+    const paketePlaceholder = document.getElementById("pakete-placeholder");
 
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-    });
-
-    dropZone.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        const files = e.dataTransfer.files;
-        handleFiles(files);
-    });
-
-    fileInput.addEventListener('change', (e) => {
-        handleFiles(e.target.files);
-    });
-
-    function handleFiles(files) {
-        if (!files || files.length === 0) return;
-
-        const file = files[0];
-
-        if (file.type !== 'application/pdf') {
-            selectedFile = null;
-            fileInfo.innerHTML = '';
-            sendBtn.disabled = true;
-            setStatus('Bitte eine PDF-Datei auswählen.', 'error');
-            return;
-        }
-
-        selectedFile = file;
-        fileInfo.innerHTML = `Ausgewählte Datei: <strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)} KB)`;
-        sendBtn.disabled = false;
-        setStatus('Bereit zum Senden.', 'info');
+    function setStatus(text, type) {
+        statusEl.textContent = text;
+        statusEl.classList.remove("ok", "error", "neutral");
+        statusEl.classList.add(type || "neutral");
     }
 
-    clearBtn.addEventListener('click', () => {
-        selectedFile = null;
-        fileInput.value = '';
-        fileInfo.innerHTML = '';
-        sendBtn.disabled = true;
-        setStatus('Auswahl zurückgesetzt.', 'info');
-    });
-
-    function setStatus(message, type) {
-        statusEl.textContent = message;
-        statusEl.className = 'status ' + (type || 'info');
+    function clearResults() {
+        resultSection.style.display = "none";
+        resultPlaceholder.style.display = "";
+        resultError.style.display = "none";
+        resultTag.textContent = "Router-Einbau-Rechnung erkannt";
+        contractIdPreview.textContent = "";
     }
 
-    // === Senden an Power Automate ===
-    sendBtn.addEventListener('click', () => {
-        if (!selectedFile) {
-            setStatus('Keine Datei ausgewählt.', 'error');
-            return;
-        }
+    function handleFile(file) {
+        if (!file) return;
+        fileNameEl.textContent = "Ausgewählte Datei: " + file.name;
+        setStatus("Datei wird vorbereitet und an den Power Automate Flow übergeben …", "neutral");
+        clearResults();
+        sendFileToFlow(file);
+    }
 
-        setStatus('Datei wird gelesen und gesendet ...', 'info');
-        sendBtn.disabled = true;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const dataUrl = e.target.result; // z.B. "data:application/pdf;base64,AAAA..."
-            const base64 = dataUrl.split(',')[1]; // alles nach dem Komma ist Base64
-
-            const payload = {
-                fileName: selectedFile.name,
-                fileContent: base64
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const result = reader.result || "";
+                const base64 = String(result).split(",")[1] || "";
+                resolve(base64);
             };
+            reader.onerror = () => reject(reader.error || new Error("Fehler beim Einlesen der Datei"));
+            reader.readAsDataURL(file);
+        });
+    }
 
-            fetch("https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ", {
+    async function sendFileToFlow(file) {
+        try {
+            const base64 = await fileToBase64(file);
+
+            setStatus("Datei wird hochgeladen und analysiert …", "neutral");
+            selectButton.disabled = true;
+
+            const response = await fetch(FLOW_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(payload)
-            })
-                .then(async (response) => {
-                    let text = '';
-                    try {
-                        text = await response.text();
-                    } catch (e) {}
-
-                    if (response.ok) {
-                        setStatus('Upload erfolgreich gesendet. Antwort: ' + (text || response.status), 'success');
-                    } else {
-                        setStatus('Fehler beim Senden: ' + response.status + ' ' + text, 'error');
-                    }
+                body: JSON.stringify({
+                    fileName: file.name,
+                    fileContent: base64
                 })
-                .catch((err) => {
-                    console.error(err);
-                    setStatus('Netzwerkfehler: ' + err.message, 'error');
-                })
-                .finally(() => {
-                    sendBtn.disabled = false;
-                });
-        };
+            });
 
-        reader.onerror = function () {
-            setStatus('Fehler beim Lesen der Datei.', 'error');
-            sendBtn.disabled = false;
-        };
+            if (!response.ok) {
+                throw new Error("HTTP-Fehler " + response.status);
+            }
 
-        reader.readAsDataURL(selectedFile);
-    });
+            const json = await response.json();
+            const body = json.body || json;
+
+            if (!body || typeof body !== "object") {
+                throw new Error("Antwort ohne gültigen body erhalten.");
+            }
+
+            const isRouterInvoice = Boolean(body.ist_router_einbau_rechnung);
+
+            if (!isRouterInvoice) {
+                setStatus("Die Datei wurde verarbeitet, es handelt sich aber offenbar nicht um eine Router-Einbau-Rechnung.", "error");
+                resultPlaceholder.style.display = "none";
+                resultSection.style.display = "block";
+                resultError.style.display = "block";
+                resultTag.textContent = "Keine gültige Router-Einbau-Rechnung";
+                return;
+            }
+
+            setStatus("Router-Einbau-Rechnung erfolgreich erkannt.", "ok");
+
+            document.getElementById("result-firma").textContent = body.Firma || "–";
+            document.getElementById("result-ansprechpartner").textContent = body.Ansprechpartner || "–";
+            document.getElementById("result-windpark-nummer").textContent = body.windpark_nummer || "–";
+            document.getElementById("result-windpark-name").textContent = body.windpark_name || "–";
+            document.getElementById("result-strasse").textContent = body["Straße und Hausnummer"] || "–";
+            const plz = body.PLZ || "";
+            const ort = body.Ort || "";
+            document.getElementById("result-plz-ort").textContent = (plz && ort) ? (plz + " " + ort) : (plz || ort || "–");
+            document.getElementById("result-rechnungsnr").textContent = body["Rechnungs-Nr."] || "–";
+            document.getElementById("result-rechnungsdatum").textContent = body.Rechnungsdatum || "–";
+
+            resultPlaceholder.style.display = "none";
+            resultSection.style.display = "block";
+            resultError.style.display = "none";
+            resultTag.textContent = "Router-Einbau-Rechnung erkannt";
+
+            const wpNummer = (body.windpark_nummer || "").toString().trim();
+            const rechnungsNr = (body["Rechnungs-Nr."] || "").toString().trim().replace(/\s+/g, "");
+            const wpNameRaw = (body.windpark_name || "").toString().trim();
+            const wpName = wpNameRaw.replace(/\s+/g, "_");
+
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, "0");
+            const mm = String(now.getMinutes()).padStart(2, "0");
+            const ss = String(now.getSeconds()).padStart(2, "0");
+            const yyyy = now.getFullYear();
+            const MM = String(now.getMonth() + 1).padStart(2, "0");
+            const dd = String(now.getDate()).padStart(2, "0");
+
+            const timestamp = hh + mm + ss + "_" + yyyy + MM + dd;
+
+            const contractIdParts = [
+                wpNummer || "WP",
+                rechnungsNr || "RNR",
+                wpName || "WINDPARK",
+                timestamp
+            ];
+
+            const contractId = contractIdParts.join("_");
+            contractIdPreview.textContent =
+                "Vorschau Vertragsnummer: " + contractId +
+                " (wird später als Exportstempel im Vertrag verwendet)";
+
+        } catch (err) {
+            console.error(err);
+            setStatus("Beim Hochladen oder Auswerten der Datei ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie mich direkt.", "error");
+            clearResults();
+        } finally {
+            selectButton.disabled = false;
+        }
+    }
+
+    if (dropzone && fileInput) {
+        dropzone.addEventListener("click", () => fileInput.click());
+
+        dropzone.addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add("dragover");
+        });
+
+        dropzone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add("dragover");
+        });
+
+        dropzone.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove("dragover");
+        });
+
+        dropzone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove("dragover");
+
+            const file = e.dataTransfer.files && e.dataTransfer.files[0];
+            if (!file) return;
+            if (file.type !== "application/pdf") {
+                setStatus("Bitte laden Sie ausschließlich PDF-Dateien hoch.", "error");
+                return;
+            }
+            handleFile(file);
+        });
+
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files && fileInput.files[0];
+            if (!file) return;
+            if (file.type !== "application/pdf") {
+                setStatus("Bitte laden Sie ausschließlich PDF-Dateien hoch.", "error");
+                return;
+            }
+            handleFile(file);
+        });
+
+        if (selectButton) {
+            selectButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+        }
+    }
 </script>
+
 </body>
 </html>
