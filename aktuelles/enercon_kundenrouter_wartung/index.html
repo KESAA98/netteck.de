@@ -2,736 +2,147 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Wartungsvertrag Router-Service</title>
+    <title>Wartungs- & Servicevertrag für LANCOM Router</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Favicon (Tab-Icon) -->
-    <link rel="icon" type="image/png" href="/Logos/logo.png">
+    <link rel="icon" type="image/png" href="../../Logos/logo.png">
 
     <style>
         :root {
             --primary: #0b74ff;
-            --primary-soft: rgba(11, 116, 255, 0.08);
+            --primary-soft: rgba(11,116,255,0.08);
             --bg: #f5f7fb;
             --card-bg: #ffffff;
             --border: #e1e4ec;
             --text-main: #1f2933;
             --text-muted: #6b7280;
             --radius-lg: 14px;
-            --error: #b91c1c;
-            --ok: #15803d;
-        }
-
-        * { box-sizing: border-box; }
-
-        html, body {
-            margin: 0;
-            padding: 0;
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
             background: var(--bg);
             color: var(--text-main);
             line-height: 1.6;
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
         .page {
             max-width: 1100px;
-            margin: 2rem auto 3rem;
+            margin: 2rem auto;
             padding: 0 1rem;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: var(--radius-lg);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-            padding: 1.75rem 1.9rem 2.1rem;
             border: 1px solid var(--border);
+            padding: 1.8rem;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.06);
         }
 
-        /* Kopfbereich */
-        .header {
-            margin-bottom: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-        }
-
-        .header-logo {
-            max-width: 230px;
-        }
-
-        .header-text {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        /* 2-Spalten-Layout */
-        .content-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
-            gap: 1.75rem;
-            align-items: flex-start;
-        }
-
-        /* Intro links */
-        .intro {
-            margin-bottom: 1.5rem;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            padding: 0.25rem 0.6rem;
-            border-radius: 999px;
-            background: #e0f2fe;
-            color: #075985;
-            margin-bottom: 0.4rem;
+        .logo-wrapper img {
+            width: 100%;
+            border-radius: 10px;
         }
 
         .intro h1 {
             font-size: 1.5rem;
-            margin: 0 0 0.7rem;
+            margin-bottom: .7rem;
         }
 
-        .intro p {
-            margin: 0.35rem 0;
-            font-size: 0.95rem;
+        h2 {
+            margin-top: 1.8rem;
+            font-size: 1.2rem;
         }
 
-        .intro ul {
-            margin: 0.4rem 0 0.6rem 1.1rem;
-            padding: 0;
-            font-size: 0.95rem;
-        }
-
-        .intro li {
-            margin: 0.15rem 0;
-        }
-
-        .section-divider {
-            margin-top: 1.7rem;
-            border-top: 1px solid var(--border);
-            padding-top: 1.2rem;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .section-header h2 {
-            margin: 0;
-            font-size: 1.15rem;
-        }
-
-        .section-header span {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .section-text {
-            font-size: 0.9rem;
-            color: var(--text-main);
-            margin-top: 0.4rem;
-        }
-
-        .section-text ul {
-            margin: 0.4rem 0 0.6rem 1.2rem;
-            padding: 0;
-        }
-
-        /* Upload-Spalte rechts */
-        .sidebar {
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            background: #f9fafb;
-            padding: 1.1rem 1.2rem 1.3rem;
-        }
-
-        .sidebar h2 {
-            margin: 0 0 0.45rem;
-            font-size: 1.1rem;
-        }
-
-        .sidebar p {
-            margin: 0.25rem 0;
-            font-size: 0.88rem;
-            color: var(--text-main);
-        }
-
-        .hint-small {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-top: 0.35rem;
-        }
-
-        .upload-dropzone {
-            margin-top: 0.75rem;
-            border-radius: 14px;
-            border: 2px dashed var(--border);
-            background: #fff;
-            padding: 0.9rem 1rem;
+        .leistungen-list {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 0.35rem;
-            transition: border-color 0.12s ease, background 0.12s ease;
-            cursor: pointer;
+            gap: 1.2rem;
         }
 
-        .upload-dropzone.dragover {
-            border-color: var(--primary);
-            background: #eff6ff;
-        }
-
-        .upload-title {
-            font-weight: 600;
-            font-size: 0.96rem;
-        }
-
-        .upload-sub {
-            font-size: 0.84rem;
-            color: var(--text-muted);
-        }
-
-        .upload-file-name {
-            margin-top: 0.4rem;
-            font-size: 0.86rem;
-            color: var(--text-main);
-        }
-
-        .upload-status {
-            margin-top: 0.3rem;
-            font-size: 0.84rem;
-        }
-
-        .upload-status.ok {
-            color: var(--ok);
-        }
-
-        .upload-status.error {
-            color: var(--error);
-        }
-
-        .upload-status.neutral {
-            color: var(--text-muted);
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem 1.2rem;
-            border-radius: 999px;
+        /* KEINE grauen Kästen */
+        .leistung {
+            padding: 0;
             border: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            background: var(--primary);
-            color: #ffffff;
-            transition: background 0.12s ease, transform 0.06s ease;
+            background: transparent;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            background: #075ad1;
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.55;
-            cursor: default;
-            transform: none;
-        }
-
-        .checkbox-row {
-            margin-top: 0.55rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.45rem;
-            font-size: 0.8rem;
-            color: var(--text-main);
-        }
-
-        .checkbox-row input {
-            margin-top: 0.15rem;
-        }
-
-        .checkbox-row a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .checkbox-row a:hover {
-            text-decoration: underline;
-        }
-
-        .sidebar-divider {
-            border-top: 1px solid var(--border);
-            margin: 0.9rem 0 0.7rem;
-        }
-
-        /* Ergebnisfelder unter Upload */
-        .result-block {
-            font-size: 0.86rem;
-        }
-
-        .result-row {
-            display: grid;
-            grid-template-columns: 1.1fr 1.9fr;
-            gap: 0.3rem 0.4rem;
-            align-items: center;
-            margin-top: 0.2rem;
-        }
-
-        .result-label {
-            font-weight: 500;
-            font-size: 0.84rem;
-        }
-
-        .result-input {
-            width: 100%;
-            padding: 0.28rem 0.4rem;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            font-size: 0.84rem;
-            background: #fff;
-        }
-
-        .result-input[readonly] {
-            background: #f3f4f6;
-        }
-
-        .radio-group {
-            margin-top: 0.7rem;
-            font-size: 0.84rem;
-        }
-
-        .radio-group label {
-            margin-right: 0.8rem;
-        }
-
-        .extra-contact {
-            margin-top: 0.5rem;
-            padding: 0.45rem 0.55rem;
-            border-radius: 8px;
-            background: #f3f4ff;
-            border: 1px solid #e0e7ff;
-        }
-
-        .extra-contact .result-row {
-            margin-top: 0.25rem;
-        }
-
-        .error-text {
-            margin-top: 0.4rem;
-            font-size: 0.8rem;
-            color: var(--error);
-        }
-
-        .ok-text {
-            margin-top: 0.4rem;
-            font-size: 0.8rem;
-            color: var(--ok);
-        }
-
-        /* Paket-/Preisbereich links unten */
-        .placeholder-box {
-            margin-top: 0.8rem;
-            padding: 0.75rem 0.9rem;
-            border-radius: 10px;
-            border: 1px dashed var(--border);
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            background: #f9fafb;
-        }
-
-        .pakete-container {
-            margin-top: 0.6rem;
-            padding: 0.8rem 0.8rem;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #f9fafb;
-        }
-
-        .pill-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.45rem;
-            margin-top: 0.5rem;
-        }
-
-        .pill {
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            font-size: 0.84rem;
-            cursor: pointer;
-            background: #fff;
-        }
-
-        .pill.selected {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .info-hint {
-            margin-top: 0.4rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .price-table {
-            margin-top: 0.7rem;
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.86rem;
-        }
-
-        .price-table th,
-        .price-table td {
-            padding: 0.3rem 0.35rem;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-
-        .price-table tfoot td {
-            font-weight: 600;
-        }
-
-        .price-table .align-right {
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        .contract-id-preview {
-            margin-top: 0.4rem;
-            font-size: 0.82rem;
-            color: #4b5563;
+        .leistung h3 {
+            margin: .2rem 0 .2rem;
         }
 
         footer {
-            margin-top: 1.6rem;
-            font-size: 0.85rem;
+            margin-top: 2rem;
+            font-size: .9rem;
+            text-align: center;
             color: var(--text-muted);
             border-top: 1px solid var(--border);
-            padding-top: 0.75rem;
+            padding-top: 1rem;
         }
 
         .footer-buttons {
+            margin-top: .4rem;
             display: flex;
             justify-content: center;
-            gap: 2.5rem;
-            margin-top: 0.2rem;
-            margin-bottom: 0.1rem;
+            gap: 2rem;
         }
 
         .footer-link {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-muted);
             text-decoration: underline;
-            text-underline-offset: 3px;
-            cursor: pointer;
-        }
-
-        .footer-link:hover {
-            color: var(--text-main);
-        }
-
-        @media (max-width: 900px) {
-            .content-layout {
-                grid-template-columns: minmax(0, 1fr);
-            }
-
-            .sidebar {
-                margin-top: 1rem;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .page {
-                margin: 1.25rem auto 2rem;
-                padding: 0 0.75rem;
-            }
-
-            .card {
-                padding: 1.3rem 1.1rem 1.7rem;
-                border-radius: 12px;
-            }
-
-            .footer-buttons {
-                gap: 1.6rem;
-            }
+            color: var(--text-muted);
         }
     </style>
 </head>
+
 <body>
 
 <div class="page">
     <div class="card">
 
-        <!-- Kopf mit Logo -->
-        <header class="header">
-            <div class="header-logo">
-                <img src="/Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
-            </div>
-            <div class="header-text">
-                Kevin Strakerjahn Networks &amp; Automation<br>
-                Wartungs- und Serviceverträge für LANCOM Router in ENERCON-Windparks
+        <header>
+            <div class="logo-wrapper">
+                <img src="../../Logos/logo_name.jpeg" alt="">
             </div>
         </header>
 
-        <div class="content-layout">
+        <section class="intro">
+            <h1>Wartungs- & Servicevertrag für LANCOM Router</h1>
 
-            <!-- LINKE SPALTE: Einleitung, Infos, Pakete -->
-            <main>
+            <p>
+                Für einen dauerhaft stabilen und sicheren Betrieb der Kommunikationsinfrastruktur reicht
+                der reine Einbau eines Routers nicht aus. Firmware-Updates, Sicherheitspatches und
+                Konfigurationsänderungen sind regelmäßig notwendig.
+            </p>
 
-                <section class="intro">
-                    <div class="badge">
-                        Automatische Vertragserstellung
-                    </div>
+            <p>
+                Dieser Wartungs- und Servicevertrag stellt sicher, dass alle betreuten LANCOM-Router
+                regelmäßig überprüft, aktualisiert und dokumentiert werden – inklusive LANcare Direct
+                Advanced 24/7 Herstellerservice.
+            </p>
 
-                    <h1>Wartungsvertrag für Ihren Router-Service</h1>
+            <p>
+                Der Vertrag richtet sich insbesondere an Betreiber von ENERCON-Windparks und technische
+                Betriebsführer, die ihre Router-Infrastruktur langfristig sicher und professionell betreut
+                wissen möchten.
+            </p>
 
-                    <p>
-                        Mit Ihrer Rechnung für die Routerinstallation können Sie hier Ihren Wartungsvertrag anfragen –
-                        einfach die Rechnung als PDF in das Feld auf der rechten Seite ziehen oder auswählen.
-                    </p>
+            <p>
+                Der vollständige Leistungsumfang wird automatisch aus der hinterlegten Datei geladen.
+            </p>
+        </section>
 
-                    <p>
-                        Der Wartungs- und Servicevertrag umfasst die jährliche Überprüfung, Aktualisierung und
-                        technische Betreuung des installierten LANCOM-Routers im Windpark. Zusätzlich wird für den
-                        Router ein LANcare-Servicepaket hinterlegt, damit im Störungsfall ein schneller Austausch über
-                        den Hersteller möglich ist.
-                    </p>
+        <section class="leistungen-section">
+            <h2>Leistungsumfang</h2>
+            <p class="leistungen-hint">Die folgenden Inhalte stammen aus: <code>information/warungsvertrag.txt</code></p>
 
-                    <p>Der Ablauf im Überblick:</p>
-                    <ul>
-                        <li>Router-Einbau-Rechnung als PDF hochladen (Drag &amp; Drop oder Dateiauswahl)</li>
-                        <li>Automatische Auswertung über Power Automate &amp; OpenAI</li>
-                        <li>Prüfung, ob es sich um eine passende Router-Einbau-Rechnung handelt</li>
-                        <li>Anzeige der ermittelten Daten (Firma, Windpark, Rechnungsnummer, Rechnungsdatum)</li>
-                        <li>Ergänzung fehlender Angaben direkt im Formular – vorhandene Felder sind schreibgeschützt</li>
-                        <li>Auswahl der gewünschten Vertragslaufzeit und des LANcare-Pakets</li>
-                        <li>Berechnung der jährlichen Kosten und des Vertragsgesamtpreises</li>
-                    </ul>
-
-                    <p class="info-hint">
-                        Die Vertragsnummer wird automatisch aus Windparknummer, Rechnungsnummer, Windparkname
-                        (Leerzeichen durch Unterstriche) und einem Zeitstempel erzeugt. Sie dient später als
-                        Exportstempel auf jeder Seite des Vertrages.
-                    </p>
-                </section>
-
-                <!-- Allgemeine Infos aus wartungsvertrag.json -->
-                <section class="section-divider" aria-label="Leistungsumfang Wartungsvertrag">
-                    <div class="section-header">
-                        <h2>Allgemeiner Leistungsumfang</h2>
-                        <span>Auszug aus dem Wartungs- und Servicevertrag</span>
-                    </div>
-
-                    <div id="leistungsumfang-text" class="section-text">
-                        <!-- wird per JS aus information/warungsvertrag.txt befüllt -->
-                        <p>Die Details des Wartungsvertrages werden automatisch aus der hinterlegten
-                           Vertragsbeschreibung geladen.</p>
-                    </div>
-                </section>
-
-                <!-- Pakete & Laufzeiten -->
-                <section class="section-divider" aria-label="Pakete und Laufzeiten">
-                    <div class="section-header">
-                        <h2>Pakete &amp; Laufzeiten</h2>
-                        <span>Wird nach erfolgreicher Rechnungsprüfung freigeschaltet.</span>
-                    </div>
-
-                    <div id="pakete-placeholder" class="placeholder-box">
-                        Sobald Ihre Rechnung geprüft und alle notwendigen Angaben vollständig sind, können Sie hier die
-                        gewünschte Laufzeit und das passende LANcare-Paket auswählen. Auf Basis der Preistabelle werden
-                        dann der Gesamtpreis und der durchschnittliche Jahresbetrag angezeigt.
-                    </div>
-
-                    <div id="pakete-container" class="pakete-container" style="display:none;">
-                        <div>
-                            <strong>1. Vertragslaufzeit auswählen</strong>
-                            <div class="pill-row" id="laufzeit-pills">
-                                <!-- per JS -->
-                            </div>
-                            <div id="laufzeit-hinweis" class="info-hint" style="display:none;">
-                                Hinweis: Die Vertragslaufzeit kann nach Ablauf jährlich verlängert oder gekündigt
-                                werden. Die Preise für eine Verlängerung können von den hier angezeigten Werten
-                                abweichen.
-                            </div>
-                        </div>
-
-                        <div style="margin-top:0.8rem;">
-                            <strong>2. LANcare-Paket auswählen</strong>
-                            <div class="pill-row" id="lancare-pills">
-                                <!-- per JS -->
-                            </div>
-                        </div>
-
-                        <div id="preistabelle-wrapper" style="display:none; margin-top:0.9rem;">
-                            <strong>3. Übersicht der Vertragskosten</strong>
-                            <table class="price-table">
-                                <thead>
-                                <tr>
-                                    <th>Position</th>
-                                    <th class="align-right">Betrag (netto)</th>
-                                </tr>
-                                </thead>
-                                <tbody id="preistabelle-body">
-                                <!-- per JS -->
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td>Gesamtpreis (Laufzeit)</td>
-                                    <td id="preis-gesamt" class="align-right"></td>
-                                </tr>
-                                <tr>
-                                    <td>Durchschnitt pro Jahr</td>
-                                    <td id="preis-jahr" class="align-right"></td>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div id="contract-id-preview" class="contract-id-preview"></div>
-                </section>
-
-            </main>
-
-            <!-- RECHTE SPALTE: Upload + Stammdaten -->
-            <aside class="sidebar" aria-label="Rechnungsupload & Stammdaten">
-
-                <h2>Rechnung prüfen & Stammdaten übernehmen</h2>
-                <p>
-                    Laden Sie hier die PDF-Rechnung für den Router-Einbau hoch. Die Datei darf maximal
-                    zwei Monate alt sein – ältere Rechnungen können für die automatische Vertragserstellung
-                    nicht verwendet werden.
-                </p>
-
-                <div class="upload-dropzone" id="upload-dropzone">
-                    <div class="upload-title">Rechnung hier ablegen</div>
-                    <div class="upload-sub">oder klicken, um eine Datei auszuwählen (PDF)</div>
-                    <input type="file" id="upload-input" accept="application/pdf" style="display:none;">
-                    <div id="upload-file-name" class="upload-file-name"></div>
-                    <div id="upload-status" class="upload-status neutral">
-                        Noch keine Datei ausgewählt.
-                    </div>
-                </div>
-
-                <div class="checkbox-row">
-                    <input type="checkbox" id="check-datenschutz">
-                    <label for="check-datenschutz" id="label-datenschutz">
-                        Ich habe die Datenschutzerklärung gelesen und akzeptiere die Verarbeitung meiner
-                        Daten für die Vertragsprüfung.
-                    </label>
-                </div>
-
-                <div class="hint-small">
-                    Ohne Zustimmung zur Datenschutzerklärung kann die Rechnung nicht automatisiert analysiert werden.
-                </div>
-
-                <div style="margin-top:0.7rem;">
-                    <button type="button" id="btn-pruefen" class="btn-primary" disabled>
-                        Rechnung prüfen
-                    </button>
-                </div>
-
-                <div class="sidebar-divider"></div>
-
-                <div id="result-info" class="result-block" style="display:none;">
-                    <div class="result-row">
-                        <span class="result-label">Firma</span>
-                        <input class="result-input" id="feld-firma" readonly>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Ansprechpartner</span>
-                        <input class="result-input" id="feld-ansprechpartner" readonly>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Windpark-Nr.</span>
-                        <input class="result-input" id="feld-wpnummer" readonly>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Windpark-Name</span>
-                        <input class="result-input" id="feld-wpname" readonly>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Straße / Nr.</span>
-                        <input class="result-input" id="feld-strasse" readonly>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">PLZ / Ort</span>
-                        <input class="result-input" id="feld-plzort" readonly>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Rechnungs-Nr.</span>
-                        <input class="result-input" id="feld-rnr" readonly>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Rechnungsdatum</span>
-                        <input class="result-input" id="feld-datum" readonly>
-                    </div>
-
-                    <div id="rechnung-hinweis" class="ok-text" style="display:none;">
-                        Rechnung gültig – Sie können fehlende Felder ergänzen und anschließend die Pakete auswählen.
-                    </div>
-                    <div id="rechnung-fehler" class="error-text" style="display:none;">
-                        Die Datei konnte nicht als gültige Router-Einbau-Rechnung innerhalb der letzten zwei Monate
-                        erkannt werden. Bitte prüfen Sie Datei und Datum.
-                    </div>
-
-                    <div class="radio-group">
-                        <strong>Sind Sie der Ansprechpartner aus der Rechnung?</strong><br>
-                        <label><input type="radio" name="radio-ansprech" value="ja" checked> Ja</label>
-                        <label><input type="radio" name="radio-ansprech" value="nein"> Nein</label>
-                    </div>
-
-                    <div id="extra-contact" class="extra-contact" style="display:none;">
-                        <div class="result-row">
-                            <span class="result-label">Ihr Name</span>
-                            <input class="result-input" id="feld-kontakt-name">
-                        </div>
-                        <div class="result-row">
-                            <span class="result-label">Ihre E-Mail</span>
-                            <input class="result-input" id="feld-kontakt-mail">
-                        </div>
-                        <div class="result-row">
-                            <span class="result-label">Ihre Firma</span>
-                            <input class="result-input" id="feld-kontakt-firma">
-                        </div>
-                    </div>
-                </div>
-
-            </aside>
-        </div>
+            <div id="leistungen-list" class="leistungen-list"></div>
+        </section>
 
         <footer>
             <div class="footer-buttons">
                 <a class="footer-link" href="/">Start</a>
-                <a class="footer-link" href="/kontakt/">Kontakt</a>
                 <a class="footer-link" href="/impressum/">Impressum</a>
                 <a class="footer-link" href="/datenschutz/">Datenschutz</a>
             </div>
@@ -741,466 +152,57 @@
 </div>
 
 <script>
-    // ----- Konfiguration / JSON aus information/ -----
-    let preisKonfiguration = null;
-    let vertragKonfiguration = null;
-    let hinweiseKonfiguration = null;
+async function loadInfo() {
+    const listEl = document.getElementById("leistungen-list");
 
-    async function ladeKonfigurationen() {
-        try {
-            const [preiseRes, vertragRes, hinweiseRes] = await Promise.all([
-                fetch("./information/warungsvertrag_preise.txt"),
-                fetch("./information/warungsvertrag.txt"),
-                fetch("./information/hinweise.txt")
-            ]);
+    try {
+        const res = await fetch("information/warungsvertrag.txt");
+        const data = await res.json(); // ← exakt wie beim Router-Einbau
 
-            if (preiseRes.ok) {
-                preisKonfiguration = await preiseRes.json();
-            }
-            if (vertragRes.ok) {
-                const data = await vertragRes.json();
-                vertragKonfiguration = data.wartungsvertrag_router || null;
-            }
-            if (hinweiseRes.ok) {
-                hinweiseKonfiguration = await hinweiseRes.json();
-            }
+        const w = data.wartungsvertrag_router;
 
-            fuelleLeistungsumfang();
-            setzeDatenschutzText();
-            baueLaufzeitButtons();
-        } catch (e) {
-            console.error("Fehler beim Laden der Konfigurationen:", e);
-        }
+        // Abschnitt 1.1
+        const a = document.createElement("div");
+        a.className = "leistung";
+        a.innerHTML = `
+            <h3>${w.leistungsumfang.optimierung_und_absicherung.titel}</h3>
+            <ul>${w.leistungsumfang.optimierung_und_absicherung.leistungen.map(l=>`<li>${l}</li>`).join("")}</ul>
+        `;
+        listEl.appendChild(a);
+
+        // Abschnitt 1.2
+        const b = document.createElement("div");
+        b.className = "leistung";
+        b.innerHTML = `
+            <h3>${w.leistungsumfang.stoerungsfall_und_lancare.titel}</h3>
+            <p>${w.leistungsumfang.stoerungsfall_und_lancare.beschreibung}</p>
+        `;
+        listEl.appendChild(b);
+
+        // Abschnitt 1.3
+        const c = document.createElement("div");
+        c.className = "leistung";
+        c.innerHTML = `
+            <h3>${w.leistungsumfang.backup_und_dokumentation.titel}</h3>
+            <ul>${w.leistungsumfang.backup_und_dokumentation.leistungen.map(l=>`<li>${l}</li>`).join("")}</ul>
+        `;
+        listEl.appendChild(c);
+
+        // Remote Support
+        const r = document.createElement("div");
+        r.className = "leistung";
+        r.innerHTML = `
+            <h3>${w.remote_support.abschnitt}</h3>
+            <ul>${w.remote_support.leistungen.map(l=>`<li>${l}</li>`).join("")}</ul>
+        `;
+        listEl.appendChild(r);
+
+    } catch(e) {
+        listEl.innerHTML = "<p>Fehler beim Laden.</p>";
     }
+}
 
-    function fuelleLeistungsumfang() {
-        if (!vertragKonfiguration) return;
-        const ziel = document.getElementById("leistungsumfang-text");
-        if (!ziel) return;
-
-        const parts = [];
-        if (vertragKonfiguration.beschreibung) {
-            parts.push("<p>" + vertragKonfiguration.beschreibung + "</p>");
-        }
-
-        const leistung = vertragKonfiguration.leistungsumfang;
-        if (leistung && leistung.optimierung_und_absicherung) {
-            const opt = leistung.optimierung_und_absicherung;
-            parts.push("<p><strong>" + (opt.titel || "Optimierung &amp; Absicherung") + "</strong></p>");
-            if (Array.isArray(opt.leistungen)) {
-                parts.push("<ul>" + opt.leistungen
-                    .map(t => "<li>" + t + "</li>")
-                    .join("") + "</ul>");
-            }
-        }
-
-        if (leistung && leistung.backup_und_dokumentation) {
-            const b = leistung.backup_und_dokumentation;
-            parts.push("<p><strong>" + (b.titel || "Backup &amp; Dokumentation") + "</strong></p>");
-            if (Array.isArray(b.leistungen)) {
-                parts.push("<ul>" + b.leistungen
-                    .map(t => "<li>" + t + "</li>")
-                    .join("") + "</ul>");
-            }
-        }
-
-        ziel.innerHTML = parts.join("");
-    }
-
-    function setzeDatenschutzText() {
-        const label = document.getElementById("label-datenschutz");
-        if (!label || !hinweiseKonfiguration) return;
-
-        const ds = hinweiseKonfiguration.abschluss_hinweise &&
-                   hinweiseKonfiguration.abschluss_hinweise.datenschutz;
-        if (ds && ds.text) {
-            const link = ds.link || "/datenschutz/";
-            label.innerHTML = ds.text.replace("Datenschutzerklärung",
-                '<a href="' + link + '" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>');
-        }
-    }
-
-    // ----- Upload / Flow -----
-    const FLOW_URL =
-        "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443" +
-        "/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke" +
-        "?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ";
-
-    const dropzone = document.getElementById("upload-dropzone");
-    const fileInput = document.getElementById("upload-input");
-    const fileNameEl = document.getElementById("upload-file-name");
-    const statusEl = document.getElementById("upload-status");
-    const checkDatenschutz = document.getElementById("check-datenschutz");
-    const btnPruefen = document.getElementById("btn-pruefen");
-
-    const resultBlock = document.getElementById("result-info");
-    const feldFirma = document.getElementById("feld-firma");
-    const feldAP = document.getElementById("feld-ansprechpartner");
-    const feldWPNummer = document.getElementById("feld-wpnummer");
-    const feldWPName = document.getElementById("feld-wpname");
-    const feldStrasse = document.getElementById("feld-strasse");
-    const feldPLZOrt = document.getElementById("feld-plzort");
-    const feldRNr = document.getElementById("feld-rnr");
-    const feldDatum = document.getElementById("feld-datum");
-    const hinweisOk = document.getElementById("rechnung-hinweis");
-    const hinweisFehler = document.getElementById("rechnung-fehler");
-    const extraKontaktBox = document.getElementById("extra-contact");
-
-    const radioAnsprech = document.getElementsByName("radio-ansprech");
-    const kontaktName = document.getElementById("feld-kontakt-name");
-    const kontaktMail = document.getElementById("feld-kontakt-mail");
-    const kontaktFirma = document.getElementById("feld-kontakt-firma");
-
-    const paketePlaceholder = document.getElementById("pakete-placeholder");
-    const paketeContainer = document.getElementById("pakete-container");
-    const contractIdPreview = document.getElementById("contract-id-preview");
-
-    let ausgewaehlteDatei = null;
-    let letzteAntwort = null;
-    let aktuelleVertragsnummer = "";
-
-    function setStatus(text, type) {
-        statusEl.textContent = text;
-        statusEl.classList.remove("ok", "error", "neutral");
-        statusEl.classList.add(type || "neutral");
-    }
-
-    function aktualisierePruefenButton() {
-        btnPruefen.disabled = !(ausgewaehlteDatei && checkDatenschutz.checked);
-    }
-
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const result = reader.result || "";
-                const base64 = String(result).split(",")[1] || "";
-                resolve(base64);
-            };
-            reader.onerror = () => reject(reader.error || new Error("Fehler beim Einlesen der Datei"));
-            reader.readAsDataURL(file);
-        });
-    }
-
-    function handleNewFile(file) {
-        if (!file) return;
-        if (file.type !== "application/pdf") {
-            setStatus("Bitte laden Sie ausschließlich PDF-Dateien hoch.", "error");
-            return;
-        }
-        ausgewaehlteDatei = file;
-        fileNameEl.textContent = "Ausgewählte Datei: " + file.name;
-        setStatus("Datei bereit – bitte auf „Rechnung prüfen“ klicken.", "neutral");
-        aktualisierePruefenButton();
-    }
-
-    async function pruefeRechnung() {
-        if (!ausgewaehlteDatei) return;
-        try {
-            setStatus("Datei wird hochgeladen und analysiert …", "neutral");
-            btnPruefen.disabled = true;
-
-            const base64 = await fileToBase64(ausgewaehlteDatei);
-
-            const response = await fetch(FLOW_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    fileName: ausgewaehlteDatei.name,
-                    fileContent: base64
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error("HTTP-Fehler " + response.status);
-            }
-
-            const json = await response.json();
-            const body = json.body || json;
-            letzteAntwort = body;
-
-            befülleFelderUndPruefe(body);
-        } catch (e) {
-            console.error(e);
-            setStatus("Fehler beim Prüfen der Rechnung. Bitte später erneut versuchen.", "error");
-            resultBlock.style.display = "none";
-            paketeContainer.style.display = "none";
-            paketePlaceholder.style.display = "";
-        } finally {
-            btnPruefen.disabled = false;
-        }
-    }
-
-    function befülleFelderUndPruefe(body) {
-        const isRouter = !!body.ist_router_einbau_rechnung;
-
-        // Grunddaten übernehmen
-        const firma = body.Firma || "";
-        const ap = body.Ansprechpartner || "";
-        const wpNummer = body.windpark_nummer || "";
-        const wpName = body.windpark_name || "";
-        const strasse = body["Straße und Hausnummer"] || "";
-        const plz = body.PLZ || "";
-        const ort = body.Ort || "";
-        const rnr = body["Rechnungs-Nr."] || "";
-        const datum = body.Rechnungsdatum || "";
-
-        feldFirma.value = firma;
-        feldAP.value = ap;
-        feldWPNummer.value = wpNummer;
-        feldWPName.value = wpName;
-        feldStrasse.value = strasse;
-        feldPLZOrt.value = (plz && ort) ? (plz + " " + ort) : (plz || ort);
-        feldRNr.value = rnr;
-        feldDatum.value = datum;
-
-        // Felder readonly, außer wenn leer
-        [feldFirma, feldAP, feldWPNummer, feldWPName, feldStrasse, feldPLZOrt, feldRNr, feldDatum].forEach(f => {
-            if (!f.value) {
-                f.removeAttribute("readonly");
-            } else {
-                f.setAttribute("readonly", "readonly");
-            }
-        });
-
-        resultBlock.style.display = "block";
-
-        // Rechnungsalter prüfen (max. 2 Monate ~ 62 Tage)
-        let datumOK = false;
-        if (datum) {
-            const rechnungsDatum = new Date(datum);
-            if (!isNaN(rechnungsDatum.getTime())) {
-                const jetzt = new Date();
-                const diffMs = jetzt.getTime() - rechnungsDatum.getTime();
-                const diffTage = diffMs / (1000 * 60 * 60 * 24);
-                datumOK = diffTage <= 62;
-            }
-        }
-
-        if (!isRouter || !datumOK) {
-            setStatus("Rechnung ist nicht geeignet oder älter als zwei Monate.", "error");
-            hinweisOk.style.display = "none";
-            hinweisFehler.style.display = "block";
-            paketeContainer.style.display = "none";
-            paketePlaceholder.style.display = "";
-            contractIdPreview.textContent = "";
-            return;
-        }
-
-        setStatus("Rechnung erfolgreich geprüft.", "ok");
-        hinweisFehler.style.display = "none";
-        hinweisOk.style.display = "block";
-
-        // Vertragsnummer berechnen
-        aktuelleVertragsnummer = erstelleVertragsnummer(wpNummer, rnr, wpName);
-        contractIdPreview.textContent =
-            "Vorschau Vertragsnummer: " + aktuelleVertragsnummer +
-            " (wird später als Exportstempel im Vertrag verwendet)";
-
-        // Pakete freigeben
-        paketePlaceholder.style.display = "none";
-        paketeContainer.style.display = "block";
-        aktualisierePreistabelle();
-    }
-
-    function erstelleVertragsnummer(wpNummer, rnr, wpName) {
-        const wpN = (wpNummer || "WP").toString().trim();
-        const r = (rnr || "RNR").toString().trim().replace(/\s+/g, "");
-        const name = (wpName || "WINDPARK").toString().trim().replace(/\s+/g, "_");
-
-        const now = new Date();
-        const hh = String(now.getHours()).padStart(2, "0");
-        const mm = String(now.getMinutes()).padStart(2, "0");
-        const ss = String(now.getSeconds()).padStart(2, "0");
-        const yyyy = now.getFullYear();
-        const MM = String(now.getMonth() + 1).padStart(2, "0");
-        const dd = String(now.getDate()).padStart(2, "0");
-
-        const ts = ss + mm + hh + "_" + yyyy + MM + dd; // SekundenMinutenStunden_JahrMonatTag
-        return wpN + "_" + r + "_" + name + "_" + ts;
-    }
-
-    // Ansprechpartner Ja/Nein
-    function aktualisiereAnsprechpartner() {
-        let wert = "ja";
-        for (const r of radioAnsprech) {
-            if (r.checked) wert = r.value;
-        }
-        if (wert === "nein") {
-            extraKontaktBox.style.display = "block";
-        } else {
-            extraKontaktBox.style.display = "none";
-        }
-    }
-
-    // ----- Pakete / Preistabelle -----
-    const laufzeitPillsContainer = document.getElementById("laufzeit-pills");
-    const lancarePillsContainer = document.getElementById("lancare-pills");
-    const laufzeitHinweis = document.getElementById("laufzeit-hinweis");
-    const preistabelleWrapper = document.getElementById("preistabelle-wrapper");
-    const preistabelleBody = document.getElementById("preistabelle-body");
-    const preisGesamtEl = document.getElementById("preis-gesamt");
-    const preisJahrEl = document.getElementById("preis-jahr");
-
-    let ausgewaehlteLaufzeit = null;
-    let ausgewaehltesLancare = null;
-
-    function baueLaufzeitButtons() {
-        if (!preisKonfiguration || !preisKonfiguration.pakete) return;
-        laufzeitPillsContainer.innerHTML = "";
-
-        Object.keys(preisKonfiguration.pakete).forEach(key => {
-            const paket = preisKonfiguration.pakete[key];
-            const laufzeit = paket.laufzeit_jahre;
-            const pill = document.createElement("button");
-            pill.type = "button";
-            pill.className = "pill";
-            pill.textContent = laufzeit + " Jahr" + (laufzeit > 1 ? "e" : "");
-            pill.dataset.laufzeit = laufzeit;
-
-            pill.addEventListener("click", () => {
-                ausgewaehlteLaufzeit = laufzeit;
-                ausgewaehltesLancare = null;
-                markierePills(laufzeitPillsContainer, pill);
-                baueLancareButtons();
-                aktualisierePreistabelle();
-            });
-
-            laufzeitPillsContainer.appendChild(pill);
-        });
-    }
-
-    function baueLancareButtons() {
-        lancarePillsContainer.innerHTML = "";
-        laufzeitHinweis.style.display = (ausgewaehlteLaufzeit && ausgewaehlteLaufzeit !== 5) ? "block" : "none";
-
-        if (!ausgewaehlteLaufzeit || !preisKonfiguration || !preisKonfiguration.pakete) return;
-
-        const eintrag = Object.values(preisKonfiguration.pakete)
-            .find(p => p.laufzeit_jahre === ausgewaehlteLaufzeit);
-        if (!eintrag) return;
-
-        eintrag.varianten.forEach(variant => {
-            const jahre = variant.lancare_jahre;
-            const pill = document.createElement("button");
-            pill.type = "button";
-            pill.className = "pill";
-            pill.textContent = "LANcare " + jahre + " Jahr" + (jahre > 1 ? "e" : "");
-            pill.dataset.lancare = jahre;
-
-            pill.addEventListener("click", () => {
-                ausgewaehltesLancare = jahre;
-                markierePills(lancarePillsContainer, pill);
-                aktualisierePreistabelle();
-            });
-
-            lancarePillsContainer.appendChild(pill);
-        });
-    }
-
-    function markierePills(container, aktive) {
-        Array.from(container.querySelectorAll(".pill")).forEach(p => {
-            p.classList.toggle("selected", p === aktive);
-        });
-    }
-
-    function findeVariante() {
-        if (!preisKonfiguration || !preisKonfiguration.pakete ||
-            !ausgewaehlteLaufzeit || !ausgewaehltesLancare) return null;
-
-        const eintrag = Object.values(preisKonfiguration.pakete)
-            .find(p => p.laufzeit_jahre === ausgewaehlteLaufzeit);
-        if (!eintrag) return null;
-
-        return eintrag.varianten.find(v => v.lancare_jahre === ausgewaehltesLancare) || null;
-    }
-
-    function aktualisierePreistabelle() {
-        const variante = findeVariante();
-        if (!variante) {
-            preistabelleWrapper.style.display = "none";
-            return;
-        }
-
-        const laufzeit = ausgewaehlteLaufzeit;
-        const wartungsPreis = variante.wartungsvertrag_preis;
-        const lancareNetto = variante.lancare_preis_netto;
-        const gesamt = variante.gesamt;
-
-        preistabelleBody.innerHTML = "";
-
-        // LANcare-Posten
-        const trLan = document.createElement("tr");
-        trLan.innerHTML = "<td>LANcare (" + variante.lancare_jahre +
-            " Jahr" + (variante.lancare_jahre > 1 ? "e" : "") + ")</td>" +
-            '<td class="align-right">' + lancareNetto.toFixed(2) + " €</td>";
-        preistabelleBody.appendChild(trLan);
-
-        // Jahresposten
-        for (let jahr = 1; jahr <= laufzeit; jahr++) {
-            const trJ = document.createElement("tr");
-            trJ.innerHTML = "<td>Jahr " + jahr + "</td>" +
-                '<td class="align-right">' + wartungsPreis.toFixed(2) + " €</td>";
-            preistabelleBody.appendChild(trJ);
-        }
-
-        const durchschnitt = gesamt / laufzeit;
-
-        preisGesamtEl.textContent = gesamt.toFixed(2) + " €";
-        preisJahrEl.textContent = durchschnitt.toFixed(2) + " €";
-
-        preistabelleWrapper.style.display = "block";
-    }
-
-    // ----- Events -----
-    if (dropzone && fileInput) {
-        dropzone.addEventListener("click", () => fileInput.click());
-
-        dropzone.addEventListener("dragenter", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropzone.classList.add("dragover");
-        });
-
-        dropzone.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropzone.classList.add("dragover");
-        });
-
-        dropzone.addEventListener("dragleave", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropzone.classList.remove("dragover");
-        });
-
-        dropzone.addEventListener("drop", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropzone.classList.remove("dragover");
-            const file = e.dataTransfer.files && e.dataTransfer.files[0];
-            handleNewFile(file);
-        });
-
-        fileInput.addEventListener("change", () => {
-            const file = fileInput.files && fileInput.files[0];
-            handleNewFile(file);
-        });
-    }
-
-    if (checkDatenschutz) {
-        checkDatenschutz.addEventListener("change", aktualisierePruefenButton);
-    }
-
-    if (btnPruefen) {
-        btnPruefen.addEventListener("click", pruefeRechnung);
-    }
-
-    Array.from(radioAnsprech).forEach(r => {
-        r.addEventListener("change", aktualisiereAnsprechpartner);
-    });
-
-    document.addEventListener("DOMContentLoaded", ladeKonfigurationen);
+loadInfo();
 </script>
 
 </body>
