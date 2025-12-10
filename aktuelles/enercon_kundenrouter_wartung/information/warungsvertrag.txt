@@ -1,0 +1,77 @@
+{
+  "wartungsvertrag_router": {
+    "titel": "Wartungs- und Servicevertrag für LANCOM Router",
+    "beschreibung": "Servicevertrag zur jährlichen Wartung, Aktualisierung, Sicherheitsprüfung und technischen Betreuung von LANCOM-Routern in Windenergieanlagen. Enthält ein LANcare Direct Advanced 24/7 Servicepaket pro betreutem Router.",
+    
+    "leistungsumfang": {
+      "abschnitt": "Leistungsumfang – jährliche Wartung & Sicherheitsüberprüfung",
+
+      "optimierung_und_absicherung": {
+        "titel": "Optimierung & Absicherung des Routers",
+        "leistungen": [
+          "Aktualisierung der Router-Firmware auf den aktuell empfohlenen LANCOM LCOS-Stand.",
+          "Absicherung und Härtung des Routers gemäß aktuellen technischen Sicherheitsstandards.",
+          "Überprüfung auf mögliche Schwachstellen (Firewall-Regeln, offene Ports, VPN-Konfigurationen).",
+          "Kontrolle aller Benutzerkonten, Administrationszugänge und Zugriffslisten.",
+          "Analyse relevanter Systemprotokolle (CPU, RAM, Speicher, LTE-Signal, Temperaturen, Neustarts).",
+          "Umsetzung sinnvoller Konfigurationsverbesserungen in Abstimmung mit dem Betreiber."
+        ]
+      },
+
+      "stoerungsfall_und_lancare": {
+        "titel": "Unterstützung im Störungsfall – LANcare Direct Advanced 24/7",
+        "beschreibung": "Für jeden betreuten Router wird ein LANcare Direct Advanced 24/7 Servicevertrag erworben und registriert. Die im LANcare-Vertrag enthaltenen Leistungen werden ausschließlich durch LANCOM Systems GmbH erbracht.",
+        "lancare_leistungen": {
+          "servicepaket": "LANcare Direct Advanced 24/7",
+          "offizielle_leistungsbeschreibung": "https://www.lancom-systems.de/produkte/service-support/lancare/lancare-direct-advanced-24-7",
+          "umfang": [
+            "Herstellersupport durch LANCOM Systems.",
+            "Austausch defekter Geräte durch LANCOM gemäß den Bedingungen des LANcare-Vertrags.",
+            "Priorisierte Bearbeitung eingereichter Supportfälle.",
+            "Reaktions- und Austauschzeiten gemäß der offiziellen LANcare-Servicebeschreibung.",
+            "24/7-Verfügbarkeit der LANCOM Supportleistungen."
+          ]
+        },
+        "leistungen_durch_kevin_strakerjahn": [
+          "Entgegennahme und Erstbewertung von Störungsmeldungen.",
+          "Technische Erstdiagnose und Analyse der Routerkonfiguration.",
+          "Erstellung und Übermittlung von Support-Tickets an LANCOM Systems.",
+          "Koordination des gesamten Austausch- oder Reparaturprozesses mit LANCOM.",
+          "Unterstützung bei der Wiederinbetriebnahme eines ausgetauschten Gerätes."
+        ],
+        "nicht_enthalten": [
+          "Hardwareersatz außerhalb des LANcare-Vertrags.",
+          "Garantien für Reaktions- oder Austauschzeiten von LANCOM Systems.",
+          "Leistungen, die durch LANCOM Systems eingeschränkt oder abgelehnt werden.",
+          "Vor-Ort-Einsätze (können gesondert beauftragt werden)."
+        ]
+      },
+
+      "backup_und_dokumentation": {
+        "titel": "Backup & Dokumentation",
+        "leistungen": [
+          "Jährliches vollständiges Router-Backup (LCF-Datei).",
+          "Sichere Ablage der Konfiguration in einer geschützten Umgebung.",
+          "Optionaler ausführlicher Wartungsbericht (gegen Aufpreis)."
+        ]
+      }
+    },
+
+    "remote_support": {
+      "abschnitt": "Remote-Support",
+      "inkludierte_stunden": 10,
+      "kommunikationswege": ["Telefon", "Microsoft Teams", "Fernzugriff"],
+      "leistungen": [
+        "Unterstützung bei Störungen und Fehlermeldungen.",
+        "Anpassung und Erweiterung von VPN-Konfigurationen.",
+        "Allgemeine Konfigurationsänderungen am Router.",
+        "Beratung zur Netzwerksicherheit.",
+        "Begleitung eines LANcare-Austauschprozesses."
+      ],
+      "nicht_enthalten": [
+        "Vor-Ort-Serviceleistungen.",
+        "Umfangreiche Neuplanungen oder Projektarbeiten (gesondert beauftragbar)."
+      ]
+    }
+  }
+}
