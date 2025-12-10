@@ -56,44 +56,34 @@
             border: 1px solid var(--border);
         }
 
+        /* Kopfbereich */
         .header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
         }
 
-        .logo-wrapper {
-            width: 100%;
+        .header-logo {
+            max-width: 230px;
         }
 
-        .logo-wrapper img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            object-fit: cover;
+        .header-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
+        /* 2-Spalten-Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
+            gap: 1.75rem;
+            align-items: flex-start;
+        }
+
+        /* Intro links */
         .intro {
-            margin-bottom: 1.75rem;
-        }
-
-        .intro h1 {
-            font-size: 1.5rem;
-            margin: 0 0 0.7rem;
-        }
-
-        .intro p {
-            margin: 0.4rem 0;
-            color: var(--text-main);
-            font-size: 0.95rem;
-        }
-
-        .intro ul {
-            margin: 0.4rem 0 0.6rem 1.1rem;
-            padding: 0;
-        }
-
-        .intro li {
-            margin: 0.15rem 0;
-            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
         }
 
         .badge {
@@ -108,10 +98,30 @@
             margin-bottom: 0.4rem;
         }
 
+        .intro h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.7rem;
+        }
+
+        .intro p {
+            margin: 0.35rem 0;
+            font-size: 0.95rem;
+        }
+
+        .intro ul {
+            margin: 0.4rem 0 0.6rem 1.1rem;
+            padding: 0;
+            font-size: 0.95rem;
+        }
+
+        .intro li {
+            margin: 0.15rem 0;
+        }
+
         .section-divider {
-            margin-top: 2rem;
+            margin-top: 1.7rem;
             border-top: 1px solid var(--border);
-            padding-top: 1.5rem;
+            padding-top: 1.2rem;
         }
 
         .section-header {
@@ -124,7 +134,7 @@
 
         .section-header h2 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
         }
 
         .section-header span {
@@ -143,20 +153,42 @@
             padding: 0;
         }
 
-        .upload-wrapper {
-            margin-top: 1rem;
+        /* Upload-Spalte rechts */
+        .sidebar {
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: #f9fafb;
+            padding: 1.1rem 1.2rem 1.3rem;
+        }
+
+        .sidebar h2 {
+            margin: 0 0 0.45rem;
+            font-size: 1.1rem;
+        }
+
+        .sidebar p {
+            margin: 0.25rem 0;
+            font-size: 0.88rem;
+            color: var(--text-main);
+        }
+
+        .hint-small {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
         }
 
         .upload-dropzone {
+            margin-top: 0.75rem;
             border-radius: 14px;
             border: 2px dashed var(--border);
-            background: #f9fafb;
-            padding: 1.1rem 1.3rem;
+            background: #fff;
+            padding: 0.9rem 1rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 0.4rem;
+            gap: 0.35rem;
             transition: border-color 0.12s ease, background 0.12s ease;
             cursor: pointer;
         }
@@ -168,40 +200,23 @@
 
         .upload-title {
             font-weight: 600;
-            font-size: 0.98rem;
+            font-size: 0.96rem;
         }
 
         .upload-sub {
-            font-size: 0.86rem;
+            font-size: 0.84rem;
             color: var(--text-muted);
-        }
-
-        .upload-hint {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .upload-badge {
-            margin-top: 0.2rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            border-radius: 999px;
-            padding: 0.2rem 0.6rem;
-            font-size: 0.78rem;
-            background: #ecfdf3;
-            color: #166534;
         }
 
         .upload-file-name {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
+            margin-top: 0.4rem;
+            font-size: 0.86rem;
             color: var(--text-main);
         }
 
         .upload-status {
             margin-top: 0.3rem;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
         }
 
         .upload-status.ok {
@@ -220,7 +235,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.55rem 1.3rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 999px;
             border: none;
             font-size: 0.9rem;
@@ -231,85 +246,109 @@
             transition: background 0.12s ease, transform 0.06s ease;
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background: #075ad1;
             transform: translateY(-1px);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary[disabled] {
-            opacity: 0.6;
+        .btn-primary:disabled {
+            opacity: 0.55;
             cursor: default;
             transform: none;
         }
 
-        .btn-text {
-            border-radius: 999px;
-            border: none;
-            background: transparent;
-            padding: 0.2rem 0.4rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        .btn-text:hover {
+        .checkbox-row {
+            margin-top: 0.55rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.45rem;
+            font-size: 0.8rem;
             color: var(--text-main);
         }
 
-        .result-section {
-            margin-top: 1.4rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            padding: 0.9rem 1rem;
-            background: #f9fafb;
+        .checkbox-row input {
+            margin-top: 0.15rem;
         }
 
-        .result-section h3 {
-            margin: 0 0 0.4rem;
-            font-size: 1rem;
+        .checkbox-row a {
+            color: var(--primary);
+            text-decoration: none;
         }
 
-        .result-grid {
+        .checkbox-row a:hover {
+            text-decoration: underline;
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid var(--border);
+            margin: 0.9rem 0 0.7rem;
+        }
+
+        /* Ergebnisfelder unter Upload */
+        .result-block {
+            font-size: 0.86rem;
+        }
+
+        .result-row {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.35rem 1.4rem;
-            font-size: 0.9rem;
+            grid-template-columns: 1.1fr 1.9fr;
+            gap: 0.3rem 0.4rem;
+            align-items: center;
+            margin-top: 0.2rem;
         }
 
         .result-label {
             font-weight: 500;
+            font-size: 0.84rem;
         }
 
-        .result-value {
-            color: var(--text-main);
+        .result-input {
+            width: 100%;
+            padding: 0.28rem 0.4rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 0.84rem;
+            background: #fff;
         }
 
-        .result-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.15rem 0.55rem;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            background: #e0f2fe;
-            color: #075985;
-            margin-top: 0.3rem;
+        .result-input[readonly] {
+            background: #f3f4f6;
         }
 
-        .result-error-box {
-            margin-top: 0.6rem;
-            padding: 0.5rem 0.7rem;
-            border-radius: 10px;
-            border: 1px solid #fecaca;
-            background: #fef2f2;
-            font-size: 0.86rem;
-            color: #7f1d1d;
+        .radio-group {
+            margin-top: 0.7rem;
+            font-size: 0.84rem;
         }
 
+        .radio-group label {
+            margin-right: 0.8rem;
+        }
+
+        .extra-contact {
+            margin-top: 0.5rem;
+            padding: 0.45rem 0.55rem;
+            border-radius: 8px;
+            background: #f3f4ff;
+            border: 1px solid #e0e7ff;
+        }
+
+        .extra-contact .result-row {
+            margin-top: 0.25rem;
+        }
+
+        .error-text {
+            margin-top: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--error);
+        }
+
+        .ok-text {
+            margin-top: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--ok);
+        }
+
+        /* Paket-/Preisbereich links unten */
         .placeholder-box {
             margin-top: 0.8rem;
             padding: 0.75rem 0.9rem;
@@ -320,9 +359,68 @@
             background: #f9fafb;
         }
 
+        .pakete-container {
+            margin-top: 0.6rem;
+            padding: 0.8rem 0.8rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #f9fafb;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-top: 0.5rem;
+        }
+
+        .pill {
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            font-size: 0.84rem;
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .pill.selected {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .info-hint {
+            margin-top: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .price-table {
+            margin-top: 0.7rem;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.86rem;
+        }
+
+        .price-table th,
+        .price-table td {
+            padding: 0.3rem 0.35rem;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        .price-table tfoot td {
+            font-weight: 600;
+        }
+
+        .price-table .align-right {
+            text-align: right;
+            white-space: nowrap;
+        }
+
         .contract-id-preview {
             margin-top: 0.4rem;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: #4b5563;
         }
 
@@ -355,9 +453,18 @@
             color: var(--text-main);
         }
 
-        @media (max-width: 800px) {
-            .result-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 900px) {
+            .content-layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .sidebar {
+                margin-top: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
 
@@ -368,20 +475,12 @@
             }
 
             .card {
-                padding: 1.25rem 1.1rem 1.8rem;
+                padding: 1.3rem 1.1rem 1.7rem;
                 border-radius: 12px;
             }
 
-            .logo-wrapper img {
-                border-radius: 8px;
-            }
-
-            .intro h1 {
-                font-size: 1.25rem;
-            }
-
             .footer-buttons {
-                gap: 1.8rem;
+                gap: 1.6rem;
             }
         }
     </style>
@@ -391,183 +490,243 @@
 <div class="page">
     <div class="card">
 
+        <!-- Kopf mit Logo -->
         <header class="header">
-            <div class="logo-wrapper">
+            <div class="header-logo">
                 <img src="/Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
+            </div>
+            <div class="header-text">
+                Kevin Strakerjahn Networks &amp; Automation<br>
+                Wartungs- und Serviceverträge für LANCOM Router in ENERCON-Windparks
             </div>
         </header>
 
-        <section class="intro">
-            <div class="badge">
-                Automatische Vertragserstellung
-            </div>
+        <div class="content-layout">
 
-            <h1>Wartungsvertrag für Ihren Router-Service</h1>
+            <!-- LINKE SPALTE: Einleitung, Infos, Pakete -->
+            <main>
 
-            <p>
-                Dieser Bereich ist speziell für Kunden gedacht, bei denen der Router-Einbau im ENERCON-Windpark bereits
-                erfolgt ist und die nun einen passenden Wartungsvertrag abschließen möchten.
-            </p>
-
-            <p>
-                Alle technischen Informationen zum Wartungsvertrag und zu den verfügbaren Paketen erhalten Sie direkt
-                auf dieser Seite. Konkrete Preise werden erst dann angezeigt, wenn Sie Ihre
-                <strong>Router-Einbau-Rechnung als PDF hochladen</strong>. Die Rechnung wird automatisiert analysiert,
-                sodass Windpark, Firma und Rechnungsdaten eindeutig zugeordnet werden können.
-            </p>
-
-            <p>
-                Der Ablauf im Überblick:
-            </p>
-            <ul>
-                <li>Router-Einbau-Rechnung als PDF hochladen (Drag &amp; Drop oder Dateiauswahl)</li>
-                <li>Automatische Auswertung über Power Automate &amp; OpenAI</li>
-                <li>Prüfung, ob es sich um eine gültige Router-Einbau-Rechnung handelt</li>
-                <li>Anzeige der ermittelten Stammdaten (Firma, Windpark, Rechnungsnummer, Datum)</li>
-                <li>Auswahl des gewünschten Wartungspakets und der Laufzeit</li>
-                <li>Vorschau des vollständigen Wartungsvertrages inkl. AGB-Anhang und Vertragsnummer</li>
-            </ul>
-
-            <p>
-                Die Vertragsnummer wird automatisch aus Windparknummer, Rechnungsnummer, Windparknamen und einem
-                Zeitstempel erzeugt. Sie erscheint später als Exportstempel auf jeder Seite des Vertrages.
-            </p>
-        </section>
-
-        <section aria-label="Technischer Ablauf" class="section-divider">
-            <div class="section-header">
-                <h2>So funktioniert die automatische Auswertung</h2>
-                <span>Upload der Router-Einbau-Rechnung als PDF</span>
-            </div>
-
-            <div class="section-text">
-                <p>
-                    Nach dem Upload wird Ihre PDF-Rechnung über einen sicheren HTTPS-Aufruf an einen
-                    <strong>Power Automate Flow</strong> übergeben. Die Übergabe erfolgt im JSON-Format mit
-                    <code>fileName</code> und <code>fileContent</code> (Base64-kodiert). Der Flow wertet die Rechnung
-                    mit Hilfe von OpenAI aus und liefert strukturierte Daten zurück.
-                </p>
-                <p>
-                    Die Antwort enthält insbesondere:
-                </p>
-                <ul>
-                    <li><code>ist_router_einbau_rechnung</code> – Validierung, ob es sich um eine passende Rechnung handelt</li>
-                    <li><code>Firma</code>, <code>windpark_nummer</code>, <code>windpark_name</code></li>
-                    <li><code>Ansprechpartner</code>, <code>Straße und Hausnummer</code>, <code>PLZ</code>, <code>Ort</code></li>
-                    <li><code>Rechnungs-Nr.</code> und <code>Rechnungsdatum</code></li>
-                </ul>
-            </div>
-
-            <div class="upload-wrapper">
-                <div id="upload-dropzone" class="upload-dropzone">
-                    <div class="upload-title">Rechnung hier ablegen oder klicken, um eine Datei auszuwählen</div>
-                    <div class="upload-sub">Akzeptiert werden PDF-Dateien des Router-Einbaus.</div>
-                    <div class="upload-hint">Die Auswertung erfolgt automatisiert über einen Power Automate Flow.</div>
-                    <div class="upload-badge">
-                        <span>POST</span>
-                        <span>/powerautomate/automations/direct/workflows/…/invoke</span>
+                <section class="intro">
+                    <div class="badge">
+                        Automatische Vertragserstellung
                     </div>
-                    <button type="button" class="btn-text" id="upload-select-button">
-                        Datei auswählen
-                    </button>
+
+                    <h1>Wartungsvertrag für Ihren Router-Service</h1>
+
+                    <p>
+                        Mit Ihrer Rechnung für die Routerinstallation können Sie hier Ihren Wartungsvertrag anfragen –
+                        einfach die Rechnung als PDF in das Feld auf der rechten Seite ziehen oder auswählen.
+                    </p>
+
+                    <p>
+                        Der Wartungs- und Servicevertrag umfasst die jährliche Überprüfung, Aktualisierung und
+                        technische Betreuung des installierten LANCOM-Routers im Windpark. Zusätzlich wird für den
+                        Router ein LANcare-Servicepaket hinterlegt, damit im Störungsfall ein schneller Austausch über
+                        den Hersteller möglich ist.
+                    </p>
+
+                    <p>Der Ablauf im Überblick:</p>
+                    <ul>
+                        <li>Router-Einbau-Rechnung als PDF hochladen (Drag &amp; Drop oder Dateiauswahl)</li>
+                        <li>Automatische Auswertung über Power Automate &amp; OpenAI</li>
+                        <li>Prüfung, ob es sich um eine passende Router-Einbau-Rechnung handelt</li>
+                        <li>Anzeige der ermittelten Daten (Firma, Windpark, Rechnungsnummer, Rechnungsdatum)</li>
+                        <li>Ergänzung fehlender Angaben direkt im Formular – vorhandene Felder sind schreibgeschützt</li>
+                        <li>Auswahl der gewünschten Vertragslaufzeit und des LANcare-Pakets</li>
+                        <li>Berechnung der jährlichen Kosten und des Vertragsgesamtpreises</li>
+                    </ul>
+
+                    <p class="info-hint">
+                        Die Vertragsnummer wird automatisch aus Windparknummer, Rechnungsnummer, Windparkname
+                        (Leerzeichen durch Unterstriche) und einem Zeitstempel erzeugt. Sie dient später als
+                        Exportstempel auf jeder Seite des Vertrages.
+                    </p>
+                </section>
+
+                <!-- Allgemeine Infos aus wartungsvertrag.json -->
+                <section class="section-divider" aria-label="Leistungsumfang Wartungsvertrag">
+                    <div class="section-header">
+                        <h2>Allgemeiner Leistungsumfang</h2>
+                        <span>Auszug aus dem Wartungs- und Servicevertrag</span>
+                    </div>
+
+                    <div id="leistungsumfang-text" class="section-text">
+                        <!-- wird per JS aus information/warungsvertrag.txt befüllt -->
+                        <p>Die Details des Wartungsvertrages werden automatisch aus der hinterlegten
+                           Vertragsbeschreibung geladen.</p>
+                    </div>
+                </section>
+
+                <!-- Pakete & Laufzeiten -->
+                <section class="section-divider" aria-label="Pakete und Laufzeiten">
+                    <div class="section-header">
+                        <h2>Pakete &amp; Laufzeiten</h2>
+                        <span>Wird nach erfolgreicher Rechnungsprüfung freigeschaltet.</span>
+                    </div>
+
+                    <div id="pakete-placeholder" class="placeholder-box">
+                        Sobald Ihre Rechnung geprüft und alle notwendigen Angaben vollständig sind, können Sie hier die
+                        gewünschte Laufzeit und das passende LANcare-Paket auswählen. Auf Basis der Preistabelle werden
+                        dann der Gesamtpreis und der durchschnittliche Jahresbetrag angezeigt.
+                    </div>
+
+                    <div id="pakete-container" class="pakete-container" style="display:none;">
+                        <div>
+                            <strong>1. Vertragslaufzeit auswählen</strong>
+                            <div class="pill-row" id="laufzeit-pills">
+                                <!-- per JS -->
+                            </div>
+                            <div id="laufzeit-hinweis" class="info-hint" style="display:none;">
+                                Hinweis: Die Vertragslaufzeit kann nach Ablauf jährlich verlängert oder gekündigt
+                                werden. Die Preise für eine Verlängerung können von den hier angezeigten Werten
+                                abweichen.
+                            </div>
+                        </div>
+
+                        <div style="margin-top:0.8rem;">
+                            <strong>2. LANcare-Paket auswählen</strong>
+                            <div class="pill-row" id="lancare-pills">
+                                <!-- per JS -->
+                            </div>
+                        </div>
+
+                        <div id="preistabelle-wrapper" style="display:none; margin-top:0.9rem;">
+                            <strong>3. Übersicht der Vertragskosten</strong>
+                            <table class="price-table">
+                                <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th class="align-right">Betrag (netto)</th>
+                                </tr>
+                                </thead>
+                                <tbody id="preistabelle-body">
+                                <!-- per JS -->
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td>Gesamtpreis (Laufzeit)</td>
+                                    <td id="preis-gesamt" class="align-right"></td>
+                                </tr>
+                                <tr>
+                                    <td>Durchschnitt pro Jahr</td>
+                                    <td id="preis-jahr" class="align-right"></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="contract-id-preview" class="contract-id-preview"></div>
+                </section>
+
+            </main>
+
+            <!-- RECHTE SPALTE: Upload + Stammdaten -->
+            <aside class="sidebar" aria-label="Rechnungsupload & Stammdaten">
+
+                <h2>Rechnung prüfen & Stammdaten übernehmen</h2>
+                <p>
+                    Laden Sie hier die PDF-Rechnung für den Router-Einbau hoch. Die Datei darf maximal
+                    zwei Monate alt sein – ältere Rechnungen können für die automatische Vertragserstellung
+                    nicht verwendet werden.
+                </p>
+
+                <div class="upload-dropzone" id="upload-dropzone">
+                    <div class="upload-title">Rechnung hier ablegen</div>
+                    <div class="upload-sub">oder klicken, um eine Datei auszuwählen (PDF)</div>
                     <input type="file" id="upload-input" accept="application/pdf" style="display:none;">
                     <div id="upload-file-name" class="upload-file-name"></div>
                     <div id="upload-status" class="upload-status neutral">
-                        Noch keine Datei hochgeladen.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section aria-label="Ermittelte Rechnungsdaten" class="section-divider">
-            <div class="section-header">
-                <h2>Ermittelte Daten aus der Rechnung</h2>
-                <span>Diese Angaben stammen direkt aus Ihrer PDF-Rechnung.</span>
-            </div>
-
-            <div id="result-section" class="result-section" style="display:none;">
-                <h3>Windpark &amp; Rechnungsdaten</h3>
-                <div class="result-grid">
-                    <div>
-                        <div class="result-label">Firma</div>
-                        <div id="result-firma" class="result-value">–</div>
-                    </div>
-                    <div>
-                        <div class="result-label">Ansprechpartner</div>
-                        <div id="result-ansprechpartner" class="result-value">–</div>
-                    </div>
-                    <div>
-                        <div class="result-label">Windpark-Nummer</div>
-                        <div id="result-windpark-nummer" class="result-value">–</div>
-                    </div>
-                    <div>
-                        <div class="result-label">Windpark-Name</div>
-                        <div id="result-windpark-name" class="result-value">–</div>
-                    </div>
-                    <div>
-                        <div class="result-label">Straße und Hausnummer</div>
-                        <div id="result-strasse" class="result-value">–</div>
-                    </div>
-                    <div>
-                        <div class="result-label">PLZ / Ort</div>
-                        <div id="result-plz-ort" class="result-value">–</div>
-                    </div>
-                    <div>
-                        <div class="result-label">Rechnungs-Nr.</div>
-                        <div id="result-rechnungsnr" class="result-value">–</div>
-                    </div>
-                    <div>
-                        <div class="result-label">Rechnungsdatum</div>
-                        <div id="result-rechnungsdatum" class="result-value">–</div>
+                        Noch keine Datei ausgewählt.
                     </div>
                 </div>
 
-                <div id="result-tag" class="result-tag">
-                    Router-Einbau-Rechnung erkannt
+                <div class="checkbox-row">
+                    <input type="checkbox" id="check-datenschutz">
+                    <label for="check-datenschutz" id="label-datenschutz">
+                        Ich habe die Datenschutzerklärung gelesen und akzeptiere die Verarbeitung meiner
+                        Daten für die Vertragsprüfung.
+                    </label>
                 </div>
 
-                <div id="result-error" class="result-error-box" style="display:none;">
-                    Die hochgeladene Datei konnte nicht eindeutig als Router-Einbau-Rechnung erkannt werden.
-                    Bitte prüfen Sie, ob Sie die richtige Rechnung hochgeladen haben oder kontaktieren Sie mich direkt.
+                <div class="hint-small">
+                    Ohne Zustimmung zur Datenschutzerklärung kann die Rechnung nicht automatisiert analysiert werden.
                 </div>
 
-                <div id="contract-id-preview" class="contract-id-preview"></div>
-            </div>
+                <div style="margin-top:0.7rem;">
+                    <button type="button" id="btn-pruefen" class="btn-primary" disabled>
+                        Rechnung prüfen
+                    </button>
+                </div>
 
-            <div id="result-placeholder" class="placeholder-box">
-                Sobald eine gültige Router-Einbau-Rechnung erkannt wurde, erscheinen hier die ermittelten Stammdaten
-                für Firma, Windpark und Rechnung sowie eine Vorschau der späteren Vertragsnummer.
-            </div>
-        </section>
+                <div class="sidebar-divider"></div>
 
-        <section aria-label="Pakete und Laufzeiten" class="section-divider">
-            <div class="section-header">
-                <h2>Pakete &amp; Laufzeiten</h2>
-                <span>Auswahl erst nach erfolgreicher Rechnungsprüfung möglich.</span>
-            </div>
+                <div id="result-info" class="result-block" style="display:none;">
+                    <div class="result-row">
+                        <span class="result-label">Firma</span>
+                        <input class="result-input" id="feld-firma" readonly>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Ansprechpartner</span>
+                        <input class="result-input" id="feld-ansprechpartner" readonly>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Windpark-Nr.</span>
+                        <input class="result-input" id="feld-wpnummer" readonly>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Windpark-Name</span>
+                        <input class="result-input" id="feld-wpname" readonly>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Straße / Nr.</span>
+                        <input class="result-input" id="feld-strasse" readonly>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">PLZ / Ort</span>
+                        <input class="result-input" id="feld-plzort" readonly>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Rechnungs-Nr.</span>
+                        <input class="result-input" id="feld-rnr" readonly>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Rechnungsdatum</span>
+                        <input class="result-input" id="feld-datum" readonly>
+                    </div>
 
-            <div id="pakete-placeholder" class="placeholder-box">
-                Die Auswahl der Wartungspakete (z.&nbsp;B. unterschiedliche LANcare-Jahre und Vertragslaufzeiten) wird
-                eingeblendet, sobald eine gültige Router-Einbau-Rechnung erkannt wurde.
-                <br><br>
-                In einem nächsten Schritt werden hier dynamisch die verfügbaren Pakete und die passende Laufzeit
-                dargestellt. Auf Basis dieser Auswahl kann anschließend die Vertragsvorschau mit allen Details erzeugt
-                werden.
-            </div>
-        </section>
+                    <div id="rechnung-hinweis" class="ok-text" style="display:none;">
+                        Rechnung gültig – Sie können fehlende Felder ergänzen und anschließend die Pakete auswählen.
+                    </div>
+                    <div id="rechnung-fehler" class="error-text" style="display:none;">
+                        Die Datei konnte nicht als gültige Router-Einbau-Rechnung innerhalb der letzten zwei Monate
+                        erkannt werden. Bitte prüfen Sie Datei und Datum.
+                    </div>
 
-        <section aria-label="Vertragsvorschau" class="section-divider">
-            <div class="section-header">
-                <h2>Vertragsvorschau</h2>
-                <span>Vollständiger Wartungsvertrag inkl. AGB-Anhang.</span>
-            </div>
+                    <div class="radio-group">
+                        <strong>Sind Sie der Ansprechpartner aus der Rechnung?</strong><br>
+                        <label><input type="radio" name="radio-ansprech" value="ja" checked> Ja</label>
+                        <label><input type="radio" name="radio-ansprech" value="nein"> Nein</label>
+                    </div>
 
-            <div id="vertrag-placeholder" class="placeholder-box">
-                Nach Auswahl von Paket und Laufzeit wird hier eine Vorschau des späteren Wartungsvertrages angezeigt.
-                Die endgültige Vertragsversion enthält die vollständigen AGB als Anhang sowie auf jeder Seite einen
-                Exportstempel mit der automatisch erzeugten Vertragsnummer.
-            </div>
-        </section>
+                    <div id="extra-contact" class="extra-contact" style="display:none;">
+                        <div class="result-row">
+                            <span class="result-label">Ihr Name</span>
+                            <input class="result-input" id="feld-kontakt-name">
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Ihre E-Mail</span>
+                            <input class="result-input" id="feld-kontakt-mail">
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Ihre Firma</span>
+                            <input class="result-input" id="feld-kontakt-firma">
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
 
         <footer>
             <div class="footer-buttons">
@@ -582,6 +741,86 @@
 </div>
 
 <script>
+    // ----- Konfiguration / JSON aus information/ -----
+    let preisKonfiguration = null;
+    let vertragKonfiguration = null;
+    let hinweiseKonfiguration = null;
+
+    async function ladeKonfigurationen() {
+        try {
+            const [preiseRes, vertragRes, hinweiseRes] = await Promise.all([
+                fetch("./information/warungsvertrag_preise.txt"),
+                fetch("./information/warungsvertrag.txt"),
+                fetch("./information/hinweise.txt")
+            ]);
+
+            if (preiseRes.ok) {
+                preisKonfiguration = await preiseRes.json();
+            }
+            if (vertragRes.ok) {
+                const data = await vertragRes.json();
+                vertragKonfiguration = data.wartungsvertrag_router || null;
+            }
+            if (hinweiseRes.ok) {
+                hinweiseKonfiguration = await hinweiseRes.json();
+            }
+
+            fuelleLeistungsumfang();
+            setzeDatenschutzText();
+            baueLaufzeitButtons();
+        } catch (e) {
+            console.error("Fehler beim Laden der Konfigurationen:", e);
+        }
+    }
+
+    function fuelleLeistungsumfang() {
+        if (!vertragKonfiguration) return;
+        const ziel = document.getElementById("leistungsumfang-text");
+        if (!ziel) return;
+
+        const parts = [];
+        if (vertragKonfiguration.beschreibung) {
+            parts.push("<p>" + vertragKonfiguration.beschreibung + "</p>");
+        }
+
+        const leistung = vertragKonfiguration.leistungsumfang;
+        if (leistung && leistung.optimierung_und_absicherung) {
+            const opt = leistung.optimierung_und_absicherung;
+            parts.push("<p><strong>" + (opt.titel || "Optimierung &amp; Absicherung") + "</strong></p>");
+            if (Array.isArray(opt.leistungen)) {
+                parts.push("<ul>" + opt.leistungen
+                    .map(t => "<li>" + t + "</li>")
+                    .join("") + "</ul>");
+            }
+        }
+
+        if (leistung && leistung.backup_und_dokumentation) {
+            const b = leistung.backup_und_dokumentation;
+            parts.push("<p><strong>" + (b.titel || "Backup &amp; Dokumentation") + "</strong></p>");
+            if (Array.isArray(b.leistungen)) {
+                parts.push("<ul>" + b.leistungen
+                    .map(t => "<li>" + t + "</li>")
+                    .join("") + "</ul>");
+            }
+        }
+
+        ziel.innerHTML = parts.join("");
+    }
+
+    function setzeDatenschutzText() {
+        const label = document.getElementById("label-datenschutz");
+        if (!label || !hinweiseKonfiguration) return;
+
+        const ds = hinweiseKonfiguration.abschluss_hinweise &&
+                   hinweiseKonfiguration.abschluss_hinweise.datenschutz;
+        if (ds && ds.text) {
+            const link = ds.link || "/datenschutz/";
+            label.innerHTML = ds.text.replace("Datenschutzerklärung",
+                '<a href="' + link + '" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>');
+        }
+    }
+
+    // ----- Upload / Flow -----
     const FLOW_URL =
         "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443" +
         "/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke" +
@@ -589,16 +828,36 @@
 
     const dropzone = document.getElementById("upload-dropzone");
     const fileInput = document.getElementById("upload-input");
-    const selectButton = document.getElementById("upload-select-button");
     const fileNameEl = document.getElementById("upload-file-name");
     const statusEl = document.getElementById("upload-status");
+    const checkDatenschutz = document.getElementById("check-datenschutz");
+    const btnPruefen = document.getElementById("btn-pruefen");
 
-    const resultSection = document.getElementById("result-section");
-    const resultPlaceholder = document.getElementById("result-placeholder");
-    const resultTag = document.getElementById("result-tag");
-    const resultError = document.getElementById("result-error");
-    const contractIdPreview = document.getElementById("contract-id-preview");
+    const resultBlock = document.getElementById("result-info");
+    const feldFirma = document.getElementById("feld-firma");
+    const feldAP = document.getElementById("feld-ansprechpartner");
+    const feldWPNummer = document.getElementById("feld-wpnummer");
+    const feldWPName = document.getElementById("feld-wpname");
+    const feldStrasse = document.getElementById("feld-strasse");
+    const feldPLZOrt = document.getElementById("feld-plzort");
+    const feldRNr = document.getElementById("feld-rnr");
+    const feldDatum = document.getElementById("feld-datum");
+    const hinweisOk = document.getElementById("rechnung-hinweis");
+    const hinweisFehler = document.getElementById("rechnung-fehler");
+    const extraKontaktBox = document.getElementById("extra-contact");
+
+    const radioAnsprech = document.getElementsByName("radio-ansprech");
+    const kontaktName = document.getElementById("feld-kontakt-name");
+    const kontaktMail = document.getElementById("feld-kontakt-mail");
+    const kontaktFirma = document.getElementById("feld-kontakt-firma");
+
     const paketePlaceholder = document.getElementById("pakete-placeholder");
+    const paketeContainer = document.getElementById("pakete-container");
+    const contractIdPreview = document.getElementById("contract-id-preview");
+
+    let ausgewaehlteDatei = null;
+    let letzteAntwort = null;
+    let aktuelleVertragsnummer = "";
 
     function setStatus(text, type) {
         statusEl.textContent = text;
@@ -606,20 +865,8 @@
         statusEl.classList.add(type || "neutral");
     }
 
-    function clearResults() {
-        resultSection.style.display = "none";
-        resultPlaceholder.style.display = "";
-        resultError.style.display = "none";
-        resultTag.textContent = "Router-Einbau-Rechnung erkannt";
-        contractIdPreview.textContent = "";
-    }
-
-    function handleFile(file) {
-        if (!file) return;
-        fileNameEl.textContent = "Ausgewählte Datei: " + file.name;
-        setStatus("Datei wird vorbereitet und an den Power Automate Flow übergeben …", "neutral");
-        clearResults();
-        sendFileToFlow(file);
+    function aktualisierePruefenButton() {
+        btnPruefen.disabled = !(ausgewaehlteDatei && checkDatenschutz.checked);
     }
 
     function fileToBase64(file) {
@@ -635,20 +882,31 @@
         });
     }
 
-    async function sendFileToFlow(file) {
-        try {
-            const base64 = await fileToBase64(file);
+    function handleNewFile(file) {
+        if (!file) return;
+        if (file.type !== "application/pdf") {
+            setStatus("Bitte laden Sie ausschließlich PDF-Dateien hoch.", "error");
+            return;
+        }
+        ausgewaehlteDatei = file;
+        fileNameEl.textContent = "Ausgewählte Datei: " + file.name;
+        setStatus("Datei bereit – bitte auf „Rechnung prüfen“ klicken.", "neutral");
+        aktualisierePruefenButton();
+    }
 
+    async function pruefeRechnung() {
+        if (!ausgewaehlteDatei) return;
+        try {
             setStatus("Datei wird hochgeladen und analysiert …", "neutral");
-            selectButton.disabled = true;
+            btnPruefen.disabled = true;
+
+            const base64 = await fileToBase64(ausgewaehlteDatei);
 
             const response = await fetch(FLOW_URL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    fileName: file.name,
+                    fileName: ausgewaehlteDatei.name,
                     fileContent: base64
                 })
             });
@@ -659,76 +917,242 @@
 
             const json = await response.json();
             const body = json.body || json;
+            letzteAntwort = body;
 
-            if (!body || typeof body !== "object") {
-                throw new Error("Antwort ohne gültigen body erhalten.");
-            }
-
-            const isRouterInvoice = Boolean(body.ist_router_einbau_rechnung);
-
-            if (!isRouterInvoice) {
-                setStatus("Die Datei wurde verarbeitet, es handelt sich aber offenbar nicht um eine Router-Einbau-Rechnung.", "error");
-                resultPlaceholder.style.display = "none";
-                resultSection.style.display = "block";
-                resultError.style.display = "block";
-                resultTag.textContent = "Keine gültige Router-Einbau-Rechnung";
-                return;
-            }
-
-            setStatus("Router-Einbau-Rechnung erfolgreich erkannt.", "ok");
-
-            document.getElementById("result-firma").textContent = body.Firma || "–";
-            document.getElementById("result-ansprechpartner").textContent = body.Ansprechpartner || "–";
-            document.getElementById("result-windpark-nummer").textContent = body.windpark_nummer || "–";
-            document.getElementById("result-windpark-name").textContent = body.windpark_name || "–";
-            document.getElementById("result-strasse").textContent = body["Straße und Hausnummer"] || "–";
-            const plz = body.PLZ || "";
-            const ort = body.Ort || "";
-            document.getElementById("result-plz-ort").textContent = (plz && ort) ? (plz + " " + ort) : (plz || ort || "–");
-            document.getElementById("result-rechnungsnr").textContent = body["Rechnungs-Nr."] || "–";
-            document.getElementById("result-rechnungsdatum").textContent = body.Rechnungsdatum || "–";
-
-            resultPlaceholder.style.display = "none";
-            resultSection.style.display = "block";
-            resultError.style.display = "none";
-            resultTag.textContent = "Router-Einbau-Rechnung erkannt";
-
-            const wpNummer = (body.windpark_nummer || "").toString().trim();
-            const rechnungsNr = (body["Rechnungs-Nr."] || "").toString().trim().replace(/\s+/g, "");
-            const wpNameRaw = (body.windpark_name || "").toString().trim();
-            const wpName = wpNameRaw.replace(/\s+/g, "_");
-
-            const now = new Date();
-            const hh = String(now.getHours()).padStart(2, "0");
-            const mm = String(now.getMinutes()).padStart(2, "0");
-            const ss = String(now.getSeconds()).padStart(2, "0");
-            const yyyy = now.getFullYear();
-            const MM = String(now.getMonth() + 1).padStart(2, "0");
-            const dd = String(now.getDate()).padStart(2, "0");
-
-            const timestamp = hh + mm + ss + "_" + yyyy + MM + dd;
-
-            const contractIdParts = [
-                wpNummer || "WP",
-                rechnungsNr || "RNR",
-                wpName || "WINDPARK",
-                timestamp
-            ];
-
-            const contractId = contractIdParts.join("_");
-            contractIdPreview.textContent =
-                "Vorschau Vertragsnummer: " + contractId +
-                " (wird später als Exportstempel im Vertrag verwendet)";
-
-        } catch (err) {
-            console.error(err);
-            setStatus("Beim Hochladen oder Auswerten der Datei ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie mich direkt.", "error");
-            clearResults();
+            befülleFelderUndPruefe(body);
+        } catch (e) {
+            console.error(e);
+            setStatus("Fehler beim Prüfen der Rechnung. Bitte später erneut versuchen.", "error");
+            resultBlock.style.display = "none";
+            paketeContainer.style.display = "none";
+            paketePlaceholder.style.display = "";
         } finally {
-            selectButton.disabled = false;
+            btnPruefen.disabled = false;
         }
     }
 
+    function befülleFelderUndPruefe(body) {
+        const isRouter = !!body.ist_router_einbau_rechnung;
+
+        // Grunddaten übernehmen
+        const firma = body.Firma || "";
+        const ap = body.Ansprechpartner || "";
+        const wpNummer = body.windpark_nummer || "";
+        const wpName = body.windpark_name || "";
+        const strasse = body["Straße und Hausnummer"] || "";
+        const plz = body.PLZ || "";
+        const ort = body.Ort || "";
+        const rnr = body["Rechnungs-Nr."] || "";
+        const datum = body.Rechnungsdatum || "";
+
+        feldFirma.value = firma;
+        feldAP.value = ap;
+        feldWPNummer.value = wpNummer;
+        feldWPName.value = wpName;
+        feldStrasse.value = strasse;
+        feldPLZOrt.value = (plz && ort) ? (plz + " " + ort) : (plz || ort);
+        feldRNr.value = rnr;
+        feldDatum.value = datum;
+
+        // Felder readonly, außer wenn leer
+        [feldFirma, feldAP, feldWPNummer, feldWPName, feldStrasse, feldPLZOrt, feldRNr, feldDatum].forEach(f => {
+            if (!f.value) {
+                f.removeAttribute("readonly");
+            } else {
+                f.setAttribute("readonly", "readonly");
+            }
+        });
+
+        resultBlock.style.display = "block";
+
+        // Rechnungsalter prüfen (max. 2 Monate ~ 62 Tage)
+        let datumOK = false;
+        if (datum) {
+            const rechnungsDatum = new Date(datum);
+            if (!isNaN(rechnungsDatum.getTime())) {
+                const jetzt = new Date();
+                const diffMs = jetzt.getTime() - rechnungsDatum.getTime();
+                const diffTage = diffMs / (1000 * 60 * 60 * 24);
+                datumOK = diffTage <= 62;
+            }
+        }
+
+        if (!isRouter || !datumOK) {
+            setStatus("Rechnung ist nicht geeignet oder älter als zwei Monate.", "error");
+            hinweisOk.style.display = "none";
+            hinweisFehler.style.display = "block";
+            paketeContainer.style.display = "none";
+            paketePlaceholder.style.display = "";
+            contractIdPreview.textContent = "";
+            return;
+        }
+
+        setStatus("Rechnung erfolgreich geprüft.", "ok");
+        hinweisFehler.style.display = "none";
+        hinweisOk.style.display = "block";
+
+        // Vertragsnummer berechnen
+        aktuelleVertragsnummer = erstelleVertragsnummer(wpNummer, rnr, wpName);
+        contractIdPreview.textContent =
+            "Vorschau Vertragsnummer: " + aktuelleVertragsnummer +
+            " (wird später als Exportstempel im Vertrag verwendet)";
+
+        // Pakete freigeben
+        paketePlaceholder.style.display = "none";
+        paketeContainer.style.display = "block";
+        aktualisierePreistabelle();
+    }
+
+    function erstelleVertragsnummer(wpNummer, rnr, wpName) {
+        const wpN = (wpNummer || "WP").toString().trim();
+        const r = (rnr || "RNR").toString().trim().replace(/\s+/g, "");
+        const name = (wpName || "WINDPARK").toString().trim().replace(/\s+/g, "_");
+
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, "0");
+        const mm = String(now.getMinutes()).padStart(2, "0");
+        const ss = String(now.getSeconds()).padStart(2, "0");
+        const yyyy = now.getFullYear();
+        const MM = String(now.getMonth() + 1).padStart(2, "0");
+        const dd = String(now.getDate()).padStart(2, "0");
+
+        const ts = ss + mm + hh + "_" + yyyy + MM + dd; // SekundenMinutenStunden_JahrMonatTag
+        return wpN + "_" + r + "_" + name + "_" + ts;
+    }
+
+    // Ansprechpartner Ja/Nein
+    function aktualisiereAnsprechpartner() {
+        let wert = "ja";
+        for (const r of radioAnsprech) {
+            if (r.checked) wert = r.value;
+        }
+        if (wert === "nein") {
+            extraKontaktBox.style.display = "block";
+        } else {
+            extraKontaktBox.style.display = "none";
+        }
+    }
+
+    // ----- Pakete / Preistabelle -----
+    const laufzeitPillsContainer = document.getElementById("laufzeit-pills");
+    const lancarePillsContainer = document.getElementById("lancare-pills");
+    const laufzeitHinweis = document.getElementById("laufzeit-hinweis");
+    const preistabelleWrapper = document.getElementById("preistabelle-wrapper");
+    const preistabelleBody = document.getElementById("preistabelle-body");
+    const preisGesamtEl = document.getElementById("preis-gesamt");
+    const preisJahrEl = document.getElementById("preis-jahr");
+
+    let ausgewaehlteLaufzeit = null;
+    let ausgewaehltesLancare = null;
+
+    function baueLaufzeitButtons() {
+        if (!preisKonfiguration || !preisKonfiguration.pakete) return;
+        laufzeitPillsContainer.innerHTML = "";
+
+        Object.keys(preisKonfiguration.pakete).forEach(key => {
+            const paket = preisKonfiguration.pakete[key];
+            const laufzeit = paket.laufzeit_jahre;
+            const pill = document.createElement("button");
+            pill.type = "button";
+            pill.className = "pill";
+            pill.textContent = laufzeit + " Jahr" + (laufzeit > 1 ? "e" : "");
+            pill.dataset.laufzeit = laufzeit;
+
+            pill.addEventListener("click", () => {
+                ausgewaehlteLaufzeit = laufzeit;
+                ausgewaehltesLancare = null;
+                markierePills(laufzeitPillsContainer, pill);
+                baueLancareButtons();
+                aktualisierePreistabelle();
+            });
+
+            laufzeitPillsContainer.appendChild(pill);
+        });
+    }
+
+    function baueLancareButtons() {
+        lancarePillsContainer.innerHTML = "";
+        laufzeitHinweis.style.display = (ausgewaehlteLaufzeit && ausgewaehlteLaufzeit !== 5) ? "block" : "none";
+
+        if (!ausgewaehlteLaufzeit || !preisKonfiguration || !preisKonfiguration.pakete) return;
+
+        const eintrag = Object.values(preisKonfiguration.pakete)
+            .find(p => p.laufzeit_jahre === ausgewaehlteLaufzeit);
+        if (!eintrag) return;
+
+        eintrag.varianten.forEach(variant => {
+            const jahre = variant.lancare_jahre;
+            const pill = document.createElement("button");
+            pill.type = "button";
+            pill.className = "pill";
+            pill.textContent = "LANcare " + jahre + " Jahr" + (jahre > 1 ? "e" : "");
+            pill.dataset.lancare = jahre;
+
+            pill.addEventListener("click", () => {
+                ausgewaehltesLancare = jahre;
+                markierePills(lancarePillsContainer, pill);
+                aktualisierePreistabelle();
+            });
+
+            lancarePillsContainer.appendChild(pill);
+        });
+    }
+
+    function markierePills(container, aktive) {
+        Array.from(container.querySelectorAll(".pill")).forEach(p => {
+            p.classList.toggle("selected", p === aktive);
+        });
+    }
+
+    function findeVariante() {
+        if (!preisKonfiguration || !preisKonfiguration.pakete ||
+            !ausgewaehlteLaufzeit || !ausgewaehltesLancare) return null;
+
+        const eintrag = Object.values(preisKonfiguration.pakete)
+            .find(p => p.laufzeit_jahre === ausgewaehlteLaufzeit);
+        if (!eintrag) return null;
+
+        return eintrag.varianten.find(v => v.lancare_jahre === ausgewaehltesLancare) || null;
+    }
+
+    function aktualisierePreistabelle() {
+        const variante = findeVariante();
+        if (!variante) {
+            preistabelleWrapper.style.display = "none";
+            return;
+        }
+
+        const laufzeit = ausgewaehlteLaufzeit;
+        const wartungsPreis = variante.wartungsvertrag_preis;
+        const lancareNetto = variante.lancare_preis_netto;
+        const gesamt = variante.gesamt;
+
+        preistabelleBody.innerHTML = "";
+
+        // LANcare-Posten
+        const trLan = document.createElement("tr");
+        trLan.innerHTML = "<td>LANcare (" + variante.lancare_jahre +
+            " Jahr" + (variante.lancare_jahre > 1 ? "e" : "") + ")</td>" +
+            '<td class="align-right">' + lancareNetto.toFixed(2) + " €</td>";
+        preistabelleBody.appendChild(trLan);
+
+        // Jahresposten
+        for (let jahr = 1; jahr <= laufzeit; jahr++) {
+            const trJ = document.createElement("tr");
+            trJ.innerHTML = "<td>Jahr " + jahr + "</td>" +
+                '<td class="align-right">' + wartungsPreis.toFixed(2) + " €</td>";
+            preistabelleBody.appendChild(trJ);
+        }
+
+        const durchschnitt = gesamt / laufzeit;
+
+        preisGesamtEl.textContent = gesamt.toFixed(2) + " €";
+        preisJahrEl.textContent = durchschnitt.toFixed(2) + " €";
+
+        preistabelleWrapper.style.display = "block";
+    }
+
+    // ----- Events -----
     if (dropzone && fileInput) {
         dropzone.addEventListener("click", () => fileInput.click());
 
@@ -754,33 +1178,29 @@
             e.preventDefault();
             e.stopPropagation();
             dropzone.classList.remove("dragover");
-
             const file = e.dataTransfer.files && e.dataTransfer.files[0];
-            if (!file) return;
-            if (file.type !== "application/pdf") {
-                setStatus("Bitte laden Sie ausschließlich PDF-Dateien hoch.", "error");
-                return;
-            }
-            handleFile(file);
+            handleNewFile(file);
         });
 
         fileInput.addEventListener("change", () => {
             const file = fileInput.files && fileInput.files[0];
-            if (!file) return;
-            if (file.type !== "application/pdf") {
-                setStatus("Bitte laden Sie ausschließlich PDF-Dateien hoch.", "error");
-                return;
-            }
-            handleFile(file);
+            handleNewFile(file);
         });
-
-        if (selectButton) {
-            selectButton.addEventListener("click", (e) => {
-                e.stopPropagation();
-                fileInput.click();
-            });
-        }
     }
+
+    if (checkDatenschutz) {
+        checkDatenschutz.addEventListener("change", aktualisierePruefenButton);
+    }
+
+    if (btnPruefen) {
+        btnPruefen.addEventListener("click", pruefeRechnung);
+    }
+
+    Array.from(radioAnsprech).forEach(r => {
+        r.addEventListener("change", aktualisiereAnsprechpartner);
+    });
+
+    document.addEventListener("DOMContentLoaded", ladeKonfigurationen);
 </script>
 
 </body>
