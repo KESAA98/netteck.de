@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Router-Einbau im ENERCON-Windpark</title>
+    <title>Wartungs- und Servicevertrag – LANCOM Router</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon (Tab-Icon) -->
@@ -139,6 +139,16 @@
         .leistung-note {
             color: var(--text-muted);
             font-size: 0.85rem;
+        }
+
+        .leistung ul {
+            margin: 0.35rem 0 0.35rem 1.1rem;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+
+        .leistung ul li {
+            margin: 0.1rem 0;
         }
 
         .legal-box {
@@ -406,43 +416,12 @@
 
         <!-- Einleitung -->
         <section class="intro">
-            <h1>Router-Einbau im ENERCON-Windpark</h1>
+            <h1>Wartungs- und Servicevertrag für LANCOM Router</h1>
 
             <p>
-                Eine stabile und klar strukturierte Netzwerkverbindung ist entscheidend für den sicheren Betrieb
-                moderner Windenergieanlagen. Viele Bestandsanlagen verfügen jedoch noch über ältere Router,
-                gewachsene Verkabelungen oder nicht mehr zeitgemäße Konfigurationen. Damit Betreiber und
-                Servicepartner zuverlässig auf die Anlagen zugreifen können, ist eine professionelle Modernisierung
-                der Router-Infrastruktur erforderlich.
-            </p>
-
-            <p>
-                In vielen Windparks entsteht dieser Bedarf, weil ENERCON bei älteren Anlagen inzwischen erwartet
-                bzw. vorgibt, dass der Betreiber einen eigenen Router bereitstellt und fachgerecht installieren lässt.
-                Hintergrund ist, dass zahlreiche Altanlagen noch mit Kommunikationslösungen ausgestattet sind, die
-                heutigen Sicherheits- und Verfügbarkeitsanforderungen nicht mehr entsprechen.
-            </p>
-
-            <p>
-                Ich übernehme die vollständige Installation und Einrichtung solcher Kundenrouter in
-                ENERCON-Windkraftanlagen – sowohl im Turm als auch in der Übergabestation. Die Umsetzung basiert
-                auf einer klar definierten technischen Struktur, die speziell auf die typischen Netzwerkarchitekturen
-                in ENERCON-Windparks abgestimmt ist.
-            </p>
-
-            <p>Zum Einsatz kommen ausschließlich industrietaugliche, praxiserprobte Komponenten:</p>
-
-            <ul>
-                <li>LANCOM 1800VA-4G – Router für sichere VPN-Anbindung, Routing und Standortvernetzung</li>
-                <li>Eaton Ellipse PRO / ECO oder vergleichbare USV – Schutz vor Spannungsschwankungen und Ausfällen</li>
-                <li>IP54-Montagegehäuse für einen geschützten und sauberen Einbau im Turm oder der Übergabestation</li>
-                <li>Strukturierte Verkabelung mit klar beschrifteten und genormten Übergabepunkten</li>
-            </ul>
-
-            <p>
-                Durch die Kombination aus vorkonfigurierter Hardware, standardisiertem Schaltschrankaufbau und einer
-                sauberen Integration in die vorhandene Infrastruktur entsteht ein stabiles, wartbares und
-                zukunftssicheres Kommunikationssystem für den gesamten Windpark.
+                Servicevertrag zur jährlichen Wartung, Aktualisierung, Sicherheitsprüfung und technischen Betreuung
+                von LANCOM-Routern in Windenergieanlagen. Enthält ein LANcare Direct Advanced 24/7 Servicepaket
+                pro betreutem Router.
             </p>
 
             <p>
@@ -450,36 +429,35 @@
             </p>
         </section>
 
-        <!-- Leistungsumfang (aus information/router_einbau.txt) -->
-        <section class="leistungen-section" aria-label="Leistungsumfang Router-Einbau">
-            <h2>Leistungsumfang Router-Einbau</h2>
+        <!-- Leistungsumfang (aus information/warungsvertrag.txt) -->
+        <section class="leistungen-section" aria-label="Leistungsumfang Wartungs- und Servicevertrag">
+            <h2>Leistungsumfang Wartungs- &amp; Servicevertrag</h2>
             <p class="leistungen-hint">
-                Die folgenden Punkte beschreiben den typischen Ablauf von der Bestandsaufnahme bis zur Übergabe
-                der fertigen Lösung. Details können je nach Windpark und Infrastruktur angepasst werden.
+                Die folgenden Punkte beschreiben die im Wartungs- und Servicevertrag enthaltenen Leistungen.
             </p>
 
             <div id="leistungen-list" class="leistungen-list">
-                <!-- Inhalte werden per JavaScript aus information/router_einbau.txt geladen -->
+                <!-- Inhalte werden per JavaScript aus information/warungsvertrag.txt geladen -->
             </div>
 
             <div id="legal-box" class="legal-box"></div>
         </section>
 
         <!-- Formular: Windparks -->
-        <section class="section-divider" aria-label="Windparks für Router-Einbau">
+        <section class="section-divider" aria-label="Windparks im Wartungsvertrag">
             <div class="section-header">
-                <h2>Windparks für die Angebotsanfrage</h2>
-                <span>Tragen Sie hier alle Windparks ein, für die ein Router-Einbau geplant ist.</span>
+                <h2>Windparks für den Wartungsvertrag</h2>
+                <span>Tragen Sie hier alle Windparks ein, für die der Wartungs- und Servicevertrag gelten soll.</span>
             </div>
 
             <form
-                name="router-einbau-anfrage"
+                name="wartungsvertrag-router-anfrage"
                 method="POST"
                 data-netlify="true"
                 class="router-form"
             >
                 <!-- Netlify-Form-Name -->
-                <input type="hidden" name="form-name" value="router-einbau-anfrage">
+                <input type="hidden" name="form-name" value="wartungsvertrag-router-anfrage">
 
                 <!-- Windpark-Liste -->
                 <div class="windparks-wrapper" id="windparks-container">
@@ -505,35 +483,6 @@
                         name="zusatzsysteme"
                         placeholder="Bitte nennen Sie hier weitere Systeme, die über den Router angebunden werden sollen."
                     ></textarea>
-                </div>
-
-                <!-- Kontaktdaten Anfragender -->
-                <div class="section-divider" aria-label="Kontaktdaten für Rückfragen">
-                    <div class="section-header">
-                        <h2>Kontaktdaten für Rückfragen und Angebot</h2>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="anfrager_name">Name des Anfragenden<span class="required">*</span></label>
-                            <input type="text" id="anfrager_name" name="anfrager_name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="anfrager_firma">Firma / Organisation<span class="required">*</span></label>
-                            <input type="text" id="anfrager_firma" name="anfrager_firma" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="anfrager_email">E-Mail<span class="required">*</span></label>
-                            <input type="email" id="anfrager_email" name="anfrager_email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="anfrager_telefon">Telefon</label>
-                            <input type="tel" id="anfrager_telefon" name="anfrager_telefon">
-                        </div>
-                    </div>
                 </div>
 
                 <!-- WES-Kunde + WP-Nummern -->
@@ -600,7 +549,7 @@
                 <!-- Absenden -->
                 <div class="submit-row">
                     <button type="submit" class="btn-primary">
-                        Anfrage für Router-Einbau absenden
+                        Anfrage zum Wartungsvertrag absenden
                     </button>
                 </div>
             </form>
@@ -619,56 +568,172 @@
 </div>
 
 <script>
-    // Leistungsumfang laden
-    async function loadRouterEinbauInfo() {
+    // Leistungsumfang aus information/warungsvertrag.txt laden
+    async function loadWartungsvertragInfo() {
         const listEl = document.getElementById("leistungen-list");
         const legalBox = document.getElementById("legal-box");
 
         if (!listEl) return;
 
         try {
-            const res = await fetch("information/router_einbau.txt");
+            const res = await fetch("information/warungsvertrag.txt");
             if (!res.ok) {
-                throw new Error("Fehler beim Laden von information/router_einbau.txt (Status " + res.status + ")");
+                throw new Error("Fehler beim Laden von information/warungsvertrag.txt (Status " + res.status + ")");
             }
 
             const data = await res.json();
+            const wr = data.wartungsvertrag_router || data;
 
-            if (Array.isArray(data.sections)) {
-                data.sections.forEach(section => {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "leistung";
+            function createLeistungCard(title, paragraphs = [], lists = []) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "leistung";
 
-                    if (section.heading) {
-                        const h = document.createElement("h3");
-                        h.textContent = section.heading;
-                        wrapper.appendChild(h);
-                    }
+                if (title) {
+                    const h = document.createElement("h3");
+                    h.textContent = title;
+                    wrapper.appendChild(h);
+                }
 
-                    if (section.text) {
+                paragraphs
+                    .filter(Boolean)
+                    .forEach(text => {
                         const p = document.createElement("p");
-                        p.textContent = section.text;
+                        p.textContent = text;
                         wrapper.appendChild(p);
-                    }
+                    });
 
-                    if (section.note) {
+                lists.forEach(listObj => {
+                    if (!listObj || !Array.isArray(listObj.items) || !listObj.items.length) return;
+
+                    if (listObj.title) {
                         const note = document.createElement("p");
                         note.className = "leistung-note";
-                        note.textContent = section.note;
+                        note.textContent = listObj.title;
                         wrapper.appendChild(note);
                     }
 
-                    listEl.appendChild(wrapper);
+                    const ul = document.createElement("ul");
+                    listObj.items.forEach(item => {
+                        if (!item) return;
+                        const li = document.createElement("li");
+                        li.textContent = item;
+                        ul.appendChild(li);
+                    });
+                    wrapper.appendChild(ul);
                 });
+
+                listEl.appendChild(wrapper);
             }
 
-            if (data.legal_notice && legalBox) {
-                legalBox.textContent = data.legal_notice;
-                legalBox.style.display = "block";
+            const leist = wr.leistungsumfang;
+            if (leist) {
+                const opt = leist.optimierung_und_absicherung;
+                if (opt) {
+                    createLeistungCard(
+                        opt.titel || "1.1 Optimierung & Absicherung des Routers",
+                        [],
+                        [{ title: "", items: Array.isArray(opt.leistungen) ? opt.leistungen : [] }]
+                    );
+                }
+
+                const stoer = leist.stoerungsfall_und_lancare;
+                if (stoer) {
+                    const paragraphs = [];
+                    const lists = [];
+
+                    if (stoer.beschreibung) {
+                        paragraphs.push(stoer.beschreibung);
+                    }
+
+                    if (stoer.lancare_leistungen) {
+                        const l = stoer.lancare_leistungen;
+                        if (Array.isArray(l.umfang) && l.umfang.length) {
+                            lists.push({
+                                title: l.servicepaket
+                                    ? "Leistungen des LANcare-Pakets " + l.servicepaket
+                                    : "Leistungen des LANcare-Pakets",
+                                items: l.umfang
+                            });
+                        }
+                        if (l.hinweis) {
+                            paragraphs.push(l.hinweis);
+                        }
+                    }
+
+                    if (Array.isArray(stoer.leistungen_durch_kevin_strakerjahn) && stoer.leistungen_durch_kevin_strakerjahn.length) {
+                        lists.push({
+                            title: "Leistungen durch Kevin Strakerjahn Networks & Automation",
+                            items: stoer.leistungen_durch_kevin_strakerjahn
+                        });
+                    }
+
+                    if (Array.isArray(stoer.nicht_enthalten) && stoer.nicht_enthalten.length) {
+                        lists.push({
+                            title: "Nicht enthalten",
+                            items: stoer.nicht_enthalten
+                        });
+                    }
+
+                    createLeistungCard(stoer.titel || "1.2 Unterstützung im Störungsfall – LANcare Direct Advanced 24/7", paragraphs, lists);
+                }
+
+                const backup = leist.backup_und_dokumentation;
+                if (backup) {
+                    createLeistungCard(
+                        backup.titel || "1.3 Backup & Dokumentation",
+                        [],
+                        [{ title: "", items: Array.isArray(backup.leistungen) ? backup.leistungen : [] }]
+                    );
+                }
+            }
+
+            const remote = wr.remote_support;
+            if (remote) {
+                const paragraphs = [];
+                const lists = [];
+
+                if (typeof remote.inkludierte_stunden === "number") {
+                    paragraphs.push(
+                        "Enthält bis zu " +
+                        remote.inkludierte_stunden +
+                        " Stunden Remote-Support pro Jahr."
+                    );
+                }
+
+                if (Array.isArray(remote.kommunikationswege) && remote.kommunikationswege.length) {
+                    paragraphs.push(
+                        "Mögliche Kommunikationswege: " +
+                        remote.kommunikationswege.join(", ") +
+                        "."
+                    );
+                }
+
+                if (Array.isArray(remote.leistungen) && remote.leistungen.length) {
+                    lists.push({
+                        title: "Enthaltene Remote-Leistungen",
+                        items: remote.leistungen
+                    });
+                }
+
+                if (Array.isArray(remote.nicht_enthalten) && remote.nicht_enthalten.length) {
+                    lists.push({
+                        title: "Nicht enthalten",
+                        items: remote.nicht_enthalten
+                    });
+                }
+
+                createLeistungCard(remote.abschnitt || "2. Remote-Support", paragraphs, lists);
+            }
+
+            // Optional: Hinweise / Bestätigungen könnten hier später genutzt werden
+            if (wr.hinweise_und_bestaetigungen && legalBox) {
+                // Aktuell ausgeblendet, Box bleibt versteckt
+                legalBox.style.display = "none";
             }
         } catch (err) {
             console.error(err);
-            listEl.innerHTML = "<p>Die Detailbeschreibung zum Leistungsumfang konnte nicht geladen werden. Bitte kontaktieren Sie mich direkt für weitere Informationen.</p>";
+            listEl.innerHTML =
+                "<p>Die Detailbeschreibung zum Leistungsumfang konnte nicht geladen werden. Bitte kontaktieren Sie mich direkt für weitere Informationen.</p>";
         }
     }
 
@@ -783,7 +848,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        loadRouterEinbauInfo();
+        loadWartungsvertragInfo();
         initWindparks();
         initWesToggle();
     });
