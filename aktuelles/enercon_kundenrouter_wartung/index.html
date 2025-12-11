@@ -86,6 +86,16 @@
             font-size: 0.95rem;
         }
 
+        .intro ul {
+            margin: 0.4rem 0 0.6rem 1.1rem;
+            padding: 0;
+        }
+
+        .intro li {
+            margin: 0.15rem 0;
+            font-size: 0.95rem;
+        }
+
         /* LEISTUNGEN */
         .leistungen-section {
             margin-top: 1.75rem;
@@ -108,7 +118,7 @@
             gap: 0.9rem;
         }
 
-        /* Karten für Leistungsumfang */
+        /* NEUES DESIGN FÜR GELADENE LEISTUNGEN (keine grauen Kästen mehr) */
         .leistung {
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -123,7 +133,7 @@
         }
 
         .leistung p {
-            margin: 0.25rem 0;
+            margin: 0.1rem 0;
             font-size: 0.9rem;
         }
 
@@ -143,13 +153,59 @@
             display: none;
         }
 
-        /* SEKTIONEN / FOOTER */
+        /* SEKTIONEN */
         .section-divider {
             margin-top: 2rem;
             border-top: 1px solid var(--border);
             padding-top: 1.5rem;
         }
 
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .section-header span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* WINDPARK-KARTEN (nicht mehr genutzt, CSS kann aber bleiben) */
+        .windparks-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 0.7rem;
+        }
+
+        .windpark-card {
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 0.9rem 1rem 1.1rem;
+            background: #f9fafb;
+        }
+
+        .windpark-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.7rem;
+        }
+
+        .windpark-card-header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* FOOTER */
         footer {
             margin-top: 1.6rem;
             font-size: 0.85rem;
@@ -180,6 +236,12 @@
         }
 
         /* MOBILE */
+        @media (max-width: 800px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
@@ -281,7 +343,7 @@
 </div>
 
 <script>
-    // Leistungsumfang laden, mit Absatz-Unterstützung
+    // Leistungsumfang laden
     async function loadRouterEinbauInfo() {
         const listEl = document.getElementById("leistungen-list");
         const legalBox = document.getElementById("legal-box");
@@ -307,29 +369,21 @@
                         wrapper.appendChild(h);
                     }
 
-                    // Text mit Absätzen
                     if (section.text) {
-                        // Erst ggf. sichtbare "\n" in echte Zeilenumbrüche umwandeln
-                        let text = String(section.text);
-                        text = text.replace(/\\n/g, "\n");
-
-                        // Auf doppelte Umbrüche (Leerzeile) als Absatz-Trenner splitten
-                        const paragraphs = text.split(/\n{2,}/);
-
-                        paragraphs.forEach(para => {
-                            const p = document.createElement("p");
-                            // einzelne Zeilenumbrüche innerhalb eines Absatzes einfach ignorieren (werden zu Leerzeichen)
-                            p.textContent = para.replace(/\n+/g, " ");
-                            wrapper.appendChild(p);
-                        });
+                        const p = document.createElement("p");
+                        let html = String(section.text);
+                        // sowohl "\n" im String als auch echte Newlines → <br>
+                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
+                        p.innerHTML = html;
+                        wrapper.appendChild(p);
                     }
 
                     if (section.note) {
-                        let noteText = String(section.note);
-                        noteText = noteText.replace(/\\n/g, "\n");
                         const note = document.createElement("p");
                         note.className = "leistung-note";
-                        note.textContent = noteText.replace(/\n+/g, " ");
+                        let html = String(section.note);
+                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
+                        note.innerHTML = html;
                         wrapper.appendChild(note);
                     }
 
@@ -338,9 +392,9 @@
             }
 
             if (data.legal_notice && legalBox) {
-                let legalText = String(data.legal_notice);
-                legalText = legalText.replace(/\\n/g, "\n");
-                legalBox.textContent = legalText.replace(/\n+/g, " ");
+                let html = String(data.legal_notice);
+                html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
+                legalBox.innerHTML = html;
                 legalBox.style.display = "block";
             }
         } catch (err) {
