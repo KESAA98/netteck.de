@@ -21,7 +21,7 @@
                 <div class="vz-drop-icon">📄</div>
                 <div class="vz-drop-title">Rechnung hochladen</div>
                 <div class="vz-drop-text">Datei hierher ziehen oder klicken</div>
-                <div class="vz-drop-hint">Es wird genau eine PDF-Datei (Rechnung) benötigt.</div>
+                <div class="vz-drop-hint">Es wird genau eine PDF-Datei benötigt.</div>
             </div>
             <input type="file" id="vz-file-input" accept="application/pdf" hidden>
         </div>
@@ -32,11 +32,11 @@
                 <span class="vz-file-icon">📄</span>
                 <span id="vz-file-name" class="vz-file-name"></span>
             </div>
-            <button id="vz-file-remove" class="vz-file-remove" type="button" aria-label="Datei entfernen">🗑</button>
+            <button id="vz-file-remove" class="vz-file-remove" type="button">🗑</button>
         </div>
     </div>
 
-    <!-- AGB / Datenschutz -->
+    <!-- DSGVO / AGB -->
     <div id="vz-legal" class="vz-section" style="display:none;">
         <label class="vz-check-label">
             <input type="checkbox" id="vz-accept">
@@ -47,24 +47,24 @@
         </label>
     </div>
 
-    <!-- Prüfen-Button -->
-    <div class="vz-section" id="vz-check-section" style="display:none;">
-        <button id="vz-check-btn" class="vz-btn" type="button" disabled>Prüfen</button>
+    <!-- Prüfen -->
+    <div id="vz-check-section" class="vz-section" style="display:none;">
+        <button id="vz-check-btn" class="vz-btn" disabled>Prüfen</button>
     </div>
 
-    <!-- Hinweis während der Prüfung -->
+    <!-- Hinweis -->
     <div id="vz-wait" class="vz-section vz-wait" style="display:none;">
-        Die Prüfung der Rechnung kann je nach Dateigröße und Auslastung zwischen 10 und 30&nbsp;Sekunden dauern.
+        Die Prüfung der Rechnung kann 10–30 Sekunden dauern…
     </div>
 
-    <!-- Ergebnis vom Flow -->
+    <!-- Ergebnis -->
     <div id="vz-result" class="vz-section vz-result" style="display:none;"></div>
 
-    <!-- Ansprechpartner / Kontakt -->
+    <!-- Ansprechpartner -->
     <div id="vz-contact" class="vz-section vz-contact" style="display:none;">
         <label class="vz-check-label">
             <input type="checkbox" id="vz-self-contact">
-            <span>Sind Sie Ansprechpartner <span id="vz-ansprech-name" class="vz-ansprech-name"></span>?</span>
+            <span>Sind Sie Ansprechpartner <span id="vz-ansprech-name"></span>?</span>
         </label>
 
         <div id="vz-contact-extra" class="vz-contact-extra" style="display:none;">
@@ -73,78 +73,63 @@
             <input id="vz-firma" type="text" placeholder="Firma">
         </div>
 
-        <input id="vz-email" type="email" class="vz-email" placeholder="E-Mail">
+        <input id="vz-email" type="email" placeholder="E-Mail">
     </div>
 
-    <!-- Weiter-Button -->
-    <div class="vz-section" id="vz-next-section" style="display:none;">
-        <button id="vz-next-btn" class="vz-btn" type="button" disabled>Preise anzeigen</button>
+    <!-- Weiter -->
+    <div id="vz-next-section" class="vz-section" style="display:none;">
+        <button id="vz-next-btn" class="vz-btn" disabled>Preise anzeigen</button>
     </div>
 
 </div>
 
 <style>
     .vz-wrapper {
+        padding: 20px;                 /* Innenabstand für alles */
+        margin: 0 !important;          /* KEIN Außenabstand */
         font-size: 0.95rem;
-        max-height: calc(100vh - 160px);
+        max-height: calc(100vh - 100px);
         overflow-y: auto;
     }
 
     .vz-title {
-        margin: 0 0 0.4rem 0;
+        margin-bottom: 6px;
         font-size: 1.05rem;
         font-weight: 600;
-        color: var(--text-main);
-        line-height: 1.3;
     }
 
     .vz-subtext {
-        margin: 0 0 1rem 0;
+        margin-bottom: 12px;
         font-size: 0.9rem;
-        line-height: 1.5;
-        color: var(--text-main);
+        line-height: 1.45;
     }
 
     .vz-section {
-        margin-top: 0.75rem;
+        margin-top: 14px;
     }
 
-    /* Drag & Drop Feld */
+    /* Drag-Feld schöner */
     .vz-drop-area {
         border: 2px dashed #d1d5db;
         border-radius: 12px;
-        background: #f3f4f6;
-        padding: 18px;
+        background: #f8fafc;
+        padding: 22px;
         text-align: center;
         cursor: pointer;
-        transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
-        min-height: 130px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        transition: 0.2s;
     }
 
-    .vz-drop-area.vz-dragover {
-        border-color: var(--primary);
-        background-color: #e5f0ff;
-        box-shadow: 0 0 0 1px var(--primary-soft);
-    }
-
-    .vz-drop-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
+    .vz-drop-area:hover {
+        background: #f1f5f9;
     }
 
     .vz-drop-icon {
-        font-size: 2rem;
-        margin-bottom: 2px;
+        font-size: 1.9rem;
+        margin-bottom: 6px;
     }
 
     .vz-drop-title {
         font-weight: 600;
-        color: var(--text-main);
     }
 
     .vz-drop-text {
@@ -152,106 +137,58 @@
         color: var(--text-muted);
     }
 
-    .vz-drop-hint {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        margin-top: 4px;
-    }
-
-    /* Datei-Box */
+    /* Datei Box */
     .vz-file-box {
-        margin-top: 8px;
-        padding: 8px 10px;
+        padding: 10px;
         border-radius: 10px;
-        background: #f9fafb;
+        background: #f1f5f9;
         border: 1px solid #e5e7eb;
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        gap: 8px;
-    }
-
-    .vz-file-left {
-        display: flex;
         align-items: center;
-        gap: 6px;
-        overflow: hidden;
-    }
-
-    .vz-file-icon {
-        font-size: 1.1rem;
     }
 
     .vz-file-name {
         font-weight: 600;
         color: #374151;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 180px;
     }
 
     .vz-file-remove {
         border: none;
         background: transparent;
         cursor: pointer;
+        color: #c53030;
         font-size: 1.1rem;
-        color: #b91c1c;
-    }
-
-    /* Checkbox / Links */
-    .vz-check-label {
-        display: flex;
-        align-items: flex-start;
-        gap: 6px;
-        font-size: 0.85rem;
-        color: var(--text-main);
-        cursor: pointer;
-    }
-
-    .vz-check-label input {
-        margin-top: 2px;
-        cursor: pointer;
-    }
-
-    .vz-check-label a {
-        text-decoration: underline;
-    }
-
-    /* Hinweis während der Prüfung */
-    .vz-wait {
-        font-size: 0.8rem;
-        color: var(--text-muted);
     }
 
     /* Buttons */
     .vz-btn {
-        padding: 8px 14px;
+        padding: 8px 16px;
         border-radius: 999px;
-        border: none;
         background: var(--primary);
-        color: #fff;
-        font-size: 0.9rem;
-        font-weight: 500;
+        border: none;
+        color: white;
         cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
     }
 
     .vz-btn:disabled {
-        background: #bfdbfe;
+        background: #bcd4ff;
         cursor: not-allowed;
     }
 
-    /* Ergebnis-Tabelle kompakter */
-    .vz-result {
+    /* Hinweis */
+    .vz-wait {
         font-size: 0.85rem;
-        padding: 8px;
-        border-radius: 10px;
-        background: #f9fafb;
+        color: #6b7280;
+    }
+
+    /* Tabelle kompakt */
+    .vz-result {
+        background: #f8fafc;
+        padding: 12px;
+        border-radius: 12px;
         border: 1px solid #e5e7eb;
+        font-size: 0.85rem;
     }
 
     .vz-result table {
@@ -260,53 +197,16 @@
     }
 
     .vz-result td {
-        padding: 4px 3px;
+        padding: 4px 0;
         border-bottom: 1px solid #e5e7eb;
-        vertical-align: top;
-    }
-
-    .vz-result tr:last-child td {
-        border-bottom: none;
-    }
-
-    .vz-result strong {
-        font-weight: 600;
-    }
-
-    .vz-result input.vz-edit {
-        width: 100%;
-        padding: 3px 5px;
-        border-radius: 6px;
-        border: 1px solid #d1d5db;
-        font-size: 0.8rem;
     }
 
     /* Kontakt */
-    .vz-contact {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        font-size: 0.9rem;
-    }
-
-    .vz-contact-extra {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-top: 4px;
-    }
-
-    .vz-contact input[type="text"],
-    .vz-contact input[type="email"] {
-        width: 100%;
-        padding: 7px 8px;
-        border-radius: 6px;
+    .vz-contact input {
+        padding: 8px;
+        border-radius: 8px;
         border: 1px solid #d1d5db;
-        font-size: 0.9rem;
-    }
-
-    .vz-ansprech-name {
-        font-weight: 600;
+        width: 100%;
     }
 </style>
 
