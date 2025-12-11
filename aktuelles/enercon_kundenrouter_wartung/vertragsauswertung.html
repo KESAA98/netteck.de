@@ -1,13 +1,13 @@
 <div class="vz-wrapper">
 
     <!-- Titel -->
-    <h2 id="vz-title">
+    <h2 class="vz-title">
         Anfrage<br>
         Wartungs- &amp; Servicevertrag
     </h2>
 
     <!-- Einleitung -->
-    <p id="vz-subtext">
+    <p class="vz-subtext">
         Hier können Sie Ihren Wartungs- &amp; Servicevertrag anfragen.
         Laden Sie einfach die Schluss- oder Abschlagsrechnung für den Routereinbau
         von Kevin Strakerjahn Networks &amp; Automation hoch und erhalten Sie in
@@ -15,69 +15,66 @@
     </p>
 
     <!-- Upload-Bereich -->
-    <div id="vz-upload-area" class="vz-upload-area">
-        <div class="vz-upload-inner">
-            <div class="vz-upload-icon">📄</div>
-            <div class="vz-upload-text-main">Rechnung hochladen</div>
-            <div class="vz-upload-text-sub">Datei hierher ziehen oder klicken</div>
-            <div class="vz-upload-hint">Es wird genau eine PDF-Datei benötigt.</div>
+    <div class="vz-section">
+        <div id="vz-drop-area" class="vz-drop-area">
+            <div class="vz-drop-content">
+                <div class="vz-drop-icon">📄</div>
+                <div class="vz-drop-title">Rechnung hochladen</div>
+                <div class="vz-drop-text">Datei hierher ziehen oder klicken</div>
+                <div class="vz-drop-hint">Es wird genau eine PDF-Datei (Rechnung) benötigt.</div>
+            </div>
+            <input type="file" id="vz-file-input" accept="application/pdf" hidden>
         </div>
-        <input type="file" id="vz-file-input" accept="application/pdf" hidden>
+
+        <!-- Datei-Anzeige -->
+        <div id="vz-file-box" class="vz-file-box" style="display:none;">
+            <div class="vz-file-left">
+                <span class="vz-file-icon">📄</span>
+                <span id="vz-file-name" class="vz-file-name"></span>
+            </div>
+            <button id="vz-file-remove" class="vz-file-remove" type="button" aria-label="Datei entfernen">🗑</button>
+        </div>
     </div>
 
-    <!-- Datei-Anzeige -->
-    <div id="vz-file-display" class="vz-file-display" style="display:none;">
-        <div class="vz-file-meta">
-            <span class="vz-file-icon">📄</span>
-            <span id="vz-file-name" class="vz-file-name"></span>
-        </div>
-        <button id="vz-file-remove" class="vz-remove-btn" aria-label="Datei entfernen">
-            🗑
-        </button>
-    </div>
-
-    <!-- DSGVO / AGB Zustimmung -->
-    <div id="vz-legal-check" class="vz-legal-check" style="display:none;">
-        <label class="vz-checkbox-label">
+    <!-- AGB / Datenschutz -->
+    <div id="vz-legal" class="vz-section" style="display:none;">
+        <label class="vz-check-label">
             <input type="checkbox" id="vz-accept">
-            <span>
-                Ich akzeptiere die
-                <a id="vz-datenschutz-link" href="/datenschutz" target="_blank">Datenschutzerklärung</a>
-                und
-                <a id="vz-agb-link" href="/agb" target="_blank">AGBs</a>.
+            <span>Ich akzeptiere die
+                <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> und
+                <a href="/agb" target="_blank">AGBs</a>.
             </span>
         </label>
     </div>
 
-    <!-- Prüfen Button -->
-    <button id="vz-check-btn" class="vz-check-btn" style="display:none;" disabled>
-        Prüfen
-    </button>
+    <!-- Prüfen-Button -->
+    <div class="vz-section" id="vz-check-section" style="display:none;">
+        <button id="vz-check-btn" class="vz-btn" type="button" disabled>Prüfen</button>
+    </div>
 
-    <!-- Ergebnisbereich nach PowerAutomate-Prüfung -->
-    <div id="vz-result" class="vz-result" style="display:none;"></div>
+    <!-- Ergebnis vom Flow -->
+    <div id="vz-result" class="vz-section vz-result" style="display:none;"></div>
 
-    <!-- Ansprechpartner-Bereich -->
-    <div id="vz-contact-section" class="vz-contact" style="display:none;">
-
-        <label class="vz-checkbox-label">
+    <!-- Ansprechpartner / Kontakt -->
+    <div id="vz-contact" class="vz-section vz-contact" style="display:none;">
+        <label class="vz-check-label">
             <input type="checkbox" id="vz-self-contact">
             <span>Sind Sie Ansprechpartner <span id="vz-ansprech-name" class="vz-ansprech-name"></span>?</span>
         </label>
 
         <div id="vz-contact-extra" class="vz-contact-extra" style="display:none;">
-            <input type="text" id="vz-vorname" placeholder="Vorname">
-            <input type="text" id="vz-nachname" placeholder="Nachname">
-            <input type="text" id="vz-firma" placeholder="Firma">
+            <input id="vz-vorname" type="text" placeholder="Vorname">
+            <input id="vz-nachname" type="text" placeholder="Nachname">
+            <input id="vz-firma" type="text" placeholder="Firma">
         </div>
 
-        <input type="email" id="vz-email" placeholder="E-Mail" class="vz-email-field">
+        <input id="vz-email" type="email" class="vz-email" placeholder="E-Mail">
     </div>
 
-    <!-- Weiter zu vertragsvorlage.html -->
-    <button id="vz-finish-btn" class="vz-finish-btn" style="display:none;" disabled>
-        Preise anzeigen
-    </button>
+    <!-- Weiter-Button -->
+    <div class="vz-section" id="vz-next-section" style="display:none;">
+        <button id="vz-next-btn" class="vz-btn" type="button" disabled>Preise anzeigen</button>
+    </div>
 
 </div>
 
@@ -86,92 +83,96 @@
         font-size: 0.95rem;
     }
 
-    #vz-title {
-        margin-top: 0;
-        margin-bottom: 0.4rem;
+    .vz-title {
+        margin: 0 0 0.4rem 0;
         font-size: 1.05rem;
         font-weight: 600;
         color: var(--text-main);
         line-height: 1.3;
     }
 
-    #vz-subtext {
-        margin-top: 0;
-        margin-bottom: 1rem;
+    .vz-subtext {
+        margin: 0 0 1rem 0;
         font-size: 0.9rem;
         line-height: 1.5;
         color: var(--text-main);
     }
 
-    .vz-upload-area {
+    .vz-section {
+        margin-top: 0.75rem;
+    }
+
+    /* Drag & Drop Feld */
+    .vz-drop-area {
         border: 2px dashed #d1d5db;
         border-radius: 12px;
         background: #f3f4f6;
         padding: 18px;
         text-align: center;
-        transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
         cursor: pointer;
-        min-height: 140px;
+        transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+        min-height: 130px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    .vz-upload-area.vz-dragover {
+    .vz-drop-area.vz-dragover {
         border-color: var(--primary);
         background-color: #e5f0ff;
         box-shadow: 0 0 0 1px var(--primary-soft);
     }
 
-    .vz-upload-inner {
+    .vz-drop-content {
         display: flex;
         flex-direction: column;
-        gap: 4px;
         align-items: center;
+        gap: 4px;
     }
 
-    .vz-upload-icon {
+    .vz-drop-icon {
         font-size: 2rem;
         margin-bottom: 2px;
     }
 
-    .vz-upload-text-main {
+    .vz-drop-title {
         font-weight: 600;
         color: var(--text-main);
     }
 
-    .vz-upload-text-sub {
+    .vz-drop-text {
         font-size: 0.9rem;
         color: var(--text-muted);
     }
 
-    .vz-upload-hint {
-        margin-top: 4px;
+    .vz-drop-hint {
         font-size: 0.8rem;
         color: var(--text-muted);
+        margin-top: 4px;
     }
 
-    .vz-file-display {
-        margin-top: 10px;
+    /* Datei-Box */
+    .vz-file-box {
+        margin-top: 8px;
+        padding: 8px 10px;
         border-radius: 10px;
         background: #f9fafb;
         border: 1px solid #e5e7eb;
-        padding: 10px 12px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        justify-content: space-between;
+        gap: 8px;
     }
 
-    .vz-file-meta {
+    .vz-file-left {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         overflow: hidden;
     }
 
     .vz-file-icon {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .vz-file-name {
@@ -183,39 +184,35 @@
         max-width: 180px;
     }
 
-    .vz-remove-btn {
+    .vz-file-remove {
         border: none;
         background: transparent;
-        font-size: 1.1rem;
         cursor: pointer;
+        font-size: 1.1rem;
         color: #b91c1c;
     }
 
-    .vz-legal-check {
-        margin-top: 10px;
+    /* Checkbox / Links */
+    .vz-check-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
         font-size: 0.85rem;
         color: var(--text-main);
-    }
-
-    .vz-checkbox-label {
-        display: flex;
-        gap: 6px;
-        align-items: flex-start;
         cursor: pointer;
     }
 
-    .vz-checkbox-label input[type="checkbox"] {
+    .vz-check-label input {
         margin-top: 2px;
         cursor: pointer;
     }
 
-    .vz-checkbox-label a {
+    .vz-check-label a {
         text-decoration: underline;
     }
 
-    .vz-check-btn,
-    .vz-finish-btn {
-        margin-top: 12px;
+    /* Buttons */
+    .vz-btn {
         padding: 8px 14px;
         border-radius: 999px;
         border: none;
@@ -230,19 +227,18 @@
         gap: 6px;
     }
 
-    .vz-check-btn:disabled,
-    .vz-finish-btn:disabled {
+    .vz-btn:disabled {
         background: #bfdbfe;
         cursor: not-allowed;
     }
 
+    /* Ergebnis-Tabelle */
     .vz-result {
-        margin-top: 16px;
+        font-size: 0.9rem;
         padding: 10px;
         border-radius: 10px;
         background: #f9fafb;
         border: 1px solid #e5e7eb;
-        font-size: 0.9rem;
     }
 
     .vz-result table {
@@ -272,12 +268,12 @@
         font-size: 0.85rem;
     }
 
+    /* Kontakt */
     .vz-contact {
-        margin-top: 16px;
-        font-size: 0.9rem;
         display: flex;
         flex-direction: column;
         gap: 8px;
+        font-size: 0.9rem;
     }
 
     .vz-contact-extra {
@@ -303,55 +299,65 @@
 
 <script>
 (function () {
-    const uploadArea = document.getElementById("vz-upload-area");
-    const fileInput = document.getElementById("vz-file-input");
-    const fileDisplay = document.getElementById("vz-file-display");
-    const fileNameEl = document.getElementById("vz-file-name");
+    "use strict";
+
+    const dropArea      = document.getElementById("vz-drop-area");
+    const fileInput     = document.getElementById("vz-file-input");
+    const fileBox       = document.getElementById("vz-file-box");
+    const fileNameSpan  = document.getElementById("vz-file-name");
     const fileRemoveBtn = document.getElementById("vz-file-remove");
 
-    const legalCheck = document.getElementById("vz-legal-check");
-    const acceptCheckbox = document.getElementById("vz-accept");
+    const legalSection  = document.getElementById("vz-legal");
+    const acceptCheck   = document.getElementById("vz-accept");
 
-    const checkBtn = document.getElementById("vz-check-btn");
-    const resultBox = document.getElementById("vz-result");
+    const checkSection  = document.getElementById("vz-check-section");
+    const checkBtn      = document.getElementById("vz-check-btn");
 
-    const contactSection = document.getElementById("vz-contact-section");
-    const selfContact = document.getElementById("vz-self-contact");
-    const contactExtra = document.getElementById("vz-contact-extra");
-    const ansName = document.getElementById("vz-ansprech-name");
+    const resultBox     = document.getElementById("vz-result");
 
-    const emailField = document.getElementById("vz-email");
-    const finishBtn = document.getElementById("vz-finish-btn");
+    const contactBox    = document.getElementById("vz-contact");
+    const selfContact   = document.getElementById("vz-self-contact");
+    const contactExtra  = document.getElementById("vz-contact-extra");
+    const ansNameSpan   = document.getElementById("vz-ansprech-name");
 
-    let selectedFile = null;
-    let lastBody = null;
+    const vornameInput  = document.getElementById("vz-vorname");
+    const nachnameInput = document.getElementById("vz-nachname");
+    const firmaInput    = document.getElementById("vz-firma");
+    const emailInput    = document.getElementById("vz-email");
 
-    if (!uploadArea || !fileInput) {
-        console.error("vertragsauswertung: Elemente nicht gefunden.");
+    const nextSection   = document.getElementById("vz-next-section");
+    const nextBtn       = document.getElementById("vz-next-btn");
+
+    if (!dropArea || !fileInput) {
+        console.error("vertragsauswertung.html: Grundelemente nicht gefunden.");
         return;
     }
 
-    /* Upload – Klick */
-    uploadArea.addEventListener("click", () => fileInput.click());
+    let selectedFile = null;
+    let resultBody   = null;
 
-    /* Drag & Drop */
-    uploadArea.addEventListener("dragover", e => {
+    /* ---------- Upload ---------- */
+
+    dropArea.addEventListener("click", () => fileInput.click());
+
+    dropArea.addEventListener("dragover", (e) => {
         e.preventDefault();
-        uploadArea.classList.add("vz-dragover");
+        dropArea.classList.add("vz-dragover");
     });
-    uploadArea.addEventListener("dragleave", () => {
-        uploadArea.classList.remove("vz-dragover");
+
+    dropArea.addEventListener("dragleave", () => {
+        dropArea.classList.remove("vz-dragover");
     });
-    uploadArea.addEventListener("drop", e => {
+
+    dropArea.addEventListener("drop", (e) => {
         e.preventDefault();
-        uploadArea.classList.remove("vz-dragover");
+        dropArea.classList.remove("vz-dragover");
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             handleFile(e.dataTransfer.files[0]);
         }
     });
 
-    /* Datei-Auswahl */
-    fileInput.addEventListener("change", e => {
+    fileInput.addEventListener("change", (e) => {
         if (e.target.files && e.target.files[0]) {
             handleFile(e.target.files[0]);
         }
@@ -359,107 +365,116 @@
 
     function handleFile(file) {
         if (!file || file.type !== "application/pdf") {
-            alert("Bitte nur PDF-Dateien im Format PDF hochladen.");
+            alert("Bitte nur PDF-Dateien hochladen.");
             return;
         }
+
         selectedFile = file;
-        fileNameEl.textContent = file.name;
+        fileNameSpan.textContent = file.name;
 
-        // Nur den Upload-Kasten umschalten, Text bleibt
-        uploadArea.style.display = "none";
-        fileDisplay.style.display = "flex";
-        legalCheck.style.display = "block";
-        checkBtn.style.display = "inline-flex";
+        // Drag-Feld bleibt oben sichtbar? -> nur optisch umschalten
+        dropArea.style.display  = "none";
+        fileBox.style.display   = "flex";
 
+        // Folge-Bereiche vorbereiten
         resultBox.style.display = "none";
-        contactSection.style.display = "none";
-        finishBtn.style.display = "none";
-        acceptCheckbox.checked = false;
+        contactBox.style.display = "none";
+        nextSection.style.display = "none";
 
-        updateCheckButtonState();
+        if (legalSection)  legalSection.style.display = "block";
+        if (checkSection)  checkSection.style.display = "block";
+        if (acceptCheck)   acceptCheck.checked = false;
+        if (checkBtn)      checkBtn.disabled = true;
     }
 
     fileRemoveBtn.addEventListener("click", () => {
         selectedFile = null;
-        lastBody = null;
+        resultBody   = null;
 
-        fileDisplay.style.display = "none";
-        uploadArea.style.display = "flex";
-        legalCheck.style.display = "none";
-        checkBtn.style.display = "none";
+        fileBox.style.display   = "none";
+        dropArea.style.display  = "flex";
         resultBox.style.display = "none";
-        contactSection.style.display = "none";
-        finishBtn.style.display = "none";
-        acceptCheckbox.checked = false;
+        contactBox.style.display = "none";
+        nextSection.style.display = "none";
+
+        if (legalSection) legalSection.style.display = "none";
+        if (checkSection) checkSection.style.display = "none";
+        if (acceptCheck)  acceptCheck.checked = false;
+        if (checkBtn)     checkBtn.disabled = true;
     });
 
-    acceptCheckbox.addEventListener("change", updateCheckButtonState);
-
-    function updateCheckButtonState() {
-        checkBtn.disabled = !(selectedFile && acceptCheckbox.checked);
+    if (acceptCheck) {
+        acceptCheck.addEventListener("change", () => {
+            if (!checkBtn) return;
+            checkBtn.disabled = !(selectedFile && acceptCheck.checked);
+        });
     }
 
-    /* Prüfen */
-    checkBtn.addEventListener("click", async () => {
-        if (!selectedFile) return;
+    /* ---------- Prüfen ---------- */
 
-        checkBtn.disabled = true;
-        checkBtn.textContent = "Wird geprüft...";
+    if (checkBtn) {
+        checkBtn.addEventListener("click", async () => {
+            if (!selectedFile) return;
 
-        try {
-            const base64 = await fileToBase64(selectedFile);
+            checkBtn.disabled = true;
+            const oldText = checkBtn.textContent;
+            checkBtn.textContent = "Wird geprüft…";
 
-            const payload = {
-                fileName: selectedFile.name,
-                fileContent: base64
-            };
-
-            const res = await fetch(
-                "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                }
-            );
-
-            let data;
             try {
-                data = await res.json();
-            } catch (err) {
-                console.error("Antwort ist kein JSON", err);
-                showError("Die Antwort konnte nicht gelesen werden.");
-                return;
-            }
+                const b64 = await fileToBase64(selectedFile);
 
-            // Body extrahieren (direkt, object, string)
-            let body = data;
-            if (data && typeof data === "object" && "body" in data) {
-                if (typeof data.body === "string") {
-                    try {
-                        body = JSON.parse(data.body);
-                    } catch {
-                        body = {};
+                const payload = {
+                    fileName: selectedFile.name,
+                    fileContent: b64
+                };
+
+                const res = await fetch(
+                    "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
                     }
-                } else {
-                    body = data.body || {};
+                );
+
+                let data;
+                try {
+                    data = await res.json();
+                } catch (err) {
+                    console.error("Antwort kein JSON", err);
+                    showError("Die Antwort konnte nicht gelesen werden.");
+                    return;
                 }
+
+                let body = data;
+                if (data && typeof data === "object" && "body" in data) {
+                    if (typeof data.body === "string") {
+                        try {
+                            body = JSON.parse(data.body);
+                        } catch (err) {
+                            console.error("body-String nicht parsebar", err);
+                            body = {};
+                        }
+                    } else {
+                        body = data.body || {};
+                    }
+                }
+
+                resultBody = body;
+                renderResult(body);
+
+            } catch (err) {
+                console.error("Fehler beim Prüfen", err);
+                showError("Beim Prüfen ist ein Fehler aufgetreten.");
+            } finally {
+                checkBtn.textContent = oldText;
+                checkBtn.disabled = !(selectedFile && acceptCheck && acceptCheck.checked);
             }
-
-            lastBody = body;
-            displayResultBody(body);
-
-        } catch (err) {
-            console.error("Fehler beim Prüfen", err);
-            showError("Beim Prüfen ist ein Fehler aufgetreten.");
-        } finally {
-            checkBtn.textContent = "Prüfen";
-            updateCheckButtonState();
-        }
-    });
+        });
+    }
 
     function fileToBase64(file) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             const reader = new FileReader();
             reader.onload = () => {
                 const result = reader.result;
@@ -473,9 +488,11 @@
     function showError(msg) {
         resultBox.innerHTML = `<p style="color:#b91c1c;">${msg}</p>`;
         resultBox.style.display = "block";
+        contactBox.style.display = "none";
+        nextSection.style.display = "none";
     }
 
-    function displayResultBody(body) {
+    function renderResult(body) {
         if (!body || body.ist_router_einbau_rechnung === false) {
             showError("Rechnung nicht erkannt.");
             return;
@@ -486,77 +503,79 @@
             if (!Object.prototype.hasOwnProperty.call(body, key)) continue;
             if (key === "ist_router_einbau_rechnung") continue;
 
-            const value = body[key];
-            const isEditable = value === null || value === "" || typeof value === "undefined";
+            const val = body[key];
+            const editable = val === null || val === "" || typeof val === "undefined";
 
-            const fieldValue = isEditable
-                ? `<input data-field="${key}" class="vz-edit" placeholder="Bitte ergänzen">`
-                : String(value);
+            const valueHtml = editable
+                ? `<input type="text" class="vz-edit" data-field="${key}" placeholder="Bitte ergänzen">`
+                : String(val);
 
-            html += `
-                <tr>
-                    <td><strong>${key}:</strong></td>
-                    <td>${fieldValue}</td>
-                </tr>`;
+            html += `<tr>
+                        <td><strong>${key}:</strong></td>
+                        <td>${valueHtml}</td>
+                     </tr>`;
         }
         html += "</table>";
 
         resultBox.innerHTML = html;
         resultBox.style.display = "block";
 
-        ansName.textContent = body.Ansprechpartner || "";
-        contactSection.style.display = "flex";
-        finishBtn.style.display = "inline-flex";
-
-        const editInputs = resultBox.querySelectorAll("input.vz-edit");
-        editInputs.forEach(input => {
-            input.addEventListener("input", () => {
-                if (!lastBody) return;
-                const field = input.getAttribute("data-field");
-                lastBody[field] = input.value;
+        // Editierbare Felder zurück in body schreiben
+        const inputs = resultBox.querySelectorAll("input.vz-edit");
+        inputs.forEach((inp) => {
+            const field = inp.getAttribute("data-field");
+            inp.addEventListener("input", () => {
+                if (!resultBody) return;
+                resultBody[field] = inp.value;
             });
         });
 
-        updateFinishState();
+        ansNameSpan.textContent = body.Ansprechpartner || "";
+        contactBox.style.display = "flex";
+        nextSection.style.display = "block";
+
+        updateNextState();
     }
 
-    selfContact.addEventListener("change", () => {
-        contactExtra.style.display = selfContact.checked ? "none" : "flex";
-        updateFinishState();
+    /* ---------- Kontakt / Weiter ---------- */
+
+    if (selfContact) {
+        selfContact.addEventListener("change", () => {
+            contactExtra.style.display = selfContact.checked ? "none" : "flex";
+            updateNextState();
+        });
+    }
+
+    [vornameInput, nachnameInput, firmaInput, emailInput].forEach((inp) => {
+        if (!inp) return;
+        inp.addEventListener("input", updateNextState);
     });
 
-    const vornameEl = document.getElementById("vz-vorname");
-    const nachnameEl = document.getElementById("vz-nachname");
-    const firmaEl = document.getElementById("vz-firma");
+    function updateNextState() {
+        if (!nextBtn) return;
 
-    if (vornameEl) vornameEl.addEventListener("input", updateFinishState);
-    if (nachnameEl) nachnameEl.addEventListener("input", updateFinishState);
-    if (firmaEl) firmaEl.addEventListener("input", updateFinishState);
-    if (emailField) emailField.addEventListener("input", updateFinishState);
-
-    function updateFinishState() {
-        if (!finishBtn) return;
-
-        let ok = emailField && emailField.value && emailField.value.length > 4;
+        let ok = emailInput && emailInput.value.trim().length > 4;
 
         if (!selfContact.checked) {
             ok = ok &&
-                vornameEl.value.trim().length > 1 &&
-                nachnameEl.value.trim().length > 1 &&
-                firmaEl.value.trim().length > 1;
+                vornameInput.value.trim().length > 1 &&
+                nachnameInput.value.trim().length > 1 &&
+                firmaInput.value.trim().length > 1;
         }
 
-        finishBtn.disabled = !ok;
+        nextBtn.disabled = !ok;
     }
 
-    finishBtn.addEventListener("click", () => {
-        // ggf. lastBody + Kontakt-Daten später noch verwenden
-        if (typeof openOverlay === "function") {
-            openOverlay();
-        }
-        if (typeof loadSection === "function") {
-            loadSection("vertragsvorlage", "vertragsvorlage.html");
-        }
-    });
+    if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+            // Hier könntest du resultBody + Kontakt-Daten später noch verwenden
+            if (typeof openOverlay === "function") {
+                openOverlay();
+            }
+            if (typeof loadSection === "function") {
+                loadSection("vertragsvorlage", "vertragsvorlage.html");
+            }
+        });
+    }
 })();
 </script>
