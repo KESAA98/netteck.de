@@ -6,23 +6,29 @@
         <span>Wartungs- &amp; Servicevertrag</span>
     </h2>
 
-    <!-- Drag & Drop / Upload -->
+    <!-- Drag & Drop – optisches Feld, technisch ist der ganze Container Drop-Zone -->
     <div id="vz-drop-area" class="vz-drop-area">
         <div class="vz-drop-inner">
             <div class="vz-pdf-icon">📄</div>
             <div class="vz-drop-headline">Rechnung für den Routereinbau hochladen</div>
             <div class="vz-drop-text">
-                Ziehen Sie Ihre Schluss- oder Abschlagsrechnung als PDF hierher<br>
-                oder klicken Sie, um die Datei auszuwählen.
+                Laden Sie die Schluss- oder Abschlagsrechnung für den LANCOM-Routereinbau
+                als PDF-Datei hoch. Die Rechnung wird automatisch analysiert, um
+                Firmendaten, Windpark-ID, Windparkname und Rechnungsangaben auszulesen.
+            </div>
+            <div class="vz-drop-text">
+                Im Anschluss können Sie fehlende Angaben direkt ergänzen und auf Basis
+                dieser Daten eine beispielhafte Vertragsübersicht mit Preisstruktur anzeigen lassen.
             </div>
             <div class="vz-drop-hint">
                 Es kann genau <strong>eine</strong> PDF-Datei hochgeladen werden.
+                Ziehen Sie die Datei einfach in diesen Bereich oder klicken Sie hier, um sie auszuwählen.
             </div>
         </div>
         <input type="file" id="vz-file-input" accept="application/pdf" hidden>
     </div>
 
-    <!-- Dateizeile unter dem Titel (nach Auswahl + nach Prüfung) -->
+    <!-- Dateizeile (unter dem Titel, nach Auswahl und nach Prüfung sichtbar) -->
     <div id="vz-file-row" class="vz-file-row" style="display:none;">
         <div class="vz-file-info">
             <span class="vz-file-icon">📄</span>
@@ -50,7 +56,10 @@
     <!-- Ladezustand -->
     <div id="vz-wait" class="vz-wait" style="display:none;">
         <div class="vz-spinner"></div>
-        <p>Ihre Rechnung wird geprüft. Dies kann je nach Dateigröße und Systemauslastung ca. 10–30&nbsp;Sekunden dauern.</p>
+        <p>
+            Ihre Rechnung wird geprüft. Dies kann je nach Dateigröße und Systemauslastung
+            ungefähr 10–30&nbsp;Sekunden dauern.
+        </p>
     </div>
 
     <!-- Ergebnis-Tabelle -->
@@ -61,13 +70,26 @@
 <style>
     .vz-wrapper {
         margin: 0;
-        padding: 0;
+        padding: 12px 14px 14px 14px; /* innen Abstand, außen keiner */
         font-size: 0.95rem;
+        box-sizing: border-box;
+        border-radius: 18px;
+        border: 2px dashed #d1d5db;   /* Fake-Drop-Rahmen für den ganzen Container */
+        background: #f8fafc;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .vz-wrapper.vz-dragover {
+        border-color: var(--primary);
+        background: #e5f0ff;
     }
 
     .vz-title {
         text-align: center;
-        margin: 0 0 12px 0;
+        margin: 0;
         font-size: 1.05rem;
         font-weight: 600;
         color: var(--text-main);
@@ -78,35 +100,24 @@
         font-weight: 600;
     }
 
-    /* Drag & Drop */
+    /* Optisches inneres Drag-Feld – nur Fake */
     .vz-drop-area {
-        border: 2px dashed #d1d5db;
-        border-radius: 0; /* keine eigenen Rundungen nötig, da im Container */
-        background: #f8fafc;
-        padding: 18px 14px;
+        margin-top: 8px;
+        border-radius: 12px;
+        background: #edf2f7;
+        padding: 14px 10px;
         text-align: center;
-        cursor: pointer;
-        transition: 0.2s border-color, 0.2s background-color;
-    }
-
-    .vz-drop-area:hover {
-        background: #f1f5f9;
-    }
-
-    .vz-drop-area.vz-dragover {
-        border-color: var(--primary);
-        background: #e5f0ff;
     }
 
     .vz-drop-inner {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 6px;
         align-items: center;
     }
 
     .vz-pdf-icon {
-        font-size: 2.2rem;
+        font-size: 2.1rem;
         margin-bottom: 4px;
     }
 
@@ -129,11 +140,11 @@
 
     /* Dateizeile */
     .vz-file-row {
-        margin-top: 10px;
+        margin-top: 8px;
         padding: 8px 10px;
-        border-top: 1px solid #e5e7eb;
-        border-bottom: 1px solid #e5e7eb;
+        border-radius: 10px;
         background: #f9fafb;
+        border: 1px solid #e5e7eb;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -169,7 +180,7 @@
 
     /* Datenschutz / Prüfen */
     .vz-legal {
-        margin-top: 10px;
+        margin-top: 8px;
         font-size: 0.85rem;
     }
 
@@ -189,7 +200,7 @@
     }
 
     .vz-check-area {
-        margin-top: 8px;
+        margin-top: 6px;
         text-align: right;
     }
 
@@ -211,16 +222,16 @@
 
     /* Warten / Spinner */
     .vz-wait {
-        margin-top: 16px;
+        margin-top: 12px;
         text-align: center;
         font-size: 0.85rem;
         color: #4b5563;
-        padding: 10px 8px;
+        padding: 10px 4px 6px 4px;
     }
 
     .vz-spinner {
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
         border-radius: 999px;
         border: 3px solid #e5e7eb;
         border-top-color: var(--primary);
@@ -232,13 +243,14 @@
         to { transform: rotate(360deg); }
     }
 
-    /* Ergebnis-Tabelle: kompakt */
+    /* Ergebnis-Tabelle */
     .vz-result {
-        margin-top: 12px;
-        padding: 10px 8px 6px 8px;
-        background: #f9fafb;
-        border-top: 1px solid #e5e7eb;
+        margin-top: 10px;
+        padding: 8px 4px 4px 4px;
         font-size: 0.85rem;
+        background: #f9fafb;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
     }
 
     .vz-result table {
@@ -263,9 +275,9 @@
     .vz-result input.vz-edit {
         width: 100%;
         padding: 3px 4px;
-        font-size: 0.8rem;
         border-radius: 4px;
         border: 1px solid #d1d5db;
+        font-size: 0.8rem;
     }
 
     .vz-error {
@@ -278,22 +290,23 @@
 (function () {
     "use strict";
 
-    const dropArea     = document.getElementById("vz-drop-area");
-    const fileInput    = document.getElementById("vz-file-input");
-    const fileRow      = document.getElementById("vz-file-row");
-    const fileNameSpan = document.getElementById("vz-file-name");
-    const fileRemove   = document.getElementById("vz-file-remove");
+    const container   = document.querySelector(".vz-wrapper");  // ganze Karte ist Drop-Zone
+    const dropArea    = document.getElementById("vz-drop-area");
+    const fileInput   = document.getElementById("vz-file-input");
+    const fileRow     = document.getElementById("vz-file-row");
+    const fileNameEl  = document.getElementById("vz-file-name");
+    const fileRemove  = document.getElementById("vz-file-remove");
 
-    const legalBox     = document.getElementById("vz-legal");
-    const acceptCheck  = document.getElementById("vz-accept");
-    const checkArea    = document.getElementById("vz-check-area");
-    const checkBtn     = document.getElementById("vz-check-btn");
+    const legalBox    = document.getElementById("vz-legal");
+    const acceptCheck = document.getElementById("vz-accept");
+    const checkArea   = document.getElementById("vz-check-area");
+    const checkBtn    = document.getElementById("vz-check-btn");
 
-    const waitBox      = document.getElementById("vz-wait");
-    const resultBox    = document.getElementById("vz-result");
+    const waitBox     = document.getElementById("vz-wait");
+    const resultBox   = document.getElementById("vz-result");
 
-    if (!dropArea || !fileInput) {
-        console.error("vertragsauswertung: wichtige Elemente fehlen");
+    if (!container || !dropArea || !fileInput) {
+        console.error("vertragsauswertung.html: wichtige Elemente fehlen.");
         return;
     }
 
@@ -301,21 +314,25 @@
     let resultBody   = null;
     let overlayOpened = false;
 
-    /* --- Drag & Drop / Klick --- */
+    /* --- Klick (nur das Fake-Feld) --- */
     dropArea.addEventListener("click", () => fileInput.click());
 
-    dropArea.addEventListener("dragover", (e) => {
+    /* --- Drag & Drop auf der gesamten Karte --- */
+    container.addEventListener("dragover", (e) => {
         e.preventDefault();
-        dropArea.classList.add("vz-dragover");
+        container.classList.add("vz-dragover");
     });
 
-    dropArea.addEventListener("dragleave", () => {
-        dropArea.classList.remove("vz-dragover");
+    container.addEventListener("dragleave", (e) => {
+        // nur entfernen, wenn wir wirklich raus sind
+        if (!container.contains(e.relatedTarget)) {
+            container.classList.remove("vz-dragover");
+        }
     });
 
-    dropArea.addEventListener("drop", (e) => {
+    container.addEventListener("drop", (e) => {
         e.preventDefault();
-        dropArea.classList.remove("vz-dragover");
+        container.classList.remove("vz-dragover");
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             handleFile(e.dataTransfer.files[0]);
         }
@@ -334,20 +351,20 @@
         }
 
         selectedFile = file;
-        fileNameSpan.textContent = file.name;
-
-        // Drag-Box weg, Dateizeile + Legal/Prüfen sichtbar
-        dropArea.style.display   = "none";
-        fileRow.style.display    = "flex";
-        resultBox.style.display  = "none";
-        waitBox.style.display    = "none";
-
-        if (legalBox)    legalBox.style.display   = "block";
-        if (checkArea)   checkArea.style.display  = "block";
-        if (acceptCheck) acceptCheck.checked = false;
-        if (checkBtn)    checkBtn.disabled = true;
-
+        resultBody   = null;
         overlayOpened = false;
+
+        fileNameEl.textContent = file.name;
+
+        // Fake-Feld bleibt oben, aber unsere Logik startet:
+        fileRow.style.display   = "flex";
+        resultBox.style.display = "none";
+        waitBox.style.display   = "none";
+
+        if (legalBox)   legalBox.style.display  = "block";
+        if (checkArea)  checkArea.style.display = "block";
+        if (acceptCheck) acceptCheck.checked    = false;
+        if (checkBtn)   checkBtn.disabled       = true;
     }
 
     fileRemove.addEventListener("click", () => {
@@ -355,13 +372,14 @@
         resultBody   = null;
         overlayOpened = false;
 
-        dropArea.style.display   = "block";
-        fileRow.style.display    = "none";
-        resultBox.style.display  = "none";
-        waitBox.style.display    = "none";
+        fileRow.style.display   = "none";
+        resultBox.style.display = "none";
+        waitBox.style.display   = "none";
 
         if (legalBox)   legalBox.style.display  = "none";
         if (checkArea)  checkArea.style.display = "none";
+        if (acceptCheck) acceptCheck.checked    = false;
+        if (checkBtn)   checkBtn.disabled       = true;
     });
 
     if (acceptCheck) {
@@ -376,13 +394,12 @@
         checkBtn.addEventListener("click", async () => {
             if (!selectedFile) return;
 
-            // Alles (außer Titel) ausblenden, nur Ladezustand zeigen
-            if (legalBox)  legalBox.style.display  = "none";
-            if (checkArea) checkArea.style.display = "none";
-            dropArea.style.display   = "none";
-            fileRow.style.display    = "none";
-            resultBox.style.display  = "none";
-            waitBox.style.display    = "block";
+            // alles ausblenden außer Titel + Fake-Feld, nur Ladezustand anzeigen
+            if (legalBox)   legalBox.style.display  = "none";
+            if (checkArea)  checkArea.style.display = "none";
+            fileRow.style.display   = "none";
+            resultBox.style.display = "none";
+            waitBox.style.display   = "block";
 
             try {
                 const base64 = await fileToBase64(selectedFile);
@@ -458,17 +475,15 @@
     }
 
     function renderResult(body) {
-        waitBox.style.display   = "none";
+        waitBox.style.display = "none";
 
         if (!body || body.ist_router_einbau_rechnung === false) {
             showError("Rechnung nicht erkannt.");
             return;
         }
 
-        // Dateizeile wieder einblenden
-        fileRow.style.display   = "flex";
+        fileRow.style.display = "flex";
 
-        // Tabelle bauen
         let html = "<table>";
         for (const key in body) {
             if (!Object.prototype.hasOwnProperty.call(body, key)) continue;
@@ -481,34 +496,33 @@
                 ? `<input type="text" class="vz-edit" data-field="${key}" placeholder="Bitte ergänzen">`
                 : String(val);
 
-            html += `<tr>
-                        <td><strong>${labelForKey(key)}:</strong></td>
-                        <td>${valueHtml}</td>
-                     </tr>`;
+            html += `
+                <tr>
+                    <td><strong>${labelForKey(key)}:</strong></td>
+                    <td>${valueHtml}</td>
+                </tr>`;
         }
         html += "</table>";
 
         resultBox.innerHTML    = html;
         resultBox.style.display = "block";
 
-        // Editierbare Felder -> zurück ins body schreiben
         const edits = resultBox.querySelectorAll("input.vz-edit");
         edits.forEach(inp => {
             const field = inp.getAttribute("data-field");
             inp.addEventListener("input", () => {
                 if (!resultBody) return;
                 resultBody[field] = inp.value;
-                checkAllFieldsAndMaybeOpenOverlay();
+                maybeOpenOverlay();
             });
         });
 
-        // Wenn direkt alles da ist -> sofort Overlay öffnen
-        checkAllFieldsAndMaybeOpenOverlay();
+        // Falls schon alles vollständig ist
+        maybeOpenOverlay();
     }
 
     function allFieldsFilled() {
         if (!resultBody) return false;
-
         for (const key in resultBody) {
             if (!Object.prototype.hasOwnProperty.call(resultBody, key)) continue;
             if (key === "ist_router_einbau_rechnung") continue;
@@ -520,7 +534,7 @@
         return true;
     }
 
-    function checkAllFieldsAndMaybeOpenOverlay() {
+    function maybeOpenOverlay() {
         if (overlayOpened) return;
         if (!allFieldsFilled()) return;
 
