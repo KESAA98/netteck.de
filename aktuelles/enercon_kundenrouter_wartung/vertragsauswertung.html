@@ -52,6 +52,11 @@
         <button id="vz-check-btn" class="vz-btn" type="button" disabled>Prüfen</button>
     </div>
 
+    <!-- Hinweis während der Prüfung -->
+    <div id="vz-wait" class="vz-section vz-wait" style="display:none;">
+        Die Prüfung der Rechnung kann je nach Dateigröße und Auslastung zwischen 10 und 30&nbsp;Sekunden dauern.
+    </div>
+
     <!-- Ergebnis vom Flow -->
     <div id="vz-result" class="vz-section vz-result" style="display:none;"></div>
 
@@ -81,6 +86,8 @@
 <style>
     .vz-wrapper {
         font-size: 0.95rem;
+        max-height: calc(100vh - 160px);
+        overflow-y: auto;
     }
 
     .vz-title {
@@ -211,6 +218,12 @@
         text-decoration: underline;
     }
 
+    /* Hinweis während der Prüfung */
+    .vz-wait {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
     /* Buttons */
     .vz-btn {
         padding: 8px 14px;
@@ -232,10 +245,10 @@
         cursor: not-allowed;
     }
 
-    /* Ergebnis-Tabelle */
+    /* Ergebnis-Tabelle kompakter */
     .vz-result {
-        font-size: 0.9rem;
-        padding: 10px;
+        font-size: 0.85rem;
+        padding: 8px;
         border-radius: 10px;
         background: #f9fafb;
         border: 1px solid #e5e7eb;
@@ -247,7 +260,7 @@
     }
 
     .vz-result td {
-        padding: 6px 4px;
+        padding: 4px 3px;
         border-bottom: 1px solid #e5e7eb;
         vertical-align: top;
     }
@@ -262,10 +275,10 @@
 
     .vz-result input.vz-edit {
         width: 100%;
-        padding: 4px 6px;
+        padding: 3px 5px;
         border-radius: 6px;
         border: 1px solid #d1d5db;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     /* Kontakt */
@@ -313,6 +326,7 @@
     const checkSection  = document.getElementById("vz-check-section");
     const checkBtn      = document.getElementById("vz-check-btn");
 
+    const waitBox       = document.getElementById("vz-wait");
     const resultBox     = document.getElementById("vz-result");
 
     const contactBox    = document.getElementById("vz-contact");
@@ -372,14 +386,13 @@
         selectedFile = file;
         fileNameSpan.textContent = file.name;
 
-        // Drag-Feld bleibt oben sichtbar? -> nur optisch umschalten
         dropArea.style.display  = "none";
         fileBox.style.display   = "flex";
 
-        // Folge-Bereiche vorbereiten
         resultBox.style.display = "none";
         contactBox.style.display = "none";
         nextSection.style.display = "none";
+        if (waitBox) waitBox.style.display = "none";
 
         if (legalSection)  legalSection.style.display = "block";
         if (checkSection)  checkSection.style.display = "block";
@@ -396,6 +409,7 @@
         resultBox.style.display = "none";
         contactBox.style.display = "none";
         nextSection.style.display = "none";
+        if (waitBox) waitBox.style.display = "none";
 
         if (legalSection) legalSection.style.display = "none";
         if (checkSection) checkSection.style.display = "none";
@@ -416,8 +430,14 @@
         checkBtn.addEventListener("click", async () => {
             if (!selectedFile) return;
 
-            checkBtn.disabled = true;
             const oldText = checkBtn.textContent;
+
+            // Checkbox + Button ausblenden, Hinweis einblenden
+            if (legalSection)  legalSection.style.display = "none";
+            if (checkSection)  checkSection.style.display = "none";
+            if (waitBox)       waitBox.style.display = "block";
+
+            checkBtn.disabled = true;
             checkBtn.textContent = "Wird geprüft…";
 
             try {
@@ -466,7 +486,11 @@
             } catch (err) {
                 console.error("Fehler beim Prüfen", err);
                 showError("Beim Prüfen ist ein Fehler aufgetreten.");
+                // Bei Fehler darf man neu versuchen: Checkbox + Button wieder anzeigen
+                if (legalSection)  legalSection.style.display = "block";
+                if (checkSection)  checkSection.style.display = "block";
             } finally {
+                if (waitBox) waitBox.style.display = "none";
                 checkBtn.textContent = oldText;
                 checkBtn.disabled = !(selectedFile && acceptCheck && acceptCheck.checked);
             }
@@ -490,6 +514,13 @@
         resultBox.style.display = "block";
         contactBox.style.display = "none";
         nextSection.style.display = "none";
+        if (waitBox) waitBox.style.display = "none";
+    }
+
+    function labelForKey(key) {
+        if (key === "windpark_nummer") return "Windpark ID";
+        if (key === "windpark_name")   return "Windpark";
+        return key.replace(/_/g, " ");
     }
 
     function renderResult(body) {
@@ -502,6 +533,7 @@
         for (const key in body) {
             if (!Object.prototype.hasOwnProperty.call(body, key)) continue;
             if (key === "ist_router_einbau_rechnung") continue;
+            if (key === "Ansprechpartner") continue; // nicht in der Tabelle anzeigen
 
             const val = body[key];
             const editable = val === null || val === "" || typeof val === "undefined";
@@ -511,7 +543,7 @@
                 : String(val);
 
             html += `<tr>
-                        <td><strong>${key}:</strong></td>
+                        <td><strong>${labelForKey(key)}:</strong></td>
                         <td>${valueHtml}</td>
                      </tr>`;
         }
@@ -519,6 +551,7 @@
 
         resultBox.innerHTML = html;
         resultBox.style.display = "block";
+        if (waitBox) waitBox.style.display = "none";
 
         // Editierbare Felder zurück in body schreiben
         const inputs = resultBox.querySelectorAll("input.vz-edit");
@@ -531,6 +564,13 @@
         });
 
         ansNameSpan.textContent = body.Ansprechpartner || "";
+        if (selfContact) {
+            selfContact.checked = true; // vorab angehakt
+        }
+        if (contactExtra) {
+            contactExtra.style.display = "none";
+        }
+
         contactBox.style.display = "flex";
         nextSection.style.display = "block";
 
@@ -568,7 +608,6 @@
 
     if (nextBtn) {
         nextBtn.addEventListener("click", () => {
-            // Hier könntest du resultBody + Kontakt-Daten später noch verwenden
             if (typeof openOverlay === "function") {
                 openOverlay();
             }
