@@ -6,44 +6,46 @@
         <span>Wartungs- &amp; Servicevertrag</span>
     </h2>
 
-    <!-- Fake-Innenbereich (nur Optik) – Drop-Zone ist die komplette vz-wrapper -->
+    <!-- Drag-&-Drop-Bereich (nur solange keine Datei gewählt ist) -->
     <div id="vz-drop-area" class="vz-drop-area">
         <div class="vz-drop-inner">
-
             <p class="vz-intro-line">
                 Hier können Sie Ihren eigenen Wartungs- &amp; Servicevertrag anfragen.
             </p>
 
-            <img src="/Logos/dad.png" alt="PDF Icon" class="vz-intro-icon">
+            <img src="/Logos/dad.png" alt="PDF-Icon" class="vz-intro-icon">
 
             <p class="vz-intro-text">
                 Laden Sie einfach die Rechnung als PDF für den von
                 <strong>Kevin Strakerjahn Networks &amp; Automation</strong>
-                eingebauten Router hier hoch. Die PDF wird automatisch analysiert – im Anschluss
-                können Sie fehlende Angaben ergänzen.
+                eingebauten Router hier hoch.
             </p>
 
             <p class="vz-drop-hint">
                 Es kann genau <strong>eine</strong> PDF-Datei hochgeladen werden.
                 Datei einfach hier hineinziehen oder klicken.
             </p>
-
+            <p class="vz-drop-hint">
+                Die PDF wird automatisch analysiert.
+                Fehlende Angaben können Sie anschließend ergänzen.
+            </p>
         </div>
 
-        <!-- unsichtbarer echter File-Input -->
         <input type="file" id="vz-file-input" accept="application/pdf" hidden>
     </div>
 
-    <!-- Datei-Anzeige -->
+    <!-- Datei-Anzeige (nach Auswahl) -->
     <div id="vz-file-row" class="vz-file-row" style="display:none;">
         <div class="vz-file-info">
             <span class="vz-file-icon">📄</span>
             <span id="vz-file-name" class="vz-file-name"></span>
         </div>
-        <button id="vz-file-remove" class="vz-file-remove" type="button">🗑</button>
+        <button id="vz-file-remove" class="vz-file-remove" type="button" aria-label="Datei entfernen">
+            🗑
+        </button>
     </div>
 
-    <!-- Datenschutz -->
+    <!-- Datenschutz/AGB -->
     <div id="vz-legal" class="vz-legal" style="display:none;">
         <label class="vz-check-label">
             <input type="checkbox" id="vz-accept">
@@ -55,231 +57,249 @@
         </label>
     </div>
 
-    <!-- Prüfen -->
+    <!-- Prüfen-Button -->
     <div id="vz-check-area" class="vz-check-area" style="display:none;">
-        <button id="vz-check-btn" class="vz-btn" type="button" disabled>Prüfen</button>
+        <button id="vz-check-btn" class="vz-btn" type="button" disabled>Rechnung prüfen</button>
     </div>
 
-    <!-- Loading -->
+    <!-- Ladezustand -->
     <div id="vz-wait" class="vz-wait" style="display:none;">
         <div class="vz-spinner"></div>
-        <p>Die Rechnung wird geprüft. Dies kann 10–30 Sekunden dauern…</p>
+        <p>Die Rechnung wird geprüft. Dies kann je nach Dateigröße und Auslastung 10–30 Sekunden dauern.</p>
     </div>
 
-    <!-- Analyse-Ergebnis -->
+    <!-- Ergebnis-Tabelle -->
     <div id="vz-result" class="vz-result" style="display:none;"></div>
 
 </div>
 
 <style>
-/* gesamter Container → jetzt voll ohne Padding außen */
-.service-card#vertragsauswertung {
-    padding: 0;
-}
+    .vz-wrapper {
+        margin: 0;
+        padding: 16px 16px 18px;
+        box-sizing: border-box;
+        font-size: 0.95rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 
-/* ÄUßERE gestrichelte Linie – ohne Radius */
-.vz-wrapper {
-    margin: 0;
-    padding: 16px;
-    font-size: 0.95rem;
-    box-sizing: border-box;
+    .vz-title {
+        text-align: center;
+        margin: 0 0 8px 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1.35;
+        color: var(--text-main);
+    }
 
-    border: 2px dashed #cbd5e1;
-    border-radius: 0;
+    .vz-title span {
+        font-weight: 700;
+    }
 
-    background: #f8fafc;
-    min-height: 100%;
+    /* Drag-&-Drop-Feld nutzt die volle verbleibende Höhe */
+    .vz-drop-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 4px;
+        border: 2px dashed #d1d5db;
+        border-radius: 18px;
+        background: #f3f4f6;
+        padding: 18px 14px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s, background-color 0.2s;
+    }
 
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
+    .vz-wrapper.vz-dragover .vz-drop-area {
+        border-color: var(--primary);
+        background: #e5f0ff;
+    }
 
-.vz-wrapper.vz-dragover {
-    border-color: var(--primary);
-    background: #e8f1ff;
-}
+    .vz-drop-inner {
+        max-width: 260px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: center;
+    }
 
-/* Titel */
-.vz-title {
-    text-align: center;
-    margin: 0;
-    margin-bottom: 4px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 1.35;
-    color: var(--text-main);
-}
+    .vz-intro-line {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-main);
+    }
 
-/* INNERER optischer Bereich */
-.vz-drop-area {
-    background: #e7ebef;
-    border-radius: 20px;
-    padding: 20px 14px;
-}
+    .vz-intro-icon {
+        width: 50px;
+        height: auto;
+        margin: 4px 0;
+    }
 
-.vz-drop-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
+    .vz-intro-text {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        color: var(--text-main);
+    }
 
-.vz-intro-line {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-}
+    .vz-drop-hint {
+        margin: 0;
+        font-size: 0.8rem;
+        line-height: 1.3;
+        color: var(--text-muted);
+    }
 
-.vz-intro-icon {
-    width: 58px;
-    height: auto;
-    margin: 4px 0;
-}
+    /* Datei-Zeile */
+    .vz-file-row {
+        margin-top: 6px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
 
-.vz-intro-text {
-    margin: 0;
-    text-align: center;
-    line-height: 1.45;
-    font-size: 0.92rem;
-}
+    .vz-file-info {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+    }
 
-.vz-drop-hint {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-top: 4px;
-}
+    .vz-file-icon {
+        font-size: 1.1rem;
+    }
 
-/* Datei-Zeile */
-.vz-file-row {
-    padding: 10px 12px;
-    border-radius: 12px;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
+    .vz-file-name {
+        font-weight: 600;
+        color: #374151;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 190px;
+    }
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .vz-file-remove {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 1.1rem;
+        color: #b91c1c;
+    }
 
-.vz-file-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+    /* Datenschutz / AGB */
+    .vz-legal {
+        margin-top: 8px;
+        font-size: 0.85rem;
+    }
 
-.vz-file-icon {
-    font-size: 1.1rem;
-}
+    .vz-check-label {
+        display: flex;
+        gap: 6px;
+        align-items: flex-start;
+        cursor: pointer;
+    }
 
-.vz-file-name {
-    font-weight: 600;
-    max-width: 180px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
+    .vz-check-label input {
+        margin-top: 2px;
+    }
 
-.vz-file-remove {
-    background: transparent;
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
-    color: #b91c1c;
-}
+    .vz-check-label a {
+        text-decoration: underline;
+    }
 
-/* LEGAL */
-.vz-legal {
-    font-size: 0.85rem;
-    margin-top: -4px;
-}
+    /* Prüfen-Button */
+    .vz-check-area {
+        margin-top: 6px;
+        text-align: right;
+    }
 
-.vz-check-label {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-}
+    .vz-btn {
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: none;
+        background: var(--primary);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
 
-.vz-check-label a {
-    text-decoration: underline;
-    color: var(--text-main);
-}
+    .vz-btn:disabled {
+        background: #bcd4ff;
+        cursor: not-allowed;
+    }
 
-/* Prüfen Button */
-.vz-check-area {
-    text-align: right;
-}
+    /* Warten */
+    .vz-wait {
+        margin-top: 12px;
+        text-align: center;
+        font-size: 0.86rem;
+        color: #4b5563;
+    }
 
-.vz-btn {
-    padding: 8px 16px;
-    border-radius: 999px;
-    background: var(--primary);
-    border: none;
-    color: white;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
+    .vz-spinner {
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        border: 3px solid #e5e7eb;
+        border-top-color: var(--primary);
+        margin: 0 auto 8px;
+        animation: vz-spin 0.8s linear infinite;
+    }
 
-.vz-btn:disabled {
-    background: #bcd4ff;
-}
+    @keyframes vz-spin {
+        to { transform: rotate(360deg); }
+    }
 
-/* Loading */
-.vz-wait {
-    text-align: center;
-    font-size: 0.88rem;
-    color: #475569;
-}
+    /* Ergebnis */
+    .vz-result {
+        margin-top: 10px;
+        padding: 10px 8px 6px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        font-size: 0.85rem;
+    }
 
-.vz-spinner {
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    border: 3px solid #dbeafe;
-    border-top-color: var(--primary);
-    margin: 0 auto 8px;
-    animation: spin 0.8s linear infinite;
-}
+    .vz-result table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+    .vz-result td {
+        padding: 3px 2px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+    }
 
-/* Ergebnis */
-.vz-result {
-    background: #f1f5f9;
-    padding: 12px;
-    border-radius: 14px;
-    border: 1px solid #e2e8f0;
-    font-size: 0.85rem;
-}
+    .vz-result tr:last-child td {
+        border-bottom: none;
+    }
 
-.vz-result table {
-    width: 100%;
-    border-collapse: collapse;
-}
+    .vz-result strong {
+        font-weight: 600;
+    }
 
-.vz-result td {
-    padding: 4px 2px;
-    border-bottom: 1px solid #e2e8f0;
-}
+    .vz-result input.vz-edit {
+        width: 100%;
+        padding: 3px 4px;
+        border-radius: 4px;
+        border: 1px solid #d1d5db;
+        font-size: 0.8rem;
+    }
 
-.vz-result tr:last-child td {
-    border-bottom: none;
-}
-
-.vz-result input.vz-edit {
-    width: 100%;
-    padding: 4px 6px;
-    border-radius: 6px;
-    border: 1px solid #cbd5e1;
-    font-size: 0.82rem;
-}
-
-.vz-error {
-    color: #b91c1c;
-    font-weight: 600;
-}
+    .vz-error {
+        color: #b91c1c;
+        font-weight: 600;
+    }
 </style>
 
 <script>
@@ -306,8 +326,7 @@
     let parsedData   = null;
     let overlaySent  = false;
 
-    /* ========== DRAG & DROP auf gesamte Fläche ========== */
-
+    /* Drag & Drop auf gesamte Karte */
     wrapper.addEventListener("dragover", (e) => {
         e.preventDefault();
         wrapper.classList.add("vz-dragover");
@@ -322,74 +341,73 @@
     wrapper.addEventListener("drop", (e) => {
         e.preventDefault();
         wrapper.classList.remove("vz-dragover");
-
-        if (e.dataTransfer.files[0]) {
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             handleFile(e.dataTransfer.files[0]);
         }
     });
 
     dropArea.addEventListener("click", () => fileInput.click());
     fileInput.addEventListener("change", (e) => {
-        if (e.target.files[0]) handleFile(e.target.files[0]);
+        if (e.target.files && e.target.files[0]) {
+            handleFile(e.target.files[0]);
+        }
     });
 
-    /* ========== Datei laden ========== */
-
     function handleFile(file) {
-        if (file.type !== "application/pdf") {
+        if (!file || file.type !== "application/pdf") {
             alert("Bitte nur PDF-Dateien hochladen.");
             return;
         }
 
         selectedFile = file;
-        parsedData = null;
-        overlaySent = false;
+        parsedData   = null;
+        overlaySent  = false;
 
         fileName.textContent = file.name;
-        fileRow.style.display = "flex";
 
-        legalBox.style.display = "block";
+        // Drag-&-Drop ausblenden, nur Titel + Datei + Legal/Prüfen
+        dropArea.style.display  = "none";
+        fileRow.style.display   = "flex";
+        legalBox.style.display  = "block";
         checkArea.style.display = "block";
-        acceptChk.checked = false;
-        checkBtn.disabled = true;
 
-        waitBox.style.display = "none";
+        waitBox.style.display   = "none";
         resultBox.style.display = "none";
+
+        acceptChk.checked       = false;
+        checkBtn.disabled       = true;
     }
 
     removeBtn.addEventListener("click", () => {
         selectedFile = null;
-        parsedData = null;
-        overlaySent = false;
+        parsedData   = null;
+        overlaySent  = false;
 
-        fileRow.style.display = "none";
-        legalBox.style.display = "none";
+        dropArea.style.display  = "flex";
+        fileRow.style.display   = "none";
+        legalBox.style.display  = "none";
         checkArea.style.display = "none";
+        waitBox.style.display   = "none";
         resultBox.style.display = "none";
-        waitBox.style.display = "none";
 
-        acceptChk.checked = false;
-        checkBtn.disabled = true;
+        acceptChk.checked       = false;
+        checkBtn.disabled       = true;
     });
 
     acceptChk.addEventListener("change", () => {
-        checkBtn.disabled = !(
-            acceptChk.checked &&
-            selectedFile
-        );
+        checkBtn.disabled = !(acceptChk.checked && selectedFile);
     });
-
-    /* ========== Prüfen klicken ========== */
 
     checkBtn.addEventListener("click", async () => {
         if (!selectedFile) return;
 
+        // alles außer Titel + Loader weg
+        fileRow.style.display   = "none";
+        legalBox.style.display  = "none";
         checkArea.style.display = "none";
-        legalBox.style.display = "none";
-        fileRow.style.display = "none";
+        dropArea.style.display  = "none";
         resultBox.style.display = "none";
-
-        waitBox.style.display = "block";
+        waitBox.style.display   = "block";
 
         const base64 = await toBase64(selectedFile);
 
@@ -398,9 +416,9 @@
             fileContent: base64
         };
 
-        let res, json;
+        let json;
         try {
-            res = await fetch(
+            const res = await fetch(
                 "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ",
                 {
                     method: "POST",
@@ -408,7 +426,6 @@
                     body: JSON.stringify(payload)
                 }
             );
-
             json = await res.json();
         } catch (err) {
             showError("Fehler bei der Analyse.");
@@ -418,8 +435,10 @@
         let body = json;
         if (json && typeof json === "object" && "body" in json) {
             if (typeof json.body === "string") {
-                try { body = JSON.parse(json.body); } catch {}
-            } else body = json.body;
+                try { body = JSON.parse(json.body); } catch { body = {}; }
+            } else {
+                body = json.body || {};
+            }
         }
 
         parsedData = body;
@@ -435,49 +454,48 @@
         autoOpenIfComplete();
     });
 
-    /* ========== Base64 ========== */
     function toBase64(file) {
-        return new Promise(res => {
+        return new Promise((resolve) => {
             const reader = new FileReader();
             reader.onload = () => {
-                res(reader.result.split(",")[1]);
+                const res = reader.result;
+                const base64 = typeof res === "string" ? res.split(",")[1] : "";
+                resolve(base64);
             };
             reader.readAsDataURL(file);
         });
     }
 
-    /* ========== Fehlermeldung anzeigen ========== */
     function showError(msg) {
         resultBox.innerHTML = `<p class="vz-error">${msg}</p>`;
         resultBox.style.display = "block";
     }
 
-    /* ========== Tabelle generieren ========== */
+    function labelForKey(key) {
+        if (key === "windpark_nummer") return "Windpark ID";
+        if (key === "windpark_name")   return "Windpark";
+        return key.replace(/_/g, " ");
+    }
+
     function renderTable(data) {
         let html = "<table>";
 
-        for (let key in data) {
+        for (const key in data) {
+            if (!Object.prototype.hasOwnProperty.call(data, key)) continue;
             if (key === "ist_router_einbau_rechnung") continue;
 
-            const label = key === "windpark_nummer"
-                ? "Windpark ID"
-                : key === "windpark_name"
-                ? "Windpark"
-                : key.replace(/_/g, " ");
-
-            const val = data[key];
+            const label = labelForKey(key);
+            const val   = data[key];
             const editable = val === null || val === "";
 
             html += `
                 <tr>
                     <td><strong>${label}:</strong></td>
-                    <td>
-                        ${
-                            editable
-                                ? `<input class="vz-edit" data-k="${key}" placeholder="Bitte ergänzen">`
-                                : val
-                        }
-                    </td>
+                    <td>${
+                        editable
+                            ? `<input type="text" class="vz-edit" data-key="${key}" placeholder="Bitte ergänzen">`
+                            : String(val)
+                    }</td>
                 </tr>
             `;
         }
@@ -487,21 +505,23 @@
         resultBox.style.display = "block";
 
         resultBox.querySelectorAll(".vz-edit").forEach(inp => {
+            const k = inp.getAttribute("data-key");
             inp.addEventListener("input", () => {
-                parsedData[inp.dataset.k] = inp.value;
+                if (!parsedData) return;
+                parsedData[k] = inp.value;
                 autoOpenIfComplete();
             });
         });
     }
 
-    /* ========== Prüfen ob alle Felder gesetzt → Overlay öffnen ========== */
     function autoOpenIfComplete() {
-        if (overlaySent) return;
-        if (!parsedData) return;
+        if (overlaySent || !parsedData) return;
 
-        for (let key in parsedData) {
+        for (const key in parsedData) {
+            if (!Object.prototype.hasOwnProperty.call(parsedData, key)) continue;
             if (key === "ist_router_einbau_rechnung") continue;
-            if (!parsedData[key]) return;
+            const v = parsedData[key];
+            if (v === null || v === "") return;
         }
 
         overlaySent = true;
