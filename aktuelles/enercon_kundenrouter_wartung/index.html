@@ -2,15 +2,16 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Wartungs- & Servicevertrag für LANCOM Router</title>
+    <title>Wartungs- &amp; Servicevertrag für LANCOM Router</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Favicon (Tab-Icon) -->
     <link rel="icon" type="image/png" href="../../Logos/logo.png">
 
     <style>
         :root {
             --primary: #0b74ff;
-            --primary-soft: rgba(11,116,255,0.08);
+            --primary-soft: rgba(11, 116, 255, 0.08);
             --bg: #f5f7fb;
             --card-bg: #ffffff;
             --border: #e1e4ec;
@@ -19,130 +20,305 @@
             --radius-lg: 14px;
         }
 
-        body {
+        * { box-sizing: border-box; }
+
+        html, body {
             margin: 0;
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: var(--bg);
             color: var(--text-main);
             line-height: 1.6;
         }
 
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .page {
             max-width: 1100px;
-            margin: 2rem auto;
+            margin: 2rem auto 3rem;
             padding: 0 1rem;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            padding: 1.75rem 1.9rem 2.1rem;
             border: 1px solid var(--border);
-            padding: 1.8rem;
-            box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+        }
+
+        /* HEADER / BILD */
+        .header {
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-wrapper {
+            width: 100%;
         }
 
         .logo-wrapper img {
             width: 100%;
+            height: auto;
             border-radius: 10px;
+            object-fit: cover;
+        }
+
+        /* INTRO */
+        .intro {
+            margin-bottom: 1.75rem;
         }
 
         .intro h1 {
             font-size: 1.5rem;
-            margin-bottom: .7rem;
+            margin: 0 0 0.7rem;
         }
 
-        h2 {
-            margin-top: 1.8rem;
+        .intro p {
+            margin: 0.4rem 0;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .intro ul {
+            margin: 0.4rem 0 0.6rem 1.1rem;
+            padding: 0;
+        }
+
+        .intro li {
+            margin: 0.15rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* LEISTUNGEN */
+        .leistungen-section {
+            margin-top: 1.75rem;
+        }
+
+        .leistungen-section h2 {
+            margin: 0 0 0.6rem;
             font-size: 1.2rem;
+        }
+
+        .leistungen-hint {
+            margin: 0 0 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
         .leistungen-list {
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 0.9rem;
         }
 
-        /* KEINE grauen Kästen */
+        /* NEUES DESIGN FÜR GELADENE LEISTUNGEN (keine grauen Kästen mehr) */
         .leistung {
-            padding: 0;
-            border: none;
-            background: transparent;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 0.85rem 1rem 0.95rem;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
         }
 
         .leistung h3 {
-            margin: .2rem 0 .2rem;
+            margin: 0 0 0.3rem;
+            font-size: 1rem;
         }
 
-        footer {
+        .leistung p {
+            margin: 0.1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .leistung-note {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .legal-box {
+            margin-top: 1.1rem;
+            padding: 0.7rem 0.9rem;
+            border-radius: 10px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            font-size: 0.9rem;
+            color: #7c2d12;
+            display: none;
+        }
+
+        /* SEKTIONEN */
+        .section-divider {
             margin-top: 2rem;
-            font-size: .9rem;
-            text-align: center;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .section-header span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* WINDPARK-KARTEN (nicht mehr genutzt, CSS kann aber bleiben) */
+        .windparks-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 0.7rem;
+        }
+
+        .windpark-card {
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 0.9rem 1rem 1.1rem;
+            background: #f9fafb;
+        }
+
+        .windpark-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.7rem;
+        }
+
+        .windpark-card-header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 1.6rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             border-top: 1px solid var(--border);
-            padding-top: 1rem;
+            padding-top: 0.75rem;
         }
 
         .footer-buttons {
-            margin-top: .4rem;
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 2.5rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.1rem;
         }
 
         .footer-link {
-            text-decoration: underline;
+            font-size: 1.05rem;
+            font-weight: 600;
             color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+        }
+
+        /* MOBILE */
+        @media (max-width: 800px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                margin: 1.25rem auto 2rem;
+                padding: 0 0.75rem;
+            }
+
+            .card {
+                padding: 1.25rem 1.1rem 1.8rem;
+                border-radius: 12px;
+            }
+
+            .logo-wrapper img {
+                border-radius: 8px;
+            }
+
+            .intro h1 {
+                font-size: 1.25rem;
+            }
+
+            .footer-buttons {
+                gap: 1.8rem;
+            }
         }
     </style>
 </head>
-
 <body>
 
 <div class="page">
     <div class="card">
 
-        <header>
+        <!-- Bild / Header -->
+        <header class="header">
             <div class="logo-wrapper">
-                <img src="../../Logos/logo_name.jpeg" alt="">
+                <img src="../../Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation">
             </div>
         </header>
 
+        <!-- Einleitung -->
         <section class="intro">
-            <h1>Wartungs- & Servicevertrag für LANCOM Router</h1>
+            <h1>Wartungs- &amp; Servicevertrag für LANCOM Router</h1>
 
             <p>
-                Für einen dauerhaft stabilen und sicheren Betrieb der Kommunikationsinfrastruktur reicht
-                der reine Einbau eines Routers nicht aus. Firmware-Updates, Sicherheitspatches und
-                Konfigurationsänderungen sind regelmäßig notwendig.
+                Eine stabile Router-Infrastruktur ist entscheidend für den sicheren und zuverlässigen Betrieb
+                einer Windenergieanlage. Damit die eingesetzten LANCOM-Systeme dauerhaft funktionsfähig bleiben
+                und sicher betrieben werden können, ist eine regelmäßige technische Überprüfung sinnvoll und
+                in vielen Parks inzwischen auch erwartet.
             </p>
 
             <p>
-                Dieser Wartungs- und Servicevertrag stellt sicher, dass alle betreuten LANCOM-Router
-                regelmäßig überprüft, aktualisiert und dokumentiert werden – inklusive LANcare Direct
-                Advanced 24/7 Herstellerservice.
+                Mit meinem Wartungs- und Servicekonzept werden die Router jährlich geprüft, sicherheitsrelevant
+                aktualisiert und bei Bedarf im Störungsfall professionell begleitet. Dadurch bleibt die
+                Kommunikationsanbindung des Windparks stabil, nachvollziehbar dokumentiert und langfristig wartbar.
             </p>
 
             <p>
-                Der Vertrag richtet sich insbesondere an Betreiber von ENERCON-Windparks und technische
-                Betriebsführer, die ihre Router-Infrastruktur langfristig sicher und professionell betreut
-                wissen möchten.
-            </p>
-
-            <p>
-                Der vollständige Leistungsumfang wird automatisch aus der hinterlegten Datei geladen.
+                Der vollständige Leistungsumfang des Wartungsvertrags ist in den folgenden Abschnitten aufgeführt.
             </p>
         </section>
 
-        <section class="leistungen-section">
-            <h2>Leistungsumfang</h2>
-            <p class="leistungen-hint">Die folgenden Inhalte stammen aus: <code>information/warungsvertrag.txt</code></p>
+        <!-- Leistungsumfang (aus information/warungsvertrag.txt) -->
+        <section class="leistungen-section" aria-label="Leistungsumfang Wartungs- &amp; Servicevertrag">
+            <h2>Leistungsumfang Wartungs- &amp; Servicevertrag</h2>
+            <p class="leistungen-hint">
+                Die folgenden Punkte zeigen den Leistungsumfang des Wartungs- und Servicevertrags im Überblick.
+            </p>
 
-            <div id="leistungen-list" class="leistungen-list"></div>
+            <div id="leistungen-list" class="leistungen-list">
+                <!-- Inhalte werden per JavaScript aus information/warungsvertrag.txt geladen -->
+            </div>
+
+            <div id="legal-box" class="legal-box"></div>
         </section>
 
         <footer>
             <div class="footer-buttons">
                 <a class="footer-link" href="/">Start</a>
+                <a class="footer-link" href="/kontakt/">Kontakt</a>
                 <a class="footer-link" href="/impressum/">Impressum</a>
                 <a class="footer-link" href="/datenschutz/">Datenschutz</a>
             </div>
@@ -152,57 +328,64 @@
 </div>
 
 <script>
-async function loadInfo() {
-    const listEl = document.getElementById("leistungen-list");
+    // Leistungsumfang laden
+    async function loadRouterEinbauInfo() {
+        const listEl = document.getElementById("leistungen-list");
+        const legalBox = document.getElementById("legal-box");
 
-    try {
-        const res = await fetch("information/warungsvertrag.txt");
-        const data = await res.json(); // ← exakt wie beim Router-Einbau
+        if (!listEl) return;
 
-        const w = data.wartungsvertrag_router;
+        try {
+            const res = await fetch("information/warungsvertrag.txt");
+            if (!res.ok) {
+                throw new Error("Fehler beim Laden von information/warungsvertrag.txt (Status " + res.status + ")");
+            }
 
-        // Abschnitt 1.1
-        const a = document.createElement("div");
-        a.className = "leistung";
-        a.innerHTML = `
-            <h3>${w.leistungsumfang.optimierung_und_absicherung.titel}</h3>
-            <ul>${w.leistungsumfang.optimierung_und_absicherung.leistungen.map(l=>`<li>${l}</li>`).join("")}</ul>
-        `;
-        listEl.appendChild(a);
+            const data = await res.json();
 
-        // Abschnitt 1.2
-        const b = document.createElement("div");
-        b.className = "leistung";
-        b.innerHTML = `
-            <h3>${w.leistungsumfang.stoerungsfall_und_lancare.titel}</h3>
-            <p>${w.leistungsumfang.stoerungsfall_und_lancare.beschreibung}</p>
-        `;
-        listEl.appendChild(b);
+            if (Array.isArray(data.sections)) {
+                data.sections.forEach(section => {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "leistung";
 
-        // Abschnitt 1.3
-        const c = document.createElement("div");
-        c.className = "leistung";
-        c.innerHTML = `
-            <h3>${w.leistungsumfang.backup_und_dokumentation.titel}</h3>
-            <ul>${w.leistungsumfang.backup_und_dokumentation.leistungen.map(l=>`<li>${l}</li>`).join("")}</ul>
-        `;
-        listEl.appendChild(c);
+                    if (section.heading) {
+                        const h = document.createElement("h3");
+                        h.textContent = section.heading;
+                        wrapper.appendChild(h);
+                    }
 
-        // Remote Support
-        const r = document.createElement("div");
-        r.className = "leistung";
-        r.innerHTML = `
-            <h3>${w.remote_support.abschnitt}</h3>
-            <ul>${w.remote_support.leistungen.map(l=>`<li>${l}</li>`).join("")}</ul>
-        `;
-        listEl.appendChild(r);
+                    if (section.text) {
+                        const p = document.createElement("p");
+                        p.textContent = section.text;
+                        wrapper.appendChild(p);
+                    }
 
-    } catch(e) {
-        listEl.innerHTML = "<p>Fehler beim Laden.</p>";
+                    if (section.note) {
+                        const note = document.createElement("p");
+                        note.className = "leistung-note";
+                        note.textContent = section.note;
+                        wrapper.appendChild(note);
+                    }
+
+                    listEl.appendChild(wrapper);
+                });
+            }
+
+            if (data.legal_notice && legalBox) {
+                legalBox.textContent = data.legal_notice;
+                legalBox.style.display = "block";
+            }
+        } catch (err) {
+            console.error(err);
+            listEl.innerHTML = "<p>Die Detailbeschreibung zum Leistungsumfang konnte nicht geladen werden. Bitte kontaktieren Sie mich direkt für weitere Informationen.</p>";
+        }
     }
-}
 
-loadInfo();
+    // (Funktionen für Windparks/Formular bleiben ungenutzt, werden aber sicherheitshalber nicht aufgerufen)
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadRouterEinbauInfo();
+    });
 </script>
 
 </body>
