@@ -118,7 +118,6 @@
             gap: 0.9rem;
         }
 
-        /* NEUES DESIGN FÜR GELADENE LEISTUNGEN (keine grauen Kästen mehr) */
         .leistung {
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -178,7 +177,6 @@
             color: var(--text-muted);
         }
 
-        /* WINDPARK-KARTEN (nicht mehr genutzt, CSS kann aber bleiben) */
         .windparks-wrapper {
             display: flex;
             flex-direction: column;
@@ -198,11 +196,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.7rem;
-        }
-
-        .windpark-card-header h3 {
-            margin: 0;
-            font-size: 1rem;
         }
 
         /* FOOTER */
@@ -235,16 +228,16 @@
             color: var(--text-main);
         }
 
-        /* STICKY SERVICE-KARTEN-CONTAINER (NEU) */
+        /* ZUSATZ-CONTAINER RECHTS */
         .service-card {
-            background: #eef2ff; /* leicht abgesetzt vom Haupt-Card-Hintergrund */
+            background: #ffffff;
             border-radius: var(--radius-lg);
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
             border: 1px solid var(--border);
             padding: 1.25rem 1.4rem 1.5rem;
             font-size: 0.95rem;
             color: var(--text-main);
-            z-index: 50;
+            max-width: 420px;
         }
 
         .service-card h2 {
@@ -253,23 +246,19 @@
             line-height: 1.5;
         }
 
-        /* Desktop: Karte rechts sticky/fixed, beeinflusst Layout nicht */
+        /* Desktop: Position wird per JS gesetzt, nur Modus definieren */
         @media (min-width: 1400px) {
             .service-card {
                 position: fixed;
-                top: 3rem;
-                right: 1.5rem;
-                width: 280px;
-                max-width: 280px;
             }
         }
 
-        /* Unter 1400px Breite: Karte normal unter dem Inhalt */
+        /* Darunter: unter dem Info-Container */
         @media (max-width: 1399px) {
             .service-card {
                 position: static;
                 max-width: 700px;
-                margin: 0 auto 2rem;
+                margin: 1.5rem auto 2rem;
             }
         }
 
@@ -380,14 +369,6 @@
     </div>
 </div>
 
-<!-- Neuer sticky Container für die Anfrage des eigenen Wartungs- & Servicevertrags -->
-<div class="service-card" aria-label="Eigener Wartungs- &amp; Servicevertrag">
-    <h2>
-        Für Ihren eigenen Wartungs- &amp; Servicevertrag laden Sie hier Ihre Rechnung des Router-Einbaus durch
-        Kevin Strakerjahn Networks &amp; Automation hoch.
-    </h2>
-</div>
-
 <script>
     // Leistungsumfang laden
     async function loadRouterEinbauInfo() {
@@ -418,7 +399,6 @@
                     if (section.text) {
                         const p = document.createElement("p");
                         let html = String(section.text);
-                        // sowohl "\n" im String als auch echte Newlines → <br>
                         html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
                         p.innerHTML = html;
                         wrapper.appendChild(p);
@@ -452,7 +432,55 @@
     document.addEventListener("DOMContentLoaded", () => {
         loadRouterEinbauInfo();
     });
+
+    // Position des Zusatz-Containers dynamisch nach Info-Container ausrichten
+    function positionServiceCard() {
+        const info = document.querySelector('.page');
+        const card = document.querySelector('.service-card');
+        if (!info || !card) return;
+
+        // Unter 1400px → unten, nix ausrichten
+        if (window.innerWidth < 1400) {
+            card.style.position = "static";
+            card.style.left = card.style.right =
+            card.style.top = card.style.bottom = "";
+            return;
+        }
+
+        const rect = info.getBoundingClientRect();
+        const gap = rect.top;              // oberer Abstand in px
+        const minWidth = 280;              // mind. Breite rechts
+        const left = rect.right + gap;     // rechter Rand Info + gleicher Abstand
+        const rightMargin = gap;           // gleicher Abstand zum Rand
+        const available = window.innerWidth - left - rightMargin;
+
+        // Wenn nicht genug Platz → Karte unter den Inhalt
+        if (available < minWidth) {
+            card.style.position = "static";
+            card.style.left = card.style.right =
+            card.style.top = card.style.bottom = "";
+            return;
+        }
+
+        // genug Platz → rechts fix ausrichten
+        card.style.position = "fixed";
+        card.style.top = gap + "px";
+        card.style.bottom = gap + "px";
+        card.style.left = left + "px";
+        card.style.right = rightMargin + "px";
+    }
+
+    window.addEventListener("load", positionServiceCard);
+    window.addEventListener("resize", positionServiceCard);
 </script>
+
+<!-- Zusatz-Container -->
+<div class="service-card" aria-label="Eigener Wartungs- &amp; Servicevertrag">
+    <h2>
+        Für Ihren eigenen Wartungs- &amp; Servicevertrag laden Sie hier Ihre Rechnung des Router-Einbaus
+        durch Kevin Strakerjahn Networks &amp; Automation hoch.
+    </h2>
+</div>
 
 </body>
 </html>
