@@ -4,7 +4,7 @@
     {
       "heading": "Wartung & Sicherheitsüberprüfung",
       "text": "Jährliche technische Überprüfung und Optimierung des Routers.",
-      "note": "Im Rahmen der jährlichen Wartung wird die Firmware auf den empfohlenen LANCOM-LCOS-Stand aktualisiert, sicherheitsrelevante Einstellungen werden geprüft und gehärtet, und sämtliche Firewall-Regeln, Ports, VPN-Definitionen, Zugriffslisten sowie Administrationskonten werden kontrolliert.\\n\\nZusätzlich werden Systemprotokolle wie CPU- und RAM-Last, LTE-Signalqualität, Temperaturverhalten und Reboot-Historie ausgewertet, um Auffälligkeiten frühzeitig zu erkennen und nachhaltig zu beheben."
+      "note": "Im Rahmen der jährlichen Wartung wird die Firmware auf den empfohlenen LANCOM-LCOS-Stand aktualisiert, sicherheitsrelevante Einstellungen werden geprüft und gehärtet, und sämtliche Firewall-Regeln, Ports, VPN-Definitionen, Zugriffslisten sowie Administrationskonten werden kontrolliert.\\n\\nZusätzlich werden Systemprotokolle wie CPU- und RAM-Last, LTE-Signalqualität und Reboot-Historie ausgewertet, um Auffälligkeiten frühzeitig zu erkennen und nachhaltig zu beheben."
     },
     {
       "heading": "Unterstützung im Störungsfall",
@@ -23,3 +23,4 @@
     }
   ]
 }
+
