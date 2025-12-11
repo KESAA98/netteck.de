@@ -228,7 +228,7 @@
             color: var(--text-main);
         }
 
-        /* ZUSATZ-CONTAINER RECHTS */
+        /* ZUSATZ-CONTAINER RECHTS (vertragsauswertung) */
         .service-card {
             background: #ffffff;
             border-radius: var(--radius-lg);
@@ -238,12 +238,6 @@
             font-size: 0.95rem;
             color: var(--text-main);
             max-width: 420px;
-        }
-
-        .service-card h2 {
-            font-size: 1rem;
-            margin: 0;
-            line-height: 1.5;
         }
 
         /* Desktop: Position wird per JS gesetzt, nur Modus definieren */
@@ -262,10 +256,43 @@
             }
         }
 
+        /* OVERLAY (vertragsvorlage) */
+        #overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(2px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .overlay-hidden {
+            display: none !important;
+        }
+
+        #vertragsvorlage {
+            background: #ffffff;
+            width: calc(100% - 3rem);
+            max-width: 1000px;
+            max-height: calc(100% - 3rem);
+            overflow: auto;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 2rem;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
+        }
+
         /* MOBILE */
         @media (max-width: 800px) {
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            #vertragsvorlage {
+                width: calc(100% - 2rem);
+                max-height: calc(100% - 2rem);
+                padding: 1.25rem 1.5rem;
             }
         }
 
@@ -369,6 +396,20 @@
     </div>
 </div>
 
+<!-- Rechter Container: vertragsauswertung -->
+<div class="service-card" id="vertragsauswertung" aria-label="Vertragsauswertung">
+    <div id="vertragsauswertung-content">
+        <!-- vertragsauswertung.html wird hier geladen -->
+    </div>
+</div>
+
+<!-- Overlay: vertragsvorlage (standardmäßig verborgen) -->
+<div id="overlay" class="overlay-hidden" aria-hidden="true">
+    <div id="vertragsvorlage">
+        <!-- vertragsvorlage.html wird hier geladen -->
+    </div>
+</div>
+
 <script>
     // Leistungsumfang laden
     async function loadRouterEinbauInfo() {
@@ -429,10 +470,6 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        loadRouterEinbauInfo();
-    });
-
     // Position des Zusatz-Containers dynamisch nach Info-Container ausrichten
     function positionServiceCard() {
         const info = document.querySelector('.page');
@@ -470,17 +507,43 @@
         card.style.right = rightMargin + "px";
     }
 
+    // Externe HTML-Fragmente laden (vertragsauswertung & vertragsvorlage)
+    async function loadSection(targetId, file) {
+        const el = document.getElementById(targetId);
+        if (!el) return;
+
+        try {
+            const res = await fetch(file);
+            if (!res.ok) {
+                throw new Error("Fehler beim Laden von " + file + " (Status " + res.status + ")");
+            }
+            el.innerHTML = await res.text();
+        } catch (e) {
+            console.error(e);
+            el.innerHTML = "<p>Die Inhalte konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>";
+        }
+    }
+
+    // Overlay steuern (kannst du später aus vertragsauswertung.html aufrufen)
+    function openOverlay() {
+        const ov = document.getElementById("overlay");
+        if (ov) ov.classList.remove("overlay-hidden");
+    }
+
+    function closeOverlay() {
+        const ov = document.getElementById("overlay");
+        if (ov) ov.classList.add("overlay-hidden");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadRouterEinbauInfo();
+        loadSection("vertragsauswertung-content", "vertragsauswertung.html");
+        loadSection("vertragsvorlage", "vertragsvorlage.html");
+    });
+
     window.addEventListener("load", positionServiceCard);
     window.addEventListener("resize", positionServiceCard);
 </script>
-
-<!-- Zusatz-Container -->
-<div class="service-card" aria-label="Eigener Wartungs- &amp; Servicevertrag">
-    <h2>
-        Für Ihren eigenen Wartungs- &amp; Servicevertrag laden Sie hier Ihre Rechnung des Router-Einbaus
-        durch Kevin Strakerjahn Networks &amp; Automation hoch.
-    </h2>
-</div>
 
 </body>
 </html>
