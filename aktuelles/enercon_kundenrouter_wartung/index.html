@@ -500,7 +500,7 @@
         card.style.right = rightMargin + "px";
     }
 
-    // Externe HTML-Fragmente laden
+    // Externe HTML-Fragmente laden + Scripts ausführen
     async function loadSection(targetId, file) {
         const el = document.getElementById(targetId);
         if (!el) return;
@@ -512,6 +512,25 @@
             }
             const html = await res.text();
             el.innerHTML = html;
+
+            // NEU: Script-Tags aus dem geladenen Fragment ausführen
+            const scripts = el.querySelectorAll("script");
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement("script");
+
+                if (oldScript.src) {
+                    newScript.src = oldScript.src;
+                } else {
+                    newScript.textContent = oldScript.textContent;
+                }
+
+                if (oldScript.type) {
+                    newScript.type = oldScript.type;
+                }
+
+                document.body.appendChild(newScript);
+            });
+
             return;
         } catch (e) {
             console.error(e);
