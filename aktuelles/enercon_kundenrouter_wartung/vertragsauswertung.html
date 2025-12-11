@@ -12,7 +12,558 @@
     <!-- Upload-Bereich -->
     <div id="vz-upload-area" class="vz-upload-area">
         <p>Hier Ihre Rechnung reinziehen oder klicken zum Hochladen</p>
+        <input type="file" id="vz-file-input" accept="application/pdf" hidden><div class="vz-wrapper">
+
+    <!-- Titel -->
+    <h2 id="vz-title">
+        Anfrage<br>
+        Wartungs- &amp; Servicevertrag
+    </h2>
+
+    <!-- Einleitung -->
+    <p id="vz-subtext">
+        Hier können Sie Ihren Wartungs- &amp; Servicevertrag anfragen.
+        Laden Sie einfach die Schluss- oder Abschlagsrechnung für den Routereinbau
+        von Kevin Strakerjahn Networks &amp; Automation hoch und erhalten Sie in
+        wenigen Augenblicken Ihren Mustervertrag.
+    </p>
+
+    <!-- Upload-Bereich -->
+    <div id="vz-upload-area" class="vz-upload-area">
+        <div class="vz-upload-inner">
+            <div class="vz-upload-icon">📄</div>
+            <div class="vz-upload-text-main">Rechnung hochladen</div>
+            <div class="vz-upload-text-sub">Datei hierher ziehen oder klicken</div>
+            <div class="vz-upload-hint">Es wird genau eine PDF-Datei benötigt.</div>
+        </div>
         <input type="file" id="vz-file-input" accept="application/pdf" hidden>
+    </div>
+
+    <!-- Datei-Anzeige -->
+    <div id="vz-file-display" class="vz-file-display" style="display:none;">
+        <div class="vz-file-meta">
+            <span class="vz-file-icon">📄</span>
+            <span id="vz-file-name" class="vz-file-name"></span>
+        </div>
+        <button id="vz-file-remove" class="vz-remove-btn" aria-label="Datei entfernen">
+            🗑
+        </button>
+    </div>
+
+    <!-- DSGVO / AGB Zustimmung -->
+    <div id="vz-legal-check" class="vz-legal-check" style="display:none;">
+        <label class="vz-checkbox-label">
+            <input type="checkbox" id="vz-accept">
+            <span>
+                Ich akzeptiere die
+                <a id="vz-datenschutz-link" href="/datenschutz" target="_blank">Datenschutzerklärung</a>
+                und
+                <a id="vz-agb-link" href="/agb" target="_blank">AGBs</a>.
+            </span>
+        </label>
+    </div>
+
+    <!-- Prüfen Button -->
+    <button id="vz-check-btn" class="vz-check-btn" style="display:none;" disabled>
+        Prüfen
+    </button>
+
+    <!-- Ergebnisbereich nach PowerAutomate-Prüfung -->
+    <div id="vz-result" class="vz-result" style="display:none;"></div>
+
+    <!-- Ansprechpartner-Bereich -->
+    <div id="vz-contact-section" class="vz-contact" style="display:none;">
+
+        <label class="vz-checkbox-label">
+            <input type="checkbox" id="vz-self-contact">
+            <span>Sind Sie Ansprechpartner <span id="vz-ansprech-name" class="vz-ansprech-name"></span>?</span>
+        </label>
+
+        <div id="vz-contact-extra" class="vz-contact-extra" style="display:none;">
+            <input type="text" id="vz-vorname" placeholder="Vorname">
+            <input type="text" id="vz-nachname" placeholder="Nachname">
+            <input type="text" id="vz-firma" placeholder="Firma">
+        </div>
+
+        <input type="email" id="vz-email" placeholder="E-Mail" class="vz-email-field">
+    </div>
+
+    <!-- Weiter zu vertragsvorlage.html -->
+    <button id="vz-finish-btn" class="vz-finish-btn" style="display:none;" disabled>
+        Preise anzeigen
+    </button>
+
+</div>
+
+<style>
+    .vz-wrapper {
+        font-size: 0.95rem;
+    }
+
+    #vz-title {
+        margin-top: 0;
+        margin-bottom: 0.4rem;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-main);
+        line-height: 1.3;
+    }
+
+    #vz-subtext {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--text-main);
+    }
+
+    .vz-upload-area {
+        border: 2px dashed #d1d5db;
+        border-radius: 12px;
+        background: #f3f4f6;
+        padding: 18px;
+        text-align: center;
+        transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+        min-height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .vz-upload-area.vz-dragover {
+        border-color: var(--primary);
+        background-color: #e5f0ff;
+        box-shadow: 0 0 0 1px var(--primary-soft);
+    }
+
+    .vz-upload-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+    }
+
+    .vz-upload-icon {
+        font-size: 2rem;
+        margin-bottom: 2px;
+    }
+
+    .vz-upload-text-main {
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+    .vz-upload-text-sub {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+
+    .vz-upload-hint {
+        margin-top: 4px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    .vz-file-display {
+        margin-top: 10px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .vz-file-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+    }
+
+    .vz-file-icon {
+        font-size: 1.2rem;
+    }
+
+    .vz-file-name {
+        font-weight: 600;
+        color: #374151;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 180px;
+    }
+
+    .vz-remove-btn {
+        border: none;
+        background: transparent;
+        font-size: 1.1rem;
+        cursor: pointer;
+        color: #b91c1c;
+    }
+
+    .vz-legal-check {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        color: var(--text-main);
+    }
+
+    .vz-checkbox-label {
+        display: flex;
+        gap: 6px;
+        align-items: flex-start;
+        cursor: pointer;
+    }
+
+    .vz-checkbox-label input[type="checkbox"] {
+        margin-top: 2px;
+        cursor: pointer;
+    }
+
+    .vz-checkbox-label a {
+        text-decoration: underline;
+    }
+
+    .vz-check-btn,
+    .vz-finish-btn {
+        margin-top: 12px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: none;
+        background: var(--primary);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .vz-check-btn:disabled,
+    .vz-finish-btn:disabled {
+        background: #bfdbfe;
+        cursor: not-allowed;
+    }
+
+    .vz-result {
+        margin-top: 16px;
+        padding: 10px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        font-size: 0.9rem;
+    }
+
+    .vz-result table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .vz-result td {
+        padding: 6px 4px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+    }
+
+    .vz-result tr:last-child td {
+        border-bottom: none;
+    }
+
+    .vz-result strong {
+        font-weight: 600;
+    }
+
+    .vz-result input.vz-edit {
+        width: 100%;
+        padding: 4px 6px;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        font-size: 0.85rem;
+    }
+
+    .vz-contact {
+        margin-top: 16px;
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .vz-contact-extra {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .vz-contact input[type="text"],
+    .vz-contact input[type="email"] {
+        width: 100%;
+        padding: 7px 8px;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        font-size: 0.9rem;
+    }
+
+    .vz-ansprech-name {
+        font-weight: 600;
+    }
+</style>
+
+<script>
+const uploadArea = document.getElementById("vz-upload-area");
+const fileInput = document.getElementById("vz-file-input");
+const fileDisplay = document.getElementById("vz-file-display");
+const fileNameEl = document.getElementById("vz-file-name");
+const fileRemoveBtn = document.getElementById("vz-file-remove");
+
+const legalCheck = document.getElementById("vz-legal-check");
+const acceptCheckbox = document.getElementById("vz-accept");
+
+const checkBtn = document.getElementById("vz-check-btn");
+const resultBox = document.getElementById("vz-result");
+
+const contactSection = document.getElementById("vz-contact-section");
+const selfContact = document.getElementById("vz-self-contact");
+const contactExtra = document.getElementById("vz-contact-extra");
+const ansName = document.getElementById("vz-ansprech-name");
+
+const emailField = document.getElementById("vz-email");
+const finishBtn = document.getElementById("vz-finish-btn");
+
+let selectedFile = null;
+let lastBody = null;
+
+/* Upload – Klick */
+uploadArea.addEventListener("click", () => fileInput.click());
+
+/* Drag & Drop */
+uploadArea.addEventListener("dragover", e => {
+    e.preventDefault();
+    uploadArea.classList.add("vz-dragover");
+});
+uploadArea.addEventListener("dragleave", () => {
+    uploadArea.classList.remove("vz-dragover");
+});
+uploadArea.addEventListener("drop", e => {
+    e.preventDefault();
+    uploadArea.classList.remove("vz-dragover");
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+    }
+});
+
+/* Datei-Auswahl */
+fileInput.addEventListener("change", e => {
+    if (e.target.files && e.target.files[0]) {
+        handleFile(e.target.files[0]);
+    }
+});
+
+function handleFile(file) {
+    if (!file || file.type !== "application/pdf") {
+        alert("Bitte nur PDF-Dateien im Format PDF hochladen.");
+        return;
+    }
+    selectedFile = file;
+    fileNameEl.textContent = file.name;
+
+    uploadArea.style.display = "none";
+    fileDisplay.style.display = "flex";
+    legalCheck.style.display = "block";
+    checkBtn.style.display = "inline-flex";
+
+    resultBox.style.display = "none";
+    contactSection.style.display = "none";
+    finishBtn.style.display = "none";
+
+    updateCheckButtonState();
+}
+
+fileRemoveBtn.addEventListener("click", () => {
+    selectedFile = null;
+    lastBody = null;
+
+    fileDisplay.style.display = "none";
+    uploadArea.style.display = "flex";
+    legalCheck.style.display = "none";
+    checkBtn.style.display = "none";
+    resultBox.style.display = "none";
+    contactSection.style.display = "none";
+    finishBtn.style.display = "none";
+    acceptCheckbox.checked = false;
+});
+
+acceptCheckbox.addEventListener("change", updateCheckButtonState);
+
+function updateCheckButtonState() {
+    checkBtn.disabled = !(selectedFile && acceptCheckbox.checked);
+}
+
+/* Prüfen */
+checkBtn.addEventListener("click", async () => {
+    if (!selectedFile) return;
+
+    checkBtn.disabled = true;
+    checkBtn.textContent = "Wird geprüft...";
+
+    try {
+        const base64 = await fileToBase64(selectedFile);
+
+        const payload = {
+            fileName: selectedFile.name,
+            fileContent: base64
+        };
+
+        const res = await fetch(
+            "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }
+        );
+
+        let data;
+        try {
+            data = await res.json();
+        } catch (err) {
+            console.error("Antwort ist kein JSON", err);
+            showError("Die Antwort konnte nicht gelesen werden.");
+            return;
+        }
+
+        // Body extrahieren – funktioniert für:
+        // { ist_router... }
+        // { statusCode, body:{...} }
+        // { statusCode, body:"{...}" }
+        let body = data;
+        if (data && typeof data === "object" && "body" in data) {
+            if (typeof data.body === "string") {
+                try {
+                    body = JSON.parse(data.body);
+                } catch {
+                    body = {};
+                }
+            } else {
+                body = data.body || {};
+            }
+        }
+
+        lastBody = body;
+        displayResultBody(body);
+
+    } catch (err) {
+        console.error("Fehler beim Prüfen", err);
+        showError("Beim Prüfen ist ein Fehler aufgetreten.");
+    } finally {
+        checkBtn.textContent = "Prüfen";
+        updateCheckButtonState();
+    }
+});
+
+function fileToBase64(file) {
+    return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result;
+            const base64 = typeof result === "string" ? result.split(",")[1] : "";
+            resolve(base64);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function showError(msg) {
+    resultBox.innerHTML = `<p style="color:#b91c1c;">${msg}</p>`;
+    resultBox.style.display = "block";
+}
+
+/* Ergebnis-Verarbeitung (nur Body-Objekt) */
+function displayResultBody(body) {
+    if (!body || body.ist_router_einbau_rechnung === false) {
+        showError("Rechnung nicht erkannt.");
+        return;
+    }
+
+    let html = "<table>";
+    for (const key in body) {
+        if (!Object.prototype.hasOwnProperty.call(body, key)) continue;
+        if (key === "ist_router_einbau_rechnung") continue;
+
+        const value = body[key];
+        const isEditable = value === null || value === "" || typeof value === "undefined";
+
+        const fieldValue = isEditable
+            ? `<input data-field="${key}" class="vz-edit" placeholder="Bitte ergänzen">`
+            : String(value);
+
+        html += `
+            <tr>
+                <td><strong>${key}:</strong></td>
+                <td>${fieldValue}</td>
+            </tr>`;
+    }
+    html += "</table>";
+
+    resultBox.innerHTML = html;
+    resultBox.style.display = "block";
+
+    ansName.textContent = body.Ansprechpartner || "";
+    contactSection.style.display = "flex";
+    finishBtn.style.display = "inline-flex";
+
+    // Eingaben in editierbaren Feldern beeinflussen später ggf. das Payload
+    resultBox.querySelectorAll("input.vz-edit").forEach(input => {
+        input.addEventListener("input", () => {
+            if (!lastBody) return;
+            const field = input.getAttribute("data-field");
+            lastBody[field] = input.value;
+        });
+    });
+
+    updateFinishState();
+}
+
+/* Ansprechpartner & Abschluss */
+selfContact.addEventListener("change", () => {
+    contactExtra.style.display = selfContact.checked ? "none" : "flex";
+    updateFinishState();
+});
+
+["vz-vorname", "vz-nachname", "vz-firma"].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener("input", updateFinishState);
+});
+
+emailField.addEventListener("input", updateFinishState);
+
+function updateFinishState() {
+    let ok = emailField.value && emailField.value.length > 4;
+
+    if (!selfContact.checked) {
+        ok =
+            ok &&
+            document.getElementById("vz-vorname").value.trim().length > 1 &&
+            document.getElementById("vz-nachname").value.trim().length > 1 &&
+            document.getElementById("vz-firma").value.trim().length > 1;
+    }
+
+    finishBtn.disabled = !ok;
+}
+
+finishBtn.addEventListener("click", () => {
+    // Hier könntest du lastBody + Kontakt-Daten später noch sammeln, falls nötig.
+    openOverlay();
+    loadSection("vertragsvorlage", "vertragsvorlage.html");
+});
+</script>
+
     </div>
 
     <!-- Datei-Anzeige -->
@@ -305,3 +856,4 @@ finishBtn.addEventListener("click", () => {
     loadSection("vertragsvorlage", "vertragsvorlage.html");
 });
 </script>
+
