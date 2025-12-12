@@ -1,4 +1,4 @@
-<div class="vz-wrapper">
+<div class="vz-wrapper" id="vz-wrapper">
 
     <!-- Titel -->
     <h2 class="vz-title">
@@ -6,14 +6,14 @@
         <span>Wartungs- &amp; Servicevertrag</span>
     </h2>
 
-    <!-- Drag-&-Drop-Bereich (nur solange keine Datei gewählt ist) -->
-    <div id="vz-drop-area" class="vz-drop-area">
+    <!-- Alles ist Drag&Drop solange keine Datei gewählt ist -->
+    <div id="vz-drop-area" class="vz-drop-area" role="button" tabindex="0" aria-label="PDF hochladen">
         <div class="vz-drop-inner">
             <p class="vz-intro-line">
                 Hier können Sie Ihren eigenen Wartungs- &amp; Servicevertrag anfragen.
             </p>
 
-            <img src="/Logos/dad.png" alt="PDF-Icon" class="vz-intro-icon">
+            <img src="/Logos/PDF_Icon.png" alt="PDF" class="vz-pdf-icon">
 
             <p class="vz-intro-text">
                 Laden Sie einfach die Rechnung als PDF für den von
@@ -21,292 +21,295 @@
                 eingebauten Router hier hoch.
             </p>
 
-            <p class="vz-drop-hint">
-                Es kann genau <strong>eine</strong> PDF-Datei hochgeladen werden.
-                Datei einfach hier hineinziehen oder klicken.
-            </p>
-            <p class="vz-drop-hint">
-                Die PDF wird automatisch analysiert.
-                Fehlende Angaben können Sie anschließend ergänzen.
-            </p>
+            <div class="vz-mini">
+                <p>Es kann genau <strong>eine</strong> PDF-Datei hochgeladen werden.</p>
+                <p>Datei einfach hier hineinziehen oder klicken.</p>
+            </div>
         </div>
 
         <input type="file" id="vz-file-input" accept="application/pdf" hidden>
     </div>
 
-    <!-- Datei-Anzeige (nach Auswahl) -->
+    <!-- Datei-Zeile -->
     <div id="vz-file-row" class="vz-file-row" style="display:none;">
-        <div class="vz-file-info">
-            <span class="vz-file-icon">📄</span>
-            <span id="vz-file-name" class="vz-file-name"></span>
+        <div class="vz-file-left">
+            <img src="/Logos/PDF_Icon.png" alt="PDF" class="vz-file-pdf">
+            <div class="vz-file-meta">
+                <div id="vz-file-name" class="vz-file-name"></div>
+                <div class="vz-file-sub">PDF ausgewählt</div>
+            </div>
         </div>
-        <button id="vz-file-remove" class="vz-file-remove" type="button" aria-label="Datei entfernen">
-            🗑
+
+        <button id="vz-file-remove" class="vz-icon-btn" type="button" aria-label="Datei entfernen" title="Datei entfernen">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 3h6l1 2h5v2H3V5h5l1-2Zm1 7h2v9h-2v-9Zm4 0h2v9h-2v-9ZM6 10h2v9H6v-9Z"/>
+            </svg>
         </button>
     </div>
 
-    <!-- Datenschutz/AGB -->
+    <!-- Datenschutz -->
     <div id="vz-legal" class="vz-legal" style="display:none;">
-        <label class="vz-check-label">
+        <label class="vz-check">
             <input type="checkbox" id="vz-accept">
             <span>
                 Ich akzeptiere die
-                <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> und
+                <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>
+                und die
                 <a href="/agb" target="_blank">AGBs</a>.
             </span>
         </label>
     </div>
 
-    <!-- Prüfen-Button -->
+    <!-- Button -->
     <div id="vz-check-area" class="vz-check-area" style="display:none;">
         <button id="vz-check-btn" class="vz-btn" type="button" disabled>Rechnung prüfen</button>
     </div>
 
-    <!-- Ladezustand -->
+    <!-- Loading -->
     <div id="vz-wait" class="vz-wait" style="display:none;">
         <div class="vz-spinner"></div>
-        <p>Die Rechnung wird geprüft. Dies kann je nach Dateigröße und Auslastung 10–30 Sekunden dauern.</p>
+        <p>Die Rechnung wird geprüft. Dies kann 10–30 Sekunden dauern…</p>
     </div>
 
-    <!-- Ergebnis-Tabelle -->
+    <!-- Ergebnis -->
     <div id="vz-result" class="vz-result" style="display:none;"></div>
 
 </div>
 
 <style>
-    .vz-wrapper {
-        margin: 0;
-        padding: 16px 16px 18px;
-        box-sizing: border-box;
-        font-size: 0.95rem;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
+    .service-card#vertragsauswertung { padding: 0; }
+
+    /* Außenfläche */
+    .vz-wrapper{
+        margin:0;
+        padding:16px;
+        box-sizing:border-box;
+        height:100%;
+        background:#f3f4f6;
+        border-radius:0;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        transition: background-color .18s ease;
+    }
+    .vz-wrapper.vz-dragover{ background:#e5f0ff; }
+
+    .vz-title{
+        text-align:center;
+        margin:0;
+        font-size:1.15rem;
+        font-weight:800;
+        line-height:1.25;
+        color:var(--text-main);
+    }
+    .vz-title span{ font-weight:800; }
+
+    /* Drop-Fläche füllt restliche Höhe */
+    .vz-drop-area{
+        flex:1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+
+        background:#e5e7eb;
+        border:2px dashed #cbd5e1;
+        border-radius:16px;
+
+        padding:18px 14px;
+        cursor:pointer;
+        transition: border-color .18s ease, background-color .18s ease;
+        user-select:none;
+    }
+    .vz-wrapper.vz-dragover .vz-drop-area{
+        background:#dbeafe;
+        border-color:var(--primary);
     }
 
-    .vz-title {
-        text-align: center;
-        margin: 0 0 8px 0;
-        font-size: 1.15rem;
-        font-weight: 700;
-        line-height: 1.35;
-        color: var(--text-main);
+    .vz-drop-inner{
+        max-width:280px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:10px;
     }
 
-    .vz-title span {
-        font-weight: 700;
+    .vz-intro-line{
+        margin:0;
+        font-size:1rem;
+        font-weight:700;
+        color:var(--text-main);
     }
 
-    /* Drag-&-Drop-Feld nutzt die volle verbleibende Höhe */
-    .vz-drop-area {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 4px;
-        border: 2px dashed #d1d5db;
-        border-radius: 18px;
-        background: #f3f4f6;
-        padding: 18px 14px;
-        text-align: center;
-        cursor: pointer;
-        transition: border-color 0.2s, background-color 0.2s;
+    .vz-pdf-icon{
+        width:56px;
+        height:auto;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
     }
 
-    .vz-wrapper.vz-dragover .vz-drop-area {
-        border-color: var(--primary);
-        background: #e5f0ff;
+    .vz-intro-text{
+        margin:0;
+        font-size:0.92rem;
+        line-height:1.45;
+        color:var(--text-main);
     }
 
-    .vz-drop-inner {
-        max-width: 260px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        align-items: center;
+    .vz-mini{
+        margin-top:2px;
+        padding:10px 12px;
+        background:rgba(255,255,255,0.55);
+        border:1px solid rgba(203,213,225,0.65);
+        border-radius:12px;
+        font-size:0.82rem;
+        color:var(--text-muted);
+        line-height:1.35;
     }
-
-    .vz-intro-line {
-        margin: 0;
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: var(--text-main);
-    }
-
-    .vz-intro-icon {
-        width: 50px;
-        height: auto;
-        margin: 4px 0;
-    }
-
-    .vz-intro-text {
-        margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.4;
-        color: var(--text-main);
-    }
-
-    .vz-drop-hint {
-        margin: 0;
-        font-size: 0.8rem;
-        line-height: 1.3;
-        color: var(--text-muted);
-    }
+    .vz-mini p{ margin:0; }
+    .vz-mini p + p{ margin-top:6px; }
 
     /* Datei-Zeile */
-    .vz-file-row {
-        margin-top: 6px;
-        padding: 8px 10px;
-        border-radius: 10px;
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
+    .vz-file-row{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+
+        padding:10px 12px;
+        background:#ffffff;
+        border:1px solid #e5e7eb;
+        border-radius:12px;
+        box-shadow: 0 1px 8px rgba(15,23,42,0.05);
     }
 
-    .vz-file-info {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        min-width: 0;
+    .vz-file-left{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        min-width:0;
+    }
+    .vz-file-pdf{ width:28px; height:auto; }
+
+    .vz-file-meta{ min-width:0; }
+    .vz-file-name{
+        font-weight:800;
+        color:#111827;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        max-width:240px;
+        font-size:0.92rem;
+    }
+    .vz-file-sub{
+        font-size:0.78rem;
+        color:var(--text-muted);
+        margin-top:2px;
     }
 
-    .vz-file-icon {
-        font-size: 1.1rem;
+    .vz-icon-btn{
+        width:38px;
+        height:38px;
+        border-radius:10px;
+        border:1px solid #e5e7eb;
+        background:#f8fafc;
+        display:grid;
+        place-items:center;
+        cursor:pointer;
+        transition: background-color .15s ease, border-color .15s ease;
+    }
+    .vz-icon-btn:hover{
+        background:#fee2e2;
+        border-color:#fecaca;
+    }
+    .vz-icon-btn svg{
+        width:18px;
+        height:18px;
+        fill:#b91c1c;
     }
 
-    .vz-file-name {
-        font-weight: 600;
-        color: #374151;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 190px;
+    /* Checkbox */
+    .vz-legal{ margin-top:2px; }
+    .vz-check{
+        display:flex;
+        align-items:flex-start;
+        gap:8px;
+        font-size:0.88rem;
+        color:#111827;
+        line-height:1.3;
+    }
+    .vz-check input{ margin-top:2px; }
+    .vz-check a{ text-decoration:underline; }
+
+    /* Button */
+    .vz-check-area{
+        display:flex;
+        justify-content:flex-end;
+    }
+    .vz-btn{
+        padding:9px 16px;
+        border-radius:999px;
+        border:none;
+        background:var(--primary);
+        color:white;
+        font-weight:700;
+        font-size:0.92rem;
+        cursor:pointer;
+        box-shadow: 0 6px 18px rgba(11,116,255,0.18);
+    }
+    .vz-btn:disabled{
+        background:#bcd4ff;
+        box-shadow:none;
+        cursor:not-allowed;
     }
 
-    .vz-file-remove {
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        font-size: 1.1rem;
-        color: #b91c1c;
+    /* Loading */
+    .vz-wait{
+        text-align:center;
+        font-size:0.88rem;
+        color:#4b5563;
+        margin-top:8px;
     }
+    .vz-spinner{
+        width:28px;
+        height:28px;
+        border-radius:999px;
+        border:3px solid #e5e7eb;
+        border-top-color:var(--primary);
+        margin:0 auto 8px;
+        animation:vzSpin .8s linear infinite;
+    }
+    @keyframes vzSpin{ to{ transform:rotate(360deg); } }
 
-    /* Datenschutz / AGB */
-    .vz-legal {
-        margin-top: 8px;
-        font-size: 0.85rem;
+    /* Result */
+    .vz-result{
+        margin-top:6px;
+        padding:10px 10px 8px;
+        border-radius:12px;
+        background:#ffffff;
+        border:1px solid #e5e7eb;
+        box-shadow: 0 1px 8px rgba(15,23,42,0.05);
+        font-size:0.86rem;
     }
+    .vz-result table{ width:100%; border-collapse:collapse; }
+    .vz-result td{ padding:4px 2px; border-bottom:1px solid #eef2f7; vertical-align:top; }
+    .vz-result tr:last-child td{ border-bottom:none; }
 
-    .vz-check-label {
-        display: flex;
-        gap: 6px;
-        align-items: flex-start;
-        cursor: pointer;
+    .vz-result input.vz-edit{
+        width:100%;
+        padding:6px 8px;
+        border-radius:10px;
+        border:1px solid #cbd5e1;
+        font-size:0.86rem;
+        background:#f8fafc;
+        box-sizing:border-box;
     }
-
-    .vz-check-label input {
-        margin-top: 2px;
-    }
-
-    .vz-check-label a {
-        text-decoration: underline;
-    }
-
-    /* Prüfen-Button */
-    .vz-check-area {
-        margin-top: 6px;
-        text-align: right;
-    }
-
-    .vz-btn {
-        padding: 7px 14px;
-        border-radius: 999px;
-        border: none;
-        background: var(--primary);
-        color: #fff;
-        font-size: 0.9rem;
-        font-weight: 500;
-        cursor: pointer;
-    }
-
-    .vz-btn:disabled {
-        background: #bcd4ff;
-        cursor: not-allowed;
-    }
-
-    /* Warten */
-    .vz-wait {
-        margin-top: 12px;
-        text-align: center;
-        font-size: 0.86rem;
-        color: #4b5563;
-    }
-
-    .vz-spinner {
-        width: 26px;
-        height: 26px;
-        border-radius: 999px;
-        border: 3px solid #e5e7eb;
-        border-top-color: var(--primary);
-        margin: 0 auto 8px;
-        animation: vz-spin 0.8s linear infinite;
-    }
-
-    @keyframes vz-spin {
-        to { transform: rotate(360deg); }
-    }
-
-    /* Ergebnis */
-    .vz-result {
-        margin-top: 10px;
-        padding: 10px 8px 6px;
-        border-radius: 10px;
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        font-size: 0.85rem;
-    }
-
-    .vz-result table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .vz-result td {
-        padding: 3px 2px;
-        border-bottom: 1px solid #e5e7eb;
-        vertical-align: top;
-    }
-
-    .vz-result tr:last-child td {
-        border-bottom: none;
-    }
-
-    .vz-result strong {
-        font-weight: 600;
-    }
-
-    .vz-result input.vz-edit {
-        width: 100%;
-        padding: 3px 4px;
-        border-radius: 4px;
-        border: 1px solid #d1d5db;
-        font-size: 0.8rem;
-    }
-
-    .vz-error {
-        color: #b91c1c;
-        font-weight: 600;
-    }
+    .vz-error{ color:#b91c1c; font-weight:800; }
 </style>
 
 <script>
 (function () {
     "use strict";
 
-    const wrapper   = document.querySelector(".vz-wrapper");
+    const wrapper   = document.getElementById("vz-wrapper");
     const dropArea  = document.getElementById("vz-drop-area");
     const fileInput = document.getElementById("vz-file-input");
 
@@ -324,33 +327,40 @@
 
     let selectedFile = null;
     let parsedData   = null;
-    let overlaySent  = false;
+    let selectionOpened = false;
 
-    /* Drag & Drop auf gesamte Karte */
+    // Drag highlight (nur wenn noch keine Datei)
     wrapper.addEventListener("dragover", (e) => {
+        if (selectedFile) return;
         e.preventDefault();
         wrapper.classList.add("vz-dragover");
     });
 
     wrapper.addEventListener("dragleave", (e) => {
-        if (!wrapper.contains(e.relatedTarget)) {
-            wrapper.classList.remove("vz-dragover");
-        }
+        if (selectedFile) return;
+        if (!wrapper.contains(e.relatedTarget)) wrapper.classList.remove("vz-dragover");
     });
 
     wrapper.addEventListener("drop", (e) => {
+        if (selectedFile) return;
         e.preventDefault();
         wrapper.classList.remove("vz-dragover");
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            handleFile(e.dataTransfer.files[0]);
-        }
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
     });
 
-    dropArea.addEventListener("click", () => fileInput.click());
+    // Klick überall öffnet Dateidialog (nur wenn noch keine Datei)
+    wrapper.addEventListener("click", () => {
+        if (!selectedFile) fileInput.click();
+    });
+
+    // Tastatur für DropArea
+    dropArea.addEventListener("keydown", (e) => {
+        if (selectedFile) return;
+        if (e.key === "Enter" || e.key === " ") fileInput.click();
+    });
+
     fileInput.addEventListener("change", (e) => {
-        if (e.target.files && e.target.files[0]) {
-            handleFile(e.target.files[0]);
-        }
+        if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
     });
 
     function handleFile(file) {
@@ -360,28 +370,32 @@
         }
 
         selectedFile = file;
-        parsedData   = null;
-        overlaySent  = false;
+        parsedData = null;
+        selectionOpened = false;
 
         fileName.textContent = file.name;
 
-        // Drag-&-Drop ausblenden, nur Titel + Datei + Legal/Prüfen
+        // Drop verschwindet, Rest erscheint
         dropArea.style.display  = "none";
         fileRow.style.display   = "flex";
         legalBox.style.display  = "block";
-        checkArea.style.display = "block";
+        checkArea.style.display = "flex";
 
         waitBox.style.display   = "none";
         resultBox.style.display = "none";
 
-        acceptChk.checked       = false;
-        checkBtn.disabled       = true;
+        acceptChk.checked = false;
+        checkBtn.disabled = true;
+
+        wrapper.classList.remove("vz-dragover");
     }
 
-    removeBtn.addEventListener("click", () => {
+    removeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
         selectedFile = null;
-        parsedData   = null;
-        overlaySent  = false;
+        parsedData = null;
+        selectionOpened = false;
 
         dropArea.style.display  = "flex";
         fileRow.style.display   = "none";
@@ -390,44 +404,37 @@
         waitBox.style.display   = "none";
         resultBox.style.display = "none";
 
-        acceptChk.checked       = false;
-        checkBtn.disabled       = true;
+        acceptChk.checked = false;
+        checkBtn.disabled = true;
     });
 
     acceptChk.addEventListener("change", () => {
         checkBtn.disabled = !(acceptChk.checked && selectedFile);
     });
 
-    checkBtn.addEventListener("click", async () => {
+    checkBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
         if (!selectedFile) return;
 
-        // alles außer Titel + Loader weg
+        // Nur Titel + Loader sichtbar
         fileRow.style.display   = "none";
         legalBox.style.display  = "none";
         checkArea.style.display = "none";
-        dropArea.style.display  = "none";
         resultBox.style.display = "none";
         waitBox.style.display   = "block";
 
         const base64 = await toBase64(selectedFile);
 
-        const payload = {
-            fileName: selectedFile.name,
-            fileContent: base64
-        };
+        const payload = { fileName: selectedFile.name, fileContent: base64 };
 
         let json;
         try {
             const res = await fetch(
                 "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/740a58efef1a4952af4c7e05e0ddea74/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gsPq8vYpfRdArQN6KQdM1FDGilRliBu9VFrMcAYi3iQ",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                }
+                { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }
             );
             json = await res.json();
-        } catch (err) {
+        } catch {
             showError("Fehler bei der Analyse.");
             return;
         }
@@ -442,6 +449,7 @@
         }
 
         parsedData = body;
+
         waitBox.style.display = "none";
         fileRow.style.display = "flex";
 
@@ -451,17 +459,13 @@
         }
 
         renderTable(body);
-        autoOpenIfComplete();
+        tryOpenSelectionIfComplete();
     });
 
     function toBase64(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
-            reader.onload = () => {
-                const res = reader.result;
-                const base64 = typeof res === "string" ? res.split(",")[1] : "";
-                resolve(base64);
-            };
+            reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
             reader.readAsDataURL(file);
         });
     }
@@ -473,7 +477,7 @@
 
     function labelForKey(key) {
         if (key === "windpark_nummer") return "Windpark ID";
-        if (key === "windpark_name")   return "Windpark";
+        if (key === "windpark_name") return "Windpark";
         return key.replace(/_/g, " ");
     }
 
@@ -485,7 +489,7 @@
             if (key === "ist_router_einbau_rechnung") continue;
 
             const label = labelForKey(key);
-            const val   = data[key];
+            const val = data[key];
             const editable = val === null || val === "";
 
             html += `
@@ -509,13 +513,13 @@
             inp.addEventListener("input", () => {
                 if (!parsedData) return;
                 parsedData[k] = inp.value;
-                autoOpenIfComplete();
+                tryOpenSelectionIfComplete();
             });
         });
     }
 
-    function autoOpenIfComplete() {
-        if (overlaySent || !parsedData) return;
+    function tryOpenSelectionIfComplete() {
+        if (selectionOpened || !parsedData) return;
 
         for (const key in parsedData) {
             if (!Object.prototype.hasOwnProperty.call(parsedData, key)) continue;
@@ -524,9 +528,13 @@
             if (v === null || v === "") return;
         }
 
-        overlaySent = true;
-        if (typeof openOverlay === "function") openOverlay();
-        if (typeof loadSection === "function") loadSection("vertragsvorlage", "vertragsvorlage.html");
+        selectionOpened = true;
+
+        if (typeof openSelection === "function") openSelection();
+
+        if (typeof loadSection === "function") {
+            loadSection("selection", "vertragsauswahl.html");
+        }
     }
 
 })();
