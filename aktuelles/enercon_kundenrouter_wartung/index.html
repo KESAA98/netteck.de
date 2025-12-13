@@ -228,15 +228,6 @@
             color: var(--text-main);
         }
 
-
-        @media (max-width: 800px) {
-            #vertragsvorlage {
-                width: calc(100% - 2rem);
-                max-height: calc(100% - 2rem);
-                padding: 1.25rem 1.5rem;
-            }
-        }
-
         @media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
@@ -336,23 +327,69 @@
 
     </div>
 </div>
+
+
 <script>
+// Leistungsumfang laden
+    async function loadRouterEinbauInfo() {
+        const listEl = document.getElementById("leistungen-list");
+        const legalBox = document.getElementById("legal-box");
 
-        const rect = info.getBoundingClientRect();
-        const gap = rect.top;              // oberer Abstand in px
-        const minWidth = 280;              // mind. Breite rechts
-        const left = rect.right + gap;     // rechter Rand Info + gleicher Abstand
-        const rightMargin = gap;           // gleicher Abstand zum Rand
-        const available = window.innerWidth - left - rightMargin;
+        if (!listEl) return;
 
-    function closeOverlay() {
-        const ov = document.getElementById("overlay");
-        if (ov) ov.classList.add("overlay-hidden");
-    }
+        try {
+            const res = await fetch("information/warungsvertrag.txt");
+            if (!res.ok) {
+                throw new Error("Fehler beim Laden von information/warungsvertrag.txt (Status " + res.status + ")");
+            }
 
-    function initVertragsvorlage() {
-        // Hier kommt später dein JS für vertragsvorlage.html rein
-        console.log("vertragsvorlage.html wurde geladen");
+            const data = await res.json();
+
+            if (Array.isArray(data.sections)) {
+                data.sections.forEach(section => {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "leistung";
+
+                    if (section.heading) {
+                        const h = document.createElement("h3");
+                        h.textContent = section.heading;
+                        wrapper.appendChild(h);
+                    }
+
+                    if (section.text) {
+                        const p = document.createElement("p");
+                        let html = String(section.text);
+                        html = html.replace(/\n/g, "<br>").replace(/
+/g, "<br>");
+                        p.innerHTML = html;
+                        wrapper.appendChild(p);
+                    }
+
+                    if (section.note) {
+                        const note = document.createElement("p");
+                        note.className = "leistung-note";
+                        let html = String(section.note);
+                        html = html.replace(/\n/g, "<br>").replace(/
+/g, "<br>");
+                        note.innerHTML = html;
+                        wrapper.appendChild(note);
+                    }
+
+                    listEl.appendChild(wrapper);
+                });
+            }
+
+            if (data.legal_notice && legalBox) {
+                let html = String(data.legal_notice);
+                html = html.replace(/\n/g, "<br>").replace(/
+/g, "<br>");
+                legalBox.innerHTML = html;
+                legalBox.style.display = "block";
+            }
+        } catch (err) {
+            console.error(err);
+            listEl.innerHTML = "<p>Die Detailbeschreibung zum Leistungsumfang konnte nicht geladen werden. Bitte kontaktieren Sie mich direkt für weitere Informationen.</p>";
+        }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
