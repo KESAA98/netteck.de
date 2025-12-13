@@ -1,171 +1,217 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<title>Vertrag anfragen – Kevin Strakerjahn Networks & Automation</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <title>Vertrag anfragen – Kevin Strakerjahn Networks & Automation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<link rel="icon" href="../../Logos/logo.png">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../../../Logos/logo.png" />
 
-<style>
-:root{
-    --bg:#f5f7fb;
-    --card:#ffffff;
-    --primary1:#2b7cff;
-    --primary2:#7a5cff;
-    --text:#1f2933;
-    --muted:#6b7280;
-}
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --primary1:#2b7cff;
+      --primary2:#7a5cff;
+      --text:#1f2933;
+      --muted:#6b7280;
+      --shadow: 0 30px 80px rgba(0,0,0,.25);
+      --radius:18px;
+    }
 
-html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
-    background:var(--bg);
-    overflow:hidden;
-}
+    html, body{
+      margin:0;
+      padding:0;
+      width:100%;
+      height:100%;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+      background: var(--bg);
+      overflow:hidden; /* Wizard soll die ganze Fläche nutzen */
+    }
 
-/* ===== Hintergrund ===== */
-#app{
-    position:fixed;
-    inset:0;
-    filter:blur(6px);
-    pointer-events:none;
-    transition:filter .3s ease;
-}
+    /* ===== App (blurred until consent) ===== */
+    #app{
+      position:fixed;
+      inset:0;
+      filter: blur(7px);
+      pointer-events:none;
+      transition: filter .25s ease;
+    }
 
-/* ===== Consent Overlay ===== */
-#consent{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.35);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:10;
-}
+    /* ===== Steps wrapper ===== */
+    #steps{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      background: var(--bg);
+    }
 
-#consentBox{
-    background:var(--card);
-    max-width:520px;
-    width:90%;
-    padding:28px;
-    border-radius:18px;
-    box-shadow:0 30px 80px rgba(0,0,0,.25);
-}
+    .step{
+      position:absolute;
+      inset:0;
+      background: var(--bg);
+      transform: translateY(100%);
+      transition: transform .35s ease;
+      will-change: transform;
+    }
+    .step.active{ transform: translateY(0); }
+    .step.above{ transform: translateY(-100%); }
 
-#consentBox h2{
-    margin:0 0 12px;
-    font-size:22px;
-}
+    .step iframe{
+      width:100%;
+      height:100%;
+      border:none;
+      background: transparent;
+      display:block;
+    }
 
-#consentBox p{
-    color:var(--muted);
-    line-height:1.5;
-}
+    /* ===== Consent Overlay ===== */
+    #consent{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+    }
 
-#consentBox a{
-    color:var(--primary1);
-    text-decoration:none;
-    font-weight:600;
-}
+    #consentBox{
+      background: var(--card);
+      max-width: 560px;
+      width: min(92vw, 560px);
+      padding: 28px 28px 22px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align:center; /* gewünscht: zentriert */
+    }
 
-#consentBox button{
-    margin-top:20px;
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:999px;
-    font-size:16px;
-    font-weight:600;
-    color:#fff;
-    background:linear-gradient(135deg,var(--primary1),var(--primary2));
-    cursor:pointer;
-}
+    #consentBox h2{
+      margin: 0 0 10px;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: .2px;
+    }
 
-/* ===== Step Container ===== */
-#steps{
-    position:fixed;
-    inset:0;
-    overflow:hidden;
-}
+    #consentBox p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+    }
 
-.step{
-    position:absolute;
-    inset:0;
-    background:var(--bg);
-    transform:translateY(100%);
-}
+    #consentBox a{
+      color: var(--primary1);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    #consentBox a:hover{ text-decoration: underline; }
 
-.step.active{
-    transform:translateY(0);
-}
+    #consentBox .hint{
+      margin-top: 14px;
+      font-size: 13px;
+      color: #8a93a3;
+    }
 
-.step iframe{
-    width:100%;
-    height:100%;
-    border:none;
-    background:transparent;
-}
-</style>
+    #consentBox button{
+      margin-top: 18px;
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg,var(--primary1),var(--primary2));
+      cursor: pointer;
+      transition: transform .15s ease, filter .15s ease;
+    }
+    #consentBox button:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+    #consentBox button:active{
+      transform: translateY(0);
+      filter: brightness(.98);
+    }
+  </style>
 </head>
+
 <body>
-
-<!-- ===== Consent ===== -->
+  <!-- ===== Consent Overlay ===== -->
+  <div id="consent" aria-modal="true" role="dialog">
     <div id="consentBox">
-        <h2>Hinweis Datenschutz &amp; AGB</h2>
-        <p>
-            Für die Vertragsanfrage ist die Zustimmung zur
-            <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>
-            und zu den
-            <a href="/agb" target="_blank">AGB</a>
-            erforderlich.
-        </p>
-        <button onclick="acceptConsent()">Zustimmen & fortfahren</button>
+      <h2>Hinweis Datenschutz &amp; AGB</h2>
+      <p>
+        Für die Vertragsanfrage ist die Zustimmung zur
+        <a href="../../../datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>
+        und zu den
+        <a href="../../../agb/" target="_blank" rel="noopener">AGB</a>
+        erforderlich.
+      </p>
+      <div class="hint">Bitte bestätigen, um fortzufahren.</div>
+      <button type="button" onclick="acceptConsent()">Zustimmen &amp; fortfahren</button>
     </div>
-</div>
+  </div>
 
-<!-- ===== App ===== -->
-<div id="app">
+  <!-- ===== App (blurred until consent) ===== -->
+  <div id="app">
     <div id="steps">
-        <div class="step active" id="step1">
-            <iframe src="steps/step1_rechnung_pruefen.html"></iframe>
-        </div>
-        <div class="step" id="step2">
-            <iframe src="steps/step2_daten_pruefen.html"></iframe>
-        </div>
-        <div class="step" id="step3">
-            <iframe src="steps/step3_person_bestaetigen.html"></iframe>
-        </div>
-        <div class="step" id="step4">
-            <iframe src="steps/step4_paket_waehlen.html"></iframe>
-        </div>
-        <div class="step" id="step5">
-            <iframe src="steps/step5_vertrag_bestaetigen.html"></iframe>
-        </div>
+      <div class="step active" id="step1">
+        <iframe src="steps/step1_rechnung_pruefen.html" title="Step 1 – Rechnung prüfen"></iframe>
+      </div>
+      <div class="step" id="step2">
+        <iframe src="steps/step2_daten_pruefen.html" title="Step 2 – Daten prüfen"></iframe>
+      </div>
+      <div class="step" id="step3">
+        <iframe src="steps/step3_person_bestaetigen.html" title="Step 3 – Person bestätigen"></iframe>
+      </div>
+      <div class="step" id="step4">
+        <iframe src="steps/step4_paket_waehlen.html" title="Step 4 – Paket wählen"></iframe>
+      </div>
+      <div class="step" id="step5">
+        <iframe src="steps/step5_vertrag_bestaetigen.html" title="Step 5 – Vertrag bestätigen"></iframe>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
-let currentStep = 1;
+  <script>
+    let currentStep = 1;
+    const totalSteps = 5;
 
-function acceptConsent(){
-    document.getElementById('consent').style.display='none';
-    document.getElementById('app').style.filter='none';
-    document.getElementById('app').style.pointerEvents='auto';
-}
+    function acceptConsent(){
+      document.getElementById('consent').style.display = 'none';
 
-/* Diese Funktion wird später von den Step-HTMLs aufgerufen */
-window.nextStep = function(){
-    if(currentStep>=5) return;
-    document.getElementById('step'+currentStep).classList.remove('active');
-    currentStep++;
-    document.getElementById('step'+currentStep).classList.add('active');
-};
-</script>
+      const app = document.getElementById('app');
+      app.style.filter = 'none';
+      app.style.pointerEvents = 'auto';
+    }
 
+    function setStep(next){
+      const n = Math.max(1, Math.min(totalSteps, Number(next)));
+      if (n === currentStep) return;
+
+      const curEl = document.getElementById('step' + currentStep);
+      curEl.classList.remove('active');
+      curEl.classList.add('above');
+
+      const nextEl = document.getElementById('step' + n);
+      nextEl.classList.remove('above');
+      nextEl.classList.add('active');
+
+      window.setTimeout(() => {
+        curEl.classList.remove('above');
+      }, 380);
+
+      currentStep = n;
+    }
+
+    // ===== API für die Step-HTMLs =====
+    // In den Steps: parent.nextStep() / parent.prevStep() / parent.goToStep(3)
+    window.nextStep = function(){ if (currentStep < totalSteps) setStep(currentStep + 1); };
+    window.prevStep = function(){ if (currentStep > 1) setStep(currentStep - 1); };
+    window.goToStep = function(n){ setStep(n); };
+  </script>
 </body>
 </html>
-
