@@ -228,6 +228,15 @@
             color: var(--text-main);
         }
 
+
+        @media (max-width: 800px) {
+            #vertragsvorlage {
+                width: calc(100% - 2rem);
+                max-height: calc(100% - 2rem);
+                padding: 1.25rem 1.5rem;
+            }
+        }
+
         @media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
@@ -327,20 +336,24 @@
 
     </div>
 </div>
-
 <script>
-// Leistungsumfang laden
-    async function loadRouterEinbauInfo() {
-        const listEl = document.getElementById("leistungen-list");
-        const legalBox = document.getElementById("legal-box");
 
-        if (!listEl) return;
+        const rect = info.getBoundingClientRect();
+        const gap = rect.top;              // oberer Abstand in px
+        const minWidth = 280;              // mind. Breite rechts
+        const left = rect.right + gap;     // rechter Rand Info + gleicher Abstand
+        const rightMargin = gap;           // gleicher Abstand zum Rand
+        const available = window.innerWidth - left - rightMargin;
 
-        try {
-            const res = await fetch("information/warungsvertrag.txt");
-            if (!res.ok) {
-                throw new Error("Fehler beim Laden von information/warungsvertrag.txt (Status " + res.status + ")");
-            }
+    function closeOverlay() {
+        const ov = document.getElementById("overlay");
+        if (ov) ov.classList.add("overlay-hidden");
+    }
+
+    function initVertragsvorlage() {
+        // Hier kommt später dein JS für vertragsvorlage.html rein
+        console.log("vertragsvorlage.html wurde geladen");
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
         loadRouterEinbauInfo();
