@@ -10,13 +10,15 @@
 
     <style>
         :root {
+            --primary: #0b74ff;
+            --primary-soft: rgba(11, 116, 255, 0.08);
             --bg: #f5f7fb;
             --card-bg: #ffffff;
             --border: #e1e4ec;
             --text-main: #1f2933;
             --text-muted: #6b7280;
             --radius-lg: 14px;
-    }
+        }
 
         * { box-sizing: border-box; }
 
@@ -51,6 +53,8 @@
             padding: 1.75rem 1.9rem 2.1rem;
             border: 1px solid var(--border);
         }
+
+        /* HEADER / BILD */
         .header {
             margin-bottom: 1.5rem;
         }
@@ -65,6 +69,8 @@
             border-radius: 10px;
             object-fit: cover;
         }
+
+        /* INTRO */
         .intro {
             margin-bottom: 1.75rem;
         }
@@ -89,6 +95,8 @@
             margin: 0.15rem 0;
             font-size: 0.95rem;
         }
+
+        /* LEISTUNGEN */
         .leistungen-section {
             margin-top: 1.75rem;
         }
@@ -143,6 +151,8 @@
             color: #7c2d12;
             display: none;
         }
+
+        /* SEKTIONEN */
         .section-divider {
             margin-top: 2rem;
             border-top: 1px solid var(--border);
@@ -187,6 +197,8 @@
             align-items: center;
             margin-bottom: 0.7rem;
         }
+
+        /* FOOTER */
         footer {
             margin-top: 1.6rem;
             font-size: 0.85rem;
@@ -214,6 +226,67 @@
 
         .footer-link:hover {
             color: var(--text-main);
+        }
+
+        /* RECHTER ZUSATZ-CONTAINER (vertragsauswertung) */
+        .service-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--border);
+            padding: 1.25rem 1.4rem 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            max-width: 420px;
+        }
+
+        @media (min-width: 1400px) {
+            .service-card {
+                position: fixed;
+            }
+        }
+
+        @media (max-width: 1399px) {
+            .service-card {
+                position: static;
+                max-width: 700px;
+                margin: 1.5rem auto 2rem;
+            }
+        }
+
+        /* OVERLAY (vertragsvorlage) */
+        #overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(2px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .overlay-hidden {
+            display: none !important;
+        }
+
+        #vertragsvorlage {
+            background: #ffffff;
+            width: calc(100% - 3rem);
+            max-width: 1000px;
+            max-height: calc(100% - 3rem);
+            overflow: auto;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 2rem;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
+        }
+
+        @media (max-width: 800px) {
+            #vertragsvorlage {
+                width: calc(100% - 2rem);
+                max-height: calc(100% - 2rem);
+                padding: 1.25rem 1.5rem;
+            }
         }
 
         @media (max-width: 600px) {
@@ -316,6 +389,20 @@
     </div>
 </div>
 
+<!-- Rechter Container: vertragsauswertung -->
+<div class="service-card" id="vertragsauswertung" aria-label="Vertragsauswertung">
+    <div id="vertragsauswertung-content">
+        <!-- vertragsauswertung.html wird hier geladen -->
+    </div>
+</div>
+
+<!-- Overlay: vertragsvorlage (standardmäßig verborgen) -->
+<div id="overlay" class="overlay-hidden" aria-hidden="true">
+    <div id="vertragsvorlage">
+        <!-- vertragsvorlage.html wird hier geladen -->
+    </div>
+</div>
+
 <script>
     // Leistungsumfang laden
     async function loadRouterEinbauInfo() {
@@ -346,8 +433,7 @@
                     if (section.text) {
                         const p = document.createElement("p");
                         let html = String(section.text);
-                        html = html.replace(/\n/g, "<br>").replace(/
-/g, "<br>");
+                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
                         p.innerHTML = html;
                         wrapper.appendChild(p);
                     }
@@ -356,8 +442,7 @@
                         const note = document.createElement("p");
                         note.className = "leistung-note";
                         let html = String(section.note);
-                        html = html.replace(/\n/g, "<br>").replace(/
-/g, "<br>");
+                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
                         note.innerHTML = html;
                         wrapper.appendChild(note);
                     }
@@ -368,8 +453,7 @@
 
             if (data.legal_notice && legalBox) {
                 let html = String(data.legal_notice);
-                html = html.replace(/\n/g, "<br>").replace(/
-/g, "<br>");
+                html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
                 legalBox.innerHTML = html;
                 legalBox.style.display = "block";
             }
@@ -379,9 +463,106 @@
         }
     }
 
+    // Position des Zusatz-Containers dynamisch nach Info-Container ausrichten
+    function positionServiceCard() {
+        const info = document.querySelector('.page');
+        const card = document.querySelector('.service-card');
+        if (!info || !card) return;
+
+        // Unter 1400px → unten, nix ausrichten
+        if (window.innerWidth < 1400) {
+            card.style.position = "static";
+            card.style.left = card.style.right =
+            card.style.top = card.style.bottom = "";
+            return;
+        }
+
+        const rect = info.getBoundingClientRect();
+        const gap = rect.top;              // oberer Abstand in px
+        const minWidth = 280;              // mind. Breite rechts
+        const left = rect.right + gap;     // rechter Rand Info + gleicher Abstand
+        const rightMargin = gap;           // gleicher Abstand zum Rand
+        const available = window.innerWidth - left - rightMargin;
+
+        // Wenn nicht genug Platz → Karte unter den Inhalt
+        if (available < minWidth) {
+            card.style.position = "static";
+            card.style.left = card.style.right =
+            card.style.top = card.style.bottom = "";
+            return;
+        }
+
+        // genug Platz → rechts fix ausrichten
+        card.style.position = "fixed";
+        card.style.top = gap + "px";
+        card.style.bottom = gap + "px";
+        card.style.left = left + "px";
+        card.style.right = rightMargin + "px";
+    }
+
+    // Externe HTML-Fragmente laden
+    async function loadSection(targetId, file) {
+        const el = document.getElementById(targetId);
+        if (!el) return;
+
+        try {
+            const res = await fetch(file);
+            if (!res.ok) {
+                throw new Error("Fehler beim Laden von " + file + " (Status " + res.status + ")");
+            }
+            const html = await res.text();
+            el.innerHTML = html;
+            return;
+        } catch (e) {
+            console.error(e);
+            el.innerHTML = "<p>Die Inhalte konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>";
+        }
+    }
+
+    // Overlay steuern (kann aus vertragsauswertung.html per onclick genutzt werden)
+    function openOverlay() {
+        const ov = document.getElementById("overlay");
+        if (ov) ov.classList.remove("overlay-hidden");
+    }
+
+    function closeOverlay() {
+        const ov = document.getElementById("overlay");
+        if (ov) ov.classList.add("overlay-hidden");
+    }
+
+    // Init-Funktionen für ausgelagerte HTML-Dateien (Variante A)
+    function initVertragsauswertung() {
+        // Hier kommt später dein JS für vertragsauswertung.html rein
+        console.log("vertragsauswertung.html wurde geladen");
+    }
+
+    function initVertragsvorlage() {
+        // Hier kommt später dein JS für vertragsvorlage.html rein
+        console.log("vertragsvorlage.html wurde geladen");
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         loadRouterEinbauInfo();
+
+        // vertragsauswertung.html laden → danach Init ausführen
+        loadSection("vertragsauswertung-content", "vertragsauswertung.html")
+            .then(() => {
+                if (typeof initVertragsauswertung === "function") {
+                    initVertragsauswertung();
+                }
+            });
+
+        // vertragsvorlage.html laden → danach Init ausführen
+        loadSection("vertragsvorlage", "vertragsvorlage.html")
+            .then(() => {
+                if (typeof initVertragsvorlage === "function") {
+                    initVertragsvorlage();
+                }
+            });
     });
+
+    window.addEventListener("load", positionServiceCard);
+    window.addEventListener("resize", positionServiceCard);
 </script>
 
 </body>
