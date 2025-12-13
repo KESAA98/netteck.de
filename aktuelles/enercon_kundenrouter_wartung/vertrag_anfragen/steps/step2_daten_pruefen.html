@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Step 2 – Daten prüfen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="../../../../Logos/logo.png" />
+
+  <style>
+    :root {
+      --primary: #0b74ff;
+      --primary2:#7a5cff;
+      --primary-soft: rgba(11, 116, 255, 0.10);
+      --bg: #f5f7fb;
+      --card-bg: #ffffff;
+      --border: #e1e4ec;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --danger: #b42318;
+      --warn-bg: #fff8e6;
+      --warn-border: #ffd37a;
+      --ok-bg: rgba(11,116,255,0.08);
+      --radius-lg: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body{
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow: hidden;
+    }
+
+    .viewport{
+      height: 100vh;
+      width: 100vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 2rem 1rem;
+    }
+
+    .card{
+      width: min(1100px, 100%);
+      height: 100%;
+      max-height: calc(100vh - 4rem);
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--border);
+      padding: 1.6rem 1.9rem 1.6rem;
+      display:flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    h1{
+      margin: 0;
+      font-size: 1.45rem;
+      text-align:center;
+      letter-spacing: .2px;
+    }
+    .sub{
+      margin: 0;
+      text-align:center;
+      color: var(--text-muted);
+      font-size: .95rem;
+    }
+
+    .grid{
+      margin-top: .2rem;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 16px;
+      overflow:auto;
+      padding-right: 6px;
+      flex: 1;
+    }
+    @media (max-width: 860px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .field{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 12px 10px;
+      background: #fff;
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+
+    .labelRow{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .label{
+      font-weight: 800;
+      font-size: .92rem;
+      color: var(--text-main);
+      letter-spacing: .1px;
+    }
+    .label .star{
+      color: var(--primary);
+      font-weight: 900;
+      margin-left: 4px;
+    }
+
+    .editBtn{
+      border: 1px solid var(--border);
+      background: #fff;
+      height: 30px;
+      min-width: 34px;
+      border-radius: 10px;
+      cursor: pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .editBtn:hover{
+      transform: translateY(-1px);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-soft);
+    }
+    .editBtn svg{ width: 16px; height:16px; opacity:.85; }
+
+    input{
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+      background: #fff;
+    }
+    input:focus{
+      border-color: var(--primary);
+      box-shadow: 0 0 0 5px var(--primary-soft);
+    }
+    input[disabled]{
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    .note{
+      display:none;
+      font-size: .86rem;
+      line-height: 1.35;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--warn-border);
+      background: var(--warn-bg);
+      color: #6b4c00;
+    }
+    .note.show{ display:block; }
+
+    .footer{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+      border-top: 1px solid rgba(225,228,236,0.8);
+    }
+
+    .btnRow{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      border: none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      user-select:none;
+    }
+    .btn:disabled{
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none !important;
+      filter: none !important;
+      box-shadow: none !important;
+    }
+    .btnPrimary{
+      color:#fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+    }
+    .btnGhost{
+      background: #fff;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 0 0 5px var(--primary-soft);
+    }
+
+    .status{
+      color: var(--text-muted);
+      font-size: .9rem;
+    }
+
+    .topWarn{
+      display:none;
+      border:1px solid #ffd0d0;
+      background:#fff5f5;
+      color: var(--danger);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 700;
+    }
+    .topWarn.show{ display:block; }
+  </style>
+</head>
+
+<body>
+  <div class="viewport">
+    <div class="card" role="main" aria-label="Daten prüfen">
+      <h1>Daten prüfen</h1>
+      <p class="sub">Bitte prüfen Sie die ausgelesenen Rechnungsdaten. Leere Felder können ergänzt werden. Änderungen sind nur im kleinen Rahmen vorgesehen.</p>
+
+      <div class="topWarn" id="topWarn">
+        Eine oder mehrere Änderungen weichen stark vom Original ab. Bitte prüfen Sie das – große Abweichungen sind nicht zulässig.
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="footer">
+        <div class="status" id="status">* markiert bearbeitete Felder.</div>
+        <div class="btnRow">
+          <button class="btn btnGhost" type="button" onclick="goBack()">Zurück</button>
+          <button class="btn btnPrimary" id="continueBtn" type="button" onclick="continueNext()" disabled>Daten sind korrekt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ----- Config -----
+    const STORAGE_KEY = "rechnungAnalyse";
+    const EDITS_KEY   = "rechnungEdits"; // { edited:{key:true}, values:{key:value}, flags:{key:"large"} }
+
+    // Reihenfolge + Labels (ist_router_einbau_rechnung bewusst NICHT)
+    const FIELDS = [
+      { key:"Firma", label:"Firma" },
+      { key:"windpark_nummer", label:"Windpark-Nummer" },
+      { key:"windpark_name", label:"Windpark" },
+      { key:"Ansprechpartner", label:"Ansprechpartner" },
+      { key:"Straße und Hausnummer", label:"Straße & Hausnummer" },
+      { key:"PLZ", label:"PLZ" },
+      { key:"Ort", label:"Ort" },
+      { key:"Rechnungs-Nr.", label:"Rechnungs-Nr." },
+      { key:"Rechnungsdatum", label:"Rechnungsdatum" }
+    ];
+
+    // ----- Helpers -----
+    const grid = document.getElementById("grid");
+    const continueBtn = document.getElementById("continueBtn");
+    const topWarn = document.getElementById("topWarn");
+
+    function safeParse(json){
+      try{ return JSON.parse(json); } catch(e){ return null; }
+    }
+
+    function getBaseData(){
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      const obj = safeParse(raw || "");
+      return (obj && typeof obj === "object") ? obj : {};
+    }
+
+    function getEdits(){
+      const raw = sessionStorage.getItem(EDITS_KEY);
+      const obj = safeParse(raw || "");
+      return (obj && typeof obj === "object") ? obj : { edited:{}, values:{}, flags:{} };
+    }
+
+    function setEdits(edits){
+      sessionStorage.setItem(EDITS_KEY, JSON.stringify(edits));
+    }
+
+    // Levenshtein Distance (klein, ohne Lib)
+    function levenshtein(a,b){
+      a = (a ?? "").toString();
+      b = (b ?? "").toString();
+      const m = a.length, n = b.length;
+      if (m === 0) return n;
+      if (n === 0) return m;
+      const dp = Array.from({length:m+1}, () => new Array(n+1).fill(0));
+      for(let i=0;i<=m;i++) dp[i][0]=i;
+      for(let j=0;j<=n;j++) dp[0][j]=j;
+      for(let i=1;i<=m;i++){
+        for(let j=1;j<=n;j++){
+          const cost = a[i-1] === b[j-1] ? 0 : 1;
+          dp[i][j] = Math.min(
+            dp[i-1][j] + 1,
+            dp[i][j-1] + 1,
+            dp[i-1][j-1] + cost
+          );
+        }
+      }
+      return dp[m][n];
+    }
+
+    function isLargeChange(original, changed){
+      const o = (original ?? "").toString().trim();
+      const c = (changed ?? "").toString().trim();
+      if (!o) return false; // Original leer => alles erlaubt
+      if (o === c) return false;
+
+      const dist = levenshtein(o.toLowerCase(), c.toLowerCase());
+      const maxAllowed = Math.max(3, Math.round(o.length * 0.25)); // "kleine Änderung" Heuristik
+      return dist > maxAllowed;
+    }
+
+    function isEmpty(v){
+      return v === null || v === undefined || (typeof v === "string" && v.trim() === "");
+    }
+
+    // ----- UI Building -----
+    function pencilIcon(){
+      return `
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14.7 4.3l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M4 20l4.5-1 10-10-3.5-3.5-10 10L4 20z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        </svg>
+      `;
+    }
+
+    function build(){
+      const base = getBaseData();
+      const edits = getEdits();
+
+      grid.innerHTML = "";
+
+      FIELDS.forEach(f => {
+        const original = base[f.key];
+        const savedVal = edits.values[f.key];
+        const value = (savedVal !== undefined) ? savedVal : (original ?? "");
+
+        const edited = !!edits.edited[f.key];
+        const flag = edits.flags[f.key] || "";
+
+        const wrap = document.createElement("div");
+        wrap.className = "field";
+
+        const labelRow = document.createElement("div");
+        labelRow.className = "labelRow";
+
+        const label = document.createElement("div");
+        label.className = "label";
+        label.innerHTML = `${f.label}${edited ? '<span class="star">*</span>' : ''}`;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "editBtn";
+        btn.innerHTML = pencilIcon();
+        btn.title = "Bearbeiten";
+        btn.setAttribute("aria-label", f.label + " bearbeiten");
+
+        const input = document.createElement("input");
+        input.value = (value ?? "");
+        input.placeholder = isEmpty(original) ? "Bitte ergänzen…" : "";
+        input.disabled = !isEmpty(original) && !edited; // wenn Original leer -> direkt editierbar
+        input.dataset.key = f.key;
+
+        const note = document.createElement("div");
+        note.className = "note";
+        note.textContent = "Änderung wirkt stark abweichend. Bitte nur kleine Korrekturen (Tippfehler) durchführen.";
+        if (flag === "large") note.classList.add("show");
+
+        btn.addEventListener("click", () => {
+          input.disabled = false;
+          input.focus();
+          input.setSelectionRange(input.value.length, input.value.length);
+        });
+
+        input.addEventListener("input", () => {
+          const k = f.key;
+          const v = input.value;
+
+          // mark edited if differs OR original empty
+          const orig = (original ?? "");
+          const nowEdited = (isEmpty(orig) && !isEmpty(v)) || (v.trim() !== (orig ?? "").toString().trim());
+          edits.edited[k] = nowEdited;
+          edits.values[k] = v;
+
+          // large change guard
+          const large = isLargeChange(orig, v);
+          edits.flags[k] = large ? "large" : "";
+          note.classList.toggle("show", large);
+
+          setEdits(edits);
+
+          // update label star live
+          label.innerHTML = `${f.label}${nowEdited ? '<span class="star">*</span>' : ''}`;
+
+          validateAll();
+        });
+
+        labelRow.appendChild(label);
+        labelRow.appendChild(btn);
+
+        wrap.appendChild(labelRow);
+        wrap.appendChild(input);
+        wrap.appendChild(note);
+
+        grid.appendChild(wrap);
+      });
+
+      validateAll();
+    }
+
+    function validateAll(){
+      const base = getBaseData();
+      const edits = getEdits();
+
+      // Required: alles außer ist_router... (hier nicht drin)
+      const missing = FIELDS.some(f => {
+        const v = (edits.values[f.key] !== undefined) ? edits.values[f.key] : base[f.key];
+        return isEmpty(v);
+      });
+
+      // Any large change?
+      const hasLarge = Object.values(edits.flags || {}).some(v => v === "large");
+
+      topWarn.classList.toggle("show", hasLarge);
+      continueBtn.disabled = missing || hasLarge;
+    }
+
+    // ----- Navigation -----
+    function goBack(){
+      // optional: beim Zurück nichts überschreiben
+      if (window.parent && typeof window.parent.prevStep === "function"){
+        window.parent.prevStep();
+      }
+    }
+
+    function continueNext(){
+      const base = getBaseData();
+      const edits = getEdits();
+
+      // merge values (nur bekannte keys)
+      const merged = {...base};
+      FIELDS.forEach(f => {
+        const v = (edits.values[f.key] !== undefined) ? edits.values[f.key] : base[f.key];
+        merged[f.key] = v;
+      });
+
+      // speichern für nachfolgende Steps
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+
+      if (window.parent && typeof window.parent.nextStep === "function"){
+        window.parent.nextStep();
+      }
+    }
+
+    // Expose (falls du später aus anderen Scripts triggern willst)
+    window.__step2 = { continueNext, goBack };
+
+    // init
+    build();
+  </script>
+</body>
+</html>
