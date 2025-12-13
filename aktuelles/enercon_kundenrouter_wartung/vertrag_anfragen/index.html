@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Vertrag anfragen – Kevin Strakerjahn Networks & Automation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" href="../../Logos/logo.png">
+
+<style>
+:root{
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --primary1:#2b7cff;
+    --primary2:#7a5cff;
+    --text:#1f2933;
+    --muted:#6b7280;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
+    background:var(--bg);
+    overflow:hidden;
+}
+
+/* ===== Hintergrund ===== */
+#app{
+    position:fixed;
+    inset:0;
+    filter:blur(6px);
+    pointer-events:none;
+    transition:filter .3s ease;
+}
+
+/* ===== Consent Overlay ===== */
+#consent{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
+}
+
+#consentBox{
+    background:var(--card);
+    max-width:520px;
+    width:90%;
+    padding:28px;
+    border-radius:18px;
+    box-shadow:0 30px 80px rgba(0,0,0,.25);
+}
+
+#consentBox h2{
+    margin:0 0 12px;
+    font-size:22px;
+}
+
+#consentBox p{
+    color:var(--muted);
+    line-height:1.5;
+}
+
+#consentBox a{
+    color:var(--primary1);
+    text-decoration:none;
+    font-weight:600;
+}
+
+#consentBox button{
+    margin-top:20px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:999px;
+    font-size:16px;
+    font-weight:600;
+    color:#fff;
+    background:linear-gradient(135deg,var(--primary1),var(--primary2));
+    cursor:pointer;
+}
+
+/* ===== Step Container ===== */
+#steps{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+}
+
+.step{
+    position:absolute;
+    inset:0;
+    background:var(--bg);
+    transform:translateY(100%);
+}
+
+.step.active{
+    transform:translateY(0);
+}
+
+.step iframe{
+    width:100%;
+    height:100%;
+    border:none;
+    background:transparent;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Consent ===== -->
+<div id="consent">
+    <div id="consentBox">
+        <h2>Hinweis</h2>
+        <p>
+            Für die Vertragsanfrage ist die Zustimmung zur
+            <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>
+            und zu den
+            <a href="/agb" target="_blank">AGB</a>
+            erforderlich.
+        </p>
+        <button onclick="acceptConsent()">Zustimmen & fortfahren</button>
+    </div>
+</div>
+
+<!-- ===== App ===== -->
+<div id="app">
+    <div id="steps">
+        <div class="step active" id="step1">
+            <iframe src="steps/step1_rechnung_pruefen.html"></iframe>
+        </div>
+        <div class="step" id="step2">
+            <iframe src="steps/step2_daten_pruefen.html"></iframe>
+        </div>
+        <div class="step" id="step3">
+            <iframe src="steps/step3_person_bestaetigen.html"></iframe>
+        </div>
+        <div class="step" id="step4">
+            <iframe src="steps/step4_paket_waehlen.html"></iframe>
+        </div>
+        <div class="step" id="step5">
+            <iframe src="steps/step5_vertrag_bestaetigen.html"></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentStep = 1;
+
+function acceptConsent(){
+    document.getElementById('consent').style.display='none';
+    document.getElementById('app').style.filter='none';
+    document.getElementById('app').style.pointerEvents='auto';
+}
+
+/* Diese Funktion wird später von den Step-HTMLs aufgerufen */
+window.nextStep = function(){
+    if(currentStep>=5) return;
+    document.getElementById('step'+currentStep).classList.remove('active');
+    currentStep++;
+    document.getElementById('step'+currentStep).classList.add('active');
+};
+</script>
+
+</body>
+</html>
