@@ -51,15 +51,15 @@
       position:absolute;
       inset:0;
       background: var(--bg);
-      transform: translateY(100%);
       transition: transform .35s ease;
       will-change: transform;
+      transform: translateY(100%); /* default: unterhalb */
     }
     .step.active{ transform: translateY(0); }
-    .step.below{ transform: translateY(100%); }
-    .step.above{ transform: translateY(-100%); }
+    .step.from-bottom{ transform: translateY(100%); }
+    .step.from-top{ transform: translateY(-100%); }
 
-    .step iframe{
+.step iframe{
       width:100%;
       height:100%;
       border:none;
@@ -189,82 +189,65 @@
       app.style.pointerEvents = 'auto';
     }
 
-    function clampStep(n){
+    function clamp(n){
       return Math.max(1, Math.min(totalSteps, Number(n)));
     }
 
-    function setStepForward(n){
-      if (n === currentStep) return;
+    function showStep(next, direction){
+      next = clamp(next);
+      if (next === currentStep) return;
 
-      const curEl = document.getElementById('step' + currentStep);
-      const nextEl = document.getElementById('step' + n);
+      const current = document.getElementById('step' + currentStep);
+      const target  = document.getElementById('step' + next);
 
-      // current slides up
-      curEl.classList.remove('below');
-      curEl.classList.add('above');
-      curEl.classList.remove('active');
+      // --- Reset target to a clean state
+      target.classList.remove('active', 'from-top', 'from-bottom');
 
-      // next comes from bottom (default) into view
-      nextEl.classList.remove('above','below');
-      nextEl.classList.add('active');
+      // --- Pre-position target (so animation starts correctly)
+      if (direction === 'backward') {
+        target.classList.add('from-top');     // start above
+      } else {
+        target.classList.add('from-bottom');  // start below
+      }
 
+      // Force reflow so browser registers start position before we animate to active
+      void target.offsetHeight;
+
+      // Ensure current is active, then start transition:
+      // current leaves opposite direction, target moves to center
+      current.classList.remove('from-top', 'from-bottom');
+      if (direction === 'backward') {
+        current.classList.add('from-bottom'); // current goes down
+      } else {
+        current.classList.add('from-top');    // current goes up
+      }
+      current.classList.remove('active');
+
+      // target enters
+      target.classList.add('active');
+      target.classList.remove('from-top', 'from-bottom');
+
+      // cleanup leaving classes after animation
       window.setTimeout(() => {
-        curEl.classList.remove('above');
+        current.classList.remove('from-top', 'from-bottom');
       }, 380);
 
-      currentStep = n;
-    }
-
-    function setStepBackward(n){
-      if (n === currentStep) return;
-
-      const curEl = document.getElementById('step' + currentStep);
-      const prevEl = document.getElementById('step' + n);
-
-      // prepare previous above the viewport
-      prevEl.classList.remove('active','below');
-      prevEl.classList.add('above');
-
-      // force reflow so the browser registers the start position (-100%)
-      void prevEl.offsetHeight;
-
-      // current slides down (0 -> 100)
-      curEl.classList.remove('above');
-      curEl.classList.add('below');
-
-      // previous slides in from top (-100 -> 0)
-      requestAnimationFrame(() => {
-        prevEl.classList.add('active');
-        prevEl.classList.remove('above');
-      });
-
-      window.setTimeout(() => {
-        // cleanup current
-        curEl.classList.remove('active');
-        curEl.classList.remove('below');
-      }, 380);
-
-      currentStep = n;
-    }
-
-    function goToStep(n){
-      const target = clampStep(n);
-      if (target === currentStep) return;
-      if (target > currentStep) setStepForward(target);
-      else setStepBackward(target);
+      currentStep = next;
     }
 
     // ===== API für die Step-HTMLs =====
     window.nextStep = function(){
-      if (currentStep < totalSteps) setStepForward(currentStep + 1);
+      if (currentStep < totalSteps) showStep(currentStep + 1, 'forward');
     };
 
     window.prevStep = function(){
-      if (currentStep > 1) setStepBackward(currentStep - 1);
+      if (currentStep > 1) showStep(currentStep - 1, 'backward');
     };
 
     window.goToStep = function(n){
-      goToStep(n);
+      n = clamp(n);
+      if (n > currentStep) showStep(n, 'forward');
+      else if (n < currentStep) showStep(n, 'backward');
     };
   </script>
 </body>
