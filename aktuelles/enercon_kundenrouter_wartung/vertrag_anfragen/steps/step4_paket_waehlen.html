@@ -188,27 +188,28 @@
   <div class="viewport">
     <div class="card" role="main" aria-label="Paket wählen">
       <h1>Paket wählen</h1>
-      <p class="sub">Bitte wählen Sie Laufzeit und LANcare-Option. Unten sehen Sie eine transparente Jahresübersicht.</p>
+      <p class="sub">Bitte wählen Sie ihre gewünschte Laufzeit aus</p>
 
       <div class="panel">
         <div class="box">
-          <p class="sectionTitle">1) Vertragslänge</p>
+          <p class="sectionTitle">Vertragslänge</p>
           <p class="hint">
-            Hinweis: jährliche Kündigungsmöglichkeit mit <b>1 Monat</b> Kündigungsfrist. Eine nachträgliche Verlängerung ist nicht möglich (bzw. nur zu anderen Konditionen).
+            Hinweis: jährliche Kündigungsmöglichkeit mit <b>1 Monat</b> Kündigungsfrist.
+            Eine nachträgliche Verlängerung ist nicht möglich (bzw. nur zu anderen Konditionen).
           </p>
           <div class="chips" id="lenChips"></div>
         </div>
 
         <div class="box" id="lancareBox" style="display:none;">
-          <p class="sectionTitle">2) LANcare-Laufzeit</p>
-          <p class="hint">Wählen Sie die gewünschte LANcare-Laufzeit gemäß verfügbarer Varianten.</p>
+          <p class="sectionTitle">LANcare-Laufzeit</p>
+          <p class="hint">Bitte wählen Sie anschließend die gewünschte LANcare-Laufzeit.</p>
           <div class="chips" id="lanChips"></div>
         </div>
 
-        <div class="error" id="errorBox">Bitte wählen Sie zuerst die Vertragslänge und eine LANcare-Variante.</div>
+        <div class="error" id="errorBox"></div>
 
         <div class="box" id="summaryBox" style="display:none;">
-          <p class="sectionTitle">3) Zusammenfassung</p>
+          <p class="sectionTitle">Ihre Auswahl</p>
           <p class="hint">Jahr 1 enthält LANcare + Service &amp; Wartung. Ab Jahr 2 nur noch Service &amp; Wartung. Abrechnung erfolgt jährlich.</p>
 
           <div id="tableWrap"></div>
@@ -239,7 +240,8 @@
   </div>
 
   <script>
-    const PRICES_URL = "../information/warungsvertrag_preise.txt";
+    // robust: resolve relative URL from current file location
+    const PRICES_URL = new URL("../information/warungsvertrag_preise.txt", window.location.href).toString();
     const STORAGE_KEY = "paketWahl";
 
     let priceData = null;
@@ -257,12 +259,18 @@
     const errorBox = document.getElementById("errorBox");
 
     function euro(v){
-      if (typeof v !== "number") return "–";
+      if (typeof v !== "number" || !isFinite(v)) return "–";
       return v.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
     }
 
-    function setError(on){
-      errorBox.classList.toggle("show", !!on);
+    function setError(msg){
+      if (!msg){
+        errorBox.classList.remove("show");
+        errorBox.textContent = "";
+        return;
+      }
+      errorBox.classList.add("show");
+      errorBox.textContent = msg;
     }
 
     async function loadPrices(){
@@ -284,7 +292,7 @@
         chip.addEventListener("click", () => {
           selectedYears = years;
           selectedLanYears = null;
-          setError(false);
+          setError("");
           buildLengthChips();
           buildLanChips();
           renderSummary();
@@ -312,7 +320,7 @@
         chip.textContent = lanYears + " Jahr" + (lanYears>1 ? "e" : "") + " LANcare";
         chip.addEventListener("click", () => {
           selectedLanYears = lanYears;
-          setError(false);
+          setError("");
           buildLanChips();
           renderSummary();
         });
@@ -347,7 +355,6 @@
       const total = Number(variant.gesamt);
       const avg = total / years;
 
-      // Build table
       let rows = "";
       for (let y=1; y<=years; y++){
         const lan = (y===1) ? lanOnce : 0;
@@ -372,16 +379,13 @@
               <th class="right">Summe (Netto)</th>
             </tr>
           </thead>
-          <tbody>
-            ${rows}
-          </tbody>
+          <tbody>${rows}</tbody>
         </table>
       `;
 
       avgPrice.textContent = euro(avg);
       totalPrice.textContent = euro(total);
 
-      // Persist selection
       const payload = {
         laufzeit_jahre: years,
         lancare_jahre: Number(variant.lancare_jahre),
@@ -396,18 +400,14 @@
 
     function continueNext(){
       if (continueBtn.disabled){
-        setError(true);
+        setError("Bitte wählen Sie zuerst die Vertragslänge und eine LANcare-Variante.");
         return;
       }
-      if (window.parent && typeof window.parent.nextStep === "function") {
-        window.parent.nextStep();
-      }
+      if (window.parent && typeof window.parent.nextStep === "function") window.parent.nextStep();
     }
 
     function goBack(){
-      if (window.parent && typeof window.parent.prevStep === "function") {
-        window.parent.prevStep();
-      }
+      if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
     }
 
     (async function init(){
@@ -419,19 +419,19 @@
         if (savedRaw){
           try {
             const saved = JSON.parse(savedRaw);
-            if (saved && saved.laufzeit_jahre) {
+            if (saved && saved.laufzeit_jahre){
               selectedYears = Number(saved.laufzeit_jahre);
               selectedLanYears = Number(saved.lancare_jahre);
             }
-          } catch(e) {}
+          } catch(e){}
         }
 
         buildLengthChips();
         buildLanChips();
         renderSummary();
-      } catch(e) {
+      } catch(e){
         console.error(e);
-        setError(true);
+        setError("Preisdaten konnten nicht geladen werden. Bitte prüfen Sie den Pfad zur Datei „warungsvertrag_preise.txt“.");
       }
     })();
   </script>
