@@ -228,6 +228,8 @@
             color: var(--text-main);
         }
 
+        
+
         @media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
@@ -328,9 +330,8 @@
     </div>
 </div>
 
-
 <script>
-// Leistungsumfang laden
+    // Leistungsumfang laden
     async function loadRouterEinbauInfo() {
         const listEl = document.getElementById("leistungen-list");
         const legalBox = document.getElementById("legal-box");
@@ -359,8 +360,7 @@
                     if (section.text) {
                         const p = document.createElement("p");
                         let html = String(section.text);
-                        html = html.replace(/\n/g, "<br>").replace(/
-/g, "<br>");
+                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
                         p.innerHTML = html;
                         wrapper.appendChild(p);
                     }
@@ -369,8 +369,7 @@
                         const note = document.createElement("p");
                         note.className = "leistung-note";
                         let html = String(section.note);
-                        html = html.replace(/\n/g, "<br>").replace(/
-/g, "<br>");
+                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
                         note.innerHTML = html;
                         wrapper.appendChild(note);
                     }
@@ -381,8 +380,7 @@
 
             if (data.legal_notice && legalBox) {
                 let html = String(data.legal_notice);
-                html = html.replace(/\n/g, "<br>").replace(/
-/g, "<br>");
+                html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
                 legalBox.innerHTML = html;
                 legalBox.style.display = "block";
             }
