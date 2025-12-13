@@ -258,6 +258,10 @@
     }
 
     async function sendToFlow(file){
+      // Alte Analyse- und Bearbeitungsdaten löschen (neue Rechnung)
+      sessionStorage.removeItem("rechnungAnalyse");
+      sessionStorage.removeItem("rechnungEdits");
+
       showError(false);
       setLoading(true);
 
