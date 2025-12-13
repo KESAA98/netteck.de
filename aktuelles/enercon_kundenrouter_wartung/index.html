@@ -253,6 +253,102 @@
                 gap: 1.8rem;
             }
         }
+    
+
+        /* Sticky Anfrage-Button (unten rechts) */
+        .contract-fab {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            pointer-events: auto;
+        }
+
+        /* Logo-Farben (für Panel/CTA-Button) */
+        .contract-fab {
+            --ks-blue: #18b7ff;
+            --ks-purple: #6f3bff;
+            --ks-grad: linear-gradient(135deg, rgba(24, 183, 255, 0.96), rgba(111, 59, 255, 0.96));
+        }
+
+        .contract-fab * { pointer-events: auto; }
+
+        .contract-fab__toggle {
+            text-decoration: none;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1.05rem 0.85rem 3.25rem; /* Platz fürs Logo links */
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            background: var(--ks-grad);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            line-height: 1;
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.22);
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+        }
+
+        .contract-fab__toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 45px rgba(15, 23, 42, 0.26);
+            filter: brightness(1.02);
+        }
+
+        .contract-fab__toggle:active {
+            transform: translateY(0);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.20);
+        }
+
+        .contract-fab__toggle:focus-visible {
+            outline: 3px solid rgba(24, 183, 255, 0.35);
+            outline-offset: 3px;
+        }
+
+        .contract-fab__logo {
+            position: absolute;
+            left: -14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 58px;
+            height: 58px;
+            border-radius: 999px;
+            /* Logo soll ohne eigenen Rand/Schatten wirken (nur das PNG selbst) */
+            background: transparent;
+            box-shadow: none;
+            display: grid;
+            place-items: center;
+        }
+
+        .contract-fab__logo img {
+            width: 58px;
+            height: 58px;
+            border-radius: 999px;
+            display: block;
+        }
+
+        .contract-fab__chev {
+            font-size: 1.15rem;
+            opacity: 0.95;
+            transform: translateY(-1px);
+            margin-left: 0.1rem;
+        }
+
+        @media (max-width: 600px) {
+            .contract-fab { right: 14px; bottom: 14px; }
+            .contract-fab__toggle { font-size: 0.9rem; padding: 0.8rem 0.95rem 0.8rem 3.05rem; }
+            .contract-fab__logo { width: 54px; height: 54px; left: -12px; }
+            .contract-fab__logo img { width: 54px; height: 54px; }
+        }
+
     </style>
 </head>
 <body>
@@ -394,6 +490,21 @@
         loadRouterEinbauInfo();
     });
 </script>
+
+
+
+<!-- Sticky Anfrage-Button (unabhängig vom Seiten-Container) -->
+<div id="contractFab" class="contract-fab" aria-label="Wartungs- &amp; Servicevertrag anfragen">
+<a class="contract-fab__toggle" href="vertrag_anfragen/" aria-label="Wartungs- &amp; Servicevertrag anfragen">
+    <span class="contract-fab__logo" aria-hidden="true">
+        <img src="../../Logos/logo.png" alt="">
+    </span>
+    Wartungs- &amp; Servicevertrag anfragen
+    <span class="contract-fab__chev" aria-hidden="true">›</span>
+</a>
+</div>
+
+
 
 </body>
 </html>
