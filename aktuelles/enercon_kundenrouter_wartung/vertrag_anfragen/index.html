@@ -56,6 +56,7 @@
       will-change: transform;
     }
     .step.active{ transform: translateY(0); }
+    .step.below{ transform: translateY(100%); }
     .step.above{ transform: translateY(-100%); }
 
     .step iframe{
@@ -188,16 +189,23 @@
       app.style.pointerEvents = 'auto';
     }
 
-    function setStep(next){
-      const n = Math.max(1, Math.min(totalSteps, Number(next)));
+    function clampStep(n){
+      return Math.max(1, Math.min(totalSteps, Number(n)));
+    }
+
+    function setStepForward(n){
       if (n === currentStep) return;
 
       const curEl = document.getElementById('step' + currentStep);
-      curEl.classList.remove('active');
-      curEl.classList.add('above');
-
       const nextEl = document.getElementById('step' + n);
-      nextEl.classList.remove('above');
+
+      // current slides up
+      curEl.classList.remove('below');
+      curEl.classList.add('above');
+      curEl.classList.remove('active');
+
+      // next comes from bottom (default) into view
+      nextEl.classList.remove('above','below');
       nextEl.classList.add('active');
 
       window.setTimeout(() => {
@@ -207,11 +215,57 @@
       currentStep = n;
     }
 
+    function setStepBackward(n){
+      if (n === currentStep) return;
+
+      const curEl = document.getElementById('step' + currentStep);
+      const prevEl = document.getElementById('step' + n);
+
+      // prepare previous above the viewport
+      prevEl.classList.remove('active','below');
+      prevEl.classList.add('above');
+
+      // force reflow so the browser registers the start position (-100%)
+      void prevEl.offsetHeight;
+
+      // current slides down (0 -> 100)
+      curEl.classList.remove('above');
+      curEl.classList.add('below');
+
+      // previous slides in from top (-100 -> 0)
+      requestAnimationFrame(() => {
+        prevEl.classList.add('active');
+        prevEl.classList.remove('above');
+      });
+
+      window.setTimeout(() => {
+        // cleanup current
+        curEl.classList.remove('active');
+        curEl.classList.remove('below');
+      }, 380);
+
+      currentStep = n;
+    }
+
+    function goToStep(n){
+      const target = clampStep(n);
+      if (target === currentStep) return;
+      if (target > currentStep) setStepForward(target);
+      else setStepBackward(target);
+    }
+
     // ===== API für die Step-HTMLs =====
-    // In den Steps: parent.nextStep() / parent.prevStep() / parent.goToStep(3)
-    window.nextStep = function(){ if (currentStep < totalSteps) setStep(currentStep + 1); };
-    window.prevStep = function(){ if (currentStep > 1) setStep(currentStep - 1); };
-    window.goToStep = function(n){ setStep(n); };
+    window.nextStep = function(){
+      if (currentStep < totalSteps) setStepForward(currentStep + 1);
+    };
+
+    window.prevStep = function(){
+      if (currentStep > 1) setStepBackward(currentStep - 1);
+    };
+
+    window.goToStep = function(n){
+      goToStep(n);
+    };
   </script>
 </body>
 </html>
