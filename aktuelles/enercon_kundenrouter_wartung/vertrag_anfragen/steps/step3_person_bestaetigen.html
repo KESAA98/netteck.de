@@ -18,9 +18,6 @@
       --text-muted:#6b7280;
       --danger:#b42318;
       --radius-lg:14px;
-      --warn-bg:#fff8e6;
-      --warn-border:#ffd37a;
-      --warn-text:#6b4c00;
     }
     *{ box-sizing:border-box; }
     html, body{ margin:0; padding:0; height:100%; }
@@ -76,17 +73,17 @@
       padding: 16px;
       display:flex;
       flex-direction:column;
-      gap: 14px;
+      gap: 16px;
       overflow:auto;
     }
 
     .question{
       text-align:center;
       font-weight: 900;
-      font-size: 1.08rem;
+      font-size: 1.1rem;
       line-height: 1.35;
     }
-    .question .pill{
+    .pill{
       display:inline-block;
       padding: 2px 10px;
       border-radius: 999px;
@@ -147,7 +144,6 @@
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px 14px;
-      margin-top: 6px;
     }
     @media (max-width: 860px){
       .forms{ grid-template-columns: 1fr; }
@@ -186,29 +182,6 @@
     }
     .error.show{ display:block; }
 
-    .info{
-      display:none;
-      border: 1px solid var(--warn-border);
-      background: var(--warn-bg);
-      color: var(--warn-text);
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 750;
-      line-height: 1.35;
-    }
-    .info.show{ display:block; }
-
-    .miniHeader{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .miniHeader .title{
-      font-weight: 950;
-    }
-
     .footer{
       display:flex;
       align-items:center;
@@ -227,92 +200,63 @@
 
 <body>
   <div class="viewport">
-    <div class="card" role="main" aria-label="Person bestätigen">
+    <div class="card" role="main">
       <h1>Person bestätigen</h1>
-      <p class="sub">Bitte bestätigen Sie kurz, wer die Anfrage stellt.</p>
+      <p class="sub">Bitte bestätigen Sie kurz Ihre Person.</p>
 
       <div class="panel">
-        <!-- Mini 1: Ansprechpartner? -->
-        <div id="mini1">
+        <!-- Frage -->
+        <div id="questionBlock">
           <div class="question">
-            Sind Sie <span class="pill" id="contactName">…</span> (Ansprechpartner der Rechnung)?
+            Sind Sie <span class="pill" id="contactName">…</span>?
           </div>
 
-          <div class="choiceRow" role="group" aria-label="Ansprechpartner Auswahl">
-            <button class="btn btnGhost" id="btnContactYes" type="button" onclick="selectContact('yes')">Ja</button>
-            <button class="btn btnGhost" id="btnContactNo" type="button" onclick="selectContact('no')">Nein</button>
+          <div class="choiceRow">
+            <button class="btn btnGhost" id="btnYes" type="button" onclick="selectMode('yes')">Ja</button>
+            <button class="btn btnGhost" id="btnNo" type="button" onclick="selectMode('no')">Nein</button>
           </div>
-
-          <p class="sub" style="margin:0; text-align:center;">Bitte wählen Sie zuerst <b>Ja</b> oder <b>Nein</b>.</p>
         </div>
 
-        <!-- Mini 2: Details -->
-        <div id="mini2" style="display:none;">
-          <div class="miniHeader">
-            <div class="title">Angaben</div>
-            <button class="btn btnGhost" type="button" onclick="backToContact()" style="padding:10px 14px;">Auswahl ändern</button>
-          </div>
+        <div class="error" id="errorBox">Bitte füllen Sie alle erforderlichen Felder korrekt aus.</div>
 
-          <div class="error" id="errorBox">Bitte füllen Sie alle erforderlichen Felder korrekt aus.</div>
-
-          <!-- Mode A: Ansprechpartner = Ja -->
-          <div id="modeContactYes" style="display:none;">
-            <div class="forms">
-              <div class="field" style="grid-column:1 / -1;">
-                <label for="emailContact">E-Mail-Adresse</label>
-                <input id="emailContact" type="email" placeholder="name@firma.de" autocomplete="email" />
-              </div>
+        <!-- JA -->
+        <div id="formYes" style="display:none;">
+          <div class="forms">
+            <div class="field" style="grid-column:1/-1;">
+              <label for="emailYes">E-Mail-Adresse</label>
+              <input id="emailYes" type="email" placeholder="name@firma.de" />
             </div>
           </div>
+        </div>
 
-          <!-- Mode B: Ansprechpartner = Nein -->
-          <div id="modeContactNo" style="display:none;">
-            <div class="question" style="font-size:1.02rem;">
-              Sind Sie bevollmächtigt, den Vertrag zu beauftragen?
+        <!-- NEIN -->
+        <div id="formNo" style="display:none;">
+          <div class="forms">
+            <div class="field">
+              <label for="firstName">Vorname</label>
+              <input id="firstName" type="text" />
             </div>
-
-            <div class="choiceRow" role="group" aria-label="Bevollmächtigung Auswahl">
-              <button class="btn btnGhost" id="btnAuthYes" type="button" onclick="selectAuth('yes')">Ja</button>
-              <button class="btn btnGhost" id="btnAuthNo" type="button" onclick="selectAuth('no')">Nein</button>
+            <div class="field">
+              <label for="lastName">Nachname</label>
+              <input id="lastName" type="text" />
             </div>
-
-            <div class="forms">
-              <div class="field">
-                <label for="firstName">Vorname</label>
-                <input id="firstName" type="text" placeholder="Max" autocomplete="given-name" />
-              </div>
-              <div class="field">
-                <label for="lastName">Nachname</label>
-                <input id="lastName" type="text" placeholder="Mustermann" autocomplete="family-name" />
-              </div>
-              <div class="field" style="grid-column: 1 / -1;">
-                <label for="company">Firma</label>
-                <input id="company" type="text" placeholder="Firma / Betreiber" autocomplete="organization" />
-              </div>
-              <div class="field" style="grid-column: 1 / -1;">
-                <label for="emailRequester">Ihre E-Mail-Adresse</label>
-                <input id="emailRequester" type="email" placeholder="name@firma.de" autocomplete="email" />
-              </div>
-
-              <div class="field" style="grid-column: 1 / -1; display:none;" id="authEmailWrap">
-                <label for="emailAuthorized">E-Mail des Bevollmächtigten</label>
-                <input id="emailAuthorized" type="email" placeholder="bevollmaechtigter@firma.de" autocomplete="email" />
-              </div>
+            <div class="field" style="grid-column:1/-1;">
+              <label for="company">Firma</label>
+              <input id="company" type="text" />
             </div>
-
-            <div class="info" id="authInfo">
-              Der Bevollmächtigte erhält den geprüften Vertragsentwurf inklusive Hinweis zur Vertragsbestätigung.
-              Zusätzlich erhält er die Information, dass Sie den Vertrag angefragt haben.
+            <div class="field" style="grid-column:1/-1;">
+              <label for="emailNo">E-Mail-Adresse</label>
+              <input id="emailNo" type="email" />
             </div>
           </div>
         </div>
       </div>
 
       <div class="footer">
-        <div class="status">Die Angaben werden nur für diese Anfrage verwendet.</div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn btnGhost" type="button" onclick="goBack()">Zurück</button>
-          <button class="btn btnPrimary" id="continueBtn" type="button" onclick="continueNext()" disabled>Bestätigen</button>
+        <div class="status"></div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btnGhost" onclick="goBack()">Zurück</button>
+          <button class="btn btnPrimary" id="continueBtn" onclick="continueNext()" disabled>Weiter</button>
         </div>
       </div>
     </div>
@@ -321,26 +265,14 @@
   <script>
     const ANALYSE_KEY = "rechnungAnalyse";
     const PERSON_KEY  = "personConfirm";
+    let mode = null;
 
-    let contactMode = null; // 'yes' | 'no'
-    let authMode = null;    // 'yes' | 'no' (only if contactMode='no')
-
-    const mini1 = document.getElementById("mini1");
-    const mini2 = document.getElementById("mini2");
-
-    const btnContactYes = document.getElementById("btnContactYes");
-    const btnContactNo  = document.getElementById("btnContactNo");
-    const btnAuthYes    = document.getElementById("btnAuthYes");
-    const btnAuthNo     = document.getElementById("btnAuthNo");
-
-    const modeContactYes = document.getElementById("modeContactYes");
-    const modeContactNo  = document.getElementById("modeContactNo");
-
+    const btnYes = document.getElementById("btnYes");
+    const btnNo  = document.getElementById("btnNo");
+    const formYes = document.getElementById("formYes");
+    const formNo  = document.getElementById("formNo");
     const errorBox = document.getElementById("errorBox");
     const continueBtn = document.getElementById("continueBtn");
-
-    const authEmailWrap = document.getElementById("authEmailWrap");
-    const authInfo = document.getElementById("authInfo");
 
     function safeParse(s){ try { return JSON.parse(s); } catch(e){ return null; } }
     function getAnalyse(){
@@ -348,210 +280,68 @@
       const obj = safeParse(raw || "");
       return (obj && typeof obj === "object") ? obj : {};
     }
-
+    function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v||"").trim()); }
     function setError(on){ errorBox.classList.toggle("show", !!on); }
 
-    function isEmail(v){
-      v = (v || "").trim();
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    }
-
-    function setButtonState(btn, active){
-      btn.classList.toggle("btnSelect", !!active);
-      btn.classList.toggle("btnGhost", !active);
-    }
-
-    function enableContinueIfValid(){
-      continueBtn.disabled = !isValid();
-    }
-
-    function isValid(){
-      if (!contactMode) return false;
-
-      if (contactMode === "yes"){
-        const email = document.getElementById("emailContact").value.trim();
-        return isEmail(email);
-      }
-
-      // contactMode === "no"
-      if (!authMode) return false;
-
-      const first = document.getElementById("firstName").value.trim();
-      const last  = document.getElementById("lastName").value.trim();
-      const company = document.getElementById("company").value.trim();
-      const emailReq = document.getElementById("emailRequester").value.trim();
-      if (!first || !last || !company || !isEmail(emailReq)) return false;
-
-      if (authMode === "no"){
-        const emailAuth = document.getElementById("emailAuthorized").value.trim();
-        if (!isEmail(emailAuth)) return false;
-      }
-      return true;
-    }
-
-    // Step within Step: mini1 -> mini2
-    window.selectContact = function(next){
-      contactMode = next;
-      authMode = null;
+    function selectMode(m){
+      mode = m;
       setError(false);
-
-      setButtonState(btnContactYes, contactMode === "yes");
-      setButtonState(btnContactNo,  contactMode === "no");
-
-      // show mini2
-      mini1.style.display = "none";
-      mini2.style.display = "block";
-
-      // switch content
-      modeContactYes.style.display = (contactMode === "yes") ? "block" : "none";
-      modeContactNo.style.display  = (contactMode === "no") ? "block" : "none";
-
-      // reset auth UI
-      if (contactMode === "no"){
-        setButtonState(btnAuthYes, false);
-        setButtonState(btnAuthNo, false);
-        authEmailWrap.style.display = "none";
-        authInfo.classList.remove("show");
-      }
-
-      // focus
-      window.setTimeout(() => {
-        if (contactMode === "yes") document.getElementById("emailContact")?.focus();
-        else document.getElementById("firstName")?.focus();
-      }, 30);
-
-      enableContinueIfValid();
+      btnYes.classList.toggle("btnSelect", m==="yes");
+      btnNo.classList.toggle("btnSelect", m==="no");
+      formYes.style.display = m==="yes" ? "block" : "none";
+      formNo.style.display  = m==="no"  ? "block" : "none";
+      validate();
     }
 
-    window.selectAuth = function(next){
-      authMode = next;
-      setError(false);
-
-      setButtonState(btnAuthYes, authMode === "yes");
-      setButtonState(btnAuthNo,  authMode === "no");
-
-      // if not authorized -> require authorized email + show info
-      if (authMode === "no"){
-        authEmailWrap.style.display = "block";
-        authInfo.classList.add("show");
-        window.setTimeout(() => document.getElementById("emailAuthorized")?.focus(), 30);
+    function validate(){
+      if (!mode){ continueBtn.disabled = true; return; }
+      if (mode==="yes"){
+        continueBtn.disabled = !isEmail(document.getElementById("emailYes").value);
       } else {
-        authEmailWrap.style.display = "none";
-        authInfo.classList.remove("show");
+        const ok = document.getElementById("firstName").value &&
+                   document.getElementById("lastName").value &&
+                   document.getElementById("company").value &&
+                   isEmail(document.getElementById("emailNo").value);
+        continueBtn.disabled = !ok;
       }
-
-      enableContinueIfValid();
-    }
-
-    window.backToContact = function(){
-      setError(false);
-      contactMode = null;
-      authMode = null;
-
-      setButtonState(btnContactYes, false);
-      setButtonState(btnContactNo,  false);
-
-      mini2.style.display = "none";
-      mini1.style.display = "block";
-
-      continueBtn.disabled = true;
     }
 
     function continueNext(){
       setError(false);
-      if (!isValid()){
-        setError(true);
-        enableContinueIfValid();
-        return;
-      }
+      if (continueBtn.disabled){ setError(true); return; }
 
       const analyse = getAnalyse();
-      const contactFromInvoice = (analyse["Ansprechpartner"] || "").toString().trim();
+      const payload = { contactFromInvoice: analyse["Ansprechpartner"] || "" };
 
-      let payload = { contactFromInvoice };
-
-      if (contactMode === "yes"){
-        payload = {
-          ...payload,
-          isContactPerson: true,
-          isAuthorized: true, // implied
-          email: document.getElementById("emailContact").value.trim()
-        };
+      if (mode==="yes"){
+        payload.isContactPerson = true;
+        payload.email = document.getElementById("emailYes").value.trim();
       } else {
-        payload = {
-          ...payload,
-          isContactPerson: false,
-          isAuthorized: (authMode === "yes"),
-          firstName: document.getElementById("firstName").value.trim(),
-          lastName: document.getElementById("lastName").value.trim(),
-          company: document.getElementById("company").value.trim(),
-          email: document.getElementById("emailRequester").value.trim()
-        };
-
-        if (authMode === "no"){
-          payload.authorizedEmail = document.getElementById("emailAuthorized").value.trim();
-        }
+        payload.isContactPerson = false;
+        payload.firstName = document.getElementById("firstName").value.trim();
+        payload.lastName  = document.getElementById("lastName").value.trim();
+        payload.company   = document.getElementById("company").value.trim();
+        payload.email     = document.getElementById("emailNo").value.trim();
       }
 
       sessionStorage.setItem(PERSON_KEY, JSON.stringify(payload));
-
-      if (window.parent && typeof window.parent.nextStep === "function"){
-        window.parent.nextStep();
-      }
+      if (window.parent && typeof window.parent.nextStep==="function") window.parent.nextStep();
     }
 
     function goBack(){
-      if (window.parent && typeof window.parent.prevStep === "function"){
-        window.parent.prevStep();
-      }
+      if (window.parent && typeof window.parent.prevStep==="function") window.parent.prevStep();
     }
 
-    // Live validation
-    ["emailContact","firstName","lastName","company","emailRequester","emailAuthorized"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el){
-        el.addEventListener("input", () => {
-          setError(false);
-          enableContinueIfValid();
-        });
-      }
+    ["emailYes","firstName","lastName","company","emailNo"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.addEventListener("input",validate);
     });
 
     (function init(){
       const analyse = getAnalyse();
-      const name = (analyse["Ansprechpartner"] || "…").toString().trim() || "…";
-      document.getElementById("contactName").textContent = name;
-
-      // restore if saved
-      const saved = safeParse(sessionStorage.getItem(PERSON_KEY) || "");
-      if (saved && typeof saved === "object"){
-        // Determine modes
-        if (saved.isContactPerson === true){
-          selectContact("yes");
-          document.getElementById("emailContact").value = saved.email || "";
-        } else if (saved.isContactPerson === false){
-          selectContact("no");
-          document.getElementById("firstName").value = saved.firstName || "";
-          document.getElementById("lastName").value  = saved.lastName || "";
-          document.getElementById("company").value   = saved.company || "";
-          document.getElementById("emailRequester").value = saved.email || "";
-          if (saved.isAuthorized === false){
-            selectAuth("no");
-            document.getElementById("emailAuthorized").value = saved.authorizedEmail || "";
-          } else if (saved.isAuthorized === true){
-            selectAuth("yes");
-          }
-        } else {
-          backToContact();
-        }
-        enableContinueIfValid();
-      } else {
-        backToContact();
-      }
+      document.getElementById("contactName").textContent =
+        (analyse["Ansprechpartner"] || "…").toString().trim() || "…";
     })();
-
-    window.continueNext = continueNext;
-    window.goBack = goBack;
   </script>
 </body>
 </html>
