@@ -391,18 +391,7 @@
 
 <!-- Rechter Container: vertragsauswertung -->
 <div class="service-card" id="vertragsauswertung" aria-label="Vertragsauswertung">
-    <div id="vertragsauswertung-content">
-        <!-- vertragsauswertung.html wird hier geladen -->
-    </div>
 </div>
-
-<!-- Overlay: vertragsvorlage (standardmäßig verborgen) -->
-<div id="overlay" class="overlay-hidden" aria-hidden="true">
-    <div id="vertragsvorlage">
-        <!-- vertragsvorlage.html wird hier geladen -->
-    </div>
-</div>
-
 <script>
     // Leistungsumfang laden
     async function loadRouterEinbauInfo() {
@@ -500,66 +489,12 @@
         card.style.right = rightMargin + "px";
     }
 
-    // Externe HTML-Fragmente laden
-    async function loadSection(targetId, file) {
-        const el = document.getElementById(targetId);
-        if (!el) return;
-
-        try {
-            const res = await fetch(file);
-            if (!res.ok) {
-                throw new Error("Fehler beim Laden von " + file + " (Status " + res.status + ")");
-            }
-            const html = await res.text();
-            el.innerHTML = html;
-            return;
-        } catch (e) {
-            console.error(e);
-            el.innerHTML = "<p>Die Inhalte konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>";
-        }
-    }
-
-    // Overlay steuern (kann aus vertragsauswertung.html per onclick genutzt werden)
-    function openOverlay() {
-        const ov = document.getElementById("overlay");
-        if (ov) ov.classList.remove("overlay-hidden");
-    }
-
-    function closeOverlay() {
-        const ov = document.getElementById("overlay");
-        if (ov) ov.classList.add("overlay-hidden");
-    }
-
-    // Init-Funktionen für ausgelagerte HTML-Dateien (Variante A)
-    function initVertragsauswertung() {
-        // Hier kommt später dein JS für vertragsauswertung.html rein
-        console.log("vertragsauswertung.html wurde geladen");
-    }
-
-    function initVertragsvorlage() {
-        // Hier kommt später dein JS für vertragsvorlage.html rein
-        console.log("vertragsvorlage.html wurde geladen");
-    }
 
     document.addEventListener("DOMContentLoaded", () => {
         loadRouterEinbauInfo();
-
-        // vertragsauswertung.html laden → danach Init ausführen
-        loadSection("vertragsauswertung-content", "vertragsauswertung.html")
-            .then(() => {
-                if (typeof initVertragsauswertung === "function") {
-                    initVertragsauswertung();
-                }
-            });
-
-        // vertragsvorlage.html laden → danach Init ausführen
-        loadSection("vertragsvorlage", "vertragsvorlage.html")
-            .then(() => {
-                if (typeof initVertragsvorlage === "function") {
-                    initVertragsvorlage();
-                }
-            });
     });
+    });
+});
 
     window.addEventListener("load", positionServiceCard);
     window.addEventListener("resize", positionServiceCard);
