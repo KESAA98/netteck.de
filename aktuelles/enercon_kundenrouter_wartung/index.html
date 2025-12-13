@@ -227,71 +227,13 @@
         .footer-link:hover {
             color: var(--text-main);
         }
-
-        /* RECHTER ZUSATZ-CONTAINER (vertragsauswertung) */
-        .service-card {
-            background: #ffffff;
-            border-radius: var(--radius-lg);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-            border: 1px solid var(--border);
-            padding: 1.25rem 1.4rem 1.5rem;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            max-width: 420px;
-        }
-
-        /* SELECTION CONTAINER (wie Info-Container) */
-        .selection-card {
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-            padding: 1.75rem 1.9rem 2.1rem;
-            border: 1px solid var(--border);
-            margin-top: 1.5rem;
-        }
-
-        /* OVERLAY (vertragsvorlage) */
-        #overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.55);
-            backdrop-filter: blur(2px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .overlay-hidden {
-            display: none !important;
-        }
-
-        #vertragsvorlage {
-            background: #ffffff;
-            width: calc(100% - 3rem);
-            max-width: 1000px;
-            max-height: calc(100% - 3rem);
-            overflow: auto;
-            border-radius: var(--radius-lg);
-            padding: 1.75rem 2rem;
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
-        }
-
-        @media (max-width: 800px) {
-            #vertragsvorlage {
-                width: calc(100% - 2rem);
-                max-height: calc(100% - 2rem);
-                padding: 1.25rem 1.5rem;
-            }
-        }
-
-        @media (max-width: 600px) {
+@media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
                 padding: 0 0.75rem;
             }
 
-            .card, .selection-card {
+            .card {
                 padding: 1.25rem 1.1rem 1.8rem;
                 border-radius: 12px;
             }
@@ -312,7 +254,7 @@
 </head>
 <body>
 
-<div class="page" id="mainPage">
+<div class="page">
     <div class="card">
 
         <!-- Bild / Header -->
@@ -383,27 +325,6 @@
         </footer>
 
     </div>
-
-    <!-- Selection Container: vertragsauswahl.html -->
-    <div class="selection-card" id="selection" aria-label="Vertragsauswahl">
-        <div id="selection-content">
-            <!-- vertragsauswahl.html wird hier geladen -->
-        </div>
-    </div>
-</div>
-
-<!-- Rechter Container: vertragsauswertung -->
-<div class="service-card" id="vertragsauswertung" aria-label="Vertragsauswertung">
-    <div id="vertragsauswertung-content">
-        <!-- vertragsauswertung.html wird hier geladen -->
-    </div>
-</div>
-
-<!-- Overlay: vertragsvorlage (standardmäßig verborgen) -->
-<div id="overlay" class="overlay-hidden" aria-hidden="true">
-    <div id="vertragsvorlage">
-        <!-- vertragsvorlage.html wird hier geladen -->
-    </div>
 </div>
 
 <script>
@@ -466,97 +387,30 @@
         }
     }
 
-    // Flexibles Layout: Hauptcontainer verschiebt/schrumpft, Side wandert ggf. nach unten
-    function positionServiceCard() {
-        const page = document.querySelector('.page');
-        const side = document.querySelector('.service-card');
-        if (!page || !side) return;
+        const rect = info.getBoundingClientRect();
+        const gap = rect.top;              // oberer Abstand in px
+        const minWidth = 280;              // mind. Breite rechts
+        const left = rect.right + gap;     // rechter Rand Info + gleicher Abstand
+        const rightMargin = gap;           // gleicher Abstand zum Rand
+        const available = window.innerWidth - left - rightMargin;
 
-        const rootFont = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-        const gap = 2 * rootFont;                 // 2rem in px
-        const MAX_MAIN = 1400;
-        const MIN_MAIN = 1000;
-        const SIDE_MIN = 280;
-
-        const vw = window.innerWidth;
-
-        let mainW = Math.min(MAX_MAIN, vw - 2*gap);
-
-        if (vw < (MIN_MAIN + SIDE_MIN + 3*gap)) {
-            mainW = Math.max(MIN_MAIN, Math.min(MAX_MAIN, vw - 2*gap));
-            page.style.width = mainW + "px";
-            page.style.marginLeft = "auto";
-            page.style.marginRight = "auto";
-
-            side.style.position = "static";
-            side.style.left = side.style.right =
-            side.style.top = side.style.bottom = "";
-            side.style.maxWidth = "none";
-            side.style.width = mainW + "px";
-            side.style.margin = "1.5rem auto 2rem";
+        // Wenn nicht genug Platz → Karte unter den Inhalt
+        if (available < minWidth) {
+            card.style.position = "static";
+            card.style.left = card.style.right =
+            card.style.top = card.style.bottom = "";
             return;
         }
 
-        const neededForSide = mainW + SIDE_MIN + 3*gap;
-        if (vw < neededForSide) {
-            mainW = Math.max(MIN_MAIN, vw - (SIDE_MIN + 3*gap));
-        }
-
-        page.style.width = mainW + "px";
-        page.style.marginLeft = "auto";
-        page.style.marginRight = "auto";
-
-        const leftCentered = (vw - mainW) / 2;
-        const maxSideLeft = vw - gap - SIDE_MIN;
-        const desiredSideLeft = leftCentered + mainW + gap;
-        const overflow = desiredSideLeft - maxSideLeft;
-
-        const leftMin = gap;
-        const leftFinal = Math.max(leftMin, leftCentered - Math.max(0, overflow));
-
-        page.style.marginLeft = leftFinal + "px";
-        page.style.marginRight = "auto";
-
-        side.style.position = "fixed";
-        side.style.top = gap + "px";
-        side.style.bottom = gap + "px";
-        side.style.left = (leftFinal + mainW + gap) + "px";
-        side.style.right = gap + "px";
-        side.style.width = "";
-        side.style.maxWidth = "";
-        side.style.margin = "";
+        // genug Platz → rechts fix ausrichten
+        card.style.position = "fixed";
+        card.style.top = gap + "px";
+        card.style.bottom = gap + "px";
+        card.style.left = left + "px";
+        card.style.right = rightMargin + "px";
     }
-
-    // Externe HTML-Fragmente laden + Script-Tags ausführen
-    async function loadSection(targetId, file) {
-        const el = document.getElementById(targetId);
-        if (!el) return;
-
-        try {
-            const res = await fetch(file);
-            if (!res.ok) {
-                throw new Error("Fehler beim Laden von " + file + " (Status " + res.status + ")");
-            }
             const html = await res.text();
             el.innerHTML = html;
-
-            const scripts = el.querySelectorAll("script");
-            scripts.forEach(oldScript => {
-                const newScript = document.createElement("script");
-
-                if (oldScript.src) {
-                    newScript.src = oldScript.src;
-                } else {
-                    newScript.textContent = oldScript.textContent;
-                }
-
-                if (oldScript.type) {
-                    newScript.type = oldScript.type;
-                }
-
-                document.body.appendChild(newScript);
-            });
-
             return;
         } catch (e) {
             console.error(e);
@@ -564,37 +418,11 @@
         }
     }
 
-    // Overlay steuern
-    function openOverlay() {
-        const ov = document.getElementById("overlay");
-        if (ov) ov.classList.remove("overlay-hidden");
-    }
-
-    function closeOverlay() {
-        const ov = document.getElementById("overlay");
-        if (ov) ov.classList.add("overlay-hidden");
-    }
-
-    // Init-Platzhalter
-    function initVertragsauswertung() { console.log("vertragsauswertung.html wurde geladen"); }
-    function initVertragsvorlage() { console.log("vertragsvorlage.html wurde geladen"); }
-    function initVertragsauswahl() { console.log("vertragsauswahl.html wurde geladen"); }
-
     document.addEventListener("DOMContentLoaded", () => {
         loadRouterEinbauInfo();
-
-        loadSection("vertragsauswertung-content", "vertragsauswertung.html")
-            .then(() => { if (typeof initVertragsauswertung === "function") initVertragsauswertung(); });
-
-        loadSection("vertragsvorlage", "vertragsvorlage.html")
-            .then(() => { if (typeof initVertragsvorlage === "function") initVertragsvorlage(); });
-
-        loadSection("selection-content", "vertragsauswahl.html")
-            .then(() => { if (typeof initVertragsauswahl === "function") initVertragsauswahl(); });
+                }
+            });
     });
-
-    window.addEventListener("load", positionServiceCard);
-    window.addEventListener("resize", positionServiceCard);
 </script>
 
 </body>
