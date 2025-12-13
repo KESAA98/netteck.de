@@ -330,6 +330,55 @@
                 throw new Error("Fehler beim Laden von information/warungsvertrag.txt (Status " + res.status + ")");
             }
 
+            const data = await res.json();
+
+            if (Array.isArray(data.sections)) {
+                data.sections.forEach(section => {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "leistung";
+
+                    if (section.heading) {
+                        const h = document.createElement("h3");
+                        h.textContent = section.heading;
+                        wrapper.appendChild(h);
+                    }
+
+                    if (section.text) {
+                        const p = document.createElement("p");
+                        let html = String(section.text);
+                        html = html.replace(/\n/g, "<br>").replace(/
+/g, "<br>");
+                        p.innerHTML = html;
+                        wrapper.appendChild(p);
+                    }
+
+                    if (section.note) {
+                        const note = document.createElement("p");
+                        note.className = "leistung-note";
+                        let html = String(section.note);
+                        html = html.replace(/\n/g, "<br>").replace(/
+/g, "<br>");
+                        note.innerHTML = html;
+                        wrapper.appendChild(note);
+                    }
+
+                    listEl.appendChild(wrapper);
+                });
+            }
+
+            if (data.legal_notice && legalBox) {
+                let html = String(data.legal_notice);
+                html = html.replace(/\n/g, "<br>").replace(/
+/g, "<br>");
+                legalBox.innerHTML = html;
+                legalBox.style.display = "block";
+            }
+        } catch (err) {
+            console.error(err);
+            listEl.innerHTML = "<p>Die Detailbeschreibung zum Leistungsumfang konnte nicht geladen werden. Bitte kontaktieren Sie mich direkt für weitere Informationen.</p>";
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         loadRouterEinbauInfo();
     });
