@@ -5,6 +5,7 @@
   <title>Step 4 – Paket wählen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="../../../../Logos/logo.png" />
+
   <style>
     :root {
       --primary:#0b74ff;
@@ -24,59 +25,155 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text-main);
-      line-height: 1.6;
+      line-height: 1.5;
       overflow:hidden;
     }
-    .viewport{ height:100vh; width:100vw; display:flex; align-items:center; justify-content:center; padding: 2rem 1rem; }
+    .viewport{ height:100vh; width:100vw; display:flex; align-items:center; justify-content:center; padding: 1.6rem 1rem; }
     .card{
-      width:min(1100px, 100%); height:100%; max-height: calc(100vh - 4rem);
+      width:min(1100px, 100%); height:100%; max-height: calc(100vh - 3.2rem);
       background: var(--card-bg); border-radius: var(--radius-lg);
       box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
       border: 1px solid var(--border);
-      padding: 1.6rem 1.9rem 1.6rem;
-      display:flex; flex-direction:column; gap: 1rem;
+      padding: 1.25rem 1.6rem 1.1rem;
+      display:flex; flex-direction:column; gap: .8rem;
     }
-    h1{ margin:0; font-size:1.45rem; text-align:center; letter-spacing:.2px; }
+    h1{ margin:0; font-size:1.35rem; text-align:center; letter-spacing:.2px; }
     .sub{ margin:0; text-align:center; color:var(--text-muted); font-size:.95rem; }
+
     .panel{
-      flex:1; border:1px solid var(--border); border-radius: 16px; background:#fff;
-      padding: 16px; display:flex; flex-direction:column; gap: 14px; overflow:auto;
+      flex:1;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      background:#fff;
+      padding: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      overflow:hidden; /* Ziel: kein Scrollen */
+      min-height: 0;
     }
-    .sectionTitle{ font-weight:950; margin:0; }
-    .hint{ margin:0; color:var(--text-muted); font-size:.93rem; }
+
+    .box{
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .sectionTitle{ font-weight:950; margin:0 0 6px 0; font-size: 1rem; }
+    .hint{ margin: 6px 0 0 0; color:var(--text-muted); font-size:.92rem; }
+
     .chips{ display:flex; gap:10px; flex-wrap:wrap; }
     .chip{
-      border:1px solid var(--border); background:#fff; color:var(--text-main);
-      padding: 10px 14px; border-radius: 999px; font-weight: 900; cursor:pointer;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text-main);
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-weight: 900;
+      cursor:pointer;
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
       user-select:none;
+      font-size: .95rem;
     }
-    .chip:hover{ transform: translateY(-1px); border-color: var(--primary); box-shadow: 0 0 0 5px var(--primary-soft); }
-    .chip.active{ border-color: rgba(11,116,255,0.45); background: rgba(11,116,255,0.10); color:#0b3d91; }
-    .box{ border:1px solid var(--border); border-radius: 16px; padding: 14px; background: #fff; }
-    table{ width:100%; border-collapse: collapse; overflow:hidden; border-radius: 14px; border:1px solid var(--border); background:#fff; }
-    th, td{ padding: 10px 12px; border-bottom: 1px solid rgba(225,228,236,0.7); text-align:left; font-size: .95rem; }
+    .chip:hover{
+      transform: translateY(-1px);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 5px var(--primary-soft);
+    }
+    .chip.active{
+      border-color: rgba(11,116,255,0.45);
+      background: rgba(11,116,255,0.10);
+      color:#0b3d91;
+    }
+
+    .error{
+      display:none;
+      border: 1px solid #ffd0d0;
+      background:#fff5f5;
+      color: var(--danger);
+      border-radius: 14px;
+      padding: 9px 10px;
+      font-weight: 850;
+      text-align:center;
+      font-size: .93rem;
+    }
+    .error.show{ display:block; }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      overflow:hidden;
+      background:#fff;
+    }
+    th, td{
+      padding: 9px 10px;
+      border-bottom: 1px solid rgba(225,228,236,0.7);
+      font-size: .93rem;
+    }
     th{ background: #f9fafb; font-weight: 950; }
     tr:last-child td{ border-bottom:none; }
     .right{ text-align:right; white-space:nowrap; }
     .muted{ color:var(--text-muted); }
-    .sumRow{ display:flex; justify-content: space-between; align-items:flex-end; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-    .sumBox{ border:1px solid var(--border); border-radius: 14px; padding: 12px 14px; background:#fff; min-width: 260px; }
-    .sumLabel{ font-weight:900; }
-    .sumValue{ font-size: 1.2rem; font-weight: 950; }
-    .error{ display:none; border: 1px solid #ffd0d0; background:#fff5f5; color: var(--danger); border-radius: 14px; padding: 10px 12px; font-weight: 850; text-align:center; }
-    .error.show{ display:block; }
-    .footer{ display:flex; align-items:center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 6px; border-top: 1px solid rgba(225,228,236,0.8); }
-    .btn{ border:none; border-radius: 999px; padding: 12px 16px; font-weight: 900; cursor:pointer;
-      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
-      display:inline-flex; align-items:center; gap: 8px; user-select:none;
+
+    .sumRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
     }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.02); box-shadow: 0 0 0 5px var(--primary-soft); }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none !important; filter:none !important; box-shadow:none !important; }
+    .sumBox{
+      flex: 1 1 240px;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background:#fff;
+      min-width: 220px;
+    }
+    .sumLabel{ font-weight:900; font-size:.92rem; }
+    .sumValue{ font-size: 1.15rem; font-weight: 950; }
+
+    .footer{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+      border-top: 1px solid rgba(225,228,236,0.8);
+    }
+    .btn{
+      border:none;
+      border-radius: 999px;
+      padding: 11px 15px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      user-select:none;
+      font-size: .95rem;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 0 0 5px var(--primary-soft);
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none !important;
+      filter:none !important;
+      box-shadow:none !important;
+    }
     .btnPrimary{ color:#fff; background: linear-gradient(135deg, var(--primary), var(--primary2)); }
     .btnGhost{ background:#fff; color: var(--text-main); border: 1px solid var(--border); }
   </style>
 </head>
+
 <body>
   <div class="viewport">
     <div class="card" role="main" aria-label="Paket wählen">
@@ -86,24 +183,29 @@
       <div class="panel">
         <div class="box">
           <p class="sectionTitle">Vertragslänge</p>
-          <p class="hint">
-            Hinweis: jährliche Kündigungsmöglichkeit mit <b>1 Monat</b> Kündigungsfrist.
-            Eine nachträgliche Verlängerung ist nicht möglich (bzw. nur zu anderen Konditionen).
-          </p>
           <div class="chips" id="lenChips"></div>
+
+          <!-- Hinweis: nur wenn NICHT 5 Jahre -->
+          <p class="hint" id="cancelHint" style="display:none;">
+            Die Verträge haben ein jährliche Kündigung Möglichkeit mit einer einmonatigen Kündigungsfrist.
+            Eine nachträgliche verlängerung ist zu den angegebenen koditionen nicht möglich.
+          </p>
         </div>
 
         <div class="box" id="lancareBox" style="display:none;">
-          <p class="sectionTitle">LANcare-Laufzeit</p>
-          <p class="hint">Bitte wählen Sie anschließend die gewünschte LANcare-Laufzeit.</p>
+          <p class="sectionTitle">LANcare</p>
           <div class="chips" id="lanChips"></div>
+          <p class="hint">
+            Optional können sie die LANcare Pakete auch lägerfristig kaufen.
+            Die LANcare Produkte sind in einmaliger Leistung im ersten Jahr zu zahlen und haben die fest ausgewählte Laufzeit.
+          </p>
         </div>
 
         <div class="error" id="errorBox"></div>
 
         <div class="box" id="summaryBox" style="display:none;">
           <p class="sectionTitle">Ihre Auswahl</p>
-          <p class="hint">Jahr 1 enthält LANcare + Service &amp; Wartung. Ab Jahr 2 nur noch Service &amp; Wartung. Abrechnung erfolgt jährlich.</p>
+          <p class="hint">Hier sehen sie die Staffelung ihrer jährlichen kosten.</p>
 
           <div id="tableWrap"></div>
 
@@ -133,22 +235,8 @@
   </div>
 
   <script>
-    // Fallback eingebettet (damit Step 4 IMMER funktioniert)
-    const PRICE_DATA_FALLBACK = {"pakete": {"1": {"laufzeit_jahre": 1, "varianten": [{"lancare_jahre": 1, "wartungsvertrag_preis": 266.76, "lancare_preis_netto": 92.24, "lancare_preis_brutto": 109.77, "gesamt": 359.0}, {"lancare_jahre": 3, "wartungsvertrag_preis": 266.76, "lancare_preis_netto": 140.33, "lancare_preis_brutto": 166.99, "gesamt": 407.08}, {"lancare_jahre": 5, "wartungsvertrag_preis": 266.76, "lancare_preis_netto": 201.82, "lancare_preis_brutto": 240.16, "gesamt": 468.57}]}, "3": {"laufzeit_jahre": 3, "varianten": [{"lancare_jahre": 3, "wartungsvertrag_preis": 312.22, "lancare_preis_netto": 140.33, "lancare_preis_brutto": 166.99, "gesamt": 1077.0}, {"lancare_jahre": 5, "wartungsvertrag_preis": 312.22, "lancare_preis_netto": 201.82, "lancare_preis_brutto": 240.16, "gesamt": 1138.49}]}, "5": {"laufzeit_jahre": 5, "varianten": [{"lancare_jahre": 5, "wartungsvertrag_preis": 318.64, "lancare_preis_netto": 201.82, "lancare_preis_brutto": 240.16, "gesamt": 1795.0}]}}};
-
-    function resolvePricesUrl() {
-      // Normalfall: index liegt in /vertrag_anfragen/ und die Preise in ../information/
-      const p = window.location.pathname;
-      // wenn wir in /vertrag_anfragen/ sind -> ersetze auf /information/warungsvertrag_preise.txt
-      if (/\/vertrag_anfragen\/?$/.test(p)) {
-        const targetPath = p.replace(/\/vertrag_anfragen\/?$/, "/information/warungsvertrag_preise.txt");
-        return new URL(targetPath, window.location.origin).toString();
-      }
-      // ansonsten: relativer Fallback
-      return new URL("../information/warungsvertrag_preise.txt", window.location.href).toString();
-    }
-
-    const PRICES_URL = resolvePricesUrl();
+    // Kein Fallback. Absolute URL (Domain-Root) – funktioniert in deinem Setup (GitHub Pages/Netlify) zuverlässig.
+    const PRICES_URL = "/netteck.de/aktuelles/enercon_kundenrouter_wartung/information/warungsvertrag_preise.txt";
     const STORAGE_KEY = "paketWahl";
 
     let priceData = null;
@@ -158,6 +246,7 @@
     const lenChips = document.getElementById("lenChips");
     const lanChips = document.getElementById("lanChips");
     const lancareBox = document.getElementById("lancareBox");
+    const cancelHint = document.getElementById("cancelHint");
     const summaryBox = document.getElementById("summaryBox");
     const tableWrap = document.getElementById("tableWrap");
     const avgPrice = document.getElementById("avgPrice");
@@ -165,13 +254,13 @@
     const continueBtn = document.getElementById("continueBtn");
     const errorBox = document.getElementById("errorBox");
 
-    function euro(v) {
+    function euro(v){
       if (typeof v !== "number" || !isFinite(v)) return "–";
       return v.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
     }
 
-    function setError(msg) {
-      if (!msg) {
+    function setError(msg){
+      if (!msg){
         errorBox.classList.remove("show");
         errorBox.textContent = "";
         return;
@@ -180,22 +269,15 @@
       errorBox.textContent = msg;
     }
 
-    async function loadPrices() {
-      // Erst versuchen: Live-Datei laden (damit Updates ohne HTML-Änderung gehen)
-      try {
-        const resp = await fetch(PRICES_URL, { cache: "no-store" });
-        if (!resp.ok) throw new Error("http_" + resp.status);
-        const text = await resp.text();
-        return JSON.parse(text);
-      } catch (e) {
-        // Fallback: Eingebettete Preise
-        console.warn("Preise konnten nicht geladen werden, nutze Fallback:", e, PRICES_URL);
-        setError("Hinweis: Preisdaten konnten nicht online geladen werden – es wird eine hinterlegte Preisliste verwendet.");
-        return PRICE_DATA_FALLBACK;
-      }
+    async function loadPrices(){
+      const resp = await fetch(PRICES_URL, { cache: "no-store" });
+      if (!resp.ok) throw new Error("http_" + resp.status);
+      const obj = await resp.json();
+      if (!obj || !obj.pakete) throw new Error("format");
+      return obj;
     }
 
-    function buildLengthChips() {
+    function buildLengthChips(){
       lenChips.innerHTML = "";
       const keys = Object.keys(priceData.pakete || {}).sort((a,b)=>Number(a)-Number(b));
       keys.forEach(k => {
@@ -208,6 +290,7 @@
           selectedYears = years;
           selectedLanYears = null;
           setError("");
+          cancelHint.style.display = (years !== 5) ? "block" : "none";
           buildLengthChips();
           buildLanChips();
           renderSummary();
@@ -216,8 +299,8 @@
       });
     }
 
-    function buildLanChips() {
-      if (!selectedYears) {
+    function buildLanChips(){
+      if (!selectedYears){
         lancareBox.style.display = "none";
         lanChips.innerHTML = "";
         return;
@@ -227,6 +310,7 @@
 
       const pkg = priceData.pakete[String(selectedYears)];
       const vars = (pkg && pkg.varianten) ? pkg.varianten : [];
+
       vars.forEach(v => {
         const lanYears = Number(v.lancare_jahre);
         const chip = document.createElement("button");
@@ -243,16 +327,16 @@
       });
     }
 
-    function getSelectedVariant() {
+    function getSelectedVariant(){
       if (!selectedYears || !selectedLanYears) return null;
       const pkg = priceData.pakete[String(selectedYears)];
       const vars = (pkg && pkg.varianten) ? pkg.varianten : [];
       return vars.find(v => Number(v.lancare_jahre) === Number(selectedLanYears)) || null;
     }
 
-    function renderSummary() {
+    function renderSummary(){
       const variant = getSelectedVariant();
-      if (!variant) {
+      if (!variant){
         summaryBox.style.display = "none";
         tableWrap.innerHTML = "";
         avgPrice.textContent = "–";
@@ -270,31 +354,37 @@
       const total = Number(variant.gesamt);
       const avg = total / years;
 
-      let rows = "";
-      for (let y=1; y<=years; y++) {
-        const lan = (y===1) ? lanOnce : 0;
-        const sum = wartJahr + lan;
-        rows += `
+      // Tabelle ohne "LANcare 0€" Zeilen: LANcare nur im 1. Jahr als Einmalposition
+      const year1 = wartJahr + lanOnce;
+
+      let body = `
+        <tr>
+          <td><b>Jahr 1</b></td>
+          <td class="right">${euro(year1)}</td>
+          <td class="muted">LANcare (einmalig) + Service &amp; Wartung</td>
+        </tr>
+      `;
+
+      if (years >= 2){
+        body += `
           <tr>
-            <td>Jahr ${y}</td>
-            <td class="right">${euro(lan)}</td>
+            <td>Jahr 2 – ${years}</td>
             <td class="right">${euro(wartJahr)}</td>
-            <td class="right"><b>${euro(sum)}</b></td>
+            <td class="muted">nur Service &amp; Wartung</td>
           </tr>
         `;
       }
 
       tableWrap.innerHTML = `
-        <table aria-label="Preisübersicht">
+        <table aria-label="Staffelung">
           <thead>
             <tr>
-              <th>Jahr</th>
-              <th class="right">LANcare (Netto)</th>
-              <th class="right">Service &amp; Wartung (Netto)</th>
-              <th class="right">Summe (Netto)</th>
+              <th>Zeitraum</th>
+              <th class="right">Kosten / Jahr (Netto)</th>
+              <th>Hinweis</th>
             </tr>
           </thead>
-          <tbody>${rows}</tbody>
+          <tbody>${body}</tbody>
         </table>
       `;
 
@@ -313,35 +403,44 @@
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     }
 
-    function continueNext() {
-      if (continueBtn.disabled) {
+    function continueNext(){
+      if (continueBtn.disabled){
         setError("Bitte wählen Sie zuerst die Vertragslänge und eine LANcare-Variante.");
         return;
       }
       if (window.parent && typeof window.parent.nextStep === "function") window.parent.nextStep();
     }
 
-    function goBack() {
+    function goBack(){
       if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
     }
 
-    (async function init() {
-      priceData = await loadPrices();
+    (async function init(){
+      try{
+        priceData = await loadPrices();
 
-      const savedRaw = sessionStorage.getItem(STORAGE_KEY);
-      if (savedRaw) {
-        try {
-          const saved = JSON.parse(savedRaw);
-          if (saved && saved.laufzeit_jahre) {
-            selectedYears = Number(saved.laufzeit_jahre);
-            selectedLanYears = Number(saved.lancare_jahre);
-          }
-        } catch(e) {}
+        // restore previous choice
+        const savedRaw = sessionStorage.getItem(STORAGE_KEY);
+        if (savedRaw){
+          try{
+            const saved = JSON.parse(savedRaw);
+            if (saved && saved.laufzeit_jahre){
+              selectedYears = Number(saved.laufzeit_jahre);
+              selectedLanYears = Number(saved.lancare_jahre);
+            }
+          }catch(e){}
+        }
+
+        buildLengthChips();
+        if (selectedYears){
+          cancelHint.style.display = (selectedYears !== 5) ? "block" : "none";
+        }
+        buildLanChips();
+        renderSummary();
+      }catch(e){
+        console.error(e);
+        setError("Preisdaten konnten nicht geladen werden. Bitte prüfen Sie den Pfad zur Datei „warungsvertrag_preise.txt“.");
       }
-
-      buildLengthChips();
-      buildLanChips();
-      renderSummary();
     })();
   </script>
 </body>
