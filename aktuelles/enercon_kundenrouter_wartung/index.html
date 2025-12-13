@@ -10,15 +10,13 @@
 
     <style>
         :root {
-            --primary: #0b74ff;
-            --primary-soft: rgba(11, 116, 255, 0.08);
             --bg: #f5f7fb;
             --card-bg: #ffffff;
             --border: #e1e4ec;
             --text-main: #1f2933;
             --text-muted: #6b7280;
             --radius-lg: 14px;
-        }
+    }
 
         * { box-sizing: border-box; }
 
@@ -53,8 +51,6 @@
             padding: 1.75rem 1.9rem 2.1rem;
             border: 1px solid var(--border);
         }
-
-        /* HEADER / BILD */
         .header {
             margin-bottom: 1.5rem;
         }
@@ -69,8 +65,6 @@
             border-radius: 10px;
             object-fit: cover;
         }
-
-        /* INTRO */
         .intro {
             margin-bottom: 1.75rem;
         }
@@ -95,8 +89,6 @@
             margin: 0.15rem 0;
             font-size: 0.95rem;
         }
-
-        /* LEISTUNGEN */
         .leistungen-section {
             margin-top: 1.75rem;
         }
@@ -151,8 +143,6 @@
             color: #7c2d12;
             display: none;
         }
-
-        /* SEKTIONEN */
         .section-divider {
             margin-top: 2rem;
             border-top: 1px solid var(--border);
@@ -197,8 +187,6 @@
             align-items: center;
             margin-bottom: 0.7rem;
         }
-
-        /* FOOTER */
         footer {
             margin-top: 1.6rem;
             font-size: 0.85rem;
@@ -227,7 +215,8 @@
         .footer-link:hover {
             color: var(--text-main);
         }
-@media (max-width: 600px) {
+
+        @media (max-width: 600px) {
             .page {
                 margin: 1.25rem auto 2rem;
                 padding: 0 0.75rem;
@@ -341,87 +330,8 @@
                 throw new Error("Fehler beim Laden von information/warungsvertrag.txt (Status " + res.status + ")");
             }
 
-            const data = await res.json();
-
-            if (Array.isArray(data.sections)) {
-                data.sections.forEach(section => {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "leistung";
-
-                    if (section.heading) {
-                        const h = document.createElement("h3");
-                        h.textContent = section.heading;
-                        wrapper.appendChild(h);
-                    }
-
-                    if (section.text) {
-                        const p = document.createElement("p");
-                        let html = String(section.text);
-                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
-                        p.innerHTML = html;
-                        wrapper.appendChild(p);
-                    }
-
-                    if (section.note) {
-                        const note = document.createElement("p");
-                        note.className = "leistung-note";
-                        let html = String(section.note);
-                        html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
-                        note.innerHTML = html;
-                        wrapper.appendChild(note);
-                    }
-
-                    listEl.appendChild(wrapper);
-                });
-            }
-
-            if (data.legal_notice && legalBox) {
-                let html = String(data.legal_notice);
-                html = html.replace(/\\n/g, "<br>").replace(/\n/g, "<br>");
-                legalBox.innerHTML = html;
-                legalBox.style.display = "block";
-            }
-        } catch (err) {
-            console.error(err);
-            listEl.innerHTML = "<p>Die Detailbeschreibung zum Leistungsumfang konnte nicht geladen werden. Bitte kontaktieren Sie mich direkt für weitere Informationen.</p>";
-        }
-    }
-
-        const rect = info.getBoundingClientRect();
-        const gap = rect.top;              // oberer Abstand in px
-        const minWidth = 280;              // mind. Breite rechts
-        const left = rect.right + gap;     // rechter Rand Info + gleicher Abstand
-        const rightMargin = gap;           // gleicher Abstand zum Rand
-        const available = window.innerWidth - left - rightMargin;
-
-        // Wenn nicht genug Platz → Karte unter den Inhalt
-        if (available < minWidth) {
-            card.style.position = "static";
-            card.style.left = card.style.right =
-            card.style.top = card.style.bottom = "";
-            return;
-        }
-
-        // genug Platz → rechts fix ausrichten
-        card.style.position = "fixed";
-        card.style.top = gap + "px";
-        card.style.bottom = gap + "px";
-        card.style.left = left + "px";
-        card.style.right = rightMargin + "px";
-    }
-            const html = await res.text();
-            el.innerHTML = html;
-            return;
-        } catch (e) {
-            console.error(e);
-            el.innerHTML = "<p>Die Inhalte konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>";
-        }
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
         loadRouterEinbauInfo();
-                }
-            });
     });
 </script>
 
