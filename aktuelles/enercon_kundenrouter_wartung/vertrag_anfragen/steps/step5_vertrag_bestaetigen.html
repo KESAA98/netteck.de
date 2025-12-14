@@ -522,9 +522,18 @@ h1{ margin-top: 6px; }
 
     if(Array.isArray(wart.sections)){
       for(const sec of wart.sections){
-        if(sec?.heading) content.push({ text: sec.heading, style:"h3", margin:[0,8,0,4] });
-        if(sec?.text) content.push({ text: normalizeText(sec.text) });
-        if(sec?.note) content.push({ text: normalizeText(sec.note), fontSize:9, color:"#555555", italics:true, margin:[0,6,0,2] });
+        const stack = [];
+        if(sec?.heading) stack.push({ text: sec.heading, style:"h3", margin:[0,0,0,4] });
+        if(sec?.text)   stack.push({ text: normalizeText(sec.text), margin:[0,0,0,2] });
+        if(sec?.note)   stack.push({ text: normalizeText(sec.note), fontSize:9, color:"#555555", italics:true, margin:[0,6,0,0] });
+
+        if(stack.length){
+          content.push({
+            unbreakable: true,
+            margin:[0,8,0,0],
+            stack
+          });
+        }
       }
     }
     return content;
@@ -539,7 +548,17 @@ h1{ margin-top: 6px; }
     const lanOnceN = Number(paket.lancare_preis_netto || 0);
     const lanOnceB = Number(paket.lancare_preis_brutto || 0);
 
-    content.push({ text:"Preisstaffelung", style:"h2", margin:[0,14,0,8] });
+    content.push({ text:"Preise & Abrechnung", style:"h2", margin:[0,14,0,6] });
+    content.push({
+      text: "Die Wartungs- & Servicepauschale wird jährlich nach Rechnung abgerechnet. " +
+            "Ein ggf. ausgewähltes LANcare-Paket wird einmalig (im 1. Vertragsjahr) berechnet. " +
+            "Alle Beträge verstehen sich zzgl. gesetzlicher Umsatzsteuer, sofern nicht anders angegeben.",
+      fontSize: 10,
+      color: "#374151",
+      margin:[0,0,0,10]
+    });
+
+    content.push({ text:"Preisstaffelung", style:"h2", margin:[0,6,0,8] });
 
     for(let y=1; y<=years; y++){
       const isY1 = (y===1);
@@ -549,6 +568,7 @@ h1{ margin-top: 6px; }
       const yearTotalNet = isY1 ? (wartJahr + lanOnceN) : wartJahr;
 
       content.push({
+        unbreakable: true,
         margin:[0,10,0,0],
         table:{
           widths:["*",110,110],
@@ -560,12 +580,14 @@ h1{ margin-top: 6px; }
           ]
         },
         layout:{
-          hLineColor: ()=> "#e1e4ec",
-          vLineColor: ()=> "#e1e4ec",
+          // modern: nur horizontale Linien
+          hLineColor: (i, node)=> "#e5e7eb",
+          vLineWidth: ()=> 0,
+          hLineWidth: (i, node)=> (i===0 ? 0 : 1),
           paddingLeft: ()=> 8,
           paddingRight: ()=> 8,
-          paddingTop: ()=> 6,
-          paddingBottom: ()=> 6
+          paddingTop: ()=> 7,
+          paddingBottom: ()=> 7
         }
       });
     }
@@ -598,17 +620,30 @@ h1{ margin-top: 6px; }
 
     content.push({ text:"Wartungs- & Servicevertrag für Kundenrouter", style:"h1", margin:[0,0,0,10] });
 
-    content.push({ text:"Vertragsnehmer", style:"h2", margin:[0,0,0,6] });
-    content.push({ text:`Vertragsnummer: ${vertragsnr}`, margin:[0,2,0,2] });
-    content.push({ text:`Windpark: ${String(wp).padStart(3,"0")}-${wpName}`, margin:[0,2,0,2] });
-    if(firma) content.push({ text:`Firma: ${firma}`, margin:[0,2,0,2] });
-    if(asp) content.push({ text:`Ansprechpartner: ${asp}`, margin:[0,2,0,2] });
-    if(adresseLine) content.push({ text:`Adresse: ${adresseLine}`, margin:[0,2,0,2] });
+    content.push({ text:"Vertragsnummer: " + vertragsnr, fontSize:11, margin:[0,2,0,10] });
 
-    content.push({ text:"Vertragsgeber", style:"h2", margin:[0,14,0,6] });
-    content.push({ text: vertragsgeber, margin:[0,2,0,2] });
+    // Vertragsnehmer / Vertragsgeber gleich aufgeteilt
+    const leftStack = [];
+    leftStack.push({ text:"Vertragsnehmer", style:"h2", margin:[0,0,0,6] });
+    leftStack.push({ text:`Windpark: ${String(wp).padStart(3,"0")}-${wpName}`, margin:[0,2,0,2] });
+    if(firma) leftStack.push({ text:`Firma: ${firma}`, margin:[0,2,0,2] });
+    if(asp) leftStack.push({ text:`Ansprechpartner: ${asp}`, margin:[0,2,0,2] });
+    if(adresseLine) leftStack.push({ text:`Adresse: ${adresseLine}`, margin:[0,2,0,2] });
+
+    const rightStack = [];
+    rightStack.push({ text:"Vertragsgeber", style:"h2", margin:[0,0,0,6] });
+    rightStack.push({ text: vertragsgeber, margin:[0,2,0,2] });
+
+    content.push({
+      columns: [
+        { width:"*", stack: leftStack },
+        { width:"*", stack: rightStack }
+      ],
+      columnGap: 24
+    });
 
     content.push({ text:"Vertragsbestandteile", style:"h2", margin:[0,16,0,8] });
+
     content.push(...wartToPdfContent(wart));
     content.push(...priceToPdfContent(paket));
     content.push(...agbsToPdfContentLikeIndex(agbs));
