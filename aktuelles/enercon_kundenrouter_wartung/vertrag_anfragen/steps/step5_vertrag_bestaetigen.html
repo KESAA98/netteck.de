@@ -322,7 +322,7 @@ h1{ margin-top: 6px; }
 
               <div class="field" id="emailField" style="display:none">
                 <label for="email">E‑Mail‑Adresse</label>
-                <input type="email" id="email" />
+                <input type="email" id="email" disabled />
               </div>
 
               <div class="infoBox">
@@ -335,6 +335,7 @@ h1{ margin-top: 6px; }
 
               <div class="actionsRow">
                 <button type="button" class="btn" id="btnBack">Zurück</button>
+                <button type="button" class="btn" id="btnDownload">PDF herunterladen (temporär)</button>
                 <button type="button" class="btn primary" id="btnSend">Vertrag anfragen</button>
                 <button type="button" class="btn" id="btnHome" style="display:none">Zur Startseite</button>
               </div>
@@ -380,7 +381,7 @@ h1{ margin-top: 6px; }
   }
   function buildVertragsnummer(analyse){
     const rn = pickRechnungNr(analyse);
-    return `${rn}_${rn}_${nowStamp()}`;
+    return `${rn}_${nowStamp()}`;
   }
   function normalizeText(t){
     const parts = String(t||"").split(/\\n+/).map(x=>x.trim()).filter(Boolean);
@@ -548,17 +549,18 @@ h1{ margin-top: 6px; }
     const lanOnceN = Number(paket.lancare_preis_netto || 0);
     const lanOnceB = Number(paket.lancare_preis_brutto || 0);
 
-    content.push({ text:"Preise & Abrechnung", style:"h2", margin:[0,14,0,6] });
-    content.push({
+    const stack = [];
+
+    stack.push({ text:"Preise & Abrechnung", style:"h2", margin:[0,0,0,4] });
+    stack.push({
       text: "Die Wartungs- & Servicepauschale wird jährlich nach Rechnung abgerechnet. " +
-            "Ein ggf. ausgewähltes LANcare-Paket wird einmalig (im 1. Vertragsjahr) berechnet. " +
-            "Alle Beträge verstehen sich zzgl. gesetzlicher Umsatzsteuer, sofern nicht anders angegeben.",
-      fontSize: 10,
+            "Ein ggf. ausgewähltes LANcare-Paket wird einmalig im 1. Vertragsjahr berechnet.",
+      fontSize: 9.5,
       color: "#374151",
-      margin:[0,0,0,10]
+      margin:[0,0,0,8]
     });
 
-    content.push({ text:"Preisstaffelung", style:"h2", margin:[0,6,0,8] });
+    stack.push({ text:"Preisstaffelung", style:"h2", margin:[0,2,0,6] });
 
     for(let y=1; y<=years; y++){
       const isY1 = (y===1);
@@ -567,34 +569,39 @@ h1{ margin-top: 6px; }
       rows.push(["Wartungs- & Servicepauschale", fmtEUR(wartJahr), "—"]);
       const yearTotalNet = isY1 ? (wartJahr + lanOnceN) : wartJahr;
 
-      content.push({
-        unbreakable: true,
-        margin:[0,10,0,0],
+      stack.push({
+        margin:[0,6,0,0],
         table:{
-          widths:["*",110,110],
+          widths:["*",95,95],
           body:[
-            [{ text:`Jahr ${y}`, style:"h2", colSpan:3, border:[false,false,false,true] },{},{}],
-            [{ text:"Position", fontSize:10, bold:true }, { text:"Netto", fontSize:10, bold:true, alignment:"right" }, { text:"Brutto", fontSize:10, bold:true, alignment:"right" }],
-            ...rows.map(r=> ([{ text:r[0], fontSize:10 }, { text:r[1], fontSize:10, alignment:"right" }, { text:r[2], fontSize:10, alignment:"right" }])),
-            [{ text:"Gesamt (Jahr)", fontSize:10, bold:true }, { text:fmtEUR(yearTotalNet), fontSize:10, bold:true, alignment:"right" }, { text:"—", fontSize:10, bold:true, alignment:"right" }]
+            [{ text:`Jahr ${y}`, bold:true, fontSize:10, colSpan:3, border:[false,false,false,true] },{},{}],
+            [{ text:"Position", fontSize:9.5, bold:true }, { text:"Netto", fontSize:9.5, bold:true, alignment:"right" }, { text:"Brutto", fontSize:9.5, bold:true, alignment:"right" }],
+            ...rows.map(r=> ([{ text:r[0], fontSize:9.5 }, { text:r[1], fontSize:9.5, alignment:"right" }, { text:r[2], fontSize:9.5, alignment:"right" }])),
+            [{ text:"Gesamt (Jahr)", fontSize:9.5, bold:true }, { text:fmtEUR(yearTotalNet), fontSize:9.5, bold:true, alignment:"right" }, { text:"—", fontSize:9.5, bold:true, alignment:"right" }]
           ]
         },
         layout:{
-          // modern: nur horizontale Linien
-          hLineColor: (i, node)=> "#e5e7eb",
+          hLineColor: ()=> "#e5e7eb",
           vLineWidth: ()=> 0,
-          hLineWidth: (i, node)=> (i===0 ? 0 : 1),
-          paddingLeft: ()=> 8,
-          paddingRight: ()=> 8,
-          paddingTop: ()=> 7,
-          paddingBottom: ()=> 7
+          hLineWidth: (i)=> (i===0 ? 0 : 1),
+          paddingLeft: ()=> 6,
+          paddingRight: ()=> 6,
+          paddingTop: ()=> 5,
+          paddingBottom: ()=> 5
         }
       });
     }
+
+    content.push({
+      pageBreak: "before",
+      unbreakable: true,
+      stack
+    });
+
     return content;
   }
 
-  function buildDocDefinition({vertragsnr, analyse, paket, wart, agbs, logoDataUrl, watermark=true}){
+  function buildDocDefinition({vertragsnr, analyse, person, paket, wart, agbs, logoDataUrl, watermark=true}){
     const firma = analyse?.Firma || "";
     const wp = (analyse?.windpark_nummer || analyse?.["windpark_nummer"] || "000");
     const wpName = (analyse?.windpark_name || analyse?.["windpark_name"] || "Musterpark");
@@ -622,29 +629,28 @@ h1{ margin-top: 6px; }
 
     content.push({ text:"Vertragsnummer: " + vertragsnr, fontSize:11, margin:[0,2,0,10] });
 
-    // Vertragsnehmer / Vertragsgeber gleich aufgeteilt
-    const leftStack = [];
-    leftStack.push({ text:"Vertragsnehmer", style:"h2", margin:[0,0,0,6] });
-    leftStack.push({ text:`Windpark: ${String(wp).padStart(3,"0")}-${wpName}`, margin:[0,2,0,2] });
-    if(firma) leftStack.push({ text:`Firma: ${firma}`, margin:[0,2,0,2] });
-    if(asp) leftStack.push({ text:`Ansprechpartner: ${asp}`, margin:[0,2,0,2] });
-    if(adresseLine) leftStack.push({ text:`Adresse: ${adresseLine}`, margin:[0,2,0,2] });
+    // Vertragsnehmer (oben)
+    content.push({ text:"Vertragsnehmer", style:"h2", margin:[0,0,0,6] });
+    content.push({ text:`Windpark: ${String(wp).padStart(3,"0")}-${wpName}`, margin:[0,2,0,2] });
+    if(firma) content.push({ text:`Firma: ${firma}`, margin:[0,2,0,2] });
+    if(asp) content.push({ text:`Ansprechpartner: ${asp}`, margin:[0,2,0,2] });
+    if(adresseLine) content.push({ text:`Adresse: ${adresseLine}`, margin:[0,2,0,2] });
 
-    const rightStack = [];
-    rightStack.push({ text:"Vertragsgeber", style:"h2", margin:[0,0,0,6] });
-    rightStack.push({ text: vertragsgeber, margin:[0,2,0,2] });
+    // Kontakt des Vertragsnehmers (aus Step2, falls vorhanden)
+    const kundeEmail = (person?.email || person?.Email || "");
+    const kundeTel = (person?.telefon || person?.Telefon || person?.tel || person?.phone || "");
+    if(kundeTel) content.push({ text:`Tel.: ${kundeTel}`, margin:[0,2,0,2] });
+    if(kundeEmail) content.push({ text:`E‑Mail: ${kundeEmail}`, margin:[0,2,0,2] });
 
-    content.push({
-      columns: [
-        { width:"*", stack: leftStack },
-        { width:"*", stack: rightStack }
-      ],
-      columnGap: 24
-    });
+    // Vertragsgeber (direkt darunter, gleiche Einteilung)
+    content.push({ text:"Vertragsgeber", style:"h2", margin:[0,14,0,6] });
+    content.push({ text:"Kevin Strakerjahn Networks & Automation", margin:[0,2,0,2] });
+    content.push({ text:"Adresse: Bundesstraße 5 6, 25795 Stelle‑Wittenwurth", margin:[0,2,0,2] });
+    content.push({ text:"Tel.: +49 151 29047232", margin:[0,2,0,2] });
+    content.push({ text:"E‑Mail: info@netteck.de", margin:[0,2,0,2] });
 
     content.push({ text:"Vertragsbestandteile", style:"h2", margin:[0,16,0,8] });
-
-    content.push(...wartToPdfContent(wart));
+content.push(...wartToPdfContent(wart));
     content.push(...priceToPdfContent(paket));
     content.push(...agbsToPdfContentLikeIndex(agbs));
 
@@ -777,9 +783,11 @@ h1{ margin-top: 6px; }
 
     const sendCopy = document.getElementById("sendCopy");
     const emailField = document.getElementById("emailField");
-    sendCopy.addEventListener("change", ()=>{ emailField.style.display = sendCopy.checked ? "block" : "none"; });
-
-    state.vertragsnr = buildVertragsnummer(state.analyse);
+    // immer aktiv, nicht änderbar
+    sendCopy.checked = true;
+    sendCopy.disabled = true;
+    emailField.style.display = "none";
+state.vertragsnr = buildVertragsnummer(state.analyse);
     document.getElementById("vertragNr").textContent = state.vertragsnr;
 
     if(typeof pdfMake === "undefined") throw new Error("pdfMake ist nicht geladen.");
@@ -794,8 +802,8 @@ h1{ margin-top: 6px; }
     state.agbs = await loadAGBFilesLocal();
 
     setStatus("PDF wird erstellt…", "MUSTER");
-    const docM = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, paket: state.paket, wart: state.wart, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:true });
-    const docI = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, paket: state.paket, wart: state.wart, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:false });
+    const docM = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, wart: state.wart, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:true });
+    const docI = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, wart: state.wart, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:false });
 
     state.pdfMusterBlob = await pdfMakeToBlob(docM);
     state.pdfInternBlob = await pdfMakeToBlob(docI);
@@ -807,6 +815,21 @@ h1{ margin-top: 6px; }
     document.getElementById("formGrid").style.display = "flex";
 
     document.getElementById("btnSend").addEventListener("click", onSend);
+
+    // temporärer Download (MUSTER-PDF)
+    const dl = document.getElementById("btnDownload");
+    dl.addEventListener("click", ()=>{
+      try{
+        const a = document.createElement("a");
+        const url = URL.createObjectURL(state.pdfMusterBlob);
+        a.href = url;
+        a.download = `Vertragsvorlage_${state.vertragsnr}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url), 2000);
+      }catch(e){ console.error(e); }
+    });
   }
 
   async function onSend(){
@@ -815,7 +838,7 @@ h1{ margin-top: 6px; }
     btn.disabled = true;
 
     try{
-      const wantCopy = document.getElementById("sendCopy").checked;
+      const wantCopy = true;
       const email = String(document.getElementById("email").value || "").trim();
       const notes = String(document.getElementById("notes").value || "").trim();
       if(wantCopy && (!email || !email.includes("@"))) throw new Error("Bitte geben Sie eine gültige E‑Mail‑Adresse an.");
