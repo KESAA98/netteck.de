@@ -383,12 +383,9 @@ h1{ margin-top: 6px; }
     return `${rn}_${rn}_${nowStamp()}`;
   }
   function normalizeText(t){
-    const parts = String(t||"").split(/
-+/).map(x=>x.trim()).filter(Boolean);
-    return parts.join("
-
-");
-  }
+    const parts = String(t||"").split(/\\n+/).map(x=>x.trim()).filter(Boolean);
+    return parts.join("\n\n");
+}
 
   function setStatus(main, sub=""){
     document.getElementById("pdfStatusText").textContent = main;
@@ -453,8 +450,7 @@ h1{ margin-top: 6px; }
   }
 
   function buildPdfBlocksFromText(text){
-    const lines = String(text||"").split(/
-+/);
+    const lines = String(text||"").split(/\\n+/);
     const blocks = [];
     let currentList = null;
 
@@ -590,8 +586,7 @@ h1{ margin-top: 6px; }
       "Kevin Strakerjahn Networks & Automation",
       "Bundesstraße 5 6 · 25795 Stelle-Wittenwurth",
       "info@netteck.de · +49 151 29047232"
-    ].join("
-");
+    ].join("\n");
 
     const exportStamp = "Vertrag: " + vertragsnr;
 
