@@ -7,324 +7,359 @@
   <link rel="icon" type="image/png" href="../../../../Logos/logo.png" />
 
   <style>
-    :root{
+
+    :root {
       --primary:#0b74ff;
+      --primary2:#7a5cff;
       --primary-soft: rgba(11, 116, 255, 0.10);
       --bg:#f5f7fb;
       --card-bg:#ffffff;
       --border:#e1e4ec;
       --text-main:#1f2933;
       --text-muted:#6b7280;
-      --shadow: 0 10px 25px rgba(17,24,39,.08);
-      --radius: 18px;
-      --radius-sm: 12px;
+      --danger:#b42318;
+      --radius-lg:14px;
     }
-    *{box-sizing:border-box}
+    *{ box-sizing:border-box; }
+    html, body{ margin:0; padding:0; height:100%; }
     body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text-main);
+      line-height: 1.5;
+      overflow:hidden;
     }
-    .wrap{
-      max-width: 1120px;
-      margin: 26px auto 60px;
-      padding: 0 14px;
+    .viewport{ height:100vh; width:100vw; display:flex; align-items:center; justify-content:center; padding: 1.6rem 1rem; }
+    .card{
+      width:min(1100px, 100%); height:100%; max-height: calc(100vh - 3.2rem);
+      background: var(--card-bg); border-radius: var(--radius-lg);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--border);
+      padding: 1.25rem 1.6rem 1.1rem;
+      display:flex; flex-direction:column; gap: .8rem;
     }
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:14px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-    }
-    .brand img{
-      height:38px;
-      width:auto;
-      display:block;
-    }
-    .titlebox{
+    h1{ margin:0; font-size:1.35rem; text-align:center; letter-spacing:.2px; }
+    .sub{ margin:0; text-align:center; color:var(--text-muted); font-size:.95rem; }
+
+    .panel{
+      flex:1;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      background:#fff;
+      padding: 12px;
       display:flex;
       flex-direction:column;
-      line-height:1.1;
+      gap: 10px;
+      overflow:hidden; /* Ziel: kein Scrollen */
+      min-height: 0;
     }
-    .titlebox .kicker{font-size:12px; color:var(--text-muted)}
-    .titlebox .title{font-size:16px; font-weight:700}
-    .navbtns{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
-    button{
+
+    .box{
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .sectionTitle{ font-weight:950; margin:0 0 6px 0; font-size: 1rem; }
+    .hint{ margin: 6px 0 0 0; color:var(--text-muted); font-size:.92rem; }
+
+    .chips{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
       border:1px solid var(--border);
       background:#fff;
       color:var(--text-main);
-      padding:10px 14px;
-      border-radius: 12px;
-      cursor:pointer;
-      font-weight:600;
-      box-shadow: 0 6px 16px rgba(17,24,39,.06);
-    }
-    button.primary{
-      background: var(--primary);
-      border-color: transparent;
-      color:#fff;
-      box-shadow: 0 10px 20px rgba(11,116,255,.22);
-    }
-    button:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-      box-shadow:none;
-    }
-
-    .card{
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .cardhead{
-      padding: 18px 18px 14px;
-      border-bottom: 1px solid var(--border);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .cardhead h1{
-      margin:0;
-      font-size:18px;
-      letter-spacing:.2px;
-    }
-    .meta{
-      font-size:13px;
-      color:var(--text-muted);
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
-    }
-    .pill{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:6px 10px;
-      border:1px solid var(--border);
+      padding: 9px 13px;
       border-radius: 999px;
-      background: rgba(0,0,0,.02);
-      white-space:nowrap;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+      user-select:none;
+      font-size: .95rem;
     }
-    .pill strong{color:var(--text-main)}
+    .chip:hover{
+      transform: translateY(-1px);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 5px var(--primary-soft);
+    }
+    .chip.active{
+      border-color: rgba(11,116,255,0.45);
+      background: rgba(11,116,255,0.10);
+      color:#0b3d91;
+    }
 
-    /* PDF Preview (single scroll: page scroll only) */
-    .pdf-area{
-      padding: 14px 14px 4px;
+    .error{
+      display:none;
+      border: 1px solid #ffd0d0;
+      background:#fff5f5;
+      color: var(--danger);
+      border-radius: 14px;
+      padding: 9px 10px;
+      font-weight: 850;
+      text-align:center;
+      font-size: .93rem;
     }
-    .pdf-status{
-      padding: 12px 12px;
-      margin: 0 0 10px;
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text-muted);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .pdf-pages{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      padding-bottom: 10px;
-    }
-    .pdf-page{
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      box-shadow: 0 10px 20px rgba(17,24,39,.06);
-      background:#fff;
-      overflow:hidden;
-    }
-    .pdf-page canvas{
-      display:block;
+    .error.show{ display:block; }
+
+    table{
       width:100%;
-      height:auto;
+      border-collapse: collapse;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      overflow:hidden;
+      background:#fff;
     }
+    th, td{
+      padding: 9px 10px;
+      border-bottom: 1px solid rgba(225,228,236,0.7);
+      font-size: .93rem;
+    }
+    th{ background: #f9fafb; font-weight: 950; }
+    tr:last-child td{ border-bottom:none; }
+    .right{ text-align:right; white-space:nowrap; }
+    .muted{ color:var(--text-muted); }
 
-    /* Actions (below PDF only) */
-    .actions{
-      border-top: 1px solid var(--border);
-      padding: 16px 18px 18px;
+    .sumRow{
       display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .row{
-      display:flex;
-      gap:12px;
+      gap: 10px;
       flex-wrap:wrap;
-      align-items:flex-start;
+      margin-top: 10px;
     }
-    .field{
-      flex: 1 1 280px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
+    .sumBox{
+      flex: 1 1 240px;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background:#fff;
       min-width: 220px;
     }
-    label{
-      font-size:13px;
-      color: var(--text-muted);
-      font-weight:600;
-    }
-    textarea, input[type="email"], input[type="text"]{
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 12px;
-      font-size:14px;
-      outline:none;
-      background:#fff;
-    }
-    textarea{min-height: 110px; resize: vertical}
-    .checkline{
+    .sumLabel{ font-weight:900; font-size:.92rem; }
+    .sumValue{ font-size: 1.15rem; font-weight: 950; }
+
+    .footer{
       display:flex;
       align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(0,0,0,.02);
-      flex: 1 1 380px;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+      border-top: 1px solid rgba(225,228,236,0.8);
     }
-    .checkline input{transform: scale(1.1)}
-    .hint{
-      font-size:13px;
-      color: var(--text-muted);
-      line-height:1.45;
-      background: rgba(11,116,255,.06);
-      border: 1px solid rgba(11,116,255,.16);
+    .btn{
+      border:none;
+      border-radius: 999px;
+      padding: 11px 15px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      user-select:none;
+      font-size: .95rem;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 0 0 5px var(--primary-soft);
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none !important;
+      filter:none !important;
+      box-shadow:none !important;
+    }
+    .btnPrimary{ color:#fff; background: linear-gradient(135deg, var(--primary), var(--primary2)); }
+    .btnGhost{ background:#fff; color: var(--text-main); border: 1px solid var(--border); }
+  
+
+    /* ===== Step5 Ergänzungen (optisch im Step4-Stil) ===== */
+    .pdfWrap {
+      margin-top: 8px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .pdfStatus {
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
       padding: 12px 12px;
-      border-radius: 14px;
-    }
-    .cta{
+      color: var(--muted);
+      font-size: 13px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
+      gap: 10px;
+      background: rgba(11,116,255,0.06);
     }
-    .msg{
-      font-size:14px;
-      color: var(--text-muted);
+    .pdfPages {
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
     }
-    .success{
-      background: rgba(16,185,129,.10);
-      border: 1px solid rgba(16,185,129,.22);
-      color:#065f46;
-      padding: 12px 12px;
-      border-radius: 14px;
-      display:none;
+    .pdfPage {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background:#fff;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
     }
-    .error{
-      background: rgba(239,68,68,.10);
-      border: 1px solid rgba(239,68,68,.22);
-      color:#7f1d1d;
-      padding: 12px 12px;
-      border-radius: 14px;
-      display:none;
+    .pdfPage canvas {
+      width:100%;
+      height:auto;
+      display:block;
     }
 
-    @media (max-width: 640px){
-      .brand img{height:34px}
-      .cardhead{padding: 16px 14px 12px}
-      .pdf-area{padding: 12px 12px 4px}
-      .actions{padding: 14px 14px 16px}
+    .formGrid {
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .field {
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    textarea, input[type="email"] {
+      width:100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .checkline {
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 12px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(0,0,0,0.02);
+    }
+    .checkline input {
+      transform: scale(1.1);
+      margin-top: 2px;
+    }
+    .infoBox {
+      border: 1px solid rgba(11,116,255,0.18);
+      background: rgba(11,116,255,0.07);
+      border-radius: var(--radius);
+      padding: 12px 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .okBox {
+      display:none;
+      border: 1px solid rgba(16,185,129,0.25);
+      background: rgba(16,185,129,0.10);
+      border-radius: var(--radius);
+      padding: 12px 12px;
+      color: #065f46;
+      font-weight: 700;
+    }
+    .errBox {
+      display:none;
+      border: 1px solid rgba(239,68,68,0.25);
+      background: rgba(239,68,68,0.10);
+      border-radius: var(--radius);
+      padding: 12px 12px;
+      color: #7f1d1d;
+      font-weight: 700;
+    }
+    .actionsRow {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-top: 4px;
+    }
+    .metaLine {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-top: -4px;
     }
   </style>
 
-  <!-- WICHTIG: Nur Dateiimporte (keine CDN-Fallbacks).
-       Lege diese Dateien in deinem Projekt ab und passe die Pfade ggf. an: -->
-  <script src="../../../../libs/pdfmake/pdfmake.min.js"></script>
-  <script src="../../../../libs/pdfmake/vfs_fonts.js"></script>
+  <!-- Diese Links sind absichtlich identisch zur bestehenden Site (index.html), damit es sofort funktioniert -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
-  <script src="../../../../libs/pdfjs/pdf.min.js"></script>
+  <!-- pdf.js für Canvas-Render (keine Download/Druck UI, kein doppeltes Scrollen) -->
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <img src="../../../../Logos/logo.png" alt="Netteck" />
-        <div class="titlebox">
-          <div class="kicker">Vertrag anfragen · Step 5</div>
-          <div class="title">Vertrag als Muster prüfen &amp; anfragen</div>
-        </div>
-      </div>
-      <div class="navbtns">
-        <button type="button" id="btnBack">Zurück</button>
-      </div>
-    </div>
+  <div class="viewport">
+    <div class="card" role="main" aria-label="Vertrag bestätigen">
+      <h1>Vertrag bestätigen</h1>
+      <p class="sub">Bitte prüfen Sie die Muster‑PDF. Danach können Sie den Vertrag anfragen.</p>
 
-    <div class="card">
-      <div class="cardhead">
-        <div>
-          <h1>PDF‑Vorschau (MUSTER)</h1>
-          <div class="meta" style="margin-top:8px">
-            <span class="pill">Vertragsnummer: <strong id="vertragNr">–</strong></span>
-            <span class="pill">E‑Mail: <strong id="emailView">–</strong></span>
+      <div class="panel">
+        <div class="box">
+          <p class="sectionTitle">PDF‑Vorschau (MUSTER)</p>
+
+          <div class="hint" style="margin-top:6px">
+            Vertragsnummer: <strong id="vertragNr">–</strong>
           </div>
-        </div>
-        <div class="meta">
-          <span class="pill">Hinweis: Kein Download / kein Drucken</span>
-        </div>
-      </div>
 
-      <div class="pdf-area">
-        <div class="pdf-status" id="pdfStatus">
-          <span id="pdfStatusText">PDF wird erstellt…</span>
-          <span style="font-size:12px;color:var(--text-muted)" id="pdfStatusSub"></span>
-        </div>
+          <div class="pdfWrap">
+            <div class="pdfStatus" id="pdfStatus">
+              <span id="pdfStatusText">PDF wird erstellt…</span>
+              <span id="pdfStatusSub" style="white-space:nowrap"></span>
+            </div>
 
-        <div class="pdf-pages" id="pdfPages"></div>
-      </div>
+            <div class="pdfPages" id="pdfPages"></div>
 
-      <div class="actions" id="actions" style="display:none">
-        <div class="row">
-          <div class="field" style="flex: 1 1 520px">
-            <label for="notes">Anmerkungen zu ihrer Vertragsvorlage</label>
-            <textarea id="notes" placeholder="Optional: Hinweise / Ergänzungen…"></textarea>
-          </div>
-        </div>
+            <!-- Unter der PDF (erst sichtbar, wenn Preview fertig) -->
+            <div class="formGrid" id="formGrid" style="display:none">
+              <div class="field">
+                <label for="notes">Anmerkungen zu ihrer Vertragsvorlage</label>
+                <textarea id="notes" placeholder="Optional: Hinweise / Ergänzungen…"></textarea>
+              </div>
 
-        <div class="row">
-          <div class="checkline">
-            <input type="checkbox" id="sendCopy" />
-            <label for="sendCopy" style="margin:0; font-weight:700; color:var(--text-main)">
-              Möchten Sie das Muster als Kopie per E‑Mail erhalten?
-            </label>
-          </div>
-          <div class="field" style="flex: 0 1 360px">
-            <label for="email">E‑Mail‑Adresse (Anzeige)</label>
-            <input type="email" id="email" />
-          </div>
-        </div>
+              <div class="checkline">
+                <input type="checkbox" id="sendCopy" />
+                <div style="flex:1">
+                  <div style="font-weight:800">Möchten Sie das Muster als Kopie per E‑Mail erhalten?</div>
+                  <div class="metaLine">Empfänger: <span id="emailView">–</span></div>
+                </div>
+              </div>
 
-        <div class="hint">
-          Nach dem Absenden erhalten wir Ihre Vertragsvorlage und prüfen diese. Wenn alles korrekt ist, erhalten Sie anschließend die finale Vertragsfassung zur Unterschrift oder zur schriftlich eindeutigen Bestätigung.
-          Bis zum Zeitpunkt der Bestätigung ist die Vorlage für beide Parteien unverbindlich.
-        </div>
+              <div class="field" id="emailField" style="display:none">
+                <label for="email">E‑Mail‑Adresse</label>
+                <input type="email" id="email" />
+              </div>
 
-        <div class="success" id="successBox">
-          Ihre Anfrage wurde übermittelt.
-        </div>
-        <div class="error" id="errorBox"></div>
+              <div class="infoBox">
+                Nach dem Absenden erhalten wir Ihre Vertragsvorlage und prüfen diese. Wenn alles korrekt ist, erhalten Sie anschließend die finale Vertragsfassung zur Unterschrift oder zur schriftlich eindeutigen Bestätigung.
+                Bis zum Zeitpunkt der Bestätigung ist die Vorlage für beide Parteien unverbindlich.
+              </div>
 
-        <div class="cta">
-          <div class="msg" id="ctaMsg">Scroll‑Check: Sie sind am Ende der Vorschau angekommen.</div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap">
-            <button type="button" class="primary" id="btnSend">Vertrag anfragen</button>
-            <button type="button" id="btnHome" style="display:none">Zur Startseite</button>
+              <div class="okBox" id="okBox">Ihre Anfrage wurde übermittelt.</div>
+              <div class="errBox" id="errBox"></div>
+
+              <div class="actionsRow">
+                <button type="button" class="btn" id="btnBack">Zurück</button>
+                <button type="button" class="btn primary" id="btnSend">Vertrag anfragen</button>
+                <button type="button" class="btn" id="btnHome" style="display:none">Zur Startseite</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -332,614 +367,466 @@
   </div>
 
 <script>
-/* =========================
-   Storage Keys (wie Steps 1–4)
-========================= */
-const ANALYSE_KEY = "rechnungAnalyse";
-const PERSON_KEY  = "personConfirm";
-const PAKET_KEY   = "paketWahl";
+  const ANALYSE_KEY = "rechnungAnalyse";
+  const PERSON_KEY  = "personConfirm";
+  const PAKET_KEY   = "paketWahl";
 
-/* =========================
-   AGB Loader (wie /AGB/index.html)
-========================= */
-const GITHUB_API_BASE = "https://api.github.com/repos/KESAA98/netteck.de/contents/AGB/AGBs";
+  const GITHUB_API_BASE = "https://api.github.com/repos/KESAA98/netteck.de/contents/AGB/AGBs";
 
-/* =========================
-   Helpers
-========================= */
-function pad2(n){ return String(n).padStart(2,"0"); }
-function fmtEUR(n){
-  try {
-    return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(Number(n||0));
-  } catch(e){
-    return (Number(n||0).toFixed(2)).replace(".",",") + " €";
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function nowStamp(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = pad2(d.getMonth()+1);
+    const day = pad2(d.getDate());
+    const hh = pad2(d.getHours());
+    const mm = pad2(d.getMinutes());
+    const ss = pad2(d.getSeconds());
+    return `${y}${m}${day}_${hh}${mm}${ss}`;
   }
-}
-function safeText(v){ return (v===null || v===undefined) ? "" : String(v); }
-
-function nowStamp(){
-  const d = new Date();
-  // YYYYMMDD_HHMMSS (inkl. Stunden)
-  const y = d.getFullYear();
-  const m = pad2(d.getMonth()+1);
-  const day = pad2(d.getDate());
-  const hh = pad2(d.getHours());
-  const mm = pad2(d.getMinutes());
-  const ss = pad2(d.getSeconds());
-  return `${y}${m}${day}_${hh}${mm}${ss}`;
-}
-
-function getJSONFromStorage(key){
-  const raw = sessionStorage.getItem(key);
-  if(!raw) return null;
-  try { return JSON.parse(raw); } catch(e){ return null; }
-}
-
-/* =========================
-   Data merge
-========================= */
-function pickRechnungNr(analyse){
-  // "Rechnungs-Nr." kommt als Key aus deinem Flow
-  return analyse?.["Rechnungs-Nr."] || analyse?.RechnungsNr || analyse?.rechnungsnummer || "Autom. Vergabe";
-}
-
-function buildVertragsnummer(analyse){
-  const rn = pickRechnungNr(analyse);
-  // Vorgabe: "Rechnungs-Nr."_"Rechnungs-Nr."_YYYYMMDD_HHMMSS
-  return `${rn}_${rn}_${nowStamp()}`;
-}
-
-/* =========================
-   Vertragstext (warungsvertrag.txt)
-========================= */
-async function loadWartungsvertrag(){
-  // relativ zu .../vertrag_anfragen/steps/
-  const url = "../../information/warungsvertrag.txt";
-  const res = await fetch(url, { cache: "no-store" });
-  if(!res.ok) throw new Error("Wartungsvertrag konnte nicht geladen werden.");
-  const text = await res.text();
-  try { return JSON.parse(text); } catch(e){
-    throw new Error("Wartungsvertrag ist kein gültiges JSON.");
+  function fmtEUR(n){
+    try {
+      return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(Number(n||0));
+    } catch(e) {
+      return (Number(n||0).toFixed(2)).replace(".",",") + " €";
+    }
   }
-}
-
-/* =========================
-   AGB laden (wie AGB-Seite)
-========================= */
-async function githubFetchJSON(url){
-  const res = await fetch(url, { cache: "no-store" });
-  if(!res.ok) throw new Error("AGB konnten nicht geladen werden.");
-  return res.json();
-}
-
-async function loadAGBFiles(){
-  // erwartet: Ordner /AGB/AGBs/ mit mehreren .txt/.json Dateien (wie dein AGB Index)
-  const list = await githubFetchJSON(GITHUB_API_BASE);
-  // nur Dateien (nicht Unterordner), sortiert
-  const files = (Array.isArray(list) ? list : [])
-    .filter(x => x && x.type === "file" && x.download_url)
-    .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
-  const out = [];
-  for(const f of files){
-    const r = await fetch(f.download_url, { cache: "no-store" });
-    if(!r.ok) continue;
-    const txt = await r.text();
-    // AGB-Dateien sind bei dir JSON (mit title/sections) oder Text – wir akzeptieren beides, aber ohne Fallback-Ausgabe
-    let parsed = null;
-    try { parsed = JSON.parse(txt); } catch(e){ parsed = { title: f.name, raw_text: txt }; }
-    out.push({ name: f.name, data: parsed });
+  function getJSONFromStorage(key){
+    const raw = sessionStorage.getItem(key);
+    if(!raw) return null;
+    try { return JSON.parse(raw); } catch(e) { return null; }
   }
-  return out;
-}
+  function pickRechnungNr(analyse){
+    return analyse?.["Rechnungs-Nr."] || analyse?.RechnungsNr || analyse?.rechnungsnummer || "Autom. Vergabe";
+  }
+  function buildVertragsnummer(analyse){
+    const rn = pickRechnungNr(analyse);
+    return `${rn}_${rn}_${nowStamp()}`;
+  }
 
-/* =========================
-   pdfMake DocDefinition bauen
-========================= */
-function pdfStyles(){
-  return {
-    primary: "#0b74ff",
-    border: "#e1e4ec",
-    muted: "#6b7280",
-    text: "#1f2933"
-  };
-}
+  function setStatus(main, sub=""){
+    document.getElementById("pdfStatusText").textContent = main;
+    document.getElementById("pdfStatusSub").textContent = sub;
+  }
+  function showErr(msg){
+    const e = document.getElementById("errBox");
+    e.style.display = "block";
+    e.textContent = msg;
+  }
+  function clearErr(){
+    const e = document.getElementById("errBox");
+    e.style.display = "none";
+    e.textContent = "";
+  }
+  function showOk(){
+    document.getElementById("okBox").style.display = "block";
+  }
 
-function agbsToPdfContent(agbs){
-  const styles = pdfStyles();
-  const content = [];
+  async function loadWartungsvertrag(){
+    const url = "../../information/warungsvertrag.txt";
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error("Wartungsvertrag konnte nicht geladen werden.");
+    const text = await res.text();
+    try { return JSON.parse(text); } catch(e) {
+      throw new Error("Wartungsvertrag ist kein gültiges JSON.");
+    }
+  }
 
-  // AGB Start immer auf neuer Seite
-  content.push({ text: "Allgemeine Geschäftsbedingungen (AGB)", style: "h1", pageBreak: "before" });
+  async function githubFetchJSON(url){
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error("AGB konnten nicht geladen werden.");
+    return res.json();
+  }
 
-  for(const file of agbs){
-    const d = file.data || {};
-    const title = d.title || file.name || "AGB";
-    content.push({ text: title, style: "h2", margin:[0, 10, 0, 6] });
+  async function loadAGBFiles(){
+    const list = await githubFetchJSON(GITHUB_API_BASE);
+    const files = (Array.isArray(list) ? list : [])
+      .filter(x => x && x.type === "file" && x.download_url)
+      .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
+    const out = [];
+    for(const f of files){
+      const r = await fetch(f.download_url, { cache:"no-store" });
+      if(!r.ok) continue;
+      const txt = await r.text();
+      let parsed = null;
+      try { parsed = JSON.parse(txt); } catch(e) { parsed = { title: f.name, raw_text: txt }; }
+      out.push({ name: f.name, data: parsed });
+    }
+    return out;
+  }
 
-    if(Array.isArray(d.sections)){
-      for(const s of d.sections){
-        if(s?.heading) content.push({ text: s.heading, style:"h3", margin:[0, 8, 0, 4] });
-        if(s?.text) content.push({ text: normalizeLinebreaks(s.text), style:"p" });
-        if(s?.note) content.push({
-          text: normalizeLinebreaks(s.note),
-          style:"note",
-          margin:[0, 6, 0, 2]
-        });
+  function normalizeText(t){
+    const parts = String(t||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
+    return parts.join("\n\n");
+  }
+
+  function agbsToPdfContent(agbs){
+    const content = [];
+    content.push({ text: "Allgemeine Geschäftsbedingungen (AGB)", style: "h1", pageBreak: "before" });
+    for(const file of agbs){
+      const d = file.data || {};
+      const title = d.title || file.name || "AGB";
+      content.push({ text: title, style: "h2", margin:[0, 10, 0, 6] });
+      if(Array.isArray(d.sections)){
+        for(const s of d.sections){
+          if(s?.heading) content.push({ text: s.heading, style:"h3", margin:[0, 8, 0, 4] });
+          if(s?.text) content.push({ text: normalizeText(s.text), style:"p" });
+          if(s?.note) content.push({ text: normalizeText(s.note), style:"note", margin:[0, 6, 0, 2] });
+        }
+      } else if (typeof d.raw_text === "string") {
+        content.push({ text: normalizeText(d.raw_text), style:"p" });
       }
-    } else if (typeof d.raw_text === "string") {
-      content.push({ text: normalizeLinebreaks(d.raw_text), style:"p" });
     }
+    return content;
   }
 
-  return content;
-
-  function normalizeLinebreaks(t){
-    // \n sauber als Absatz
-    const parts = String(t).split(/\n+/).map(x=>x.trim()).filter(Boolean);
-    // pdfMake: durch '\n\n' entstehen Absätze
-    return parts.join("\n\n");
-  }
-}
-
-function wartungsvertragToPdfContent(wart){
-  const content = [];
-  if(!wart) return content;
-
-  if(wart.title) content.push({ text: wart.title, style:"h2", margin:[0, 10, 0, 8] });
-
-  if(Array.isArray(wart.sections)){
-    for(const sec of wart.sections){
-      if(sec?.heading) content.push({ text: sec.heading, style:"h3", margin:[0, 8, 0, 4] });
-      if(sec?.text) content.push({ text: norm(sec.text), style:"p" });
-      if(sec?.note) content.push({ text: norm(sec.note), style:"note", margin:[0, 6, 0, 2] });
+  function wartToPdfContent(wart){
+    const content = [];
+    if(!wart) return content;
+    if(wart.title) content.push({ text: wart.title, style:"h2", margin:[0, 10, 0, 8] });
+    if(Array.isArray(wart.sections)){
+      for(const sec of wart.sections){
+        if(sec?.heading) content.push({ text: sec.heading, style:"h3", margin:[0, 8, 0, 4] });
+        if(sec?.text) content.push({ text: normalizeText(sec.text), style:"p" });
+        if(sec?.note) content.push({ text: normalizeText(sec.note), style:"note", margin:[0, 6, 0, 2] });
+      }
     }
+    return content;
   }
-  return content;
 
-  function norm(t){
-    const parts = String(t).split(/\n+/).map(x=>x.trim()).filter(Boolean);
-    return parts.join("\n\n");
-  }
-}
+  function priceToPdfContent(paket){
+    const content = [];
+    if(!paket) return content;
+    const years = Number(paket.laufzeit_jahre || 0);
+    const wartJahr = Number(paket.wartungsvertrag_preis_pro_jahr || 0);
+    const lanOnceN = Number(paket.lancare_preis_netto || 0);
+    const lanOnceB = Number(paket.lancare_preis_brutto || 0);
 
-function priceToPdfContent(paket){
-  const content = [];
-  if(!paket) return content;
+    content.push({ text: "Preisstaffelung", style:"h2", margin:[0, 14, 0, 8] });
 
-  const years = Number(paket.laufzeit_jahre || 0);
-  const wartJahr = Number(paket.wartungsvertrag_preis_pro_jahr || 0);
-  const lanOnce = Number(paket.lancare_preis_netto || 0);
-  const lanBrut = Number(paket.lancare_preis_brutto || 0);
+    for(let y=1; y<=years; y++) {
+      const isY1 = (y===1);
+      const rows = [];
+      if(isY1) rows.push(["LANcare (einmalig)", fmtEUR(lanOnceN), fmtEUR(lanOnceB)]);
+      rows.push(["Wartungs- & Servicepauschale", fmtEUR(wartJahr), "—"]);
+      const yearTotalNet = isY1 ? (wartJahr + lanOnceN) : wartJahr;
 
-  content.push({ text: "Preisstaffelung", style:"h2", margin:[0, 14, 0, 8] });
-
-  // Modern: pro Jahr ein Block mit Unterstreichung + netto/brutto + Jahresgesamt
-  for(let y=1; y<=years; y++){
-    const isYear1 = (y===1);
-    const rows = [];
-
-    if(isYear1){
-      rows.push(["LANcare (einmalig)", fmtEUR(lanOnce), fmtEUR(lanBrut)]);
-    }
-    rows.push(["Wartungs- & Servicepauschale", fmtEUR(wartJahr), "—"]);
-
-    const yearTotalNet = isYear1 ? (wartJahr + lanOnce) : wartJahr;
-
-    content.push({
-      margin:[0, 10, 0, 0],
-      table: {
-        widths: ["*", 110, 110],
-        body: [
-          [
-            { text: `Jahr ${y}`, style:"yearHead", colSpan:3, border:[false,false,false,true] },
-            {}, {}
-          ],
-          [
-            { text: "Position", style:"th" },
-            { text: "Netto", style:"th", alignment:"right" },
-            { text: "Brutto", style:"th", alignment:"right" }
-          ],
-          ...rows.map(r => ([
-            { text: r[0], style:"td" },
-            { text: r[1], style:"td", alignment:"right" },
-            { text: r[2], style:"td", alignment:"right" }
-          ])),
-          [
-            { text: "Gesamt (Jahr)", style:"tdTotal" },
-            { text: fmtEUR(yearTotalNet), style:"tdTotal", alignment:"right" },
-            { text: "—", style:"tdTotal", alignment:"right" }
+      content.push({
+        margin:[0, 10, 0, 0],
+        table: {
+          widths: ["*", 110, 110],
+          body: [
+            [ { text: `Jahr ${y}`, style:"yearHead", colSpan:3, border:[false,false,false,true] }, {}, {} ],
+            [ { text:"Position", style:"th" }, { text:"Netto", style:"th", alignment:"right" }, { text:"Brutto", style:"th", alignment:"right" } ],
+            ...rows.map(r => ([
+              { text:r[0], style:"td" },
+              { text:r[1], style:"td", alignment:"right" },
+              { text:r[2], style:"td", alignment:"right" }
+            ])),
+            [ { text:"Gesamt (Jahr)", style:"tdTotal" }, { text:fmtEUR(yearTotalNet), style:"tdTotal", alignment:"right" }, { text:"—", style:"tdTotal", alignment:"right" } ]
           ]
-        ]
-      },
-      layout: {
-        hLineColor: ()=> "#e1e4ec",
-        vLineColor: ()=> "#e1e4ec",
-        paddingLeft: ()=> 8,
-        paddingRight: ()=> 8,
-        paddingTop: ()=> 6,
-        paddingBottom: ()=> 6
-      }
-    });
+        },
+        layout: {
+          hLineColor: ()=> "#e1e4ec",
+          vLineColor: ()=> "#e1e4ec",
+          paddingLeft: ()=> 8,
+          paddingRight: ()=> 8,
+          paddingTop: ()=> 6,
+          paddingBottom: ()=> 6
+        }
+      });
+    }
+    return content;
   }
 
-  return content;
-}
+  function buildDocDefinition({vertragsnr, analyse, paket, wart, agbs, watermark=true}){
+    const firma = analyse?.Firma || "";
+    const wp = (analyse?.windpark_nummer || analyse?.["windpark_nummer"] || "000");
+    const wpName = (analyse?.windpark_name || analyse?.["windpark_name"] || "Musterpark");
+    const asp = analyse?.Ansprechpartner || "";
+    const str = analyse?.["Straße und Hausnummer"] || analyse?.Straße || analyse?.Strasse || "";
+    const plz = analyse?.PLZ || "";
+    const ort = analyse?.Ort || "";
+    const adresseLine = [String(str||"").trim(), String(plz||"").trim(), String(ort||"").trim()].filter(Boolean).join(", ");
 
-/* =========================
-   PDF erstellen (2 Varianten)
-========================= */
-function buildDocDefinition({vertragsnr, analyse, person, paket, wart, agbs, watermark=true}){
-  const styles = pdfStyles();
+    const vertragsgeber = [
+      "Kevin Strakerjahn Networks & Automation",
+      "—",
+      "info@netteck.de"
+    ].join("\n");
 
-  const firma = analyse?.Firma || "";
-  const wp = (analyse?.windpark_nummer || analyse?.["windpark_nummer"] || analyse?.WindparkNummer || "000");
-  const wpName = (analyse?.windpark_name || analyse?.["windpark_name"] || analyse?.Windpark || "Musterpark");
-  const asp = analyse?.Ansprechpartner || "";
-  const str = analyse?.["Straße und Hausnummer"] || analyse?.Straße || analyse?.Strasse || "";
-  const plz = analyse?.PLZ || "";
-  const ort = analyse?.Ort || "";
+    const content = [];
 
-  const adresseLine = [safeText(str), safeText(plz), safeText(ort)].filter(Boolean).join(", ");
-
-  const vertragsgeber = [
-    "Kevin Strakerjahn Networks & Automation",
-    "—",
-    "info@netteck.de"
-  ].join("\n");
-
-  const headerBlock = [
-    { text: "Wartungs- & Servicevertrag für Kundenrouter", style:"h1", margin:[0,0,0,10] },
-    {
+    content.push({ text:"Wartungs- & Servicevertrag für Kundenrouter", style:"h1", margin:[0,0,0,10] });
+    content.push({
       columns: [
         {
-          width: "*",
+          width:"*",
           stack: [
-            { text: "Wichtige Vertragsdaten", style:"h2", margin:[0,0,0,6] },
-            { text: `Vertragsnummer: ${vertragsnr}`, style:"p" },
-            { text: `Windpark: ${String(wp).padStart(3,"0")}-${wpName}`, style:"p" },
-            firma ? { text: `Firma: ${firma}`, style:"p" } : { text:"", margin:[0,0,0,0] },
-            asp ? { text: `Ansprechpartner: ${asp}`, style:"p" } : { text:"", margin:[0,0,0,0] },
-            adresseLine ? { text: `Adresse: ${adresseLine}`, style:"p" } : { text:"", margin:[0,0,0,0] }
+            { text:"Wichtige Vertragsdaten", style:"h2", margin:[0,0,0,6] },
+            { text:`Vertragsnummer: ${vertragsnr}`, style:"p" },
+            { text:`Windpark: ${String(wp).padStart(3,"0")}-${wpName}`, style:"p" },
+            firma ? { text:`Firma: ${firma}`, style:"p" } : { text:"", margin:[0,0,0,0] },
+            asp ? { text:`Ansprechpartner: ${asp}`, style:"p" } : { text:"", margin:[0,0,0,0] },
+            adresseLine ? { text:`Adresse: ${adresseLine}`, style:"p" } : { text:"", margin:[0,0,0,0] },
           ]
         },
         {
           width: 260,
           stack: [
-            { text: "Vertragsgeber", style:"h2", margin:[0,0,0,6] },
+            { text:"Vertragsgeber", style:"h2", margin:[0,0,0,6] },
             { text: vertragsgeber, style:"p" }
           ]
         }
       ],
       columnGap: 18
-    }
-  ];
-
-  const content = [];
-  content.push(...headerBlock);
-
-  // Vertragsbestandteile aus warungsvertrag.txt
-  content.push({ text: "Vertragsbestandteile", style:"h2", margin:[0, 16, 0, 8] });
-  content.push(...wartungsvertragToPdfContent(wart));
-
-  // Preisstaffelung
-  content.push(...priceToPdfContent(paket));
-
-  // AGB
-  content.push(...agbsToPdfContent(agbs));
-
-  return {
-    pageSize: "A4",
-    pageMargins: [40, 54, 40, 54],
-    background: watermark ? function(currentPage, pageSize){
-      // MUSTER oben (zentriert) – ohne Download/Print-UI, nur in PDF
-      return {
-        text: "MUSTER",
-        color: "#c7cdd9",
-        fontSize: 16,
-        bold: true,
-        alignment: "center",
-        margin: [0, 16, 0, 0]
-      };
-    } : null,
-    footer: function(currentPage, pageCount){
-      return {
-        columns: [
-          { text: "", width:"*" },
-          {
-            text: `Export: ${vertragsnr} · Seite ${currentPage} / ${pageCount}`,
-            color: styles.muted,
-            fontSize: 9,
-            margin: [0, 0, 40, 0],
-            alignment: "right"
-          }
-        ]
-      };
-    },
-    content,
-    styles: {
-      h1: { fontSize: 18, bold: true, color: styles.text },
-      h2: { fontSize: 13.5, bold: true, color: styles.text },
-      h3: { fontSize: 11.5, bold: true, color: styles.text },
-      p:  { fontSize: 10.5, color: styles.text, lineHeight: 1.25 },
-      note: { fontSize: 10, color: styles.text, lineHeight: 1.25, italics:true },
-      th: { fontSize: 10, bold:true, color: styles.text },
-      td: { fontSize: 10, color: styles.text },
-      tdTotal: { fontSize: 10, bold:true, color: styles.text },
-      yearHead: { fontSize: 12, bold:true, color: styles.text }
-    },
-    defaultStyle: { font: "Roboto" }
-  };
-}
-
-function pdfMakeToBlob(docDef){
-  return new Promise((resolve, reject)=>{
-    try{
-      pdfMake.createPdf(docDef).getBlob((blob)=> resolve(blob));
-    }catch(e){
-      reject(e);
-    }
-  });
-}
-
-function blobToBase64(blob){
-  return new Promise((resolve, reject)=>{
-    const r = new FileReader();
-    r.onload = ()=> resolve(String(r.result).split(",")[1] || "");
-    r.onerror = ()=> reject(new Error("base64 fehlgeschlagen"));
-    r.readAsDataURL(blob);
-  });
-}
-
-/* =========================
-   Preview Render via pdf.js (Canvas)
-========================= */
-async function renderPdfToCanvases(pdfBlob){
-  const pagesEl = document.getElementById("pdfPages");
-  pagesEl.innerHTML = "";
-
-  const url = URL.createObjectURL(pdfBlob);
-
-  // pdf.js global
-  if(!window.pdfjsLib){
-    throw new Error("pdf.js ist nicht verfügbar (Dateiimport prüfen).");
-  }
-  // worker: erwartet pdf.worker.min.js im gleichen Ordner wie pdf.min.js
-  // => Lege pdf.worker.min.js neben pdf.min.js oder passe diesen Pfad an.
-  try{
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "../../../../libs/pdfjs/pdf.worker.min.js";
-  }catch(e){}
-
-  const loadingTask = pdfjsLib.getDocument(url);
-  const pdf = await loadingTask.promise;
-
-  const maxWidth = Math.min(980, document.querySelector(".wrap").clientWidth - 28);
-
-  for(let p=1; p<=pdf.numPages; p++){
-    const page = await pdf.getPage(p);
-
-    // Viewport skalieren auf Containerbreite
-    const viewport1 = page.getViewport({ scale: 1 });
-    const scale = maxWidth / viewport1.width;
-    const viewport = page.getViewport({ scale });
-
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d", { alpha:false });
-    canvas.width = Math.floor(viewport.width);
-    canvas.height = Math.floor(viewport.height);
-
-    const pageWrap = document.createElement("div");
-    pageWrap.className = "pdf-page";
-    pageWrap.appendChild(canvas);
-    pagesEl.appendChild(pageWrap);
-
-    await page.render({ canvasContext: ctx, viewport }).promise;
-  }
-
-  URL.revokeObjectURL(url);
-}
-
-/* =========================
-   Versand (Netlify Function)
-========================= */
-async function sendRequest({vertragsnr, email, sendCopy, notes, pdfMusterB64, pdfInternB64, meta}){
-  const endpoint = "/.netlify/functions/send-vertrag-anfrage";
-  const payload = {
-    vertragsnummer: vertragsnr,
-    kunde_email: (sendCopy ? email : null),
-    anmerkungen: notes || "",
-    pdf_muster_base64: (sendCopy ? pdfMusterB64 : null),
-    pdf_intern_base64: pdfInternB64,
-    meta
-  };
-
-  const res = await fetch(endpoint, {
-    method:"POST",
-    headers: { "Content-Type":"application/json" },
-    body: JSON.stringify(payload)
-  });
-
-  const txt = await res.text();
-  let body = null;
-  try{ body = JSON.parse(txt); }catch(e){ body = { raw: txt }; }
-
-  if(!res.ok){
-    const msg = body?.message || body?.error || "Senden fehlgeschlagen.";
-    throw new Error(msg);
-  }
-  return body;
-}
-
-/* =========================
-   Main
-========================= */
-let state = {
-  analyse: null,
-  person: null,
-  paket: null,
-  wart: null,
-  agbs: [],
-  vertragsnr: null,
-  pdfMusterBlob: null,
-  pdfInternBlob: null
-};
-
-function setStatus(main, sub=""){
-  document.getElementById("pdfStatusText").textContent = main;
-  document.getElementById("pdfStatusSub").textContent = sub;
-}
-
-function showError(msg){
-  const el = document.getElementById("errorBox");
-  el.style.display = "block";
-  el.textContent = msg;
-}
-function clearError(){
-  const el = document.getElementById("errorBox");
-  el.style.display = "none";
-  el.textContent = "";
-}
-function showSuccess(){
-  document.getElementById("successBox").style.display = "block";
-}
-
-function lockSend(locked){
-  document.getElementById("btnSend").disabled = !!locked;
-}
-
-async function init(){
-  // Buttons
-  document.getElementById("btnBack").addEventListener("click", ()=>{
-    if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
-    else history.back();
-  });
-
-  document.getElementById("btnHome").addEventListener("click", ()=>{
-    window.location.href = "https://netteck.de";
-  });
-
-  document.getElementById("sendCopy").addEventListener("change", (e)=>{
-    const on = e.target.checked;
-    document.getElementById("email").disabled = !on; // nur editierbar wenn Kopie gewünscht
-  });
-
-  document.getElementById("btnSend").addEventListener("click", onSend);
-
-  // Data
-  state.analyse = getJSONFromStorage(ANALYSE_KEY);
-  state.person  = getJSONFromStorage(PERSON_KEY);
-  state.paket   = getJSONFromStorage(PAKET_KEY);
-
-  if(!state.analyse || !state.person || !state.paket){
-    setStatus("Fehlende Daten aus Step 1–4.", "Bitte kehren Sie zurück und schließen Sie alle Schritte ab.");
-    lockSend(true);
-    // Actions bleiben aus (kein Fallback)
-    return;
-  }
-
-  const email = state.person?.email || state.person?.Email || "";
-  document.getElementById("email").value = email;
-  document.getElementById("email").disabled = true; // erst aktiv bei Checkbox
-  document.getElementById("emailView").textContent = email || "—";
-
-  state.vertragsnr = buildVertragsnummer(state.analyse);
-  document.getElementById("vertragNr").textContent = state.vertragsnr;
-
-  // Load text modules
-  setStatus("Vertragsbestandteile werden geladen…");
-  state.wart = await loadWartungsvertrag();
-
-  setStatus("AGBs werden geladen…");
-  state.agbs = await loadAGBFiles();
-
-  // Build PDFs
-  setStatus("PDF wird erstellt…", "MUSTER‑Vorschau");
-  const docMuster = buildDocDefinition({
-    vertragsnr: state.vertragsnr,
-    analyse: state.analyse,
-    person: state.person,
-    paket: state.paket,
-    wart: state.wart,
-    agbs: state.agbs,
-    watermark: true
-  });
-
-  const docIntern = buildDocDefinition({
-    vertragsnr: state.vertragsnr,
-    analyse: state.analyse,
-    person: state.person,
-    paket: state.paket,
-    wart: state.wart,
-    agbs: state.agbs,
-    watermark: false
-  });
-
-  state.pdfMusterBlob = await pdfMakeToBlob(docMuster);
-  state.pdfInternBlob = await pdfMakeToBlob(docIntern);
-
-  // Render preview from Muster PDF
-  setStatus("PDF‑Vorschau wird gerendert…", "Scrollen Sie bis ganz nach unten");
-  await renderPdfToCanvases(state.pdfMusterBlob);
-
-  // Show actions only after preview is ready (unten unter der PDF)
-  document.getElementById("actions").style.display = "flex";
-  setStatus("PDF‑Vorschau bereit.", `Seiten: ${document.querySelectorAll(".pdf-page").length}`);
-}
-
-async function onSend(){
-  clearError();
-  lockSend(true);
-
-  try{
-    const sendCopy = document.getElementById("sendCopy").checked;
-    const email = String(document.getElementById("email").value || "").trim();
-    const notes = String(document.getElementById("notes").value || "").trim();
-
-    if(sendCopy){
-      if(!email || !email.includes("@")) throw new Error("Bitte geben Sie eine gültige E‑Mail‑Adresse an.");
-    }
-
-    setStatus("Vorbereitung Versand…", "PDFs werden kodiert");
-    const pdfInternB64 = await blobToBase64(state.pdfInternBlob);
-    const pdfMusterB64 = sendCopy ? await blobToBase64(state.pdfMusterBlob) : null;
-
-    setStatus("Senden…", "Bitte nicht schließen");
-    const meta = {
-      firma: state.analyse?.Firma || "",
-      windpark_nummer: state.analyse?.windpark_nummer || "",
-      windpark_name: state.analyse?.windpark_name || "",
-      ansprechpartner: state.analyse?.Ansprechpartner || "",
-      paket: state.paket
-    };
-
-    await sendRequest({
-      vertragsnr: state.vertragsnr,
-      email,
-      sendCopy,
-      notes,
-      pdfMusterB64,
-      pdfInternB64,
-      meta
     });
 
-    showSuccess();
-    document.getElementById("btnHome").style.display = "inline-block";
-    document.getElementById("btnSend").style.display = "none";
-    setStatus("Erfolgreich übermittelt.", "");
-  }catch(e){
-    showError(e?.message || "Senden fehlgeschlagen.");
-    setStatus("Fehler beim Senden.", "");
-    lockSend(false);
-  }
-}
+    content.push({ text:"Vertragsbestandteile", style:"h2", margin:[0, 16, 0, 8] });
+    content.push(...wartToPdfContent(wart));
+    content.push(...priceToPdfContent(paket));
+    content.push(...agbsToPdfContent(agbs));
 
-window.addEventListener("DOMContentLoaded", ()=>{
-  init().catch(err=>{
-    console.error(err);
-    setStatus("Fehler beim Aufbau der Vorschau.", err?.message || "");
-    showError(err?.message || "Unbekannter Fehler.");
-    lockSend(true);
+    return {
+      pageSize:"A4",
+      pageMargins:[40, 54, 40, 54],
+      background: watermark ? function(){
+        return {
+          text:"MUSTER",
+          color:"#c7cdd9",
+          fontSize:16,
+          bold:true,
+          alignment:"center",
+          margin:[0, 16, 0, 0]
+        };
+      } : null,
+      footer: function(currentPage, pageCount){
+        return {
+          text: `Export: ${vertragsnr} · Seite ${currentPage} / ${pageCount}`,
+          color: "#6b7280",
+          fontSize: 9,
+          margin:[40,0,40,0],
+          alignment:"right"
+        };
+      },
+      content,
+      styles: {
+        h1: { fontSize: 18, bold:true },
+        h2: { fontSize: 13.5, bold:true },
+        h3: { fontSize: 11.5, bold:true },
+        p:  { fontSize: 10.5, lineHeight:1.25 },
+        note: { fontSize: 10, italics:true, lineHeight:1.25 },
+        th: { fontSize: 10, bold:true },
+        td: { fontSize: 10 },
+        tdTotal: { fontSize: 10, bold:true },
+        yearHead: { fontSize: 12, bold:true }
+      },
+      defaultStyle: { font:"Roboto" }
+    };
+  }
+
+  function pdfMakeToBlob(docDef){
+    return new Promise((resolve, reject)=>{
+      try {
+        pdfMake.createPdf(docDef).getBlob((blob)=> resolve(blob));
+      } catch(e) {
+        reject(e);
+      }
+    });
+  }
+
+  async function renderPdfToCanvases(pdfBlob){
+    const pagesEl = document.getElementById("pdfPages");
+    pagesEl.innerHTML = "";
+
+    const url = URL.createObjectURL(pdfBlob);
+
+    if(!window.pdfjsLib) throw new Error("pdf.js ist nicht verfügbar.");
+    // Worker von CDN (passt zur CDN-Version oben)
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+    const pdf = await pdfjsLib.getDocument(url).promise;
+
+    // Breite an Box anpassen
+    const box = document.querySelector(".box");
+    const maxWidth = Math.min(980, box.clientWidth - 2);
+
+    for(let p=1; p<=pdf.numPages; p++){
+      const page = await pdf.getPage(p);
+      const v1 = page.getViewport({ scale: 1 });
+      const scale = maxWidth / v1.width;
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d", { alpha:false });
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+
+      const wrap = document.createElement("div");
+      wrap.className = "pdfPage";
+      wrap.appendChild(canvas);
+      pagesEl.appendChild(wrap);
+
+      await page.render({ canvasContext: ctx, viewport }).promise;
+    }
+
+    URL.revokeObjectURL(url);
+  }
+
+  function blobToBase64(blob){
+    return new Promise((resolve, reject)=>{
+      const r = new FileReader();
+      r.onload = ()=> resolve(String(r.result).split(",")[1] || "");
+      r.onerror = ()=> reject(new Error("base64 fehlgeschlagen"));
+      r.readAsDataURL(blob);
+    });
+  }
+
+  async function sendRequest(payload){
+    const endpoint = "/.netlify/functions/send-vertrag-anfrage";
+    const res = await fetch(endpoint, {
+      method:"POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    });
+    const txt = await res.text();
+    let body = null;
+    try { body = JSON.parse(txt); } catch(e) { body = { raw: txt }; }
+    if(!res.ok) throw new Error(body?.message || body?.error || "Senden fehlgeschlagen.");
+    return body;
+  }
+
+  const state = {
+    analyse:null, person:null, paket:null, wart:null, agbs:[],
+    vertragsnr:null, pdfMusterBlob:null, pdfInternBlob:null
+  };
+
+  async function init(){
+    document.getElementById("btnBack").addEventListener("click", ()=> {
+      if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
+      else history.back();
+    });
+    document.getElementById("btnHome").addEventListener("click", ()=> {
+      window.location.href = "https://netteck.de";
+    });
+
+    state.analyse = getJSONFromStorage(ANALYSE_KEY);
+    state.person  = getJSONFromStorage(PERSON_KEY);
+    state.paket   = getJSONFromStorage(PAKET_KEY);
+
+    if(!state.analyse || !state.person || !state.paket){
+      setStatus("Fehlende Daten aus Step 1–4.", "Bitte vorherige Steps abschließen.");
+      return;
+    }
+
+    // Email (unten beim Absenden anzeigen)
+    const email = state.person?.email || state.person?.Email || "";
+    document.getElementById("emailView").textContent = email || "—";
+    document.getElementById("email").value = email;
+
+    const sendCopy = document.getElementById("sendCopy");
+    const emailField = document.getElementById("emailField");
+    sendCopy.addEventListener("change", ()=> {
+      emailField.style.display = sendCopy.checked ? "block" : "none";
+    });
+
+    state.vertragsnr = buildVertragsnummer(state.analyse);
+    document.getElementById("vertragNr").textContent = state.vertragsnr;
+
+    // libs ready?
+    if(typeof pdfMake === "undefined") throw new Error("pdfMake ist nicht geladen (Script-Pfad).");
+
+    setStatus("Vertragsbestandteile werden geladen…");
+    state.wart = await loadWartungsvertrag();
+
+    setStatus("AGBs werden geladen…");
+    state.agbs = await loadAGBFiles();
+
+    setStatus("PDF wird erstellt…", "MUSTER");
+    const docM = buildDocDefinition({
+      vertragsnr: state.vertragsnr,
+      analyse: state.analyse,
+      paket: state.paket,
+      wart: state.wart,
+      agbs: state.agbs,
+      watermark: true
+    });
+    const docI = buildDocDefinition({
+      vertragsnr: state.vertragsnr,
+      analyse: state.analyse,
+      paket: state.paket,
+      wart: state.wart,
+      agbs: state.agbs,
+      watermark: false
+    });
+
+    state.pdfMusterBlob = await pdfMakeToBlob(docM);
+    state.pdfInternBlob = await pdfMakeToBlob(docI);
+
+    setStatus("PDF‑Vorschau wird gerendert…", "bitte warten");
+    await renderPdfToCanvases(state.pdfMusterBlob);
+
+    setStatus("PDF‑Vorschau bereit.", `${document.querySelectorAll(".pdfPage").length} Seite(n)`);
+    document.getElementById("formGrid").style.display = "flex";
+
+    // Send Button
+    document.getElementById("btnSend").addEventListener("click", onSend);
+  }
+
+  async function onSend(){
+    clearErr();
+    const btn = document.getElementById("btnSend");
+    btn.disabled = true;
+
+    try {
+      const wantCopy = document.getElementById("sendCopy").checked;
+      const email = String(document.getElementById("email").value || "").trim();
+      const notes = String(document.getElementById("notes").value || "").trim();
+
+      if(wantCopy && (!email || !email.includes("@"))) {
+        throw new Error("Bitte geben Sie eine gültige E‑Mail‑Adresse an.");
+      }
+
+      setStatus("Vorbereitung Versand…", "PDFs werden kodiert");
+      const pdfInternB64 = await blobToBase64(state.pdfInternBlob);
+      const pdfMusterB64 = wantCopy ? await blobToBase64(state.pdfMusterBlob) : null;
+
+      setStatus("Senden…", "bitte nicht schließen");
+      const payload = {
+        vertragsnummer: state.vertragsnr,
+        kunde_email: wantCopy ? email : null,
+        anmerkungen: notes,
+        pdf_muster_base64: wantCopy ? pdfMusterB64 : null,
+        pdf_intern_base64: pdfInternB64,
+        meta: {
+          firma: state.analyse?.Firma || "",
+          windpark_nummer: state.analyse?.windpark_nummer || "",
+          windpark_name: state.analyse?.windpark_name || "",
+          ansprechpartner: state.analyse?.Ansprechpartner || "",
+          paket: state.paket
+        }
+      };
+
+      await sendRequest(payload);
+
+      showOk();
+      document.getElementById("btnHome").style.display = "inline-block";
+      btn.style.display = "none";
+      setStatus("Erfolgreich übermittelt.", "");
+    } catch(e) {
+      showErr(e?.message || "Senden fehlgeschlagen.");
+      setStatus("Fehler beim Senden.", "");
+      btn.disabled = false;
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", ()=> {
+    init().catch(err => {
+      console.error(err);
+      setStatus("Fehler beim Aufbau der Vorschau.", err?.message || "");
+      showErr(err?.message || "Unbekannter Fehler.");
+    });
   });
-});
 </script>
 </body>
 </html>
