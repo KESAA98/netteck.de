@@ -3,130 +3,75 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vertrag bestätigen – Vorschau</title>
+  <title>Step 5 – Vertrag bestätigen (Vorschau)</title>
   <link rel="icon" type="image/png" href="/netteck.de/Logos/logo.png">
+
+  <!-- pdfMake -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <!-- pdf.js (Canvas-Render, ohne Toolbar) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <style>
     :root{
       --primary:#0b74ff;
-      --primary2:#2a8cff;
-      --primary-soft: rgba(11,116,255,.10);
+      --primary2:#7a5cff;
       --bg:#f5f7fb;
-      --card:#ffffff;
+      --card:#fff;
       --border:#e1e4ec;
       --text:#1f2933;
       --muted:#6b7280;
       --danger:#b42318;
       --ok:#067647;
-      --shadow: 0 20px 55px rgba(16,24,40,.10);
-      --radius: 18px;
+      --shadow: 0 18px 60px rgba(16,24,40,.10);
+      --r: 18px;
     }
-
     *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
       color:var(--text);
-      background: radial-gradient(1200px 600px at 50% -10%, rgba(11,116,255,.14), transparent 60%),
-                  linear-gradient(#f7f9ff, var(--bg));
+      background:
+        radial-gradient(1200px 600px at 50% -10%, rgba(11,116,255,.14), transparent 60%),
+        linear-gradient(#f7f9ff, var(--bg));
     }
-
-    .viewport{
-      min-height:100vh;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      padding: 28px 14px 40px;
-    }
-
+    .viewport{ min-height:100vh; display:flex; justify-content:center; padding:28px 14px 40px; }
     .card{
-      width:min(1100px, 100%);
+      width:min(1100px,100%);
       background:var(--card);
       border:1px solid rgba(225,228,236,.9);
-      border-radius: var(--radius);
+      border-radius: var(--r);
       box-shadow: var(--shadow);
       padding: 18px 18px 16px;
     }
-
-    h1{
-      margin: 4px 0 4px;
-      font-size: 1.55rem;
-      letter-spacing: -.02em;
-    }
-    .sub{
-      margin:0 0 14px;
-      color:var(--muted);
-      font-weight: 550;
-      line-height: 1.4;
-    }
+    h1{ margin:4px 0 4px; font-size:1.55rem; letter-spacing:-.02em; }
+    .sub{ margin:0 0 14px; color:var(--muted); font-weight:600; line-height:1.4; }
 
     .notice{
-      border: 1px solid rgba(11,116,255,.18);
+      border:1px solid rgba(11,116,255,.18);
       background: rgba(11,116,255,.06);
-      padding: 10px 12px;
+      padding:10px 12px;
       border-radius: 14px;
-      color: #0b3a88;
-      font-weight: 650;
+      color:#0b3a88;
+      font-weight:700;
       margin-bottom: 14px;
     }
 
-    .error{
-      display:none;
-      border: 1px solid #ffd0d0;
-      background:#fff5f5;
-      color: var(--danger);
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 800;
-      text-align:center;
-      margin: 12px 0 0;
-    }
-    .error.show{ display:block; }
-
-    .ok{
-      display:none;
-      border: 1px solid rgba(6,118,71,.25);
-      background: rgba(6,118,71,.08);
-      color: var(--ok);
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 850;
-      text-align:center;
-      margin: 12px 0 0;
-    }
-    .ok.show{ display:block; }
-
-    /* PDF area (kein doppeltes Scrollen) */
     .pdfWrap{
-      border: 1px solid rgba(225,228,236,.9);
+      border:1px solid rgba(225,228,236,.9);
       border-radius: 16px;
-      overflow: hidden;
-      background: #fbfcff;
+      overflow:hidden;
+      background:#fbfcff;
     }
-
     .pdfHead{
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(225,228,236,.8);
+      padding:10px 12px;
+      border-bottom:1px solid rgba(225,228,236,.8);
       background: linear-gradient(180deg, rgba(11,116,255,.08), rgba(11,116,255,.02));
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      flex-wrap: wrap;
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
     }
-    .pdfTitle{
-      font-weight: 900;
-      letter-spacing: -.01em;
-    }
-    .pdfHint{
-      color: var(--muted);
-      font-weight: 650;
-      font-size: .92rem;
-    }
-
-    .pdfPages{
-      padding: 14px 14px 2px;
-    }
+    .pdfTitle{ font-weight:950; }
+    .pdfHint{ color:var(--muted); font-weight:650; font-size:.92rem; }
+    .pdfPages{ padding:14px 14px 2px; }
     .pageCanvas{
       width:100%;
       display:block;
@@ -134,142 +79,109 @@
       background:#fff;
       box-shadow: 0 10px 25px rgba(16,24,40,.10);
       border: 1px solid rgba(225,228,236,.9);
-      margin: 0 0 14px;
+      margin:0 0 14px;
     }
 
     .actions{
-      margin-top: 16px;
-      border-top: 1px solid rgba(225,228,236,.9);
-      padding-top: 14px;
+      margin-top:16px;
+      border-top:1px solid rgba(225,228,236,.9);
+      padding-top:14px;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      gap:14px;
       align-items:start;
     }
-    @media (max-width: 900px){
-      .actions{ grid-template-columns: 1fr; }
-    }
+    @media (max-width: 900px){ .actions{ grid-template-columns: 1fr; } }
 
     .box{
-      border: 1px solid rgba(225,228,236,.9);
+      border:1px solid rgba(225,228,236,.9);
       border-radius: 16px;
-      padding: 12px;
-      background: #fff;
+      padding:12px;
+      background:#fff;
     }
-    .boxTitle{
-      font-weight: 900;
-      margin: 0 0 8px;
-    }
+    .boxTitle{ font-weight:950; margin:0 0 8px; }
     textarea{
       width:100%;
-      min-height: 120px;
+      min-height:120px;
       resize: vertical;
-      border: 1px solid rgba(225,228,236,1);
+      border:1px solid rgba(225,228,236,1);
       border-radius: 12px;
-      padding: 10px 10px;
+      padding:10px 10px;
       font: inherit;
-      outline: none;
+      outline:none;
     }
     textarea:focus{
       border-color: rgba(11,116,255,.55);
-      box-shadow: 0 0 0 6px var(--primary-soft);
+      box-shadow: 0 0 0 6px rgba(11,116,255,.10);
     }
 
-    .row{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
+    .chk{ display:flex; gap:10px; align-items:flex-start; user-select:none; margin-top:12px; }
+    .chk input{ margin-top:2px; transform:scale(1.1); accent-color: var(--primary); }
+    .muted{ color:var(--muted); font-weight:650; font-size:.95rem; line-height:1.35; }
 
-    .chk{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      user-select:none;
-    }
-    .chk input{
-      margin-top: 2px;
-      transform: scale(1.1);
-      accent-color: var(--primary);
-    }
-    .muted{ color: var(--muted); font-weight: 650; font-size: .95rem; line-height:1.35; }
-
-    .btnRow{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-    .btn{
-      border:none;
-      border-radius: 999px;
-      padding: 12px 16px;
-      font-weight: 900;
-      cursor:pointer;
-      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      user-select:none;
-    }
-    .btn:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-      transform:none !important;
-      filter:none !important;
-      box-shadow:none !important;
-    }
-    .btnPrimary{
-      color:#fff;
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
-    }
-    .btnGhost{
-      background:#fff;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      filter: brightness(1.02);
-      box-shadow: 0 0 0 5px var(--primary-soft);
-    }
-
-    .miniGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
     .kv{
-      border: 1px solid rgba(225,228,236,.9);
-      background: #fbfcff;
+      border:1px solid rgba(225,228,236,.9);
+      background:#fbfcff;
       border-radius: 14px;
-      padding: 10px 12px;
-      line-height: 1.25;
+      padding:10px 12px;
+      line-height:1.25;
+      margin-top:12px;
     }
     .kv b{ display:block; font-size:.92rem; }
-    .kv span{ color: var(--muted); font-weight: 750; }
+    .kv span{ color:var(--muted); font-weight:750; }
+
+    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:950;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      display:inline-flex; align-items:center; gap:8px;
+      user-select:none;
+    }
+    .btnPrimary{ color:#fff; background: linear-gradient(135deg, var(--primary), var(--primary2)); }
+    .btnGhost{ background:#fff; color:var(--text); border:1px solid var(--border); text-decoration:none; }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.02); box-shadow: 0 0 0 5px rgba(11,116,255,.10); }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; filter:none; box-shadow:none; }
+
+    .error{
+      display:none;
+      border:1px solid #ffd0d0;
+      background:#fff5f5;
+      color:var(--danger);
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:900;
+      text-align:center;
+      margin-top:12px;
+    }
+    .error.show{ display:block; }
+    .ok{
+      display:none;
+      border:1px solid rgba(6,118,71,.25);
+      background: rgba(6,118,71,.08);
+      color:var(--ok);
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:950;
+      text-align:center;
+      margin-top:12px;
+    }
+    .ok.show{ display:block; }
   </style>
-
-  <!-- pdfmake -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-
-  <!-- pdf.js (nur Rendern in Canvas – kein Toolbar / kein Download / kein Print) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body>
   <div class="viewport">
-    <div class="card" role="main" aria-label="Vertrag bestätigen">
+    <div class="card">
       <h1>Vertrag bestätigen</h1>
       <p class="sub">Die Vorschau wird automatisch erzeugt. Bitte einmal komplett durchscrollen – unten finden Sie die Anfrage-Aktionen.</p>
 
       <div class="notice" id="topNotice">PDF wird erstellt…</div>
 
-      <div class="pdfWrap" id="pdfWrap" aria-label="PDF Vorschau">
+      <div class="pdfWrap">
         <div class="pdfHead">
           <div>
             <div class="pdfTitle">PDF Vorschau</div>
@@ -280,22 +192,20 @@
         <div class="pdfPages" id="pdfPages"></div>
       </div>
 
-      <div class="actions" id="actions">
+      <div class="actions">
         <div class="box">
           <div class="boxTitle">Anmerkungen zu Ihrer Vertragsvorlage</div>
           <textarea id="notes" placeholder="Optional: z. B. abweichender Windparkname, besondere Anforderungen, Ansprechpartnerwechsel …"></textarea>
 
-          <div class="row" style="margin-top:12px;">
-            <div class="chk">
-              <input type="checkbox" id="sendCopy" checked />
-              <div>
-                <div style="font-weight:900;">Möchten Sie das Muster als Kopie per E-Mail erhalten?</div>
-                <div class="muted">Wird an folgende Adresse gesendet: <span id="mailTo">–</span></div>
-              </div>
+          <div class="chk">
+            <input type="checkbox" id="sendCopy" checked />
+            <div>
+              <div style="font-weight:950;">Möchten Sie das Muster als Kopie per E-Mail erhalten?</div>
+              <div class="muted">Wird an folgende Adresse gesendet: <span id="mailTo">–</span></div>
             </div>
           </div>
 
-          <div class="kv" style="margin-top:12px;">
+          <div class="kv">
             <b>Hinweis</b>
             <span>
               Nach dem Absenden erhalten wir Ihre Vertragsvorlage und prüfen diese. Wenn alles korrekt ist,
@@ -304,608 +214,632 @@
             </span>
           </div>
 
-          <div class="btnRow" style="margin-top:12px;">
+          <div class="btnRow">
             <button class="btn btnPrimary" id="btnSend" type="button">Vertrag anfragen</button>
-            <button class="btn btnGhost" type="button" onclick="goBack()">Zurück</button>
+            <button class="btn btnGhost" id="btnBack" type="button">Zurück</button>
           </div>
 
           <div class="error" id="errorBox">Senden fehlgeschlagen. Bitte versuchen Sie es erneut.</div>
           <div class="ok" id="okBox">
             Ihre Anfrage wurde übermittelt.
-            <div style="margin-top:10px;">
-              <a class="btn btnGhost" href="/netteck.de/" style="text-decoration:none;">Zur Startseite</a>
+            <div class="btnRow" style="justify-content:center; margin-top:10px;">
+              <a class="btn btnGhost" href="/netteck.de/">Zur Startseite</a>
             </div>
           </div>
         </div>
 
         <div class="box">
           <div class="boxTitle">Zusammenfassung</div>
-          <div class="miniGrid" id="summaryGrid"></div>
+          <div id="summaryGrid"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    // --------- Konstanten / Pfade (Root-Paths: funktionieren bei GitHub Pages + Netlify) ----------
-    const ANALYSE_KEY = "rechnungAnalyse";
-    const PERSON_KEY  = "personConfirm";
-    const PAKET_KEY   = "paketWahl";
+<script>
+  // ----------------------------
+  // PATHS / SETTINGS
+  // ----------------------------
+  const ANALYSE_KEY = "rechnungAnalyse";
+  const PERSON_KEY  = "personConfirm";
+  const PAKET_KEY   = "paketWahl";
 
-    const WARTUNG_TXT_URL = "/netteck.de/aktuelles/enercon_kundenrouter_wartung/information/warungsvertrag.txt";
+  const WARTUNG_TXT_URL = "/netteck.de/aktuelles/enercon_kundenrouter_wartung/information/warungsvertrag.txt";
 
-    // AGB liegen unter /AGB/AGBs/ (laut dir: /AGB/AGBs/ und Step5 liegt daneben)
-    const AGB_META_URL = "/netteck.de/AGB/meta.json";
-    const AGB_DIR_URL  = "/netteck.de/AGB/AGBs/";
+  // ✅ AGB-Laden wie deine aktuelle AGB-Index: GitHub API listet, danach lokal /AGB/AGBs/<file>
+  const GITHUB_CONTENT_API = "https://api.github.com/repos/KESAA98/netteck.de/contents/AGB/AGBs";
+  const AGB_LOCAL_DIR = "/netteck.de/AGB/AGBs/";
 
-    const AGB_FILES_FALLBACK = [
-      "01_geltungsbereich.txt",
-      "02_vertragsschluss.txt",
-      "03_mitwirkungspflichten.txt",
-      "04_ruecktritt.txt",
-      "05_leistungsnachweise.txt",
-      "06_liefer_ausfuehrungs_einsatzzeiten.txt",
-      "07_gewaehrleistung.txt",
-      "08_haftung.txt",
-      "09_preise_und_zahlungen.txt",
-      "10_eigentumsvorbehalt.txt",
-      "11_gerichtsstand_recht.txt",
-      "12_schlussbestimmungen.txt",
-      "13_datenschutz_speicherung.txt",
-      "14_wegfall_der_leistungserbringung.txt",
-      "B1_geltungsbereich_wartung.txt",
-      "B2_leistungsumfang_wartung.txt",
-      "B3_lancare.txt",
-      "B4_termine_reaktionszeiten.txt",
-      "B5_backup_dokumentation.txt",
-      "B6_remote_support_mehrleistungen.txt",
-      "B7_vertragslaufzeit_kuendigung.txt",
-      "B8_haftung_wartung.txt",
-      "B9_schlussbestimmungen_wartung.txt"
-    ];
+  // ✅ echtes Logo als Bild (nicht "KS" Text)
+  const LOGO_IMG_URL = "/netteck.de/Logos/logo_name.jpeg"; // falls du ein anderes willst: hier ändern
 
-    const LOGO_URL = "/netteck.de/AGB/Logos/logo_name.jpeg";
+  // Netlify Function (später)
+  const NETLIFY_FN_URL = "/.netlify/functions/vertrag_senden";
 
-    // Netlify Function (Step 5 – später die Function bauen)
-    const NETLIFY_FN_URL = "/.netlify/functions/vertrag_senden";
+  // pdf.js worker
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-    // --------- DOM ----------
-    const topNotice = document.getElementById("topNotice");
-    const pdfPages  = document.getElementById("pdfPages");
-    const pdfHint   = document.getElementById("pdfHint");
-    const contractNoHint = document.getElementById("contractNoHint");
+  // ----------------------------
+  // DOM
+  // ----------------------------
+  const topNotice = document.getElementById("topNotice");
+  const pdfPages = document.getElementById("pdfPages");
+  const pdfHint  = document.getElementById("pdfHint");
+  const contractNoHint = document.getElementById("contractNoHint");
+  const mailToEl = document.getElementById("mailTo");
+  const summaryGrid = document.getElementById("summaryGrid");
+  const btnSend = document.getElementById("btnSend");
+  const btnBack = document.getElementById("btnBack");
+  const errorBox = document.getElementById("errorBox");
+  const okBox = document.getElementById("okBox");
 
-    const mailToEl  = document.getElementById("mailTo");
-    const summaryGrid = document.getElementById("summaryGrid");
+  // ----------------------------
+  // Helpers
+  // ----------------------------
+  function safeParse(s){ try{return JSON.parse(s);}catch(e){ return null; } }
+  function pick(v, fb="–"){ const s=(v??"").toString().trim(); return s? s : fb; }
+  function pad2(n){ return String(n).padStart(2,"0"); }
 
-    const btnSend   = document.getElementById("btnSend");
-    const errorBox  = document.getElementById("errorBox");
-    const okBox     = document.getElementById("okBox");
+  function nowStamp(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = pad2(d.getMonth()+1);
+    const da = pad2(d.getDate());
+    const ss = pad2(d.getSeconds());
+    const mm = pad2(d.getMinutes());
+    return { yyyymmdd: `${y}${m}${da}`, ssmm: `${ss}${mm}` };
+  }
 
-    // --------- Helpers ----------
-    function safeParse(s){ try { return JSON.parse(s); } catch(e){ return null; } }
+  function toEuro(v){
+    const n = Number(v);
+    if(!isFinite(n)) return "–";
+    return n.toLocaleString("de-DE",{minimumFractionDigits:2, maximumFractionDigits:2}) + " €";
+  }
+  function withVat(net, vat=0.19){
+    const n = Number(net);
+    if(!isFinite(n)) return NaN;
+    return n * (1+vat);
+  }
 
-    function pad2(n){ return String(n).padStart(2, "0"); }
+  function n2nl(s){
+    return (s ?? "").toString().replace(/\\n/g,"\n").replace(/\r\n/g,"\n");
+  }
 
-    function toEuro(v){
-      const n = Number(v);
-      if (!isFinite(n)) return "–";
-      return n.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+  async function fetchText(url){
+    const r = await fetch(url, { cache:"no-store" });
+    if(!r.ok) throw new Error("http_" + r.status);
+    return await r.text();
+  }
+
+  async function fetchJson(url){
+    const r = await fetch(url, { cache:"no-store" });
+    if(!r.ok) throw new Error("http_" + r.status);
+    return await r.json();
+  }
+
+  async function imgToDataUrl(url){
+    // robust: fetch -> blob -> FileReader (kein canvas/cors stress)
+    const r = await fetch(url, { cache:"no-store" });
+    if(!r.ok) throw new Error("logo_http_" + r.status);
+    const blob = await r.blob();
+    return await new Promise((resolve, reject)=>{
+      const fr = new FileReader();
+      fr.onload = ()=> resolve(fr.result);
+      fr.onerror = ()=> reject(new Error("logo_read"));
+      fr.readAsDataURL(blob);
+    });
+  }
+
+  function ssObj(key){
+    const o = safeParse(sessionStorage.getItem(key) || "");
+    return (o && typeof o === "object") ? o : {};
+  }
+
+  function buildContractNumber(rechnNr){
+    const rn = pick(rechnNr, "Autom. Vergabe");
+    const { yyyymmdd, ssmm } = nowStamp();
+    return `${rn}_${rn}_${yyyymmdd}_${ssmm}`;
+  }
+
+  // ----------------------------
+  // ✅ Wartungsvertrag: JSON sauber rendern (kein rohes JSON)
+  // ----------------------------
+  async function loadWartung(){
+    const raw = n2nl(await fetchText(WARTUNG_TXT_URL)).trim();
+    const obj = safeParse(raw);
+    if(obj && Array.isArray(obj.sections)){
+      return {
+        title: pick(obj.title,"Leistungsumfang – Service & Wartung für Kundenrouter"),
+        sections: obj.sections.map(s=>({
+          heading: pick(s.heading,""),
+          text: n2nl(s.text||""),
+          note: n2nl(s.note||"")
+        }))
+      };
     }
+    // fallback: plain text
+    return { title:"Vertragsbestandteile", sections:[{ heading:"", text: raw, note:"" }] };
+  }
 
-    function nowStamp(){
-      const d = new Date();
-      const y = d.getFullYear();
-      const m = pad2(d.getMonth()+1);
-      const da = pad2(d.getDate());
-      const hh = pad2(d.getHours());
-      const mm = pad2(d.getMinutes());
-      return { yyyymmdd: `${y}${m}${da}`, hhmm: `${hh}${mm}` };
+  function blocksFromText(t){
+    const lines = (t||"").split("\n").map(x=>x.trim()).filter(Boolean);
+    const out = [];
+    let ul = null;
+    for(const line of lines){
+      if(/^[•\-–]/.test(line)){
+        if(!ul){ ul={ ul:[], margin:[0,2,0,8] }; out.push(ul); }
+        ul.ul.push(line.replace(/^[•\-–]\s*/,""));
+      }else{
+        ul = null;
+        out.push({ text: line, style:"p", margin:[0,0,0,6] });
+      }
     }
+    return out;
+  }
 
-    function pick(v, fallback="–"){
-      const s = (v ?? "").toString().trim();
-      return s ? s : fallback;
-    }
+  // ----------------------------
+  // ✅ AGB: wie aktuelle AGB-Index (GitHub list -> lokale Files)
+  // ----------------------------
+  function normalizeAgbJsonFiles(rawFiles){
+    const out = [];
+    rawFiles.forEach(fileObj=>{
+      if(!fileObj) return;
+      if(fileObj.note) out.push({ isNote:true, text:fileObj.note });
+      Object.keys(fileObj).forEach(key=>{
+        if(key==="note") return;
+        const v = fileObj[key];
+        if(Array.isArray(v)) out.push(...v);
+        else if(v && typeof v==="object" && (v.title||v.Titel||v.text||v.Text)) out.push(v);
+      });
+    });
+    return out;
+  }
 
-    function n2brText(s){
-      return (s ?? "").toString()
-        .replace(/\\n/g, "\n")
-        .replace(/\r\n/g, "\n");
-    }
+  async function loadAgb(){
+    const list = await fetchJson(GITHUB_CONTENT_API);
+    const files = (list||[])
+      .filter(e => e.type==="file" && e.name.toLowerCase().endsWith(".txt"))
+      .map(e => e.name)
+      .sort();
 
-    async function fetchText(url){
-      const r = await fetch(url, { cache: "no-store" });
-      if (!r.ok) throw new Error("http_" + r.status);
-      return await r.text();
-    }
-
-    async function tryFetchJson(url){
+    const rawFiles = await Promise.all(files.map(async (name)=>{
       try{
-        const r = await fetch(url, { cache: "no-store" });
-        if (!r.ok) return null;
-        return await r.json();
+        const r = await fetch(AGB_LOCAL_DIR + name, { cache:"no-store" });
+        if(!r.ok) return null;
+        return await r.json(); // ✅ in deinem System sind das JSON-TXT
       }catch(e){
         return null;
       }
-    }
+    }));
 
-    async function imgToDataUrl(url){
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => {
-          const c = document.createElement("canvas");
-          c.width = img.width;
-          c.height = img.height;
-          const ctx = c.getContext("2d");
-          ctx.drawImage(img, 0, 0);
-          try{ resolve(c.toDataURL("image/png")); }
-          catch(e){ reject(e); }
-        };
-        img.onerror = () => reject(new Error("img_load_failed"));
-        img.src = url;
+    return normalizeAgbJsonFiles(rawFiles);
+  }
+
+  // ----------------------------
+  // ✅ Preisstaffelung "modern": pro Jahr eine Karten-Zeile wie Rechnung
+  //    - netto & brutto
+  //    - Jahr als Position (z.B. "01 / Jahr 1")
+  //    - Jahr-Gesamtpreis (Jahr 1 = Wartung + LANcare, sonst Wartung)
+  // ----------------------------
+  function buildPriceCards(paket){
+    const years = Number(paket.laufzeit_jahre || 0);
+    const wartNet = Number(paket.wartungsvertrag_preis_pro_jahr || NaN);
+    const lanNet  = Number(paket.lancare_preis_netto || NaN);
+
+    if(!years || !isFinite(years)) return [];
+
+    const cards = [];
+    for(let y=1; y<=years; y++){
+      const hasLan = (y===1);
+      const lanN = hasLan ? lanNet : 0;
+      const sumN = (isFinite(wartNet)? wartNet:0) + (isFinite(lanN)? lanN:0);
+
+      cards.push({
+        pos: pad2(y),
+        label: `Jahr ${y}`,
+        lines: [
+          { name: "LANcare", net: lanN, brut: withVat(lanN) },
+          { name: "Wartungs- & Servicepauschale", net: wartNet, brut: withVat(wartNet) }
+        ],
+        totalNet: sumN,
+        totalBrut: withVat(sumN)
       });
     }
+    return cards;
+  }
 
-    // --------- Daten laden (aus Session Storage) ----------
-    function getAnalyse(){
-      const raw = sessionStorage.getItem(ANALYSE_KEY);
-      const obj = safeParse(raw || "");
-      return (obj && typeof obj === "object") ? obj : {};
-    }
-    function getPerson(){
-      const raw = sessionStorage.getItem(PERSON_KEY);
-      const obj = safeParse(raw || "");
-      return (obj && typeof obj === "object") ? obj : {};
-    }
-    function getPaket(){
-      const raw = sessionStorage.getItem(PAKET_KEY);
-      const obj = safeParse(raw || "");
-      return (obj && typeof obj === "object") ? obj : {};
-    }
+  // ----------------------------
+  // PDF Design: moderner Look (Karten statt Tabellen)
+  // ----------------------------
+  function pill(text){
+    return {
+      text,
+      color:"#0b3a88",
+      fillColor:"#eaf2ff",
+      fontSize:9,
+      bold:true,
+      margin:[0,0,0,0]
+    };
+  }
 
-    function buildContractNumber(rechnNr){
-      const { yyyymmdd, hhmm } = nowStamp();
-      const rn = pick(rechnNr, "Autom. Vergabe");
-      // Vorgabe: "Rechnungs-Nr."_"Rechnungs-Nr."_YYYYMMDD_SSMM
-      // -> wir nutzen HHMM als Zeitanteil
-      return `${rn}_${rn}_${yyyymmdd}_${hhmm}`;
-    }
+  function cardBox(stack, opts={}){
+    return {
+      table:{
+        widths:["*"],
+        body:[[
+          { stack, margin:[12,10,12,10] }
+        ]]
+      },
+      layout:{
+        fillColor: ()=> "#ffffff",
+        hLineColor: ()=> "#e6ecf7",
+        vLineColor: ()=> "#e6ecf7",
+        paddingLeft: ()=>0, paddingRight: ()=>0, paddingTop: ()=>0, paddingBottom: ()=>0
+      },
+      margin: opts.margin || [0,8,0,0]
+    };
+  }
 
-    // --------- AGB laden ----------
-    async function loadAgbFiles(){
-      const meta = await tryFetchJson(AGB_META_URL);
-      if (meta && Array.isArray(meta.agb_files) && meta.agb_files.length){
-        return meta.agb_files.slice();
+  function twoColRow(left, right){
+    return {
+      columns:[
+        { width:"48%", stack:left },
+        { width:"4%", text:"" },
+        { width:"48%", stack:right }
+      ],
+      margin:[0,0,0,0]
+    };
+  }
+
+  function field(label, value){
+    return {
+      stack:[
+        { text: label, fontSize:9, color:"#64748b", margin:[0,0,0,2] },
+        { text: value, fontSize:11, bold:true, color:"#0f172a" }
+      ],
+      margin:[0,0,0,8]
+    };
+  }
+
+  async function buildPdf(analyse, person, paket){
+    const contractNo = buildContractNumber(analyse["Rechnungs-Nr."] || analyse["Rechnungs-Nr"] || analyse["RechnungsNr"]);
+    contractNoHint.textContent = "Vertragsnummer: " + contractNo;
+
+    const logo = await imgToDataUrl(LOGO_IMG_URL).catch(()=>null);
+
+    const firma = pick(analyse["Firma"]);
+    const wpNum = pick(analyse["windpark_nummer"], "000");
+    const wpName = pick(analyse["windpark_name"], "Musterpark");
+    const wp = `${wpNum} – ${wpName}`;
+    const ansp = pick(analyse["Ansprechpartner"]);
+    const addr = `${pick(analyse["Straße und Hausnummer"], "")}\n${pick(analyse["PLZ"], "")} ${pick(analyse["Ort"], "")}`.trim();
+
+    const kundeEmail = pick(person.email, "–");
+    mailToEl.textContent = kundeEmail;
+
+    const wart = await loadWartung();
+    const agb = await loadAgb();
+    const priceCards = buildPriceCards(paket);
+
+    // Wartung in Blocks
+    const wartBlocks = [];
+    wartBlocks.push({ text: wart.title, style:"h2", margin:[0,4,0,6] });
+    (wart.sections||[]).forEach(sec=>{
+      if(sec.heading) wartBlocks.push({ text: sec.heading, style:"h3", margin:[0,10,0,4] });
+      if(sec.text) wartBlocks.push(...blocksFromText(sec.text));
+      if(sec.note){
+        wartBlocks.push(cardBox([
+          { text:"Hinweis", fontSize:9, bold:true, color:"#334155", margin:[0,0,0,4] },
+          ...blocksFromText(sec.note).map(b=>({ ...b, color:"#334155" }))
+        ], { margin:[0,6,0,0] }));
       }
-      return AGB_FILES_FALLBACK.slice();
-    }
+    });
 
-    async function loadAgbTexts(){
-      const files = await loadAgbFiles();
-      const out = [];
-      for (const f of files){
-        try{
-          const t = await fetchText(AGB_DIR_URL + f);
-          out.push({ file: f, text: n2brText(t) });
-        }catch(e){
-          // still continue
-          out.push({ file: f, text: `(${f} konnte nicht geladen werden)` });
-        }
-      }
-      return out;
-    }
+    // Preisstaffel als "Rechnung": pro Jahr eine Karte mit Position, Leistungen, netto/brutto, Gesamt
+    const priceBlocks = [];
+    priceBlocks.push({ text:"Preisstaffelung", style:"h2", margin:[0,14,0,6] });
+    priceBlocks.push({ text:"Alle Preise pro Jahr. Jahr 1 enthält zusätzlich LANcare (einmalig).", fontSize:9, color:"#64748b", margin:[0,0,0,6] });
 
-    // --------- Wartungsvertrag-Bausteine laden ----------
-    async function loadWartungParts(){
-      const raw = await fetchText(WARTUNG_TXT_URL);
-      const cleaned = n2brText(raw).trim();
-      const parsed = safeParse(cleaned);
-
-      // Wenn JSON-Format: { title, sections:[{heading,text,note}] }
-      if (parsed && parsed.sections && Array.isArray(parsed.sections)){
-        return {
-          title: parsed.title || "Vertragsbestandteile",
-          sections: parsed.sections.map(s => ({
-            heading: pick(s.heading, ""),
-            text: n2brText(s.text || ""),
-            note: n2brText(s.note || "")
-          }))
-        };
-      }
-
-      // Fallback: Plaintext
-      return {
-        title: "Vertragsbestandteile",
-        sections: [{
-          heading: "",
-          text: cleaned,
-          note: ""
-        }]
-      };
-    }
-
-    // --------- Preisstaffelung aus Step4 rekonstruieren ----------
-    function buildPriceRows(paket){
-      const years = Number(paket.laufzeit_jahre || 0);
-      const wartJahr = Number(paket.wartungsvertrag_preis_pro_jahr || 0);
-      const lanOnce  = Number(paket.lancare_preis_netto || 0);
-
-      if (!years || !isFinite(years)) return [];
-
-      const rows = [];
-      rows.push({
-        year: "Jahr 1",
-        lancare: lanOnce,
-        wartung: wartJahr,
-        total: wartJahr + lanOnce
-      });
-
-      for (let y=2; y<=years; y++){
-        rows.push({
-          year: `Jahr ${y}`,
-          lancare: 0,
-          wartung: wartJahr,
-          total: wartJahr
-        });
-      }
-      return rows;
-    }
-
-    // --------- PDF Definition bauen ----------
-    function paragraphsFromText(txt){
-      const lines = (txt || "").split("\n").map(s => s.trim()).filter(Boolean);
-      const out = [];
-      let ul = null;
-
-      for (const line of lines){
-        if (/^[•\-–]/.test(line)){
-          if (!ul){ ul = { ul: [], margin:[0,2,0,6] }; out.push(ul); }
-          ul.ul.push(line.replace(/^[•\-–]\s*/, ""));
-        }else{
-          ul = null;
-          out.push({ text: line, margin:[0,0,0,6], lineHeight: 1.25 });
-        }
-      }
-      return out;
-    }
-
-    function kvTable(rows){
-      return {
-        table:{
-          widths:["38%","62%"],
-          body: rows.map(([k,v]) => ([
-            { text: k, bold:true, fillColor:"#f3f6ff", margin:[6,6,6,6] },
-            { text: v, margin:[6,6,6,6] }
-          ]))
+    priceCards.forEach(card=>{
+      const linesBody = [
+        { columns:[
+            { width: 42, text: card.pos, style:"pos" },
+            { width:"*", stack:[
+                { text: card.label, style:"h3", margin:[0,0,0,2] },
+                { text: "Leistungen", fontSize:9, color:"#64748b" }
+              ]
+            }
+          ], columnGap: 10, margin:[0,0,0,8]
         },
-        layout:{
-          hLineColor: () => "#dfe5f1",
-          vLineColor: () => "#dfe5f1",
-          paddingLeft: () => 0,
-          paddingRight: () => 0,
-          paddingTop: () => 0,
-          paddingBottom: () => 0
-        },
-        margin:[0,6,0,10]
-      };
-    }
-
-    function moneyTable(priceRows){
-      const body = [
-        [
-          { text:"Zeitraum", bold:true, fillColor:"#f3f6ff", margin:[6,6,6,6] },
-          { text:"LANcare", bold:true, fillColor:"#f3f6ff", alignment:"right", margin:[6,6,6,6] },
-          { text:"Wartung & Service", bold:true, fillColor:"#f3f6ff", alignment:"right", margin:[6,6,6,6] },
-          { text:"Summe", bold:true, fillColor:"#f3f6ff", alignment:"right", margin:[6,6,6,6] }
-        ]
+        {
+          table:{
+            widths:["*", "auto", "auto"],
+            body:[
+              [
+                { text:"Position", style:"th" },
+                { text:"Netto", style:"th", alignment:"right" },
+                { text:"Brutto", style:"th", alignment:"right" }
+              ],
+              ...card.lines.map(l => ([
+                { text: l.name, style:"td" },
+                { text: toEuro(l.net), style:"td", alignment:"right" },
+                { text: isFinite(l.brut) ? toEuro(l.brut) : "–", style:"td", alignment:"right" }
+              ])),
+              [
+                { text:"Gesamt pro Jahr", style:"sumLabel" },
+                { text: toEuro(card.totalNet), style:"sum", alignment:"right" },
+                { text: isFinite(card.totalBrut) ? toEuro(card.totalBrut) : "–", style:"sum", alignment:"right" }
+              ]
+            ]
+          },
+          layout:{
+            fillColor:(row)=> row===0 ? "#f3f6ff" : null,
+            hLineColor:()=>"#e6ecf7",
+            vLineColor:()=>"#e6ecf7",
+            paddingLeft:()=>6, paddingRight:()=>6, paddingTop:()=>6, paddingBottom:()=>6
+          }
+        }
       ];
 
-      for (const r of priceRows){
-        body.push([
-          { text: r.year, margin:[6,6,6,6] },
-          { text: toEuro(r.lancare), alignment:"right", margin:[6,6,6,6] },
-          { text: toEuro(r.wartung), alignment:"right", margin:[6,6,6,6] },
-          { text: toEuro(r.total), alignment:"right", bold:true, margin:[6,6,6,6] }
-        ]);
+      priceBlocks.push(cardBox(linesBody, { margin:[0,8,0,0] }));
+    });
+
+    // AGB blocks (JSON aus AGB-Loader)
+    const agbBlocks = [];
+    agbBlocks.push({ text:"Allgemeine Geschäftsbedingungen (AGB)", style:"h2", margin:[0,14,0,6] });
+
+    agb.forEach((item, idx)=>{
+      if(item.isNote){
+        agbBlocks.push(cardBox([
+          { text: n2nl(item.text||""), fontSize:9, color:"#334155" }
+        ], { margin:[0,6,0,0] }));
+        return;
       }
-
-      return {
-        table:{ widths:["25%","25%","25%","25%"], body },
-        layout:{
-          hLineColor: () => "#dfe5f1",
-          vLineColor: () => "#dfe5f1"
-        },
-        margin:[0,6,0,10]
-      };
-    }
-
-    async function buildPdfDoc(analyse, person, paket){
-      const logoDataUrl = await imgToDataUrl(LOGO_URL).catch(() => null);
-
-      const contractNo = buildContractNumber(analyse["Rechnungs-Nr."]);
-      contractNoHint.textContent = "Vertragsnummer: " + contractNo;
-
-      const firma = pick(analyse["Firma"]);
-      const wp    = pick(analyse["windpark_nummer"]) + " – " + pick(analyse["windpark_name"], "Musterpark");
-      const ansp  = pick(analyse["Ansprechpartner"]);
-      const addr  = `${pick(analyse["Straße und Hausnummer"])}\n${pick(analyse["PLZ"])} ${pick(analyse["Ort"])}`.trim();
-
-      const kundeEmail = pick(person.email, "–");
-      mailToEl.textContent = kundeEmail;
-
-      const wartung = await loadWartungParts();
-      const agb = await loadAgbTexts();
-      const priceRows = buildPriceRows(paket);
-
-      // AGB content kompakt in PDF
-      const agbBlocks = [];
-      for (const part of agb){
-        const fileTitle = part.file.replace(/_/g," ").replace(/\.txt$/i,"");
-        agbBlocks.push({ text: fileTitle, style:"h3", margin:[0,8,0,4] });
-        agbBlocks.push(...paragraphsFromText(part.text));
+      const title = pick(item.title || item.Titel || item.heading || item.Heading, "");
+      const text  = n2nl(item.text || item.Text || "");
+      if(title){
+        agbBlocks.push({ text: title, style:"h3", margin:[0,10,0,4] });
       }
+      if(text){
+        agbBlocks.push(...blocksFromText(text));
+      }
+    });
 
-      const content = [];
-
-      // Header
-      content.push({
+    const header = [
+      {
         columns:[
-          logoDataUrl ? { image: logoDataUrl, width: 62 } : { text:"", width: 62 },
+          logo ? { image: logo, width: 56, margin:[0,2,10,0] } : { text:"", width: 56 },
           {
+            width:"*",
             stack:[
               { text:"Kevin Strakerjahn Networks & Automation", style:"brand" },
               { text:"Bundesstraße 5 6 · 25795 Stelle-Wittenwurth", style:"brandSub" }
+            ]
+          },
+          {
+            width:"auto",
+            stack:[
+              pill("MUSTER • Vorschau"),
+              { text:"", margin:[0,6,0,0] },
+              { text: contractNo, fontSize:8, color:"#64748b", alignment:"right" }
             ],
-            margin:[10,2,0,0]
+            alignment:"right"
           }
         ],
-        columnGap: 10,
+        columnGap: 8,
         margin:[0,0,0,10]
-      });
+      },
+      { text:"Wartungs- & Servicevertrag", style:"h1", margin:[0,0,0,10] }
+    ];
 
-      content.push({ text:"Wartungs- & Servicevertrag (Vorschau)", style:"h1", margin:[0,0,0,10] });
+    const contractDataCard = cardBox([
+      twoColRow(
+        [
+          field("Vertragsnummer", contractNo),
+          field("Windpark", wp),
+          field("Firma", firma),
+        ],
+        [
+          field("Ansprechpartner", ansp),
+          field("Adresse", addr || "–"),
+          field("E-Mail (Kopie)", kundeEmail)
+        ]
+      )
+    ], { margin:[0,0,0,0] });
 
-      content.push({ text:"Wichtige Vertragsdaten", style:"h2" });
-      content.push(kvTable([
-        ["Vertragsnummer", contractNo],
-        ["Windpark", wp],
-        ["Firma", firma],
-        ["Ansprechpartner", ansp],
-        ["Adresse", addr]
-      ]));
+    const providerCard = cardBox([
+      { text:"Vertragsgeber", style:"h2", margin:[0,0,0,6] },
+      twoColRow(
+        [
+          field("Name", "Kevin Strakerjahn Networks & Automation"),
+          field("Adresse", "Bundesstraße 5 6\n25795 Stelle-Wittenwurth"),
+        ],
+        [
+          field("E-Mail", "info@netteck.de"),
+          field("Telefon", "+49 151 29047232"),
+        ]
+      )
+    ]);
 
-      content.push({ text:"Vertragsgeber", style:"h2" });
-      content.push(kvTable([
-        ["Name", "Kevin Strakerjahn Networks & Automation"],
-        ["Adresse", "Bundesstraße 5 6\n25795 Stelle-Wittenwurth"],
-        ["E-Mail", "info@netteck.de"],
-        ["Telefon", "+49 151 29047232"]
-      ]));
+    const doc = {
+      pageSize:"A4",
+      pageMargins:[40, 48, 40, 52],
+      watermark:{
+        text:"MUSTER",
+        color:"#94a3b8",
+        opacity: 0.10,
+        bold:true,
+        fontSize: 130,
+        angle: 45
+      },
+      footer:(current, pages)=>({
+        columns:[
+          { text:`Vertragsnr.: ${contractNo}`, fontSize:8, color:"#64748b", margin:[40,0,0,0] },
+          { text:`Seite ${current} von ${pages}`, alignment:"right", fontSize:8, color:"#64748b", margin:[0,0,40,0] }
+        ],
+        margin:[0,0,0,14]
+      }),
+      styles:{
+        brand:{ fontSize:15, bold:true, color:"#0f172a" },
+        brandSub:{ fontSize:9, color:"#64748b" },
+        h1:{ fontSize:18, bold:true, color:"#0f172a" },
+        h2:{ fontSize:12.5, bold:true, color:"#0f172a" },
+        h3:{ fontSize:11, bold:true, color:"#0f172a" },
+        p:{ fontSize:10.6, color:"#111827", lineHeight:1.25 },
+        th:{ fontSize:9.5, bold:true, color:"#0f172a" },
+        td:{ fontSize:10.2, color:"#111827" },
+        sumLabel:{ fontSize:10.2, bold:true, color:"#0f172a" },
+        sum:{ fontSize:10.2, bold:true, color:"#0f172a" },
+        pos:{ fontSize:11, bold:true, color:"#0b74ff", alignment:"center", margin:[0,8,0,0] }
+      },
+      defaultStyle:{ fontSize: 10.6, color:"#111827" },
+      content: [
+        ...header,
+        contractDataCard,
+        providerCard,
+        { text:"Vertragsbestandteile", style:"h2", margin:[0,14,0,6] },
+        ...wartBlocks,
+        ...priceBlocks,
+        ...agbBlocks
+      ]
+    };
 
-      content.push({ text: wartung.title || "Vertragsbestandteile", style:"h2" });
-      for (const s of (wartung.sections || [])){
-        if (s.heading) content.push({ text: s.heading, style:"h3", margin:[0,6,0,4] });
-        if (s.text) content.push(...paragraphsFromText(s.text));
-        if (s.note){
-          content.push({
-            text: n2brText(s.note).trim(),
-            style:"note",
-            margin:[0,2,0,10]
+    return { doc, contractNo, kundeEmail };
+  }
+
+  // ----------------------------
+  // Render PDF (Canvas) - no toolbar
+  // ----------------------------
+  async function renderPdfToCanvases(pdfBytes){
+    const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+    pdfPages.innerHTML = "";
+
+    const wrapW = pdfPages.clientWidth;
+    for(let n=1; n<=pdf.numPages; n++){
+      const page = await pdf.getPage(n);
+      const v1 = page.getViewport({ scale:1 });
+      const scale = Math.max(0.9, Math.min(2.1, (wrapW - 2) / v1.width));
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement("canvas");
+      canvas.className = "pageCanvas";
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.addEventListener("contextmenu", e=>e.preventDefault());
+
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      pdfPages.appendChild(canvas);
+    }
+  }
+
+  // ----------------------------
+  // Summary
+  // ----------------------------
+  function addKV(k, v){
+    const d = document.createElement("div");
+    d.className = "kv";
+    d.innerHTML = `<b>${k}</b><span>${String(v).replace(/\n/g,"<br>")}</span>`;
+    summaryGrid.appendChild(d);
+  }
+
+  function setSummary(analyse, person, paket, contractNo){
+    summaryGrid.innerHTML = "";
+    addKV("Vertragsnummer", contractNo);
+    addKV("Windpark", `${pick(analyse["windpark_nummer"],"000")} – ${pick(analyse["windpark_name"],"Musterpark")}`);
+    addKV("Firma", pick(analyse["Firma"]));
+    addKV("Ansprechpartner", pick(analyse["Ansprechpartner"]));
+    addKV("E-Mail", pick(person.email));
+    addKV("Laufzeit", pick(paket.laufzeit_jahre) ? `${paket.laufzeit_jahre} Jahre` : "–");
+    addKV("Wartung/Jahr (netto)", toEuro(paket.wartungsvertrag_preis_pro_jahr));
+    addKV("LANcare (einmalig, netto)", toEuro(paket.lancare_preis_netto));
+  }
+
+  // ----------------------------
+  // Back / Send
+  // ----------------------------
+  btnBack.addEventListener("click", ()=>{
+    if(window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
+    else history.back();
+  });
+
+  async function sendContract(payload){
+    const r = await fetch(NETLIFY_FN_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json().catch(()=> ({}));
+    if(!r.ok) throw new Error(data.message || ("http_" + r.status));
+    return data;
+  }
+
+  function setSending(on){
+    btnSend.disabled = !!on;
+    btnSend.textContent = on ? "Wird gesendet…" : "Vertrag anfragen";
+  }
+
+  // ----------------------------
+  // Init
+  // ----------------------------
+  (async function init(){
+    try{
+      const analyse = ssObj(ANALYSE_KEY);
+      const person  = ssObj(PERSON_KEY);
+      const paket   = ssObj(PAKET_KEY);
+
+      if(person?.email) mailToEl.textContent = person.email;
+
+      const { doc, contractNo } = await buildPdf(analyse, person, paket);
+
+      // pdfMake -> bytes
+      const pdfBytes = await new Promise((resolve, reject)=>{
+        try{
+          pdfMake.createPdf(doc).getBuffer(buf=>{
+            try{ resolve(new Uint8Array(buf)); } catch(e){ reject(e); }
           });
-        }
-      }
-
-      content.push({ text:"Preisstaffelung (Netto)", style:"h2" });
-      content.push(moneyTable(priceRows));
-
-      content.push({ text:"Allgemeine Geschäftsbedingungen (AGB)", style:"h2" });
-      content.push(...agbBlocks);
-
-      const doc = {
-        pageSize: "A4",
-        pageMargins: [40, 46, 40, 46],
-        watermark: {
-          text: "MUSTER",
-          color: "#7b86a3",
-          opacity: 0.10,
-          bold: true,
-          fontSize: 120,
-          angle: 45
-        },
-        footer: function(currentPage, pageCount){
-          return {
-            columns:[
-              { text: "Vertragsnummer: " + contractNo, fontSize: 8, color:"#667085", margin:[40,0,0,0] },
-              { text: "Seite " + currentPage + " von " + pageCount, alignment:"right", fontSize: 8, color:"#667085", margin:[0,0,40,0] }
-            ],
-            margin:[0,0,0,14]
-          };
-        },
-        styles:{
-          brand:{ fontSize: 16, bold:true, color:"#0f172a" },
-          brandSub:{ fontSize: 10, color:"#475467" },
-          h1:{ fontSize: 18, bold:true, color:"#0f172a" },
-          h2:{ fontSize: 13, bold:true, color:"#0f172a", margin:[0,8,0,4] },
-          h3:{ fontSize: 11, bold:true, color:"#0f172a" },
-          note:{ fontSize: 9, color:"#334155", italics:true, lineHeight:1.2 }
-        },
-        defaultStyle:{ fontSize: 10, color:"#111827" },
-        content
-      };
-
-      return { doc, contractNo, kundeEmail, priceRows };
-    }
-
-    // --------- PDF in Canvas rendern (ohne Toolbar / ohne Download / ohne Print) ----------
-    async function renderPdfToCanvases(pdfBytes){
-      // pdf.js worker
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
-      const pdf = await loadingTask.promise;
-
-      pdfPages.innerHTML = "";
-
-      // Scale anhand Containerbreite (responsive genug)
-      const wrapW = pdfPages.clientWidth; // padding ist schon drin
-      for (let pageNum=1; pageNum<=pdf.numPages; pageNum++){
-        const page = await pdf.getPage(pageNum);
-        const viewport1 = page.getViewport({ scale: 1 });
-        const scale = Math.max(0.8, Math.min(2.2, (wrapW - 2) / viewport1.width));
-        const viewport = page.getViewport({ scale });
-
-        const canvas = document.createElement("canvas");
-        canvas.className = "pageCanvas";
-        canvas.width = Math.floor(viewport.width);
-        canvas.height = Math.floor(viewport.height);
-
-        // (Optional) Kontextmenü verhindern
-        canvas.addEventListener("contextmenu", (e) => e.preventDefault());
-
-        const ctx = canvas.getContext("2d");
-        await page.render({ canvasContext: ctx, viewport }).promise;
-
-        pdfPages.appendChild(canvas);
-      }
-    }
-
-    // --------- Summary rechts ----------
-    function setSummary(analyse, person, paket, contractNo){
-      const wp = pick(analyse["windpark_nummer"]) + " – " + pick(analyse["windpark_name"], "Musterpark");
-      const addr = `${pick(analyse["Straße und Hausnummer"])} · ${pick(analyse["PLZ"])} ${pick(analyse["Ort"])}`.trim();
-
-      const years = Number(paket.laufzeit_jahre || 0);
-      const wartJahr = toEuro(paket.wartungsvertrag_preis_pro_jahr);
-      const lanOnce  = toEuro(paket.lancare_preis_netto);
-
-      summaryGrid.innerHTML = "";
-      const items = [
-        ["Vertragsnummer", contractNo],
-        ["Windpark", wp],
-        ["Firma", pick(analyse["Firma"])],
-        ["Ansprechpartner", pick(analyse["Ansprechpartner"])],
-        ["Adresse", addr],
-        ["E-Mail", pick(person.email)],
-        ["Laufzeit", years ? (years + " Jahr" + (years>1?"e":"")) : "–"],
-        ["Wartung/Jahr (netto)", wartJahr],
-        ["LANcare (einmalig, netto)", lanOnce]
-      ];
-
-      for (const [k,v] of items){
-        const el = document.createElement("div");
-        el.className = "kv";
-        el.innerHTML = `<b>${k}</b><span>${String(v).replace(/\n/g,"<br>")}</span>`;
-        summaryGrid.appendChild(el);
-      }
-    }
-
-    // --------- Navigation ----------
-    function goBack(){
-      if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
-    }
-    window.goBack = goBack;
-
-    // --------- Senden (später Netlify Function bauen) ----------
-    async function sendContract(payload){
-      // payload enthält ALLES; function entscheidet:
-      // - Muster (mit Wasserzeichen) an Kunde, wenn sendCopy=true
-      // - Version ohne Wasserzeichen an info@netteck.de
-      const resp = await fetch(NETLIFY_FN_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        }catch(e){ reject(e); }
       });
-      const data = await resp.json().catch(() => null);
-      if (!resp.ok) throw new Error("http_" + resp.status);
-      return data;
-    }
 
-    function setUiSending(on){
-      btnSend.disabled = !!on;
-      btnSend.textContent = on ? "Wird gesendet…" : "Vertrag anfragen";
-    }
+      await renderPdfToCanvases(pdfBytes);
+      setSummary(analyse, person, paket, contractNo);
 
-    // --------- Init ----------
-    (async function init(){
-      try{
-        const analyse = getAnalyse();
-        const person  = getPerson();
-        const paket   = getPaket();
+      contractNoHint.textContent = "Vertragsnummer: " + contractNo;
+      pdfHint.textContent = "Bereit – bitte komplett durchscrollen";
+      topNotice.textContent = "PDF ist bereit. Bitte komplett durchscrollen – unten können Sie die Anfrage absenden.";
 
-        // Minimal-Checks
-        if (!analyse || !analyse["Firma"] || !person || !person.email || !paket || !paket.laufzeit_jahre){
-          topNotice.textContent = "Fehlende Daten. Bitte vorherige Steps prüfen.";
-          topNotice.style.borderColor = "rgba(180,35,24,.25)";
-          topNotice.style.background = "rgba(180,35,24,.06)";
-          topNotice.style.color = "#7a271a";
-        }else{
-          topNotice.textContent = "PDF wird automatisch erzeugt. Falls Inhalte fehlen, bitte vorherige Steps prüfen.";
+      btnSend.addEventListener("click", async ()=>{
+        errorBox.classList.remove("show");
+        okBox.classList.remove("show");
+
+        try{
+          setSending(true);
+          const payload = {
+            contractNumber: contractNo,
+            sendCopyToCustomer: !!document.getElementById("sendCopy").checked,
+            customerEmail: pick(person.email,""),
+            notes: (document.getElementById("notes").value||"").trim(),
+            analyse, person, paket
+          };
+          await sendContract(payload);
+          setSending(false);
+          okBox.classList.add("show");
+          btnSend.style.display = "none";
+        }catch(e){
+          console.error(e);
+          setSending(false);
+          errorBox.classList.add("show");
         }
+      });
 
-        const { doc, contractNo } = await buildPdfDoc(analyse, person, paket);
-
-        // PDF bytes aus pdfmake holen
-        const pdfBytes = await new Promise((resolve, reject) => {
-          try{
-            pdfMake.createPdf(doc).getBuffer((buf) => {
-              try{
-                // buf ist ArrayBuffer
-                resolve(new Uint8Array(buf));
-              }catch(e){ reject(e); }
-            });
-          }catch(e){ reject(e); }
-        });
-
-        // Render
-        await renderPdfToCanvases(pdfBytes);
-
-        // Summary
-        setSummary(analyse, person, paket, contractNo);
-
-        pdfHint.textContent = "Bereit – bitte komplett durchscrollen";
-        topNotice.textContent = "PDF ist bereit. Bitte komplett durchscrollen – unten können Sie die Anfrage absenden.";
-
-        // Button action
-        btnSend.addEventListener("click", async () => {
-          errorBox.classList.remove("show");
-          okBox.classList.remove("show");
-
-          try{
-            setUiSending(true);
-
-            const payload = {
-              contractNumber: contractNo,
-              sendCopyToCustomer: !!document.getElementById("sendCopy").checked,
-              customerEmail: pick(person.email, ""),
-              notes: (document.getElementById("notes").value || "").trim(),
-              analyse,
-              person,
-              paket
-            };
-
-            await sendContract(payload);
-
-            setUiSending(false);
-            okBox.classList.add("show");
-            btnSend.style.display = "none";
-          }catch(e){
-            console.error(e);
-            setUiSending(false);
-            errorBox.classList.add("show");
-          }
-        });
-
-      }catch(e){
-        console.error(e);
-        topNotice.textContent = "PDF konnte nicht erzeugt werden. Bitte Pfade/Dateien prüfen.";
-        topNotice.style.borderColor = "rgba(180,35,24,.25)";
-        topNotice.style.background = "rgba(180,35,24,.06)";
-        topNotice.style.color = "#7a271a";
-        document.getElementById("errorBox").classList.add("show");
-      }
-    })();
-  </script>
+    }catch(e){
+      console.error(e);
+      topNotice.textContent = "PDF konnte nicht erzeugt werden. Bitte Pfade/Dateien prüfen.";
+      topNotice.style.borderColor = "rgba(180,35,24,.25)";
+      topNotice.style.background = "rgba(180,35,24,.06)";
+      topNotice.style.color = "#7a271a";
+      errorBox.classList.add("show");
+    }
+  })();
+</script>
 </body>
 </html>
