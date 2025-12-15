@@ -63,30 +63,6 @@
     .sectionTitle{ font-weight:950; margin:0 0 6px 0; font-size: 1rem; }
     .hint{ margin: 6px 0 0 0; color:var(--text-muted); font-size:.92rem; }
 
-    .chips{ display:flex; gap:10px; flex-wrap:wrap; }
-    .chip{
-      border:1px solid var(--border);
-      background:#fff;
-      color:var(--text-main);
-      padding: 9px 13px;
-      border-radius: 999px;
-      font-weight: 900;
-      cursor:pointer;
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
-      user-select:none;
-      font-size: .95rem;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      border-color: var(--primary);
-      box-shadow: 0 0 0 5px var(--primary-soft);
-    }
-    .chip.active{
-      border-color: rgba(11,116,255,0.45);
-      background: rgba(11,116,255,0.10);
-      color:#0b3d91;
-    }
-
     .error{
       display:none;
       border: 1px solid #ffd0d0;
@@ -100,50 +76,6 @@
     }
     .error.show{ display:block; }
 
-    table{
-      width:100%;
-      border-collapse: collapse;
-      border-radius: 14px;
-      border:1px solid var(--border);
-      overflow:hidden;
-      background:#fff;
-    }
-    th, td{
-      padding: 9px 10px;
-      border-bottom: 1px solid rgba(225,228,236,0.7);
-      font-size: .93rem;
-    }
-    th{ background: #f9fafb; font-weight: 950; }
-    tr:last-child td{ border-bottom:none; }
-    .right{ text-align:right; white-space:nowrap; }
-    .muted{ color:var(--text-muted); }
-
-    .sumRow{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .sumBox{
-      flex: 1 1 240px;
-      border:1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px 12px;
-      background:#fff;
-      min-width: 220px;
-    }
-    .sumLabel{ font-weight:900; font-size:.92rem; }
-    .sumValue{ font-size: 1.15rem; font-weight: 950; }
-
-    .footer{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding-top: 6px;
-      border-top: 1px solid rgba(225,228,236,0.8);
-    }
     .btn{
       border:none;
       border-radius: 999px;
@@ -357,6 +289,12 @@
   const AGB_LOCAL_BASE = "../../../../AGB/AGBs/";
   const LOGO_PATH = "../../../../Logos/logo_name.jpeg";
 
+  const state = {
+    analyse:null, person:null, paket:null, vertragsdaten:null, agbs:[],
+    vertragsnr:null, pdfMusterBlob:null, pdfInternBlob:null, logoDataUrl:null,
+    _initRunning:false, _initDone:false, _wired:false
+  };
+
   function pad2(n){ return String(n).padStart(2,"0"); }
 
   // Entfernt Soft-Hyphen / Zero-Width / Steuerzeichen / kaputte Trennzeichen
@@ -458,6 +396,26 @@
   }
 
   function showOk(){ document.getElementById("okBox").style.display = "block"; }
+
+  function cleanupPdfState(){
+    try{
+      const pagesEl = document.getElementById("pdfPages");
+      if(pagesEl) pagesEl.innerHTML = "";
+
+      setStatus("PDF wird erstellt…", "");
+
+      state.pdfMusterBlob = null;
+      state.pdfInternBlob = null;
+      state.agbs = [];
+      state.vertragsdaten = null;
+
+      // damit beim Wiederkommen neu erzeugt wird
+      state._initDone = false;
+      state._initRunning = false;
+    }catch(e){
+      console.error(e);
+    }
+  }
 
   async function loadVertragsdaten(){
     const url = "../../information/vertragsdaten.txt";
@@ -743,9 +701,8 @@
     // Kontakt des Vertragsnehmers: Tel. optional, E-Mail NICHT in die PDF
     const kundeTel = (person?.telefon || person?.Telefon || person?.tel || person?.phone || "");
     if(kundeTel) content.push({ text:`Tel.: ${kundeTel}`, margin:[0,2,0,2] });
-    // E-Mail bleibt intern fürs Senden, wird aber nicht in die PDF geschrieben.
 
-    // Vertragsgeber (direkt darunter, gleiche Einteilung)
+    // Vertragsgeber
     content.push({ text:"Vertragsgeber", style:"h2", margin:[0,14,0,6] });
     content.push({ text:"Kevin Strakerjahn Networks & Automation", margin:[0,2,0,2] });
     content.push({ text:"Adresse: Bundesstraße 5 6, 25795 Stelle-Wittenwurth", margin:[0,2,0,2] });
@@ -768,14 +725,14 @@
       },
       background: watermark ? function(currentPage, pageSize){
         return {
-          text:"MUSTER",
-          color:"#cfd6e4",
-          opacity:0.25,
-          bold:true,
-          fontSize:90,
-          angle:-30,
-          alignment:"center",
-          absolutePosition:{ x:0, y: pageSize.height/2 - 80 },
+          text: "MUSTER",
+          color: "#cfd6e4",
+          opacity: 0.18,
+          bold: true,
+          fontSize: 130,
+          angle: 0, // quer über das Blatt
+          alignment: "center",
+          absolutePosition: { x: 0, y: pageSize.height/2 - 65 },
           width: pageSize.width
         };
       } : null,
@@ -862,12 +819,6 @@
     return body;
   }
 
-  const state = {
-    analyse:null, person:null, paket:null, vertragsdaten:null, agbs:[],
-    vertragsnr:null, pdfMusterBlob:null, pdfInternBlob:null, logoDataUrl:null,
-    _initRunning:false, _initDone:false, _wired:false
-  };
-
   async function init(){
     // Guard gegen Doppel-Init
     if(state._initRunning || state._initDone) return;
@@ -877,6 +828,8 @@
       state._wired = true;
 
       document.getElementById("btnBack").addEventListener("click", ()=>{
+        cleanupPdfState();
+
         if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
         else history.back();
       });
@@ -943,8 +896,28 @@
     };
 
     setStatus("PDF wird erstellt…", "MUSTER");
-    const docM = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, vertragsdaten: state.vertragsdaten, placeholders, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:true });
-    const docI = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, vertragsdaten: state.vertragsdaten, placeholders, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:false });
+    const docM = buildDocDefinition({
+      vertragsnr: state.vertragsnr,
+      analyse: state.analyse,
+      person: state.person,
+      paket: state.paket,
+      vertragsdaten: state.vertragsdaten,
+      placeholders,
+      agbs: state.agbs,
+      logoDataUrl: state.logoDataUrl,
+      watermark:true
+    });
+    const docI = buildDocDefinition({
+      vertragsnr: state.vertragsnr,
+      analyse: state.analyse,
+      person: state.person,
+      paket: state.paket,
+      vertragsdaten: state.vertragsdaten,
+      placeholders,
+      agbs: state.agbs,
+      logoDataUrl: state.logoDataUrl,
+      watermark:false
+    });
 
     state.pdfMusterBlob = await pdfMakeToBlob(docM);
     state.pdfInternBlob = await pdfMakeToBlob(docI);
