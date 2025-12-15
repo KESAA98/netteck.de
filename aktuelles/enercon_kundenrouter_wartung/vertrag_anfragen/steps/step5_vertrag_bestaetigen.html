@@ -357,7 +357,23 @@ h1{ margin-top: 6px; }
   const LOGO_PATH = "../../../../Logos/logo_name.jpeg";
 
   function pad2(n){ return String(n).padStart(2,"0"); }
-  function nowStamp(){
+  
+  function computeStartvertrag(){
+    // nächster 1., außer wenn er in weniger als 4 Tagen ist -> nächsten Monat nehmen
+    const today = new Date();
+    const firstNext = new Date(today.getFullYear(), today.getMonth()+1, 1);
+    const diffDays = Math.ceil((firstNext - today) / (1000*60*60*24));
+    let start = firstNext;
+    if(diffDays < 4){
+      start = new Date(today.getFullYear(), today.getMonth()+2, 1);
+    }
+    const dd = pad2(start.getDate());
+    const mm = pad2(start.getMonth()+1);
+    const yyyy = start.getFullYear();
+    return `${dd}.${mm}.${yyyy}`;
+  }
+
+function nowStamp(){
     const d = new Date();
     const y = d.getFullYear();
     const m = pad2(d.getMonth()+1);
@@ -383,6 +399,16 @@ h1{ margin-top: 6px; }
     const rn = pickRechnungNr(analyse);
     return `${rn}_${nowStamp()}`;
   }
+  function fillPlaceholders(str, map){
+    let out = String(str||"");
+    const m = map || {};
+    Object.keys(m).forEach(key=>{
+      const val = String(m[key]);
+      out = out.split(`<<<${key}>>>`).join(val);
+    });
+    return out;
+  }
+
   function normalizeText(t){
     const parts = String(t||"").split(/\\n+/).map(x=>x.trim()).filter(Boolean);
     return parts.join("\n\n");
@@ -404,12 +430,12 @@ h1{ margin-top: 6px; }
   }
   function showOk(){ document.getElementById("okBox").style.display = "block"; }
 
-  async function loadWartungsvertrag(){
-    const url = "../../information/warungsvertrag.txt";
+  async function loadVertragsdaten(){
+    const url = "../../information/vertragsdaten.txt";
     const res = await fetch(url, { cache:"no-store" });
-    if(!res.ok) throw new Error("Wartungsvertrag konnte nicht geladen werden.");
+    if(!res.ok) throw new Error("Vertragsdaten konnten nicht geladen werden.");
     const text = await res.text();
-    try { return JSON.parse(text); } catch(e){ throw new Error("Wartungsvertrag ist kein gültiges JSON."); }
+    try { return JSON.parse(text); } catch(e){ throw new Error("Vertragsdaten sind kein gültiges JSON."); }
   }
 
   async function loadAGBFilesLocal(){
@@ -516,26 +542,31 @@ h1{ margin-top: 6px; }
     return content;
   }
 
-  function wartToPdfContent(wart){
+  function vertragsdatenToPdfContent(data, placeholders){
     const content = [];
-    if(!wart) return content;
-    if(wart.title) content.push({ text: wart.title, style:"h2", margin:[0,10,0,8] });
+    if(!data) return content;
 
-    if(Array.isArray(wart.sections)){
-      for(const sec of wart.sections){
-        const stack = [];
-        if(sec?.heading) stack.push({ text: sec.heading, style:"h3", margin:[0,0,0,4] });
-        if(sec?.text)   stack.push({ text: normalizeText(sec.text), margin:[0,0,0,2] });
-        if(sec?.note)   stack.push({ text: normalizeText(sec.note), fontSize:9, color:"#555555", italics:true, margin:[0,6,0,0] });
+    const keys = Object.keys(data)
+      .filter(k => /^abschnitt_\d+$/i.test(k))
+      .sort((a,b)=> Number(a.split("_")[1]) - Number(b.split("_")[1]));
 
-        if(stack.length){
-          content.push({
-            unbreakable: true,
-            margin:[0,8,0,0],
-            stack
-          });
-        }
-      }
+    for(const k of keys){
+      const sec = data[k] || {};
+      const title = sec.title || sec.heading || "";
+      const textRaw = sec.text || "";
+
+      const text = fillPlaceholders(normalizeText(textRaw), placeholders);
+      const stack = [];
+      if(title) stack.push({ text: title, style:"h3", margin:[0,0,0,4] });
+
+      const blocks = buildPdfBlocksFromText(text);
+      stack.push(...blocks);
+
+      content.push({
+        unbreakable: true,
+        margin:[0,8,0,0],
+        stack
+      });
     }
     return content;
   }
@@ -650,7 +681,7 @@ h1{ margin-top: 6px; }
     content.push({ text:"E‑Mail: info@netteck.de", margin:[0,2,0,2] });
 
     content.push({ text:"Vertragsbestandteile", style:"h2", margin:[0,16,0,8] });
-content.push(...wartToPdfContent(wart));
+content.push(...vertragsdatenToPdfContent(vertragsdaten, placeholders));
     content.push(...priceToPdfContent(paket));
     content.push(...agbsToPdfContentLikeIndex(agbs));
 
@@ -759,7 +790,7 @@ content.push(...wartToPdfContent(wart));
     return body;
   }
 
-  const state = { analyse:null, person:null, paket:null, wart:null, agbs:[], vertragsnr:null, pdfMusterBlob:null, pdfInternBlob:null, logoDataUrl:null };
+  const state = { analyse:null, person:null, paket:null, vertragsdaten:null, agbs:[], vertragsnr:null, pdfMusterBlob:null, pdfInternBlob:null, logoDataUrl:null };
 
   async function init(){
     document.getElementById("btnBack").addEventListener("click", ()=>{
@@ -796,14 +827,21 @@ state.vertragsnr = buildVertragsnummer(state.analyse);
     try { state.logoDataUrl = await loadLogoDataUrl(LOGO_PATH); } catch(e){ state.logoDataUrl = null; }
 
     setStatus("Vertragsbestandteile werden geladen…");
-    state.wart = await loadWartungsvertrag();
+    state.vertragsdaten = await loadVertragsdaten();
 
     setStatus("AGBs werden geladen…");
     state.agbs = await loadAGBFilesLocal();
 
+    // Platzhalter füllen
+    const placeholders = {
+      startvertrag: computeStartvertrag(),
+      vertragsjahre: String(state.paket?.laufzeit_jahre ?? ""),
+      lancare_jahre: String(state.paket?.lancare_jahre ?? "")
+    };
+
     setStatus("PDF wird erstellt…", "MUSTER");
-    const docM = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, wart: state.wart, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:true });
-    const docI = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, wart: state.wart, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:false });
+    const docM = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, vertragsdaten: state.vertragsdaten, placeholders, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:true });
+    const docI = buildDocDefinition({ vertragsnr: state.vertragsnr, analyse: state.analyse, person: state.person, paket: state.paket, vertragsdaten: state.vertragsdaten, placeholders, agbs: state.agbs, logoDataUrl: state.logoDataUrl, watermark:false });
 
     state.pdfMusterBlob = await pdfMakeToBlob(docM);
     state.pdfInternBlob = await pdfMakeToBlob(docI);
