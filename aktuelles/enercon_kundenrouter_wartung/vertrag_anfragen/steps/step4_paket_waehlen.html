@@ -445,6 +445,16 @@
         setError("Preisdaten konnten nicht geladen werden. Bitte prüfen Sie den Pfad zur Datei „warungsvertrag_preise.txt“.");
       }
     })();
-  </script>
+  
+
+    // Refresh when this step becomes active (iframes are preloaded)
+    window.addEventListener('message', (e) => {
+      if (e.origin !== window.location.origin) return;
+      const d = e.data || {};
+      if (d.type === 'STEP_ACTIVE' && Number(d.step) === 4) {
+        try { init(); } catch (_) {}
+      }
+    });
+</script>
 </body>
 </html>
