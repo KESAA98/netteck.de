@@ -263,7 +263,7 @@
   </div>
 
   <script>
-    // Gemeinsamer Storage für alle Steps (Top-Window)
+    // Gemeinsamer Speicher (Wizard-Host / Top-Window)
     const STORAGE = (window.top && window.top.sessionStorage) ? window.top.sessionStorage : sessionStorage;
 
     const ANALYSE_KEY = "rechnungAnalyse";
@@ -340,21 +340,31 @@
       if(el) el.addEventListener("input",validate);
     });
 
+    
+    function refreshFromStorage(){
+      const analyse = getAnalyse();
+      const name = (analyse["Ansprechpartner"] || analyse["Ansprechpatner"] || analyse["Ansprechpartner"] || "…");
+      const el = document.getElementById("contactName");
+      if(el) el.textContent = name;
+      // Wenn kein Name vorhanden, Buttons deaktivieren (verhindert "Sind Sie …?")
+      const hasName = !!(analyse["Ansprechpartner"] || analyse["Ansprechpatner"] || analyse["Ansprechpartner"]);
+      const yes = document.getElementById("btnYes");
+      const no  = document.getElementById("btnNo");
+      if(yes) yes.disabled = !hasName;
+      if(no)  no.disabled  = !hasName;
+    }
+
+    window.addEventListener("message", (ev) => {
+      if(ev && ev.data && ev.data.type === "STEP_ACTIVE"){
+        refreshFromStorage();
+      }
+    });
+
     (function init(){
       const analyse = getAnalyse();
       document.getElementById("contactName").textContent =
-        (analyse["Ansprechpartner"] || "…").toString().trim() || "…";
+        (analyse["Ansprechpartner"] || analyse["Ansprechpatner"] || analyse["Ansprechpartner"] || "…").toString().trim() || "…";
     })();
-  
-
-    // Refresh when this step becomes active (iframes are preloaded)
-    window.addEventListener('message', (e) => {
-      if (e.origin !== window.location.origin) return;
-      const d = e.data || {};
-      if (d.type === 'STEP_ACTIVE' && Number(d.step) === 3) {
-        try { init(); } catch (_) {}
-      }
-    });
-</script>
+  </script>
 </body>
 </html>
