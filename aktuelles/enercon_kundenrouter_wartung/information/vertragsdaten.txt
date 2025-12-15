@@ -20,7 +20,8 @@
   },
 
   "abschnitt_6": {
-    "title": "Preise & Abrechnung",
-    "text": "Die Wartungs- & Servicepauschale wird jährlich zu Beginn des jeweiligen Vertragsjahres in Rechnung gestellt und gilt für das entsprechende Vertragsjahr.\nDas LANcare-Servicepaket wird einmalig im ersten Vertragsjahr berechnet.\n\nAlle Preise verstehen sich zuzüglich der gesetzlichen Umsatzsteuer."
+  "title": "Preise & Abrechnung",
+  "text": "Die Wartungs- & Servicepauschale wird jährlich zu Beginn des jeweiligen Vertragsjahres in Rechnung gestellt und gilt für das entsprechende Vertragsjahr.\n\nEin ggf. ausgewähltes LANcare-Servicepaket wird einmalig im ersten Vertragsjahr berechnet.\n\nAlle Preise verstehen sich zuzüglich der gesetzlichen Umsatzsteuer."
   }
 }
+
