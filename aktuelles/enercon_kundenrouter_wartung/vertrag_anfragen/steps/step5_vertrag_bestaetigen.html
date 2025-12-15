@@ -60,21 +60,7 @@
       background: #fff;
     }
 
-    .sectionTitle{ font-weight:950; margin:0 0 6px 0; font-size: 1rem; }
     .hint{ margin: 6px 0 0 0; color:var(--text-muted); font-size:.92rem; }
-
-    .error{
-      display:none;
-      border: 1px solid #ffd0d0;
-      background:#fff5f5;
-      color: var(--danger);
-      border-radius: 14px;
-      padding: 9px 10px;
-      font-weight: 850;
-      text-align:center;
-      font-size: .93rem;
-    }
-    .error.show{ display:block; }
 
     .btn{
       border:none;
@@ -342,11 +328,6 @@
     return `${y}${m}${day}_${hh}${mm}${ss}`;
   }
 
-  function fmtEUR(n){
-    try { return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(Number(n||0)); }
-    catch(e){ return (Number(n||0).toFixed(2)).replace(".",",") + " €"; }
-  }
-
   function getJSONFromStorage(key){
     const raw = STORAGE.getItem(key);
     if(!raw) return null;
@@ -554,7 +535,12 @@
       const blocks = buildPdfBlocksFromText(text);
       stack.push(...blocks);
 
+      const needsPageBreak =
+        String(k).toLowerCase() === "abschnitt_6" ||
+        String(title).toLowerCase().includes("preise");
+
       content.push({
+        pageBreak: needsPageBreak ? "before" : undefined,
         unbreakable: true,
         margin:[0,8,0,0],
         stack
@@ -563,114 +549,7 @@
     return content;
   }
 
-  function priceToPdfContent(paket){
-    const content = [];
-    if(!paket) return content;
-
-    const years = Number(paket.laufzeit_jahre || 0);
-    const wartNetto = Number(paket.wartungsvertrag_preis_pro_jahr || 0);
-    const lanOnceN = Number(paket.lancare_preis_netto || 0);
-    const lanOnceB = Number(paket.lancare_preis_brutto || 0);
-
-    // USt: wenn im Paket enthalten (z.B. 0.19), sonst Default 19%
-    const vat = Number(paket.vat_rate ?? paket.ust_satz ?? 0.19);
-    const wartBrutto = wartNetto * (1 + vat);
-
-    const totalNet = (wartNetto * years) + lanOnceN;
-    const totalBr  = (wartBrutto * years) + lanOnceB;
-    const avgNet = years > 0 ? (totalNet / years) : 0;
-    const avgBr  = years > 0 ? (totalBr  / years) : 0;
-
-    const stack = [];
-
-    // Preise sollen als eigener Block starten
-    stack.push({ text:"Preise & Abrechnung", style:"h2", margin:[0,0,0,4] });
-    stack.push({
-      text:
-        "Die Wartungs- & Servicepauschale wird jährlich zu Beginn des jeweiligen Vertragsjahres in Rechnung gestellt und gilt für das entsprechende Vertragsjahr.\n" +
-        "Ein ggf. ausgewähltes LANcare-Paket wird einmalig im ersten Vertragsjahr berechnet.",
-      fontSize: 9.5,
-      color: "#374151",
-      margin:[0,0,0,8]
-    });
-
-    stack.push({ text:"Preisstaffelung", style:"h2", margin:[0,2,0,6] });
-
-    // kompakter Layout, damit bei 5 Jahren nicht unnötig Platz verbrannt wird
-    const compactLayout = {
-      hLineColor: ()=> "#e5e7eb",
-      vLineWidth: ()=> 0,
-      hLineWidth: (i)=> (i===0 ? 0 : 1),
-      paddingLeft: ()=> 5,
-      paddingRight: ()=> 5,
-      paddingTop: ()=> 4,
-      paddingBottom: ()=> 4
-    };
-
-    for(let y=1; y<=years; y++){
-      const isY1 = (y===1);
-      const rows = [];
-
-      if(isY1) rows.push(["LANcare (einmalig)", fmtEUR(lanOnceN), fmtEUR(lanOnceB)]);
-      rows.push(["Wartungs- & Servicepauschale", fmtEUR(wartNetto), fmtEUR(wartBrutto)]);
-
-      const yearTotalNet = isY1 ? (wartNetto + lanOnceN) : wartNetto;
-      const yearTotalBr  = isY1 ? (wartBrutto + lanOnceB) : wartBrutto;
-
-      stack.push({
-        margin:[0,6,0,0],
-        table:{
-          widths:["*",95,95],
-          body:[
-            [{ text:`Jahr ${y}`, bold:true, fontSize:10, colSpan:3, border:[false,false,false,true] },{},{}],
-            [{ text:"Position", fontSize:9.2, bold:true },
-             { text:"Netto", fontSize:9.2, bold:true, alignment:"right" },
-             { text:"Brutto", fontSize:9.2, bold:true, alignment:"right" }],
-            ...rows.map(r=> ([
-              { text:r[0], fontSize:9.2 },
-              { text:r[1], fontSize:9.2, alignment:"right" },
-              { text:r[2], fontSize:9.2, alignment:"right" }
-            ])),
-            [{ text:"Gesamt (Jahr)", fontSize:9.2, bold:true },
-             { text:fmtEUR(yearTotalNet), fontSize:9.2, bold:true, alignment:"right" },
-             { text:fmtEUR(yearTotalBr), fontSize:9.2, bold:true, alignment:"right" }]
-          ]
-        },
-        layout: compactLayout
-      });
-    }
-
-    // Zusammenfassung: soll NICHT über Seiten getrennt werden
-    stack.push({
-      unbreakable: true,
-      margin:[0,10,0,0],
-      table:{
-        widths:["*",95,95],
-        body:[
-          [{ text:"Zusammenfassung", bold:true, fontSize:10, colSpan:3, border:[false,false,false,true] },{},{}],
-          [{ text:"", fontSize:9.2 },
-           { text:"Netto", fontSize:9.2, bold:true, alignment:"right" },
-           { text:"Brutto", fontSize:9.2, bold:true, alignment:"right" }],
-          [{ text:"Gesamtkosten (Laufzeit)", fontSize:9.2, bold:true },
-           { text: fmtEUR(totalNet), fontSize:9.2, bold:true, alignment:"right" },
-           { text: fmtEUR(totalBr), fontSize:9.2, bold:true, alignment:"right" }],
-          [{ text:"Ø pro Jahr", fontSize:9.2 },
-           { text: fmtEUR(avgNet), fontSize:9.2, alignment:"right" },
-           { text: fmtEUR(avgBr), fontSize:9.2, alignment:"right" }]
-        ]
-      },
-      layout: compactLayout
-    });
-
-    content.push({
-      pageBreak: "before",
-      stack
-    });
-
-    return content;
-  }
-
-  function buildDocDefinition({vertragsnr, analyse, person, paket, vertragsdaten, placeholders, agbs, logoDataUrl, watermark=true}){
+  function buildDocDefinition({vertragsnr, analyse, person, vertragsdaten, placeholders, agbs, logoDataUrl, watermark=true}){
     const firma = analyse?.Firma || "";
     const wp = (analyse?.windpark_nummer || analyse?.["windpark_nummer"] || "");
     const wpName = (analyse?.windpark_name || analyse?.["windpark_name"] || "");
@@ -711,7 +590,6 @@
 
     content.push({ text:"Vertragsbestandteile", style:"h2", margin:[0,16,0,8] });
     content.push(...vertragsdatenToPdfContent(vertragsdaten, placeholders));
-    content.push(...priceToPdfContent(paket));
     content.push(...agbsToPdfContentLikeIndex(agbs));
 
     return {
@@ -829,7 +707,6 @@
 
       document.getElementById("btnBack").addEventListener("click", ()=>{
         cleanupPdfState();
-
         if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
         else history.back();
       });
@@ -900,7 +777,6 @@
       vertragsnr: state.vertragsnr,
       analyse: state.analyse,
       person: state.person,
-      paket: state.paket,
       vertragsdaten: state.vertragsdaten,
       placeholders,
       agbs: state.agbs,
@@ -911,7 +787,6 @@
       vertragsnr: state.vertragsnr,
       analyse: state.analyse,
       person: state.person,
-      paket: state.paket,
       vertragsdaten: state.vertragsdaten,
       placeholders,
       agbs: state.agbs,
