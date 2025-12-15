@@ -634,8 +634,8 @@ function nowStamp(){
 
   function buildDocDefinition({vertragsnr, analyse, person, paket, wart, agbs, logoDataUrl, watermark=true}){
     const firma = analyse?.Firma || "";
-    const wp = (analyse?.windpark_nummer || analyse?.["windpark_nummer"] || "000");
-    const wpName = (analyse?.windpark_name || analyse?.["windpark_name"] || "Musterpark");
+    const wp = (analyse?.windpark_nummer || analyse?.["windpark_nummer"] || "");
+    const wpName = (analyse?.windpark_name || analyse?.["windpark_name"] || "");
     const asp = analyse?.Ansprechpartner || "";
     const str = analyse?.["Straße und Hausnummer"] || analyse?.Straße || analyse?.Strasse || "";
     const plz = analyse?.PLZ || "";
@@ -924,3 +924,4 @@ state.vertragsnr = buildVertragsnummer(state.analyse);
 </script>
 </body>
 </html>
+
