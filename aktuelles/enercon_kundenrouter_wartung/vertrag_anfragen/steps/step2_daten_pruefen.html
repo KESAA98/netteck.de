@@ -279,19 +279,19 @@
     }
 
     function getBaseData(){
-      const raw = sessionStorage.getItem(STORAGE_KEY);
+      const raw = STORAGE.getItem(STORAGE_KEY);
       const obj = safeParse(raw || "");
       return (obj && typeof obj === "object") ? obj : {};
     }
 
     function getEdits(){
-      const raw = sessionStorage.getItem(EDITS_KEY);
+      const raw = STORAGE.getItem(EDITS_KEY);
       const obj = safeParse(raw || "");
       return (obj && typeof obj === "object") ? obj : { edited:{}, values:{}, flags:{} };
     }
 
     function setEdits(edits){
-      sessionStorage.setItem(EDITS_KEY, JSON.stringify(edits));
+      STORAGE.setItem(EDITS_KEY, JSON.stringify(edits));
     }
 
     // Levenshtein Distance (klein, ohne Lib)
@@ -463,7 +463,7 @@
       });
 
       // speichern für nachfolgende Steps
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      STORAGE.setItem(STORAGE_KEY, JSON.stringify(merged));
 
       if (window.parent && typeof window.parent.nextStep === "function"){
         window.parent.nextStep();
