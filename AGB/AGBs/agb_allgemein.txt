@@ -3,11 +3,11 @@
   "agb_allgemein": [
     {
       "title": "§ 1 Geltungsbereich",
-      "text": "(1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle gegenwärtigen und zukünftigen Verträge zwischen Kevin Strakerjahn Networks & Automation (im Folgenden „Auftragnehmer“) und dem Kunden.\n(2) Kunden können Verbraucher oder Unternehmer gemäß § 13 und § 14 BGB sein.\n(3) Abweichende AGB des Kunden werden nur wirksam, wenn deren Geltung ausdrücklich und schriftlich bestätigt wurde. Ohne eine solche Bestätigung gelten ausschließlich die vorliegenden Bedingungen."
+      "text": "(1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle gegenwärtigen und zukünftigen Verträge zwischen Kevin Strakerjahn Networks & Automation (im Folgenden „Auftragnehmer“) und dem Kunden.\n(2) Kunden können Verbraucher oder Unternehmer gemäß § 13 und § 14 BGB sein.\n(3) Abweichende AGB des Kunden werden nur wirksam, wenn deren Geltung ausdrücklich in Textform (z. B. per E-Mail) bestätigt wurde. Ohne eine solche Bestätigung gelten ausschließlich die vorliegenden Bedingungen."
     },
     {
       "title": "§ 2 Vertragsschluss",
-      "text": "(1) Alle Angebote des Auftragnehmers sind freibleibend und unverbindlich.\n(2) Ein Vertrag kommt erst durch schriftliche Auftragsbestätigung oder durch Beginn der Ausführung zustande.\n(3) Änderungen, Ergänzungen oder Nebenabreden bedürfen der Schriftform."
+      "text": "(1) Alle Angebote des Auftragnehmers sind freibleibend und unverbindlich.\n(2) Ein Vertrag kommt erst durch Bestätigung in Textform (z. B. per E-Mail) oder durch Beginn der Ausführung zustande.\n(3) Änderungen, Ergänzungen oder Nebenabreden bedürfen der Textform (z. B. per E-Mail)."
     },
     {
       "title": "§ 3 Mitwirkungspflichten des Kunden",
@@ -23,7 +23,7 @@
     },
     {
       "title": "§ 6 Liefer-, Ausführungs- und Einsatzzeiten",
-      "text": "(1) Termine sind nur verbindlich, wenn schriftlich bestätigt.\n(2) Bei Arbeiten an Windenergieanlagen sind Witterung und Vorgaben zu berücksichtigen.\n(3) Verzögerungen durch Dritte begründen keine Schadensersatzansprüche."
+      "text": "(1) Termine sind nur verbindlich, wenn sie in Textform (z. B. per E-Mail) bestätigt wurden.\n(2) Bei Arbeiten an Windenergieanlagen sind Witterung und Vorgaben zu berücksichtigen.\n(3) Verzögerungen durch Dritte begründen keine Schadensersatzansprüche."
     },
     {
       "title": "§ 7 Gewährleistung",
@@ -51,13 +51,11 @@
     },
     {
       "title": "§ 13 Datenschutz & Speicherung von Auftragsdaten",
-      "text": "(1) Daten werden nur zur Vertragserfüllung verarbeitet.\n(2) Speicherung erfolgt gemäß gesetzlichen Fristen.\n(3) Längere Speicherung technischer Unterlagen ist mit Einwilligung möglich.\n(4) Weitergabe an Dritte erfolgt nur zur Erfüllung oder aufgrund gesetzlicher Pflichten.\n(5) Weitere Informationen stehen in der Datenschutzerklärung."
+      "text": "(1) Daten werden nur zur Vertragserfüllung verarbeitet.\n(2) Speicherung erfolgt gemäß gesetzlichen Fristen.\n(3) Längere Speicherung technischer Unterlagen ist mit Einwilligung möglich.\n(4) Weitergabe an Dritte erfolgt nur zur Erfüllung oder aufgrund gesetzlicher Pflichten.\n(5) Weitere Informationen stehen in der Datenschutzerklärung unter: https://netteck.de/datenschutz/"
     },
     {
       "title": "§ 14 Wegfall der Leistungserbringung",
-      "text": "Sollte der Auftragnehmer aufgrund dauerhafter Krankheit, Berufsunfähigkeit oder Todes des Inhabers die vertraglich geschuldeten Leistungen nicht mehr erbringen können, endet der Vertrag automatisch mit dem Zeitpunkt des Wegfalls der Leistungsfähigkeit. Eine anteilige Erstattung bereits gezahlter Vergütungen ist ausgeschlossen, da der Wegfall der Leistungserbringung einen wichtigen Grund im Sinne der außerordentlichen Vertragsbeendigung darstellt. Etwaige Erben oder Rechtsnachfolger sind nicht verpflichtet, den Vertrag fortzuführen oder bereits gezahlte Beträge zurückzuerstatten."
+      "text": "Sollte der Auftragnehmer aufgrund dauerhafter Krankheit, Berufsunfähigkeit oder Todes des Inhabers die vertraglich geschuldeten Leistungen dauerhaft nicht mehr erbringen können, endet der Vertrag automatisch mit dem Zeitpunkt des Wegfalls der Leistungsfähigkeit.\n\nVergütungen, die für bereits begonnene Vertragsjahre gezahlt wurden, werden nicht anteilig erstattet. Dies gilt insbesondere, wenn die Abrechnung – wie vertraglich vorgesehen – jahresweise im Voraus erfolgt.\n\nEtwaige Erben oder Rechtsnachfolger sind nicht verpflichtet, den Vertrag fortzuführen."
     }
   ]
 }
-
-
