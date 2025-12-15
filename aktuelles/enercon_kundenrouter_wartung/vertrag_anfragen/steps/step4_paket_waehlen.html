@@ -239,6 +239,9 @@
     const PRICES_URL = "/netteck.de/aktuelles/enercon_kundenrouter_wartung/information/warungsvertrag_preise.txt";
     const STORAGE_KEY = "paketWahl";
 
+    // Gemeinsamer Speicher für alle Steps (Wizard-Host / Top-Window)
+    const STORAGE = (window.top && window.top.sessionStorage) ? window.top.sessionStorage : sessionStorage;
+
     let priceData = null;
     let selectedYears = null;
     let selectedLanYears = null;
@@ -400,7 +403,7 @@
         gesamt_netto: total,
         durchschnitt_pro_jahr_netto: avg
       };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      STORAGE.setItem(STORAGE_KEY, JSON.stringify(payload));
     }
 
     function continueNext(){
@@ -420,7 +423,7 @@
         priceData = await loadPrices();
 
         // restore previous choice
-        const savedRaw = sessionStorage.getItem(STORAGE_KEY);
+        const savedRaw = STORAGE.getItem(STORAGE_KEY);
         if (savedRaw){
           try{
             const saved = JSON.parse(savedRaw);
