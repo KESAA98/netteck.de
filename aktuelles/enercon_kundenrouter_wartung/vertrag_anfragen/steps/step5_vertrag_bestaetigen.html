@@ -348,6 +348,9 @@ h1{ margin-top: 6px; }
   </div>
 
 <script>
+  // Gemeinsamer Speicher für alle Steps (Wizard-Host / Top-Window)
+  const STORAGE = (window.top && window.top.sessionStorage) ? window.top.sessionStorage : sessionStorage;
+
   const ANALYSE_KEY = "rechnungAnalyse";
   const PERSON_KEY  = "personConfirm";
   const PAKET_KEY   = "paketWahl";
@@ -388,7 +391,7 @@ function nowStamp(){
     catch(e){ return (Number(n||0).toFixed(2)).replace(".",",") + " €"; }
   }
   function getJSONFromStorage(key){
-    const raw = sessionStorage.getItem(key);
+    const raw = STORAGE.getItem(key);
     if(!raw) return null;
     try { return JSON.parse(raw); } catch(e){ return null; }
   }
@@ -632,7 +635,7 @@ function nowStamp(){
     return content;
   }
 
-  function buildDocDefinition({vertragsnr, analyse, person, paket, wart, agbs, logoDataUrl, watermark=true}){
+  function buildDocDefinition({vertragsnr, analyse, person, paket, vertragsdaten, placeholders, agbs, logoDataUrl, watermark=true}){
     const firma = analyse?.Firma || "";
     const wp = (analyse?.windpark_nummer || analyse?.["windpark_nummer"] || "");
     const wpName = (analyse?.windpark_name || analyse?.["windpark_name"] || "");
@@ -681,7 +684,7 @@ function nowStamp(){
     content.push({ text:"E‑Mail: info@netteck.de", margin:[0,2,0,2] });
 
     content.push({ text:"Vertragsbestandteile", style:"h2", margin:[0,16,0,8] });
-content.push(...vertragsdatenToPdfContent(vertragsdaten, placeholders));
+    content.push(...vertragsdatenToPdfContent(vertragsdaten, placeholders));
     content.push(...priceToPdfContent(paket));
     content.push(...agbsToPdfContentLikeIndex(agbs));
 
@@ -924,4 +927,3 @@ state.vertragsnr = buildVertragsnummer(state.analyse);
 </script>
 </body>
 </html>
-
