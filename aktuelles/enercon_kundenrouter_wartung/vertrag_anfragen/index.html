@@ -59,7 +59,7 @@
     .step.from-bottom{ transform: translateY(100%); }
     .step.from-top{ transform: translateY(-100%); }
 
-.step iframe{
+    .step iframe{
       width:100%;
       height:100%;
       border:none;
@@ -190,10 +190,23 @@
       const app = document.getElementById('app');
       app.style.filter = 'none';
       app.style.pointerEvents = 'auto';
+
+      // Step 1 aktiv melden (damit er ggf. init/refresh triggert)
+      notifyActiveStep(1);
     }
 
     function clamp(n){
       return Math.max(1, Math.min(totalSteps, Number(n)));
+    }
+
+    // Meldet dem aktiven iframe, dass der Step jetzt sichtbar ist
+    function notifyActiveStep(stepNumber){
+      try{
+        const frame = document.querySelector('#step' + stepNumber + ' iframe');
+        if(frame && frame.contentWindow){
+          frame.contentWindow.postMessage({ type: 'STEP_ACTIVE', step: stepNumber }, '*');
+        }
+      }catch(e){}
     }
 
     function showStep(next, direction){
@@ -236,6 +249,9 @@
       }, 380);
 
       currentStep = next;
+
+      // Aktiven Step melden (wichtig: Step 2 soll erst jetzt aus Storage lesen)
+      notifyActiveStep(currentStep);
     }
 
     // ===== API für die Step-HTMLs =====
