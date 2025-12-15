@@ -252,6 +252,32 @@
   </div>
 
   <script>
+    // Gemeinsamer Speicher (Top-Window) – plus sichere Übernahme aus dem iFrame-Storage, falls nötig
+    const TOP_STORAGE = (window.top && window.top.sessionStorage) ? window.top.sessionStorage : null;
+    const LOCAL_STORAGE = window.sessionStorage;
+
+    function storageGet(key){
+      let v = null;
+      try { v = TOP_STORAGE ? TOP_STORAGE.getItem(key) : null; } catch(e) { v = null; }
+      if(v === null){
+        try { v = LOCAL_STORAGE.getItem(key); } catch(e) { v = null; }
+        // wenn local etwas hat, einmalig nach oben spiegeln
+        if(v !== null && TOP_STORAGE){
+          try { TOP_STORAGE.setItem(key, v); } catch(e) {}
+        }
+      }
+      return v;
+    }
+    function storageSet(key, value){
+      try { if(TOP_STORAGE) TOP_STORAGE.setItem(key, value); } catch(e) {}
+      try { LOCAL_STORAGE.setItem(key, value); } catch(e) {}
+    }
+    function storageRemove(key){
+      try { if(TOP_STORAGE) TOP_STORAGE.removeItem(key); } catch(e) {}
+      try { LOCAL_STORAGE.removeItem(key); } catch(e) {}
+    }
+
+
     // ----- Config -----
     const STORAGE_KEY = "rechnungAnalyse";
     const EDITS_KEY   = "rechnungEdits"; // { edited:{key:true}, values:{key:value}, flags:{key:"large"} }
@@ -279,19 +305,19 @@
     }
 
     function getBaseData(){
-      const raw = STORAGE.getItem(STORAGE_KEY);
+      const raw = storageGet(STORAGE_KEY);
       const obj = safeParse(raw || "");
       return (obj && typeof obj === "object") ? obj : {};
     }
 
     function getEdits(){
-      const raw = STORAGE.getItem(EDITS_KEY);
+      const raw = storageGet(EDITS_KEY);
       const obj = safeParse(raw || "");
       return (obj && typeof obj === "object") ? obj : { edited:{}, values:{}, flags:{} };
     }
 
     function setEdits(edits){
-      STORAGE.setItem(EDITS_KEY, JSON.stringify(edits));
+      storageSet(EDITS_KEY, JSON.stringify(edits));
     }
 
     // Levenshtein Distance (klein, ohne Lib)
@@ -463,7 +489,7 @@
       });
 
       // speichern für nachfolgende Steps
-      STORAGE.setItem(STORAGE_KEY, JSON.stringify(merged));
+      storageSet(STORAGE_KEY, JSON.stringify(merged));
 
       if (window.parent && typeof window.parent.nextStep === "function"){
         window.parent.nextStep();
