@@ -182,6 +182,9 @@
     const totalSteps = 5;
 
     function acceptConsent(){
+      // Neuer Vorgang: alten Tab-Flow verwerfen (keine Cookies, nur sessionStorage)
+      sessionStorage.clear();
+
       document.getElementById('consent').style.display = 'none';
 
       const app = document.getElementById('app');
