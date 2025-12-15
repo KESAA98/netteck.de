@@ -263,6 +263,9 @@
   </div>
 
   <script>
+    // Gemeinsamer Storage für alle Steps (Top-Window)
+    const STORAGE = (window.top && window.top.sessionStorage) ? window.top.sessionStorage : sessionStorage;
+
     const ANALYSE_KEY = "rechnungAnalyse";
     const PERSON_KEY  = "personConfirm";
     let mode = null;
@@ -276,7 +279,7 @@
 
     function safeParse(s){ try { return JSON.parse(s); } catch(e){ return null; } }
     function getAnalyse(){
-      const raw = sessionStorage.getItem(ANALYSE_KEY);
+      const raw = STORAGE.getItem(ANALYSE_KEY);
       const obj = safeParse(raw || "");
       return (obj && typeof obj === "object") ? obj : {};
     }
@@ -324,7 +327,7 @@
         payload.email     = document.getElementById("emailNo").value.trim();
       }
 
-      sessionStorage.setItem(PERSON_KEY, JSON.stringify(payload));
+      STORAGE.setItem(PERSON_KEY, JSON.stringify(payload));
       if (window.parent && typeof window.parent.nextStep==="function") window.parent.nextStep();
     }
 
