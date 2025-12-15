@@ -220,6 +220,9 @@
     const loading = document.getElementById("loading");
     const errorBox = document.getElementById("errorBox");
 
+    // Gemeinsamer Speicher für alle Steps (Wizard-Host / Top-Window)
+    const STORAGE = (window.top && window.top.sessionStorage) ? window.top.sessionStorage : sessionStorage;
+
     function showError(show){
       errorBox.classList.toggle("show", !!show);
     }
@@ -259,8 +262,8 @@
 
     async function sendToFlow(file){
       // Alte Analyse- und Bearbeitungsdaten löschen (neue Rechnung)
-      sessionStorage.removeItem("rechnungAnalyse");
-      sessionStorage.removeItem("rechnungEdits");
+      STORAGE.removeItem("rechnungAnalyse");
+      STORAGE.removeItem("rechnungEdits");
 
       showError(false);
       setLoading(true);
@@ -301,7 +304,7 @@
 
         if (ok){
           // Für Step 2 speichern
-          sessionStorage.setItem("rechnungAnalyse", JSON.stringify(body));
+          STORAGE.setItem("rechnungAnalyse", JSON.stringify(body));
 
           setLoading(false);
 
