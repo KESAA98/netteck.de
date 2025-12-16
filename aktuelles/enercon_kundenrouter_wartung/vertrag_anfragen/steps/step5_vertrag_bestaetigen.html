@@ -251,7 +251,6 @@
 
               <div class="actionsRow">
                 <button type="button" class="btn btnGhost" id="btnBack">Zurück</button>
-                <button type="button" class="btn btnGhost" id="btnDownload">PDF herunterladen (temporär)</button>
                 <button type="button" class="btn btnPrimary" id="btnSend">Vertrag anfragen</button>
                 <button type="button" class="btn btnGhost" id="btnHome" style="display:none">Zur Startseite</button>
               </div>
@@ -274,6 +273,9 @@
   const AGB_LOCAL_BASE = "../../../../AGB/AGBs/";
   const LOGO_PATH = "../../../../Logos/logo_name.jpeg";
 
+  // ✅ Power Automate Endpoint
+  const POWER_AUTOMATE_ENDPOINT = "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/84c6f1d5cf18482893df50ef5b6327c6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4iagZjWzsD_je6ecLjbdLqcEHwxlnaD0F_7-AGA2C6k";
+
   const state = {
     analyse:null, person:null, paket:null, vertragsdaten:null, agbs:[],
     vertragsnr:null, pdfMusterBlob:null, pdfInternBlob:null, logoDataUrl:null,
@@ -282,7 +284,6 @@
 
   function pad2(n){ return String(n).padStart(2,"0"); }
 
-  // Entfernt Soft-Hyphen / Zero-Width / Steuerzeichen / kaputte Trennzeichen
   function sanitizeText(s){
     return String(s ?? "")
       .replace(/[\u00AD\u034F\u200B-\u200F\u202A-\u202E\u2060\uFEFF\uFFFD\uFFFE]/g, "")
@@ -381,7 +382,7 @@
 
   function normalizeText(t){
     const cleaned = sanitizeText(t);
-    const parts = String(cleaned||"").split(/\\n+/).map(x=>x.trim()).filter(Boolean);
+    const parts = String(cleaned||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
     return parts.join("\n\n");
   }
 
@@ -467,7 +468,7 @@
   }
 
   function buildPdfBlocksFromText(text){
-    const lines = String(text||"").split(/\\n+/);
+    const lines = String(text||"").split(/\n+/);
     const blocks = [];
     let currentList = null;
 
@@ -535,7 +536,6 @@
     return content;
   }
 
-  // ✅ Alle Vertragsbestandteile außer "Preise & Abrechnung"
   function vertragsdatenToPdfContent(data, placeholders){
     const content = [];
     if(!data) return content;
@@ -548,7 +548,6 @@
       const sec = data[k] || {};
       const title = String(sec.title || sec.heading || "").trim();
 
-      // ✅ Preise & Abrechnung NICHT hier ausgeben (kommt später direkt vor Tabelle)
       if(/^Preise\s*&\s*Abrechnung/i.test(title)) continue;
 
       const textRaw = sec.text || "";
@@ -570,7 +569,6 @@
     return content;
   }
 
-  // ✅ NUR Tabelle + Zusammenfassung (kein Titel, kein Erklärungstext, kein pageBreak)
   function priceToPdfContent(paket){
     const content = [];
     if(!paket) return content;
@@ -659,14 +657,11 @@
   }
 
   function buildDocDefinition({vertragsnr, analyse, person, paket, vertragsdaten, placeholders, agbs, logoDataUrl, watermark=true}){
-    // Pflichtfelder, damit es keine "Fantasie"-Fälle gibt:
     requireField(analyse?.Firma, "Firma");
     requireField(analyse?.Ansprechpartner, "Ansprechpartner");
     requireField(analyse?.Ort, "Ort");
     requireField(analyse?.PLZ, "PLZ");
     requireField(analyse?.["Straße und Hausnummer"] || analyse?.Straße || analyse?.Strasse, "Straße und Hausnummer");
-
-    // Rechnungsnummer + WP Nummer sind schon in buildVertragsnummerStrict geprüft.
 
     const firma = String(analyse?.Firma || "").trim();
     const wpNum = pickWindparkNummerStrict(analyse);
@@ -693,7 +688,6 @@
     content.push({ text:`Ansprechpartner: ${asp}`, margin:[0,2,0,2] });
     content.push({ text:`Adresse: ${adresseLine}`, margin:[0,2,0,2] });
 
-    // Kunde: Tel optional, E-Mail NICHT in PDF
     const kundeTel = String(person?.telefon || person?.Telefon || person?.tel || person?.phone || "").trim();
     if(kundeTel) content.push({ text:`Tel.: ${kundeTel}`, margin:[0,2,0,2] });
 
@@ -706,7 +700,6 @@
     content.push({ text:"Vertragsbestandteile", style:"h2", margin:[0,16,0,8] });
     content.push(...vertragsdatenToPdfContent(vertragsdaten, placeholders));
 
-    // ✅ Preise & Abrechnung aus TXT + Umbruch + Tabelle auf derselben Seite (und nur 1x Titel)
     const preisSec = Object.values(vertragsdaten || {}).find(sec => {
       const t = String(sec?.title || sec?.heading || "").trim();
       return /^Preise\s*&\s*Abrechnung/i.test(t);
@@ -721,11 +714,7 @@
       stack: [
         { text:"Preise & Abrechnung", style:"h2", margin:[0,0,0,6] },
         ...buildPdfBlocksFromText(preisText),
-
-        // ✅ Umbruch vor Tabelle
         { text:"", margin:[0,8,0,0] },
-
-        // ✅ Tabelle + Zusammenfassung (ohne eigenen Titel)
         ...priceToPdfContent(paket)
       ]
     });
@@ -824,16 +813,19 @@
   }
 
   async function sendRequest(payload){
-    const endpoint = "/.netlify/functions/send-vertrag-anfrage";
-    const res = await fetch(endpoint, {
+    const res = await fetch(POWER_AUTOMATE_ENDPOINT, {
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify(payload)
     });
+
     const txt = await res.text();
     let body = null;
     try { body = JSON.parse(txt); } catch(e){ body = { raw: txt }; }
-    if(!res.ok) throw new Error(body?.message || body?.error || "Senden fehlgeschlagen.");
+
+    if(!res.ok){
+      throw new Error(body?.message || body?.error || `Senden fehlgeschlagen (HTTP ${res.status}).`);
+    }
     return body;
   }
 
@@ -851,20 +843,6 @@
       });
 
       document.getElementById("btnHome").addEventListener("click", ()=>{ window.location.href = "https://netteck.de"; });
-
-      document.getElementById("btnDownload").addEventListener("click", ()=>{
-        try{
-          if(!state.pdfMusterBlob) return;
-          const a = document.createElement("a");
-          const url = URL.createObjectURL(state.pdfMusterBlob);
-          a.href = url;
-          a.download = `Vertragsvorlage_${state.vertragsnr}.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          setTimeout(()=>URL.revokeObjectURL(url), 2000);
-        }catch(e){ console.error(e); }
-      });
     }
 
     state.analyse = getJSONFromStorage(ANALYSE_KEY);
@@ -877,7 +855,6 @@
       return;
     }
 
-    // E-Mail nur intern fürs Senden, NICHT in PDF
     const email = String(state.person?.email || state.person?.Email || "").trim();
     if(!email) { setStatus("Fehlende Daten.", "Pflichtfeld fehlt: E-Mail"); state._initRunning = false; return; }
 
@@ -892,7 +869,6 @@
 
     clearErr();
 
-    // ✅ Vertragsnummer: Rechnungsnummer + WP Nummer + Timestamp (ohne Fallback)
     try{
       state.vertragsnr = buildVertragsnummerStrict(state.analyse);
     }catch(e){
@@ -980,29 +956,25 @@
 
     try{
       const email = String(document.getElementById("email").value || "").trim();
-      const notes = String(document.getElementById("notes").value || "").trim();
       if(!email || !email.includes("@")) throw new Error("Bitte geben Sie eine gültige E-Mail-Adresse an.");
 
       setStatus("Vorbereitung Versand…", "PDFs werden kodiert");
       const pdfInternB64 = await blobToBase64(state.pdfInternBlob);
       const pdfMusterB64 = await blobToBase64(state.pdfMusterBlob);
 
-      setStatus("Senden…", "bitte nicht schließen");
+      // ✅ Nur die gewünschten Felder (flach)
       const payload = {
         vertragsnummer: state.vertragsnr,
         kunde_email: email,
-        anmerkungen: notes,
+        firma: state.analyse?.Firma,
+        ansprechpartner: state.analyse?.Ansprechpartner,
+        laufzeit_jahre: Number(state.paket?.laufzeit_jahre),
+        lancom_jahre: Number(state.paket?.lancare_jahre),
         pdf_muster_base64: pdfMusterB64,
-        pdf_intern_base64: pdfInternB64,
-        meta: {
-          firma: state.analyse?.Firma,
-          windpark_nummer: state.analyse?.windpark_nummer ?? state.analyse?.["windpark_nummer"],
-          windpark_name: state.analyse?.windpark_name ?? state.analyse?.["windpark_name"],
-          ansprechpartner: state.analyse?.Ansprechpartner,
-          paket: state.paket
-        }
+        pdf_intern_base64: pdfInternB64
       };
 
+      setStatus("Senden…", "bitte nicht schließen");
       await sendRequest(payload);
 
       showOk();
