@@ -7,41 +7,48 @@
   <link rel="icon" type="image/png" href="../../../../Logos/logo.png" />
 
   <style>
-    :root {
+    :root{
       --primary:#0b74ff;
       --primary2:#7a5cff;
-      --primary-soft: rgba(11, 116, 255, 0.10);
+      --primary-soft: rgba(11,116,255,.10);
       --bg:#f5f7fb;
-      --card-bg:#ffffff;
+      --card:#ffffff;
       --border:#e1e4ec;
-      --text-main:#1f2933;
-      --text-muted:#6b7280;
-      --danger:#b42318;
-      --radius-lg:14px;
+      --text:#1f2933;
+      --muted:#6b7280;
+      --radius:14px;
     }
     *{ box-sizing:border-box; }
-    html, body{ margin:0; padding:0; height:100%; }
+    html,body{ margin:0; padding:0; height:auto !important; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
-      color: var(--text-main);
+      color: var(--text);
       line-height: 1.5;
-      overflow:hidden;
+      overflow:auto !important;
     }
-    .viewport{ height:100vh; width:100vw; display:flex; align-items:center; justify-content:center; padding: 1.6rem 1rem; }
+    .viewport{
+      min-height:100vh;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding: 1.6rem 1rem;
+    }
     .card{
-      width:min(1100px, 100%); height:100%; max-height: calc(100vh - 3.2rem);
-      background: var(--card-bg); border-radius: var(--radius-lg);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-      border: 1px solid var(--border);
-      padding: 1.25rem 1.6rem 1.1rem;
-      display:flex; flex-direction:column; gap: .8rem;
+      width:min(1100px, 100%);
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(15,23,42,.06);
+      padding: 1.25rem 1.6rem 1.6rem;
+      display:flex;
+      flex-direction:column;
+      gap:.8rem;
     }
-    h1{ margin:0; font-size:1.35rem; text-align:center; letter-spacing:.2px; }
-    .sub{ margin:0; text-align:center; color:var(--text-muted); font-size:.95rem; }
+    h1{ margin:6px 0 0; font-size:1.35rem; text-align:center; letter-spacing:.2px; }
+    .sub{ margin:0; text-align:center; color:var(--muted); font-size:.95rem; }
 
     .panel{
-      flex:1;
       border:1px solid var(--border);
       border-radius: 16px;
       background:#fff;
@@ -57,10 +64,83 @@
       border:1px solid var(--border);
       border-radius: 16px;
       padding: 12px;
-      background: #fff;
+      background:#fff;
+    }
+    .hint{ margin: 6px 0 0; color:var(--muted); font-size:.92rem; }
+
+    .pdfWrap{ margin-top: 10px; display:flex; flex-direction:column; gap:12px; }
+    .pdfStatus{
+      border:1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      background: rgba(11,116,255,0.06);
+    }
+    .pdfPages{ display:flex; flex-direction:column; gap:14px; }
+    .pdfPage{
+      border:1px solid var(--border);
+      border-radius: 12px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: 0 10px 30px rgba(15,23,42,.06);
+    }
+    .pdfPage canvas{ width:100%; height:auto; display:block; }
+
+    .formGrid{ display:flex; flex-direction:column; gap:12px; margin-top: 16px; }
+    .checkline{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 12px;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(0,0,0,0.02);
+    }
+    .checkline input{ transform: scale(1.1); margin-top: 2px; }
+    .metaLine{ font-size:13px; color:var(--muted); font-weight:700; }
+
+    .infoBox{
+      border: 1px solid rgba(11,116,255,0.18);
+      background: rgba(11,116,255,0.07);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .okBox{
+      display:none;
+      border: 1px solid rgba(16,185,129,0.25);
+      background: rgba(16,185,129,0.10);
+      border-radius: 14px;
+      padding: 12px;
+      color: #065f46;
+      font-weight: 800;
+    }
+    .errBox{
+      display:none;
+      border: 1px solid rgba(239,68,68,0.25);
+      background: rgba(239,68,68,0.10);
+      border-radius: 14px;
+      padding: 12px;
+      color: #7f1d1d;
+      font-weight: 800;
+      white-space: pre-wrap;
     }
 
-    .hint{ margin: 6px 0 0 0; color:var(--text-muted); font-size:.92rem; }
+    .actionsRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-top: 4px;
+    }
 
     .btn{
       border:none;
@@ -88,113 +168,7 @@
       box-shadow:none !important;
     }
     .btnPrimary{ color:#fff; background: linear-gradient(135deg, var(--primary), var(--primary2)); }
-    .btnGhost{ background:#fff; color: var(--text-main); border: 1px solid var(--border); }
-
-    /* ===== Step5: nur Overrides, damit die Seite EINMAL scrollt ===== */
-    html, body { height:auto !important; }
-    body { height:auto !important; overflow:auto !important; }
-    .viewport {
-      height:auto !important;
-      min-height:100vh;
-      align-items:flex-start !important;
-      justify-content:center !important;
-    }
-    .card {
-      height:auto !important;
-      max-height:none !important;
-      overflow:visible !important;
-      padding-bottom: 1.6rem;
-    }
-
-    .pdfWrap{ margin-top: 10px; display:flex; flex-direction:column; gap:12px; }
-    .pdfStatus{
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-lg);
-      padding: 12px 12px;
-      color: var(--text-muted);
-      font-size: 13px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      background: rgba(11,116,255,0.06);
-    }
-    .pdfPages{ display:flex; flex-direction:column; gap:14px; }
-    .pdfPage{
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow:hidden;
-      background:#fff;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-    }
-    .pdfPage canvas{ width:100%; height:auto; display:block; }
-
-    .formGrid{ display:flex; flex-direction:column; gap:12px; margin-top: 16px; }
-    .field{ display:flex; flex-direction:column; gap:8px; }
-    .field label{ font-size: 13px; color: var(--text-muted); font-weight: 700; }
-    textarea, input[type="email"]{
-      width:100%;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 12px;
-      font-size: 14px;
-      outline: none;
-      background: #fff;
-    }
-    textarea{ min-height: 120px; resize: vertical; }
-
-    .checkline{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      padding: 12px 12px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(0,0,0,0.02);
-    }
-    .checkline input{ transform: scale(1.1); margin-top: 2px; }
-
-    .infoBox{
-      border: 1px solid rgba(11,116,255,0.18);
-      background: rgba(11,116,255,0.07);
-      border-radius: 14px;
-      padding: 12px 12px;
-      color: var(--text-main);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-    .okBox{
-      display:none;
-      border: 1px solid rgba(16,185,129,0.25);
-      background: rgba(16,185,129,0.10);
-      border-radius: 14px;
-      padding: 12px 12px;
-      color: #065f46;
-      font-weight: 700;
-    }
-    .errBox{
-      display:none;
-      border: 1px solid rgba(239,68,68,0.25);
-      background: rgba(239,68,68,0.10);
-      border-radius: 14px;
-      padding: 12px 12px;
-      color: #7f1d1d;
-      font-weight: 700;
-    }
-    .actionsRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 10px;
-      align-items:center;
-      justify-content:flex-end;
-      margin-top: 4px;
-    }
-    .metaLine{
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-    h1{ margin-top: 6px; }
+    .btnGhost{ background:#fff; color: var(--text); border:1px solid var(--border); }
   </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
@@ -210,9 +184,7 @@
 
       <div class="panel">
         <div class="box">
-          <div class="hint">
-            Vertragsnummer: <strong id="vertragNr">–</strong>
-          </div>
+          <div class="hint">Vertragsnummer: <strong id="vertragNr">–</strong></div>
 
           <div class="pdfWrap">
             <div class="pdfStatus" id="pdfStatus">
@@ -223,22 +195,12 @@
             <div class="pdfPages" id="pdfPages"></div>
 
             <div class="formGrid" id="formGrid" style="display:none">
-              <div class="field">
-                <label for="notes">Anmerkungen zu ihrer Vertragsvorlage</label>
-                <textarea id="notes" placeholder="Optional: Hinweise / Ergänzungen…"></textarea>
-              </div>
-
               <div class="checkline">
-                <input type="checkbox" id="sendCopy" />
+                <input type="checkbox" id="sendCopy" checked disabled />
                 <div style="flex:1">
-                  <div style="font-weight:800">Sie erhalten das Muster automatisch als Kopie per E-Mail.</div>
+                  <div style="font-weight:900">Sie erhalten das Muster automatisch als Kopie per E-Mail.</div>
                   <div class="metaLine">Empfänger: <span id="emailView">–</span></div>
                 </div>
-              </div>
-
-              <div class="field" id="emailField" style="display:none">
-                <label for="email">E-Mail-Adresse</label>
-                <input type="email" id="email" disabled />
               </div>
 
               <div class="infoBox">
@@ -256,6 +218,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -273,8 +236,12 @@
   const AGB_LOCAL_BASE = "../../../../AGB/AGBs/";
   const LOGO_PATH = "../../../../Logos/logo_name.jpeg";
 
-  // ✅ Power Automate Endpoint
+  // ✅ Ziel: Power Automate (direkt). Falls CORS blockt, fällt der Code automatisch auf Proxy zurück.
   const POWER_AUTOMATE_ENDPOINT = "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/84c6f1d5cf18482893df50ef5b6327c6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4iagZjWzsD_je6ecLjbdLqcEHwxlnaD0F_7-AGA2C6k";
+
+  // ✅ Optional: Same-Origin Proxy (Netlify Function). Nur nötig, wenn der Browser CORS blockt.
+  // Lege dazu eine Function unter: /.netlify/functions/powerautomate-proxy an.
+  const PROXY_ENDPOINT = "/.netlify/functions/powerautomate-proxy";
 
   const state = {
     analyse:null, person:null, paket:null, vertragsdaten:null, agbs:[],
@@ -307,9 +274,7 @@
     const firstNext = new Date(today.getFullYear(), today.getMonth()+1, 1);
     const diffDays = Math.ceil((firstNext - today) / (1000*60*60*24));
     let start = firstNext;
-    if(diffDays < 4){
-      start = new Date(today.getFullYear(), today.getMonth()+2, 1);
-    }
+    if(diffDays < 4) start = new Date(today.getFullYear(), today.getMonth()+2, 1);
     return `${pad2(start.getDate())}.${pad2(start.getMonth()+1)}.${start.getFullYear()}`;
   }
 
@@ -403,24 +368,6 @@
   }
   function showOk(){ document.getElementById("okBox").style.display = "block"; }
 
-  function cleanupPdfState(){
-    try{
-      const pagesEl = document.getElementById("pdfPages");
-      if(pagesEl) pagesEl.innerHTML = "";
-      setStatus("PDF wird erstellt…", "");
-
-      state.pdfMusterBlob = null;
-      state.pdfInternBlob = null;
-      state.agbs = [];
-      state.vertragsdaten = null;
-
-      state._initDone = false;
-      state._initRunning = false;
-    }catch(e){
-      console.error(e);
-    }
-  }
-
   async function loadVertragsdaten(){
     const url = "../../information/vertragsdaten.txt";
     const res = await fetch(url, { cache:"no-store" });
@@ -477,7 +424,6 @@
       if(!trimmed) return;
 
       const isBullet = /^[•\-–]/.test(trimmed);
-
       if(isBullet){
         const itemText = trimmed.replace(/^[•\-–]\s*/, "");
         if(!currentList){
@@ -547,7 +493,6 @@
     for(const k of keys){
       const sec = data[k] || {};
       const title = String(sec.title || sec.heading || "").trim();
-
       if(/^Preise\s*&\s*Abrechnung/i.test(title)) continue;
 
       const textRaw = sec.text || "";
@@ -560,11 +505,7 @@
       const blocks = buildPdfBlocksFromText(text);
       stack.push(...blocks);
 
-      content.push({
-        unbreakable: true,
-        margin:[0,8,0,0],
-        stack
-      });
+      content.push({ unbreakable:true, margin:[0,8,0,0], stack });
     }
     return content;
   }
@@ -586,8 +527,6 @@
     const avgNet = years > 0 ? (totalNet / years) : 0;
     const avgBr  = years > 0 ? (totalBr  / years) : 0;
 
-    const stack = [];
-
     const compactLayout = {
       hLineColor: ()=> "#e5e7eb",
       vLineWidth: ()=> 0,
@@ -598,10 +537,10 @@
       paddingBottom: ()=> 4
     };
 
+    const stack = [];
     for(let y=1; y<=years; y++){
       const isY1 = (y===1);
       const rows = [];
-
       if(isY1) rows.push(["LANcare (einmalig)", fmtEUR(lanOnceN), fmtEUR(lanOnceB)]);
       rows.push(["Wartungs- & Servicepauschale", fmtEUR(wartNetto), fmtEUR(wartBrutto)]);
 
@@ -632,7 +571,7 @@
     }
 
     stack.push({
-      unbreakable: true,
+      unbreakable:true,
       margin:[0,10,0,0],
       table:{
         widths:["*",95,95],
@@ -657,6 +596,7 @@
   }
 
   function buildDocDefinition({vertragsnr, analyse, person, paket, vertragsdaten, placeholders, agbs, logoDataUrl, watermark=true}){
+    // Pflichtfelder (keine Fantasie-Fallbacks)
     requireField(analyse?.Firma, "Firma");
     requireField(analyse?.Ansprechpartner, "Ansprechpartner");
     requireField(analyse?.Ort, "Ort");
@@ -710,8 +650,8 @@
     preisText = fixYearsGrammar(preisText, placeholders?.vertragsjahre);
 
     content.push({
-      pageBreak: "before",
-      stack: [
+      pageBreak:"before",
+      stack:[
         { text:"Preise & Abrechnung", style:"h2", margin:[0,0,0,6] },
         ...buildPdfBlocksFromText(preisText),
         { text:"", margin:[0,8,0,0] },
@@ -732,14 +672,14 @@
       },
       background: watermark ? function(currentPage, pageSize){
         return {
-          text: "MUSTER",
-          color: "#cfd6e4",
-          opacity: 0.18,
-          bold: true,
-          fontSize: 130,
-          angle: 0,
-          alignment: "center",
-          absolutePosition: { x: 0, y: pageSize.height/2 - 65 },
+          text:"MUSTER",
+          color:"#cfd6e4",
+          opacity:0.18,
+          bold:true,
+          fontSize:130,
+          angle:0,
+          alignment:"center",
+          absolutePosition:{ x:0, y: pageSize.height/2 - 65 },
           width: pageSize.width
         };
       } : null,
@@ -812,21 +752,39 @@
     });
   }
 
-  async function sendRequest(payload){
-    const res = await fetch(POWER_AUTOMATE_ENDPOINT, {
+  async function postJson(endpoint, payload){
+    const res = await fetch(endpoint, {
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify(payload)
     });
-
     const txt = await res.text();
     let body = null;
     try { body = JSON.parse(txt); } catch(e){ body = { raw: txt }; }
-
     if(!res.ok){
-      throw new Error(body?.message || body?.error || `Senden fehlgeschlagen (HTTP ${res.status}).`);
+      throw new Error((body && (body.message || body.error)) || `Senden fehlgeschlagen (HTTP ${res.status}). ${txt ? ("Antwort: " + txt.slice(0,220)) : ""}`);
     }
     return body;
+  }
+
+  async function sendRequest(payload){
+    // 1) Versuch: direkt zu Power Automate
+    try{
+      return await postJson(POWER_AUTOMATE_ENDPOINT, payload);
+    } catch(err){
+      // 2) Fallback: Proxy (CORS-Workaround)
+      try{
+        return await postJson(PROXY_ENDPOINT, { target: POWER_AUTOMATE_ENDPOINT, payload });
+      } catch(err2){
+        // Zeig beide Fehler (hilft beim Debuggen)
+        throw new Error(
+          "Direkt-POST fehlgeschlagen (häufig CORS im Browser).\n" +
+          String(err?.message || err) + "\n\n" +
+          "Proxy-POST fehlgeschlagen:\n" +
+          String(err2?.message || err2)
+        );
+      }
+    }
   }
 
   async function init(){
@@ -837,12 +795,12 @@
       state._wired = true;
 
       document.getElementById("btnBack").addEventListener("click", ()=>{
-        cleanupPdfState();
         if (window.parent && typeof window.parent.prevStep === "function") window.parent.prevStep();
         else history.back();
       });
 
       document.getElementById("btnHome").addEventListener("click", ()=>{ window.location.href = "https://netteck.de"; });
+      document.getElementById("btnSend").addEventListener("click", onSend);
     }
 
     state.analyse = getJSONFromStorage(ANALYSE_KEY);
@@ -856,28 +814,23 @@
     }
 
     const email = String(state.person?.email || state.person?.Email || "").trim();
-    if(!email) { setStatus("Fehlende Daten.", "Pflichtfeld fehlt: E-Mail"); state._initRunning = false; return; }
-
+    if(!email){
+      setStatus("Fehlende Daten.", "Pflichtfeld fehlt: E-Mail");
+      state._initRunning = false;
+      return;
+    }
     document.getElementById("emailView").textContent = email;
-    document.getElementById("email").value = email;
-
-    const sendCopy = document.getElementById("sendCopy");
-    const emailField = document.getElementById("emailField");
-    sendCopy.checked = true;
-    sendCopy.disabled = true;
-    emailField.style.display = "none";
 
     clearErr();
 
     try{
       state.vertragsnr = buildVertragsnummerStrict(state.analyse);
-    }catch(e){
+    } catch(e){
       setStatus("Fehlende Pflichtdaten.", e?.message || "");
       showErr(e?.message || "Pflichtdaten fehlen.");
       state._initRunning = false;
       return;
     }
-
     document.getElementById("vertragNr").textContent = state.vertragsnr;
 
     if(typeof pdfMake === "undefined"){
@@ -927,7 +880,7 @@
         logoDataUrl: state.logoDataUrl,
         watermark:false
       });
-    }catch(e){
+    } catch(e){
       setStatus("Fehler in Pflichtdaten / Vertragsdaten.", e?.message || "");
       showErr(e?.message || "Fehler in Vertragsdaten.");
       state._initRunning = false;
@@ -943,8 +896,6 @@
     setStatus("PDF-Vorschau bereit.", document.querySelectorAll(".pdfPage").length + " Seite(n)");
     document.getElementById("formGrid").style.display = "flex";
 
-    document.getElementById("btnSend").onclick = onSend;
-
     state._initDone = true;
     state._initRunning = false;
   }
@@ -955,19 +906,19 @@
     btn.disabled = true;
 
     try{
-      const email = String(document.getElementById("email").value || "").trim();
+      const email = String(state.person?.email || state.person?.Email || "").trim();
       if(!email || !email.includes("@")) throw new Error("Bitte geben Sie eine gültige E-Mail-Adresse an.");
 
       setStatus("Vorbereitung Versand…", "PDFs werden kodiert");
       const pdfInternB64 = await blobToBase64(state.pdfInternBlob);
       const pdfMusterB64 = await blobToBase64(state.pdfMusterBlob);
 
-      // ✅ Nur die gewünschten Felder (flach)
+      // ✅ genau die Felder, die du wolltest
       const payload = {
         vertragsnummer: state.vertragsnr,
         kunde_email: email,
-        firma: state.analyse?.Firma,
-        ansprechpartner: state.analyse?.Ansprechpartner,
+        firma: String(state.analyse?.Firma || "").trim(),
+        ansprechpartner: String(state.analyse?.Ansprechpartner || "").trim(),
         laufzeit_jahre: Number(state.paket?.laufzeit_jahre),
         lancom_jahre: Number(state.paket?.lancare_jahre),
         pdf_muster_base64: pdfMusterB64,
@@ -997,10 +948,10 @@
     });
   });
 
-  window.addEventListener('message', (e) => {
+  window.addEventListener("message", (e)=>{
     if (e.origin !== window.location.origin) return;
     const d = e.data || {};
-    if (d.type === 'STEP_ACTIVE' && Number(d.step) === 5) {
+    if (d.type === "STEP_ACTIVE" && Number(d.step) === 5) {
       if(!state._initDone && !state._initRunning){
         init().catch(()=>{});
       }
