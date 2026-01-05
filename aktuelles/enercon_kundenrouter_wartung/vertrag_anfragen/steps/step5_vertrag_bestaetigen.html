@@ -239,10 +239,6 @@
   // ✅ Ziel: Power Automate (direkt). Falls CORS blockt, fällt der Code automatisch auf Proxy zurück.
   const POWER_AUTOMATE_ENDPOINT = "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/84c6f1d5cf18482893df50ef5b6327c6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4iagZjWzsD_je6ecLjbdLqcEHwxlnaD0F_7-AGA2C6k";
 
-  // ✅ Optional: Same-Origin Proxy (Netlify Function). Nur nötig, wenn der Browser CORS blockt.
-  // Lege dazu eine Function unter: /.netlify/functions/powerautomate-proxy an.
-  const PROXY_ENDPOINT = "/.netlify/functions/powerautomate-proxy";
-
   const state = {
     analyse:null, person:null, paket:null, vertragsdaten:null, agbs:[],
     vertragsnr:null, pdfMusterBlob:null, pdfInternBlob:null, logoDataUrl:null,
@@ -768,24 +764,10 @@
   }
 
   async function sendRequest(payload){
-    // 1) Versuch: direkt zu Power Automate
-    try{
-      return await postJson(POWER_AUTOMATE_ENDPOINT, payload);
-    } catch(err){
-      // 2) Fallback: Proxy (CORS-Workaround)
-      try{
-        return await postJson(PROXY_ENDPOINT, { target: POWER_AUTOMATE_ENDPOINT, payload });
-      } catch(err2){
-        // Zeig beide Fehler (hilft beim Debuggen)
-        throw new Error(
-          "Direkt-POST fehlgeschlagen (häufig CORS im Browser).\n" +
-          String(err?.message || err) + "\n\n" +
-          "Proxy-POST fehlgeschlagen:\n" +
-          String(err2?.message || err2)
-        );
-      }
-    }
+    // Direkt zu Power Automate (ohne Proxy-Fallback)
+    return await postJson(POWER_AUTOMATE_ENDPOINT, payload);
   }
+
 
   async function init(){
     if(state._initRunning || state._initDone) return;
@@ -914,11 +896,21 @@
       const pdfMusterB64 = await blobToBase64(state.pdfMusterBlob);
 
       // ✅ genau die Felder, die du wolltest
+      const wpNum = pickWindparkNummerStrict(state.analyse);
+      const wpName = String(
+        state.analyse?.windpark_name ||
+        state.analyse?.["windpark_name"] ||
+        state.analyse?.["Windpark"] ||
+        ""
+      ).trim();
+      const windparkCombined = wpName ? `${wpNum} – ${wpName}` : wpNum;
+
       const payload = {
         vertragsnummer: state.vertragsnr,
         kunde_email: email,
         firma: String(state.analyse?.Firma || "").trim(),
         ansprechpartner: String(state.analyse?.Ansprechpartner || "").trim(),
+        windpark: windparkCombined,
         laufzeit_jahre: Number(state.paket?.laufzeit_jahre),
         lancom_jahre: Number(state.paket?.lancare_jahre),
         pdf_muster_base64: pdfMusterB64,
