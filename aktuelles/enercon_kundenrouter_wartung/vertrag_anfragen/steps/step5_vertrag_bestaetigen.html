@@ -919,8 +919,6 @@
         kunde_email: email,
         firma: String(state.analyse?.Firma || "").trim(),
         ansprechpartner: String(state.analyse?.Ansprechpartner || "").trim(),
-        // ✅ Windpark kombiniert
-        windpark: wpName ? `${wpNum} – ${wpName}` : wpNum,
         laufzeit_jahre: Number(state.paket?.laufzeit_jahre),
         lancom_jahre: Number(state.paket?.lancare_jahre),
         pdf_muster_base64: pdfMusterB64,
