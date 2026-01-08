@@ -355,7 +355,7 @@
 
       $meta.textContent = `Aktueller Status: ${statusValue}`;
       $meta.classList.remove("error");
-      $meta.textContent = orderId ? `Auftrag: ${orderId}` : "";
+      $meta.textContent = orderId ? `Auftrag-/Angebot: ${orderId}` : "";
       render(statusValue);
     }catch(e){
       $meta.classList.add("error");
