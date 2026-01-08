@@ -3,7 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Status – Kevin Strakerjahn Networks &amp; Automation</title>
+
+  <title>Statusabfrage – Networks &amp; Automation</title>
+
+  <!-- Favicon / Tab-Icon -->
+  <link rel="icon" type="image/png" href="/Logos/logo.png" />
+  <link rel="apple-touch-icon" href="/Logos/logo.png" />
+
   <style>
     :root{
       --primary:#0b74ff;
@@ -172,7 +178,7 @@
         <p>Hier sehen Sie, in welchem Schritt sich Ihr Auftrag aktuell befindet.</p>
       </div>
 
-      <div class="meta" id="metaText">Wird geladen …</div>
+      <div class="meta" id="metaText">Auftrag: —</div>
 
       <div class="section-title">Fortschritt</div>
       <ul class="status-list" id="statusList"></ul>
@@ -322,7 +328,7 @@
 
     try{
       $meta.classList.remove("error");
-      $meta.textContent = "Status wird abgerufen …";
+      $meta.textContent = "Auftragsdaten werden abgerufen …";
 
       const res = await fetch(FLOW_URL, {
         method: "POST",
@@ -337,6 +343,7 @@
 
       const data = await res.json().catch(()=> ({}));
       const statusValue = (data && (data.Value || data.value || data.status || data.Status)) || "";
+      const auftragId = (data && (data.Auftrags_Angebots_ID || data.Auftrag || data.auftrag || data.Auftragsnummer || data.auftragsnummer)) || "";
 
       if(!statusValue){
         $meta.classList.add("error");
@@ -345,7 +352,7 @@
         return;
       }
 
-      $meta.textContent = `Aktueller Status: ${statusValue}`;
+      $meta.textContent = `Auftrag: ${auftragId || '—'}`;
       render(statusValue);
     }catch(e){
       $meta.classList.add("error");
