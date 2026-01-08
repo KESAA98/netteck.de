@@ -3,394 +3,200 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Status – Kevin Strakerjahn Networks & Automation</title>
+  <title>Status – Kevin Strakerjahn Networks &amp; Automation</title>
   <style>
+    :root{
+      --primary:#0b74ff;
+      --primary-soft: rgba(11,116,255,.08);
+      --bg:#f5f7fb;
+      --card-bg:#ffffff;
+      --border:#e1e4ec;
+      --text-main:#1f2933;
+      --text-muted:#6b7280;
+      --radius-lg:14px;
 
-        :root {
-            --primary: #0b74ff;
-            --primary-soft: rgba(11, 116, 255, 0.08);
-            --bg: #f5f7fb;
-            --card-bg: #ffffff;
-            --border: #e1e4ec;
-            --text-main: #1f2933;
-            --text-muted: #6b7280;
-            --radius-lg: 14px;
-        }
+      --success:#16a34a;
+      --success-soft: rgba(22,163,74,.10);
+      --danger:#dc2626;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:var(--bg);
+      color:var(--text-main);
+      line-height:1.6;
+    }
+    img{max-width:100%;height:auto;display:block}
+    .page{max-width:1100px;margin:2rem auto 3rem;padding:0 1rem}
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius-lg);
+      box-shadow:0 10px 30px rgba(15,23,42,.06);
+      padding:1.75rem 1.9rem 2.1rem;
+      border:1px solid var(--border);
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    /* HEADER BILD wie Hauptseite */
+    .header{margin-bottom:1.25rem}
+    .logo-wrapper{width:100%}
+    .logo-wrapper img{
+      width:100%;
+      height:auto;
+      border-radius:10px;
+      object-fit:cover;
+    }
 
-        html, body {
-            margin: 0;
-            padding: 0;
-        }
+    /* Intro */
+    .intro{margin-bottom:1.0rem}
+    .intro h1{font-size:1.5rem;margin:0 0 .4rem}
+    .intro p{margin:.1rem 0;color:var(--text-muted);font-size:.95rem}
 
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
+    /* Statusliste */
+    .status-list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+    .status-item{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 14px;
+      background:#fff;
+      display:grid;
+      gap:6px;
+    }
+    .row{display:flex;align-items:center;gap:10px;justify-content:space-between}
+    .left{display:flex;align-items:center;gap:10px;min-width:0}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(107,114,128,.45);flex:0 0 10px}
+    .status-title{font-weight:700;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .status-desc{color:var(--text-muted);font-size:13px;line-height:1.35}
+    .badge{
+      font-size:12px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--text-muted);
+      background:#fff;
+      flex:0 0 auto;
+    }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+    /* Erledigt (inkl. aktueller Status) = grün */
+    .is-done{
+      border-color: rgba(22,163,74,.35);
+      background: var(--success-soft);
+    }
+    .is-done .dot{background:var(--success)}
+    .is-done .badge{
+      border-color: rgba(22,163,74,.35);
+      color: var(--success);
+      background: rgba(22,163,74,.08);
+      font-weight:700;
+    }
 
-        .page {
-            max-width: 1100px;
-            margin: 2rem auto 3rem;
-            padding: 0 1rem;
-        }
+    /* Wartungsvertrag-Info-Block */
+    .section-title{
+      margin:1.25rem 0 .6rem;
+      font-size:1.1rem;
+      font-weight:700;
+    }
+    .hint{
+      margin-top:14px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:14px;
+      padding:12px 14px;
+    }
+    .hint-title{font-weight:800;margin:0 0 6px 0}
+    .hint p{margin:0;color:var(--text-muted);line-height:1.4}
+    .hint a{color:var(--primary);font-weight:700;text-decoration:none}
+    .hint a:hover{text-decoration:underline}
+    .smallnote{color:var(--text-muted);font-size:12px;margin-top:6px}
 
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-            padding: 1.75rem 1.9rem 2.1rem;
-            border: 1px solid var(--border);
-        }
+    /* Meta-Text statt Pills */
+    .meta{
+      font-size:.9rem;
+      color:var(--text-muted);
+      margin:.2rem 0 1.0rem;
+    }
+    .meta.error{color:var(--danger);font-weight:600}
 
-        /* ---------- HEADER / BILD ---------- */
+    hr.sep{
+      margin:1.4rem 0 1.0rem;
+      border:0;
+      border-top:1px solid var(--border);
+    }
 
-        .header {
-            margin-bottom: 1.5rem;
-        }
+    /* Footer wie Hauptseite (zentrierte Links) */
+    footer{
+      margin-top:.2rem;
+      font-size:.85rem;
+      color:var(--text-muted);
+    }
+    .footer-buttons{
+      display:flex;
+      justify-content:center;
+      gap:2.5rem;
+      margin-top:.2rem;
+      margin-bottom:.1rem;
+      flex-wrap:wrap;
+    }
+    .footer-link{
+      font-size:1.05rem;
+      font-weight:600;
+      color:var(--text-muted);
+      text-decoration:underline;
+      text-underline-offset:3px;
+      cursor:pointer;
+    }
+    .footer-link:hover{color:var(--text-main)}
 
-        .logo-wrapper {
-            width: 100%;
-        }
-
-        .logo-wrapper img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        /* ---------- EINLEITUNG ---------- */
-
-        .intro {
-            margin-bottom: 1.75rem;
-        }
-
-        .intro h1 {
-            font-size: 1.5rem;
-            margin: 0 0 0.4rem;
-        }
-
-        .intro p {
-            margin: 0.1rem 0;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* ---------- AKTUELLES-TABELLE ---------- */
-
-        .aktuelles-section {
-            margin-top: 1.5rem;
-        }
-
-        .aktuelles-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 0.75rem;
-            margin-bottom: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        .aktuelles-header h2 {
-            margin: 0;
-            font-size: 1.1rem;
-        }
-
-        .aktuelles-header span {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .aktuelles-loading,
-        .aktuelles-error,
-        .aktuelles-empty {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin: 0.4rem 0 0.6rem;
-        }
-
-        .aktuelles-loading-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border-radius: 999px;
-            border: 2px solid rgba(148, 163, 184, 0.5);
-            border-top-color: var(--primary);
-            animation: spin 0.7s linear infinite;
-            vertical-align: middle;
-            margin-right: 0.4rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #ffffff;
-        }
-
-        table.aktuelles-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-            min-width: 520px;
-        }
-
-        table.aktuelles-table thead {
-            background: #eef1f6;
-        }
-
-        table.aktuelles-table th,
-        table.aktuelles-table td {
-            padding: 0.55rem 0.7rem;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        table.aktuelles-table th {
-            font-weight: 600;
-            color: #374151;
-            white-space: nowrap;
-        }
-
-        table.aktuelles-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        table.aktuelles-table tbody tr {
-            cursor: pointer;
-            transition: background 0.12s ease, transform 0.08s ease;
-        }
-
-        table.aktuelles-table tbody tr:hover {
-            background: #f3f4f6;
-            transform: translateY(-1px);
-        }
-
-        .tag-list {
-            display: flex;
-            gap: 0.25rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            font-size: 0.75rem;
-            background: #e5e7eb;
-            color: #374151;
-            padding: 0.1rem 0.45rem;
-            border-radius: 999px;
-        }
-
-        /* ---------- FOOTER ---------- */
-
-        footer {
-            margin-top: 1.2rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border);
-            padding-top: 0.75rem;
-        }
-
-        .footer-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            margin-top: 0.2rem;
-            margin-bottom: 0.1rem;
-        }
-
-        .footer-link {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-decoration: underline;
-            text-underline-offset: 3px;
-            cursor: pointer;
-        }
-
-        .footer-link:hover {
-            color: var(--text-main);
-        }
-
-        /* ---------- MOBILE ---------- */
-        @media (max-width: 600px) {
-            .page {
-                margin: 1.25rem auto 2rem;
-                padding: 0 0.75rem;
-            }
-
-            .card {
-                padding: 1.25rem 1.1rem 1.8rem;
-                border-radius: 12px;
-            }
-
-            .logo-wrapper img {
-                border-radius: 8px;
-            }
-
-            .intro h1 {
-                font-size: 1.25rem;
-            }
-
-            .footer-buttons {
-                gap: 1.8rem;
-            }
-        }
-    
-  /* Zusatz: Statusliste */
-  .status-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 10px;
-  }
-  .status-item {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 12px 14px;
-    background: #fff;
-    display: grid;
-    gap: 6px;
-  }
-  .status-item .row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: space-between;
-  }
-  .status-item .left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-  }
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: var(--muted);
-    flex: 0 0 10px;
-  }
-  .status-title {
-    font-weight: 700;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .status-desc {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.35;
-  }
-  .badge {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    background: #fff;
-    flex: 0 0 auto;
-  }
-  .is-done .dot { background: var(--success); }
-  .is-current {
-    border-color: rgba(32, 104, 255, 0.35);
-    box-shadow: 0 10px 24px rgba(18, 26, 38, 0.06);
-    background: linear-gradient(0deg, rgba(32, 104, 255, 0.04), rgba(32, 104, 255, 0.02));
-  }
-  .is-current .dot { background: var(--primary); }
-  .is-current .badge {
-    border-color: rgba(32, 104, 255, 0.35);
-    color: var(--primary);
-  }
-  .hint {
-    margin-top: 14px;
-    border: 1px solid var(--border);
-    background: #fff;
-    border-radius: 14px;
-    padding: 12px 14px;
-  }
-  .hint-title { font-weight: 800; margin: 0 0 6px 0; }
-  .hint p { margin: 0; color: var(--muted); line-height: 1.4; }
-  .hint a { color: var(--primary); font-weight: 700; text-decoration: none; }
-  .hint a:hover { text-decoration: underline; }
-  .smallnote { color: var(--muted); font-size: 12px; margin-top: 6px; }
-  .topline {
-    display:flex; align-items:center; justify-content:space-between;
-    gap: 12px;
-    margin: 10px 0 0 0;
-  }
-  .pill {
-    display:inline-flex; align-items:center; gap: 8px;
-    border: 1px solid var(--border);
-    background:#fff;
-    border-radius: 999px;
-    padding: 6px 10px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-  .spinner {
-    width: 14px; height: 14px; border-radius: 50%;
-    border: 2px solid rgba(0,0,0,0.08);
-    border-top-color: var(--primary);
-    animation: spin 0.9s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width:600px){
+      .page{margin:1.25rem auto 2rem;padding:0 .75rem}
+      .card{padding:1.25rem 1.1rem 1.8rem;border-radius:12px}
+      .logo-wrapper img{border-radius:8px}
+      .intro h1{font-size:1.25rem}
+      .footer-buttons{gap:1.8rem}
+    }
   </style>
 </head>
 
 <body>
   <div class="page">
     <div class="card">
-      <div class="brand">Kevin Strakerjahn Networks &amp; Automation</div>
-      <h1>Statusabfrage</h1>
-      <p class="subtitle">Hier sehen Sie, in welchem Schritt sich Ihr Auftrag aktuell befindet.</p>
 
-      <div class="topline">
-        <div class="pill" id="pillState"><span class="spinner" aria-hidden="true"></span><span>Wird geladen…</span></div>
-        <div class="pill" id="pillStatus"><span class="dot" style="background: var(--muted)"></span><span>Status: –</span></div>
+      <div class="header">
+        <div class="logo-wrapper">
+          <img src="https://netteck.de/Logos/logo_name.jpeg" alt="Kevin Strakerjahn Networks &amp; Automation" />
+        </div>
       </div>
 
-      <div class="section">
-        <div class="section-title">Fortschritt</div>
-        <ul class="status-list" id="statusList"></ul>
+      <div class="intro">
+        <h1>Statusabfrage</h1>
+        <p>Hier sehen Sie, in welchem Schritt sich Ihr Auftrag aktuell befindet.</p>
+      </div>
 
-        <div class="hint" id="maintenanceHint" style="display:none;">
-          <div class="hint-title">Wartungsvertrag möglich</div>
-          <p>
-            Wenn Sie keinen Wartungsvertrag haben, können Sie mit Ihrer Abschlussrechnung einen Wartungsvertrag anfragen – innerhalb von <b>2 Monaten</b> nach Abschluss der Arbeiten.
-            <br />
-            <a href="https://netteck.de/aktuelles/enercon_kundenrouter_wartung/vertrag_anfragen/" target="_blank" rel="noopener">Wartungsvertrag anfragen</a>
-          </p>
-          <div class="smallnote">Hinweis: Die Anzeige basiert auf dem zuletzt gemeldeten Status aus unserem System.</div>
-        </div>
+      <div class="meta" id="metaText">Wird geladen …</div>
+
+      <div class="section-title">Fortschritt</div>
+      <ul class="status-list" id="statusList"></ul>
+
+      <div class="hint" id="maintenanceHint" style="display:none;">
+        <div class="hint-title">Wartungsvertrag möglich</div>
+        <p>
+          Wenn Sie keinen Wartungsvertrag haben, können Sie mit Ihrer Abschlussrechnung einen Wartungsvertrag anfragen – innerhalb von <b>2&nbsp;Monaten</b> nach Abschluss der Arbeiten.<br/>
+          <a href="https://netteck.de/aktuelles/enercon_kundenrouter_wartung/vertrag_anfragen/" target="_blank" rel="noopener">Wartungsvertrag anfragen</a>
+        </p>
+        <div class="smallnote">Hinweis: Die Anzeige basiert auf dem zuletzt gemeldeten Status aus unserem System.</div>
       </div>
 
       <hr class="sep" />
 
-      <div class="footer-nav">
-        <a href="https://netteck.de/">Start</a>
-        <a href="https://netteck.de/kontakt/">Kontakt</a>
-        <a href="https://netteck.de/impressum/">Impressum</a>
-        <a href="https://netteck.de/datenschutz/">Datenschutz</a>
-      </div>
+      <footer>
+        <div class="footer-buttons">
+          <a class="footer-link" href="https://netteck.de/">Start</a>
+          <a class="footer-link" href="https://netteck.de/kontakt/">Kontakt</a>
+          <a class="footer-link" href="https://netteck.de/impressum/">Impressum</a>
+          <a class="footer-link" href="https://netteck.de/datenschutz/">Datenschutz</a>
+        </div>
+      </footer>
+
     </div>
   </div>
 
@@ -398,7 +204,6 @@
 (() => {
   const FLOW_URL = "https://default91b0e232846941aab7d1176f14ecb7.8c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/cdb4fe11b1ec4734b92faa10692eceee/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=5vIxBWiAsZLxsVc1WkWfaIMwl4RSjW3IJ6bmVK_EcbY";
 
-  // Alle Statuspunkte + kurze Erklärzeile
   const STEPS = [
     { key: "Angebot erstellt", desc: "Das Angebot wurde erstellt und wird Ihnen bereitgestellt." },
     { key: "Angebot angenommen", desc: "Ihr Angebot wurde bestätigt – die Umsetzung wird eingeplant." },
@@ -419,46 +224,40 @@
   ];
 
   const $list = document.getElementById("statusList");
-  const $pillState = document.getElementById("pillState");
-  const $pillStatus = document.getElementById("pillStatus");
+  const $meta = document.getElementById("metaText");
   const $hint = document.getElementById("maintenanceHint");
 
   function getToken() {
     // 1) /status/<token>
     const parts = window.location.pathname.split("/").filter(Boolean);
     const last = parts[parts.length - 1] || "";
-    const isGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(last);
-    if (isGuid) return last;
+    const guidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (guidRe.test(last)) return last;
 
     // 2) #<token>
-    const hash = (window.location.hash || "").replace("#", "").trim();
-    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(hash)) return hash;
+    const hash = (window.location.hash || "").replace("#","").trim();
+    if (guidRe.test(hash)) return hash;
 
-    // 3) ?t=<token> (nur Fallback)
+    // 3) ?t=<token> (Fallback)
     const q = new URLSearchParams(window.location.search);
     const t = (q.get("t") || "").trim();
-    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(t)) return t;
+    if (guidRe.test(t)) return t;
 
     return "";
   }
 
-  function render(statusValue) {
+  function render(statusValue){
     $list.innerHTML = "";
 
-    const all = [...STEPS, ...MAINTENANCE];
-    const idx = all.findIndex(s => s.key === statusValue);
+    const idx = STEPS.findIndex(s => s.key === statusValue);
 
-    // Fortschritt (nur die STEPS)
     STEPS.forEach((s, i) => {
       const li = document.createElement("li");
       li.className = "status-item";
-      const done = (idx !== -1) && (i < idx) && (idx < STEPS.length); // wenn aktueller Status in STEPS
-      const current = (statusValue === s.key);
 
+      // alles bis inkl. aktuellem Status = erledigt/grün
+      const done = (idx !== -1) && (i <= idx);
       if (done) li.classList.add("is-done");
-      if (current) li.classList.add("is-current");
-
-      const badgeText = current ? "Aktuell" : (done ? "Erledigt" : "Offen");
 
       li.innerHTML = `
         <div class="row">
@@ -466,20 +265,20 @@
             <span class="dot" aria-hidden="true"></span>
             <div class="status-title">${s.key}</div>
           </div>
-          <div class="badge">${badgeText}</div>
+          <div class="badge">${done ? "Erledigt" : "Offen"}</div>
         </div>
         <div class="status-desc">${s.desc}</div>
       `;
       $list.appendChild(li);
     });
 
-    // Wartungsvertrag-Status als eigener Block darunter (immer sichtbar)
+    // Wartungsvertrag Überschrift
     const header = document.createElement("li");
     header.className = "status-item";
     header.innerHTML = `
       <div class="row">
         <div class="left">
-          <span class="dot" aria-hidden="true" style="background: rgba(0,0,0,0.16)"></span>
+          <span class="dot" aria-hidden="true" style="background: rgba(107,114,128,.45)"></span>
           <div class="status-title">Wartungsvertrag</div>
         </div>
         <div class="badge">Info</div>
@@ -488,65 +287,69 @@
     `;
     $list.appendChild(header);
 
+    // Wartungsvertrag Status (nur markieren wenn der Flow genau einen dieser Werte liefert)
     MAINTENANCE.forEach((s) => {
       const li = document.createElement("li");
       li.className = "status-item";
-      const current = (statusValue === s.key);
-      if (current) li.classList.add("is-current");
+      const isThis = (statusValue === s.key);
+      if (isThis) li.classList.add("is-done");
+
       li.innerHTML = `
         <div class="row">
           <div class="left">
             <span class="dot" aria-hidden="true"></span>
             <div class="status-title">${s.key}</div>
           </div>
-          <div class="badge">${current ? "Aktuell" : "—"}</div>
+          <div class="badge">${isThis ? "Erledigt" : "—"}</div>
         </div>
         <div class="status-desc">${s.desc}</div>
       `;
       $list.appendChild(li);
     });
 
-    // Wartungsvertrag-Hinweis: ab "Rechnung bezahlt" UND wenn "Kein Wartungsvertrag"
-    const showHint = (statusValue === "Kein Wartungsvertrag");
-    $hint.style.display = showHint ? "block" : "none";
+    // Hinweis nur wenn "Kein Wartungsvertrag"
+    $hint.style.display = (statusValue === "Kein Wartungsvertrag") ? "block" : "none";
   }
 
-  async function load() {
+  async function load(){
     const token = getToken();
-
-    if (!token) {
-      $pillState.innerHTML = `<span class="dot" style="background: var(--danger)"></span><span>Kein Token in der URL gefunden</span>`;
-      $pillStatus.innerHTML = `<span class="dot" style="background: var(--muted)"></span><span>Status: –</span>`;
-      render(""); // zeigt Liste "offen" ohne aktuellen Punkt
+    if(!token){
+      $meta.classList.add("error");
+      $meta.textContent = "Kein gültiger Token in der URL gefunden.";
+      render("");
       return;
     }
 
-    try {
-      $pillState.innerHTML = `<span class="spinner" aria-hidden="true"></span><span>Abfrage läuft…</span>`;
+    try{
+      $meta.classList.remove("error");
+      $meta.textContent = "Status wird abgerufen …";
 
       const res = await fetch(FLOW_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type":"application/json" },
         body: JSON.stringify({ token })
       });
 
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
+      if(!res.ok){
+        const text = await res.text().catch(()=> "");
         throw new Error(`HTTP ${res.status} ${res.statusText}${text ? " – " + text : ""}`);
       }
 
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(()=> ({}));
       const statusValue = (data && (data.Value || data.value || data.status || data.Status)) || "";
 
-      $pillState.innerHTML = `<span class="dot" style="background: var(--success)"></span><span>Aktualisiert</span>`;
-      $pillStatus.innerHTML = `<span class="dot" style="background: var(--primary)"></span><span>Status: ${statusValue || "—"}</span>`;
+      if(!statusValue){
+        $meta.classList.add("error");
+        $meta.textContent = "Kein Status empfangen.";
+        render("");
+        return;
+      }
 
+      $meta.textContent = `Aktueller Status: ${statusValue}`;
       render(statusValue);
-    } catch (e) {
-      $pillState.innerHTML = `<span class="dot" style="background: var(--danger)"></span><span>Fehler bei der Abfrage</span>`;
-      $pillStatus.innerHTML = `<span class="dot" style="background: var(--muted)"></span><span>Status: –</span>`;
+    }catch(e){
+      $meta.classList.add("error");
+      $meta.textContent = "Fehler bei der Statusabfrage.";
       render("");
       console.error(e);
     }
@@ -555,6 +358,5 @@
   load();
 })();
 </script>
-
 </body>
 </html>
