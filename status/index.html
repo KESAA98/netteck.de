@@ -3,13 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Statusabfrage – Networks &amp; Automation</title>
-
-  <!-- Favicon / Tab-Icon -->
-  <link rel="icon" type="image/png" href="/Logos/logo.png" />
-  <link rel="apple-touch-icon" href="/Logos/logo.png" />
-
+  <title>Status – Kevin Strakerjahn Networks &amp; Automation</title>
   <style>
     :root{
       --primary:#0b74ff;
@@ -178,7 +172,7 @@
         <p>Hier sehen Sie, in welchem Schritt sich Ihr Auftrag aktuell befindet.</p>
       </div>
 
-      <div class="meta" id="metaText">Auftrag: —</div>
+      <div class="meta" id="metaText">Wird geladen …</div>
 
       <div class="section-title">Fortschritt</div>
       <ul class="status-list" id="statusList"></ul>
@@ -223,11 +217,7 @@
     { key: "Rechnung bezahlt", desc: "Zahlungseingang der Abschlussrechnung ist verbucht." }
   ];
 
-  const MAINTENANCE = [
-    { key: "Kein Wartungsvertrag", desc: "Aktuell ist kein Wartungsvertrag hinterlegt." },
-    { key: "Wartungsvertrag aktiv", desc: "Es besteht ein aktiver Wartungsvertrag." },
-    { key: "Wartungsvertrag beendet", desc: "Der Wartungsvertrag wurde beendet." }
-  ];
+  const MAINTENANCE_KEYS = ["Kein Wartungsvertrag","Wartungsvertrag aktiv","Wartungsvertrag beendet"];
 
   const $list = document.getElementById("statusList");
   const $meta = document.getElementById("metaText");
@@ -255,15 +245,17 @@
   function render(statusValue){
     $list.innerHTML = "";
 
-    const idx = STEPS.findIndex(s => s.key === statusValue);
+    // Wenn der Status ein Wartungsvertrags-Status ist, markieren wir die gesamte Auftragskette als erledigt.
+    const isMaintenance = MAINTENANCE_KEYS.includes(statusValue);
+    let idx = STEPS.findIndex(s => s.key === statusValue);
+    if (idx === -1 && isMaintenance) idx = STEPS.length - 1;
 
     STEPS.forEach((s, i) => {
       const li = document.createElement("li");
       li.className = "status-item";
 
-      // alles bis inkl. aktuellem Status = erledigt/grün
-      const done = (idx !== -1) && (i <= idx);
-      if (done) li.classList.add("is-done");
+      const isDone = (idx !== -1 && i <= idx);
+      if (isDone) li.classList.add("is-done");
 
       li.innerHTML = `
         <div class="row">
@@ -271,50 +263,59 @@
             <span class="dot" aria-hidden="true"></span>
             <div class="status-title">${s.key}</div>
           </div>
-          <div class="badge">${done ? "Erledigt" : "Offen"}</div>
+          <div class="badge">${isDone ? "Erledigt" : "Offen"}</div>
         </div>
         <div class="status-desc">${s.desc}</div>
       `;
       $list.appendChild(li);
     });
 
-    // Wartungsvertrag Überschrift
-    const header = document.createElement("li");
-    header.className = "status-item";
-    header.innerHTML = `
-      <div class="row">
-        <div class="left">
-          <span class="dot" aria-hidden="true" style="background: rgba(107,114,128,.45)"></span>
-          <div class="status-title">Wartungsvertrag</div>
+    // Bereich unterhalb "Rechnung bezahlt"
+    $hint.style.display = "none";
+    $hint.innerHTML = "";
+
+    if (statusValue === "Kein Wartungsvertrag") {
+      // gar nichts anzeigen
+      return;
+    }
+
+    if (statusValue === "Wartungsvertrag aktiv" || statusValue === "Wartungsvertrag beendet") {
+      $hint.style.display = "block";
+      $hint.innerHTML = `
+        <div class="hint-title">Wartungsvertrag</div>
+        <div class="status-item ${statusValue === "Wartungsvertrag aktiv" ? "is-done" : ""}" style="margin-top:10px;">
+          <div class="row">
+            <div class="left">
+              <span class="dot" aria-hidden="true"></span>
+              <div class="status-title">${statusValue}</div>
+            </div>
+            <div class="badge">Info</div>
+          </div>
+          <div class="status-desc">
+            ${statusValue === "Wartungsvertrag aktiv"
+              ? "Es besteht ein aktiver Wartungsvertrag."
+              : "Der Wartungsvertrag wurde beendet."}
+          </div>
         </div>
-        <div class="badge">Info</div>
-      </div>
-      <div class="status-desc">Dieser Abschnitt zeigt den Wartungsvertrags-Status (falls bereits hinterlegt).</div>
+      `;
+      return;
+    }
+
+    // Standard: Wartungsvertrag-Angebot / Upload-Hinweis
+    $hint.style.display = "block";
+    $hint.innerHTML = `
+      <div class="hint-title">Wartungsvertrag</div>
+      <p style="margin-bottom:10px;">
+        Haben Sie Interesse an einem Wartungsvertrag für Ihren Kundenrouter?
+        Um ein Angebot für einen Wartungsvertrag zu erhalten, laden Sie Ihre Schlussrechnung hier hoch:
+      </p>
+      <p>
+        <a href="https://netteck.de/aktuelles/enercon_kundenrouter_wartung/vertrag_anfragen/" target="_blank" rel="noopener noreferrer">
+          Schlussrechnung hochladen
+        </a>
+      </p>
+      <p style="margin-top:10px;">Anschließend melden wir uns mit Ihrem persönlichen Angebot.</p>
     `;
-    $list.appendChild(header);
-
-    // Wartungsvertrag Status (nur markieren wenn der Flow genau einen dieser Werte liefert)
-    MAINTENANCE.forEach((s) => {
-      const li = document.createElement("li");
-      li.className = "status-item";
-      const isThis = (statusValue === s.key);
-      if (isThis) li.classList.add("is-done");
-
-      li.innerHTML = `
-        <div class="row">
-          <div class="left">
-            <span class="dot" aria-hidden="true"></span>
-            <div class="status-title">${s.key}</div>
-          </div>
-          <div class="badge">${isThis ? "Erledigt" : "—"}</div>
-        </div>
-        <div class="status-desc">${s.desc}</div>
-      `;
-      $list.appendChild(li);
-    });
-
-    // Hinweis nur wenn "Kein Wartungsvertrag"
-    $hint.style.display = (statusValue === "Kein Wartungsvertrag") ? "block" : "none";
   }
 
   async function load(){
@@ -328,7 +329,7 @@
 
     try{
       $meta.classList.remove("error");
-      $meta.textContent = "Auftragsdaten werden abgerufen …";
+      $meta.textContent = "Daten werden abgerufen …";
 
       const res = await fetch(FLOW_URL, {
         method: "POST",
@@ -343,7 +344,7 @@
 
       const data = await res.json().catch(()=> ({}));
       const statusValue = (data && (data.Value || data.value || data.status || data.Status)) || "";
-      const auftragId = (data && (data.Auftrags_Angebots_ID || data.Auftrag || data.auftrag || data.Auftragsnummer || data.auftragsnummer)) || "";
+      const orderId = (data && (data.Auftrags_Angebots_ID || data.Auftrag || data.Auftragsnummer)) || "";
 
       if(!statusValue){
         $meta.classList.add("error");
@@ -352,7 +353,9 @@
         return;
       }
 
-      $meta.textContent = `Auftrag: ${auftragId || '—'}`;
+      $meta.textContent = `Aktueller Status: ${statusValue}`;
+      $meta.classList.remove("error");
+      $meta.textContent = orderId ? `Auftrag: ${orderId}` : "";
       render(statusValue);
     }catch(e){
       $meta.classList.add("error");
